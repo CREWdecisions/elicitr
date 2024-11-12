@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # elicitr
 
-<!-- badges: start -->
+<!-- badges: start --> 
 <!-- badges: end -->
 
 The goal of elicitr is to ...
