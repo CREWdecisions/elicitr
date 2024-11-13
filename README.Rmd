@@ -107,7 +107,7 @@ print(elicit)
 This is a basic example which shows you how to use {elicitr} to analyse this data:
 
 ```{r example}
-library(elicitr)
+#library(elicitr)
 #elicitate(elicit)
 ## fake function elicitate, replace with actual function
 ```

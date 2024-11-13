@@ -66,7 +66,7 @@ This is a basic example which shows you how to use {elicitr} to analyse
 this data:
 
 ``` r
-library(elicitr)
+#library(elicitr)
 #elicitate(elicit)
 ## fake function elicitate, replace with actual function
 ```
@@ -82,14 +82,12 @@ library(elicitr)
     #>          ^
     #> 
     #> Please see `]8;;ide:help:renv::dependencies?renv::dependencies]8;;` for more information.
-    #> Warning in utils::citation(pkg_name): could not determine year for 'elicitr'
-    #> from package DESCRIPTION file
 
 We used R version 4.4.1 (R Core Team 2024) and the following R packages:
-elicitr v. 0.0.0.9000 (Last, n.d.), knitr v. 1.48 (Xie 2014, 2015,
-2024), rmarkdown v. 2.28 (Xie, Allaire, and Grolemund 2018; Xie,
-Dervieux, and Riederer 2020; Allaire et al. 2024), tidyverse v. 2.0.0
-(Wickham et al. 2019), truncnorm v. 1.0.9 (Mersmann et al. 2023).
+knitr v. 1.48 (Xie 2014, 2015, 2024), rmarkdown v. 2.28 (Xie, Allaire,
+and Grolemund 2018; Xie, Dervieux, and Riederer 2020; Allaire et al.
+2024), tidyverse v. 2.0.0 (Wickham et al. 2019), truncnorm v. 1.0.9
+(Mersmann et al. 2023).
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -99,13 +97,6 @@ Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier
 Luraschi, Kevin Ushey, Aron Atkins, et al. 2024.
 *<span class="nocase">rmarkdown</span>: Dynamic Documents for r*.
 <https://github.com/rstudio/rmarkdown>.
-
-</div>
-
-<div id="ref-elicitr" class="csl-entry">
-
-Last, First. n.d. *<span class="nocase">elicitr</span>: What the Package
-Does (One Line, Title Case)*.
 
 </div>
 
