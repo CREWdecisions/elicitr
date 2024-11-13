@@ -25,6 +25,8 @@ This package follows two formal elicitation methods:
 * Continuous method (adapted from delphi-protocol for expert elicitation)
 * Categorical method (adapted from Vernet et al. (2020, Biological invasion))
 
+<img src="man/figures/elicitr_logo_scaled.png" width="100%" />
+
 ## Installation
 
 You can install the development version of elicitr from [GitHub](https://github.com/) with:

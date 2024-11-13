@@ -19,6 +19,8 @@ googlesheets. This package follows two formal elicitation methods:
 - Categorical method (adapted from Vernet et al. (2020, Biological
   invasion))
 
+<img src="man/figures/elicitr_logo_scaled.png" width="100%" />
+
 ## Installation
 
 You can install the development version of elicitr from
