@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: grateful-refs.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,41 +17,119 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
-
 <!-- badges: end -->
 
-The goal of elicitr is to ...
+Elicitr is an R package, used to aggregate elicitation data from googlesheets. 
+This package follows two formal elicitation methods:
+
+* Continuous method (adapted from delphi-protocol for expert elicitation)
+* Categorical method (adapted from Vernet et al. (2020, Biological invasion))
 
 ## Installation
 
 You can install the development version of elicitr from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
+#install.packages("pak")
 pak::pak("sgvignali/elicitr")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This simulated dataset can be used to unterstand how {elicitr} works.
+
+Three types of variables are included here:
+
+* "percentage" i.e. \[0,1\]
+* "positive numbers" i.e. \[0,inf)\]
+* "real numbers" i.e. \[(-inf,inf)\]
+
+And three types of elicitations:
+
+* One point estimate (var1_best)\
+* Three point estimate (var2_min, var2_max, var2_best)\
+* Four point estimate (var3_min, var3_max, var3_best, var3_conf)\
+
+```{r elicitr, echo = FALSE}
+set.seed(25)
+n <- 6
+elicit <- data.frame(id = 1:n,
+                     # 1 point estimate with percentages
+                     var1_best = runif(n,
+                                       min = 0.7,
+                                       max = 1),
+                     # 3 points estimate with positive numbers
+                     var2_best = truncnorm::rtruncnorm(n,
+                                                       a = 0,
+                                                       b = 100,
+                                                       mean = 50,
+                                                       sd = 10),
+                     # 4 points estimate with natural numbers
+                     var3_best = truncnorm::rtruncnorm(n,
+                                                       a = -20,
+                                                       b = 20,
+                                                       mean = 0,
+                                                       sd = 10)) |>
+  dplyr::mutate(var2_min = var2_best - runif(n,
+                                             min = 1,
+                                             max = 10),
+                var2_max = var2_best + runif(n,
+                                             min = 1,
+                                             max = 10),
+                var3_min = var3_best - truncnorm::rtruncnorm(n,
+                                                             a = -10,
+                                                             b = 10,
+                                                             mean = 0,
+                                                             sd = 5),
+                var3_max = var3_best + truncnorm::rtruncnorm(n,
+                                                             a = -10,
+                                                             b = 10,
+                                                             mean = 0,
+                                                             sd = 5),
+                var3_conf = sample(50:100,
+                                   size = n,
+                                   replace = TRUE)) |>
+  dplyr::select(id,
+                var1_best,
+                var2_min,
+                var2_max,
+                var2_best,
+                var3_min,
+                var3_max,
+                var3_best,
+                var3_conf) |>
+  dplyr::mutate(var1_best = round(var1_best, digits = 1),
+                dplyr::across(var2_min:var3_best, round))
+print(elicit)
+```
+
+
+This is a basic example which shows you how to use {elicitr} to analyse this data:
 
 ```{r example}
 library(elicitr)
-## basic example code
+#elicitate(elicit)
+## fake function elicitate, replace with actual function
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
 
 ```{r pressure, echo = FALSE}
-plot(pressure)
+library(ggplot2)
+
+ggplot2::ggplot(elicit) +
+  ggplot2::geom_point(aes(x = id,
+                             y = var2_best,
+                             color = factor(id))) +
+  ggplot2::geom_errorbar(aes(x = id,
+                             y = var2_best,
+                             ymin = var2_min,
+                             ymax = var2_max,
+                             color = factor(id),
+                             width = 0.05)) +
+  ggplot2::xlab("id") +
+  ggplot2::ylab("estimates") +
+  ggplot2::theme_bw()
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+```{r}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```
