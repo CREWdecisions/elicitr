@@ -40,9 +40,9 @@ This simulated dataset can be used to unterstand how {elicitr} works.
 
 Three types of variables are included here:
 
-* "percentage" i.e. \[0,1\]
-* "positive numbers" i.e. \[0,inf)\]
-* "real numbers" i.e. \[(-inf,inf)\]
+* "percentage" i.e. [0,1]
+* "positive numbers" i.e. [0,inf)
+* "real numbers" i.e. (-inf,inf)
 
 And three types of elicitations:
 
