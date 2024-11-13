@@ -130,9 +130,10 @@ ggplot2::ggplot(elicit) +
   ggplot2::theme_bw()
 ```
 
-The functioning and application of {elicitr} is related to following R packages: 
-{shelf} : https://shelf.sites.sheffield.ac.uk/software
-{prefR} : https://jlepird.github.io/prefeR/
+The functioning and application of {elicitr} is related to following R packages:
+
+* {shelf} : https://shelf.sites.sheffield.ac.uk/software
+* {prefR} : https://jlepird.github.io/prefeR/
 
 ```{r citations, echo = FALSE}
 grateful::cite_packages(output = "paragraph", out.dir = ".")
