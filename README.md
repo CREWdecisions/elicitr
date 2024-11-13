@@ -73,21 +73,15 @@ this data:
 
 <img src="man/figures/README-plot_elicit_var2-1.png" width="100%" />
 
-    #> WARNING: One or more problems were discovered while enumerating dependencies.
-    #> 
-    #> # /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R --------
-    #> Error: /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R:5:7: unexpected '/'
-    #> 4: #list of badges with code to emb in readme.rmd
-    #> 5: https:/
-    #>          ^
-    #> 
-    #> Please see `]8;;ide:help:renv::dependencies?renv::dependencies]8;;` for more information.
+The functioning and application of {elicitr} is related to following R
+packages: {shelf} : <https://shelf.sites.sheffield.ac.uk/software>
+{prefR} : <https://jlepird.github.io/prefeR/>
 
 We used R version 4.4.1 (R Core Team 2024) and the following R packages:
-knitr v. 1.48 (Xie 2014, 2015, 2024), rmarkdown v. 2.28 (Xie, Allaire,
-and Grolemund 2018; Xie, Dervieux, and Riederer 2020; Allaire et al.
-2024), tidyverse v. 2.0.0 (Wickham et al. 2019), truncnorm v. 1.0.9
-(Mersmann et al. 2023).
+devtools v. 2.4.5 (Wickham et al. 2022), knitr v. 1.48 (Xie 2014, 2015,
+2024), rmarkdown v. 2.28 (Xie, Allaire, and Grolemund 2018; Xie,
+Dervieux, and Riederer 2020; Allaire et al. 2024), tidyverse v. 2.0.0
+(Wickham et al. 2019), truncnorm v. 1.0.9 (Mersmann et al. 2023).
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -122,6 +116,14 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy
 D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019.
 “Welcome to the <span class="nocase">tidyverse</span>.” *Journal of Open
 Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
+
+</div>
+
+<div id="ref-devtools" class="csl-entry">
+
+Wickham, Hadley, Jim Hester, Winston Chang, and Jennifer Bryan. 2022.
+*<span class="nocase">devtools</span>: Tools to Make Developing r
+Packages Easier*. <https://CRAN.R-project.org/package=devtools>.
 
 </div>
 
