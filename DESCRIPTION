@@ -16,6 +16,7 @@ Imports:
     googlesheets4,
     openxlsx,
     rlang,
+    stats,
     stringr,
     tibble,
     tools,

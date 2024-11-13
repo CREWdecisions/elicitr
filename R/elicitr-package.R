@@ -9,6 +9,7 @@
 #' @importFrom googlesheets4 read_sheet
 #' @importFrom openxlsx read.xlsx
 #' @importFrom rlang caller_env
+#' @importFrom stats setNames
 #' @importFrom stringr str_split_1
 #' @importFrom tibble as_tibble
 #' @importFrom tools file_ext

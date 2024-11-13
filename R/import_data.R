@@ -174,15 +174,16 @@ import_data <- function(x,
     } else {
       cli::cli_alert_success("Column names are correct")
     }
-
   } else {
     # Assume that `x` is a valid Google Sheets file. Otherwise, the error is
     # handled by the read_sheet() function (this doesn't need to be tested).
     # Download data
     cli::cli_alert_success("Function arguments are correct")
+
     data <- googlesheets4::read_sheet(x) |>
       suppressMessages() |>
-      dplyr::select(-1)
+      dplyr::select(-1) |>
+      stats::setNames(col_names)
 
     cli::cli_alert_success("Data imported from {.field Google Sheets}")
       # # Remove capital letters
