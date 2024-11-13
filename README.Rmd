@@ -29,7 +29,7 @@ This package follows two formal elicitation methods:
 
 You can install the development version of elicitr from [GitHub](https://github.com/) with:
 
-``` r
+``` r 
 #install.packages("pak")
 pak::pak("sgvignali/elicitr")
 ```
@@ -130,10 +130,14 @@ ggplot2::ggplot(elicit) +
   ggplot2::theme_bw()
 ```
 
+## Related work
+
 The functioning and application of {elicitr} is related to following R packages:
 
 * {shelf} : https://shelf.sites.sheffield.ac.uk/software
 * {prefR} : https://jlepird.github.io/prefeR/
+
+## Bibliography
 
 ```{r citations, echo = FALSE}
 grateful::cite_packages(output = "paragraph", out.dir = ".")

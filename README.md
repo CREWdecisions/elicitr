@@ -73,11 +73,15 @@ this data:
 
 <img src="man/figures/README-plot_elicit_var2-1.png" width="100%" />
 
+## Related work
+
 The functioning and application of {elicitr} is related to following R
 packages:
 
 - {shelf} : <https://shelf.sites.sheffield.ac.uk/software>
 - {prefR} : <https://jlepird.github.io/prefeR/>
+
+## Bibliography
 
 We used R version 4.4.1 (R Core Team 2024) and the following R packages:
 devtools v. 2.4.5 (Wickham et al. 2022), knitr v. 1.48 (Xie 2014, 2015,
