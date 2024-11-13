@@ -110,8 +110,7 @@ This is a basic example which shows you how to use {elicitr} to analyse this dat
 
 ```{r example}
 #library(elicitr)
-#elicitate(elicit)
-## fake function elicitate, replace with actual function
+#elicitate(elicit) #function dbd
 ```
 
 ```{r plot_elicit_var2, echo = FALSE}
@@ -120,15 +119,17 @@ library(ggplot2)
 ggplot2::ggplot(elicit) +
   ggplot2::geom_point(aes(x = id,
                              y = var2_best,
-                             color = factor(id))) +
+                             color = factor(id)), 
+                      show.legend = FALSE) +
   ggplot2::geom_errorbar(aes(x = id,
                              y = var2_best,
                              ymin = var2_min,
                              ymax = var2_max,
                              color = factor(id),
-                             width = 0.05)) +
+                             width = 0.05),
+                         show.legend = FALSE) +
   ggplot2::xlab("id") +
-  ggplot2::ylab("estimates") +
+  ggplot2::ylab("estimates")
   ggplot2::theme_bw()
 ```
 
