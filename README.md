@@ -11,14 +11,14 @@ or
 proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
 
-Elicitr is an R package, used to aggregate elicitation data from
-googlesheets. This package follows two formal elicitation methods:
+<img src="man/figures/elicitr_logo_scaled.png" width="30%" /> Elicitr is
+an R package, used to aggregate elicitation data from googlesheets. This
+package follows two formal elicitation methods:
 
 - Continuous method (adapted from delphi-protocol for expert
   elicitation)
 - Categorical method (adapted from Vernet et al. (2020, Biological
   invasion))
-  <img src="man/figures/elicitr_logo_scaled.png" width="10%" />
 
 ## Installation
 
