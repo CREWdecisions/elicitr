@@ -71,22 +71,19 @@ library(elicitr)
 ## fake function elicitate, replace with actual function
 ```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+<img src="man/figures/README-plot_elicit_var2-1.png" width="100%" />
 
-``` r
-grateful::cite_packages(output = "paragraph", out.dir = ".")
-#> WARNING: One or more problems were discovered while enumerating dependencies.
-#> 
-#> # /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R --------
-#> Error: /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R:5:7: unexpected '/'
-#> 4: #list of badges with code to emb in readme.rmd
-#> 5: https:/
-#>          ^
-#> 
-#> Please see `]8;;ide:help:renv::dependencies?renv::dependencies]8;;` for more information.
-#> Warning in utils::citation(pkg_name): could not determine year for 'elicitr'
-#> from package DESCRIPTION file
-```
+    #> WARNING: One or more problems were discovered while enumerating dependencies.
+    #> 
+    #> # /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R --------
+    #> Error: /Users/maudevernet/Desktop/bureau/PhD/elictr/elicitr/useful_functions_for_readme.R:5:7: unexpected '/'
+    #> 4: #list of badges with code to emb in readme.rmd
+    #> 5: https:/
+    #>          ^
+    #> 
+    #> Please see `]8;;ide:help:renv::dependencies?renv::dependencies]8;;` for more information.
+    #> Warning in utils::citation(pkg_name): could not determine year for 'elicitr'
+    #> from package DESCRIPTION file
 
 We used R version 4.4.1 (R Core Team 2024) and the following R packages:
 elicitr v. 0.0.0.9000 (Last, n.d.), knitr v. 1.48 (Xie 2014, 2015,

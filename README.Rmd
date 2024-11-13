@@ -112,7 +112,7 @@ library(elicitr)
 ## fake function elicitate, replace with actual function
 ```
 
-```{r pressure, echo = FALSE}
+```{r plot_elicit_var2, echo = FALSE}
 library(ggplot2)
 
 ggplot2::ggplot(elicit) +
@@ -130,6 +130,6 @@ ggplot2::ggplot(elicit) +
   ggplot2::theme_bw()
 ```
 
-```{r}
+```{r citations, echo = FALSE}
 grateful::cite_packages(output = "paragraph", out.dir = ".")
 ```
