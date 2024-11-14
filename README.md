@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .rmd file and then use devtools::build_readme() to update the md file -->
 
-# elicitr
+# elicitr <img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
 
 <!-- badges: start -->
 
@@ -11,8 +11,6 @@ or
 proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)<!-- badges: end -->
 
 ### Description
-
-<img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
 
 Elicitr is an R package, used to aggregate elicitation data from
 googlesheets.  
