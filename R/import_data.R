@@ -141,6 +141,7 @@ import_data <- function(x,
 
   if (inherits(x, "data.frame")) {
 
+    cli::cli_alert_success("Function arguments are correct")
     check_columns(x,
                   col_names)
     data <- x |>
@@ -216,6 +217,36 @@ import_data <- function(x,
   #
   return(data)
 }
+
+# Helper functions----
+
+#' Get column names
+#'
+#' `get_col_names()` combines the information provided with `var_names` and
+#' `elic_types` to construct the column names.
+#'
+#' @inheritParams import_data
+#'
+#' @return character vector with the column names.
+#' @keywords Internal
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_col_names <- function(var_names,
+                          elic_types) {
+  n <- length(var_names)
+  r <- gsub("p", "", elic_types) |>
+    as.integer()
+  labels <- get_labels(n = n,
+                       elic_types = elic_types)
+
+  var_columns <- rep(var_names, r) |>
+    paste0("_", labels)
+
+  c("id", var_columns)
+}
+
+# Functions for checking data----
 
 #' Check arguments compatibility
 #'
@@ -340,9 +371,9 @@ check_columns <- function(x,
   # Check number of columns
   if (ncol(x) != length(col_names)) {
     text <- "Unexpected number of columns:"
-    error <- "The imported dataset has {.field {ncol(x)}} columns but are \\
+    error <- "The imported dataset has {.field {ncol(x)}} column{?s} but are \\
               expected to be {.field {length(col_names)}}."
-  # Check column names
+    # Check column names
   } else if (!all(names(x) == col_names) && full) {
     text <- "Incorrect column names:"
     error <- "The imported dataset has {.field {names(x)}} but it is expected \\
@@ -384,30 +415,4 @@ get_labels <- function(n,
     unlist(use.names = FALSE)
 
   return(raw_labels)
-}
-
-#' Get column names
-#'
-#' `get_col_names()` combines the information provided with `var_names` and
-#' `elic_types` to construct the column names.
-#'
-#' @inheritParams import_data
-#'
-#' @return character vector with the column names.
-#' @keywords Internal
-#' @noRd
-#'
-#' @author Sergio Vignali
-get_col_names <- function(var_names,
-                          elic_types) {
-  n <- length(var_names)
-  r <- gsub("p", "", elic_types) |>
-    as.integer()
-  labels <- get_labels(n = n,
-                       elic_types = elic_types)
-
-  var_columns <- rep(var_names, r) |>
-    paste0("_", labels)
-
-  c("id", var_columns)
 }
