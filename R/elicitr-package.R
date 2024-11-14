@@ -3,6 +3,11 @@
 
 ## usethis namespace: start
 #' @importFrom cli cli_abort
+#' @importFrom cli cli_h3
+#' @importFrom cli cli_li
+#' @importFrom cli cli_text
+#' @importFrom cli col_magenta
+#' @importFrom cli style_underline
 #' @importFrom dplyr mutate
 #' @importFrom dplyr row_number
 #' @importFrom dplyr select

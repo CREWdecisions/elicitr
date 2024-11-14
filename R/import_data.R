@@ -3,7 +3,7 @@
 #' `r lifecycle::badge("experimental")` `load_data()` imports data from
 #' different sources and format them for further analysis.
 #'
-#' @param x Either a [`data.frame`][base::data.frame], a string with the path to
+#' @param x either a [`data.frame`][base::data.frame], a string with the path to
 #' a `csv` or `xlmx` file, or anything accepted by the
 #' [read_sheet()][googlesheets4::read_sheet] function.
 #' @param var_names character vector with the name of the estimated variables,
@@ -18,7 +18,8 @@
 #' Format and Elicitation Types for more.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
-#' @param sep Character used as field separator, used only when `x` is a `csv`
+#' @param name character, used to bind a name to the dataset.
+#' @param sep character used as field separator, used only when `x` is a `csv`
 #' file.
 #'
 #' @section Data Format:
@@ -100,6 +101,7 @@ import_data <- function(x,
                         var_types,
                         elic_types,
                         ...,
+                        name = "Elicitation Dataset",
                         sep = ",") {
 
   n_vars <- length(var_names)
@@ -203,16 +205,44 @@ import_data <- function(x,
       # dplyr::mutate(id = dplyr::row_number(), .before = 1)
     }
   }
-  out <- list(data = data,
+  out <- list(var_names = var_names,
               var_types = var_types,
-              elic_types = elic_types)
+              elic_types = elic_types,
+              name = name,
+              data = list(round_1 = data,
+                          round_2 = NULL))
 
   structure(out,
-            class = "elictr")
+            class = "elicitr")
 }
 
+#' @export
 print.elicitr <- function(x, ...) {
 
+  rounds <- ifelse(is.null(x$data$round_2), 1, 2)
+
+  cli::cli_h3(x$name)
+  cli::cli_text()
+  cli::cli_li("Variable{?s}: {.field {x$var_names}}")
+  cli::cli_li("Variable type{?s}: {.field {x$var_types}}")
+  cli::cli_li("Elicitation type{?s}: {.field {x$elic_types}}")
+  cli::cli_li("Number of rounds: {.val {rounds}}")
+  cli::cli_li("Data:")
+  cli::cli_text()
+
+  cli::style_underline("Round 1") |>
+    cli::col_magenta() |>
+    cli::cli_text()
+  print(x$data$round_1)
+
+  if (rounds == 2) {
+    cli::style_underline("Round 2") |>
+      cli::col_magenta() |>
+      cli::cli_text()
+    print(x$data$round_2)
+  }
+
+  invisible(x)
 }
 
 # Helper functions----

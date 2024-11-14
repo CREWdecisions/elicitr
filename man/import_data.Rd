@@ -4,10 +4,18 @@
 \alias{import_data}
 \title{Import data}
 \usage{
-import_data(x, var_names, var_types, elic_types, ..., sep = ",")
+import_data(
+  x,
+  var_names,
+  var_types,
+  elic_types,
+  ...,
+  name = "Elicitation Dataset",
+  sep = ","
+)
 }
 \arguments{
-\item{x}{Either a \code{\link[base:data.frame]{data.frame}}, a string with the path to
+\item{x}{either a \code{\link[base:data.frame]{data.frame}}, a string with the path to
 a \code{csv} or \code{xlmx} file, or anything accepted by the
 \link[googlesheets4:range_read]{read_sheet()} function.}
 
@@ -27,11 +35,13 @@ Format and Elicitation Types for more.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{sep}{Character used as field separator, used only when \code{x} is a \code{csv}
+\item{name}{character, used to bind a name to the dataset.}
+
+\item{sep}{character used as field separator, used only when \code{x} is a \code{csv}
 file.}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble}} containing...
+An object of class \code{elicitr}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{load_data()} imports data from
