@@ -1,19 +1,19 @@
 set.seed(25)
 n <- 6
 elicit <- data.frame(id = 1:n,
-                     # 1 point estimate with integers
+                     # 1 point elicitation with integers
                      var1_best = mc2d::rpert(n,
                                              min = -10,
                                              mode = -1,
                                              max = 10) |>
                        as.integer(),
-                     # 3 points estimate with positive integers
+                     # 3 points elicitation with positive integers
                      var2_best = mc2d::rpert(n,
                                              min = 0,
                                              mode = 20,
                                              max = 50) |>
                        as.integer(),
-                     # 4 points estimate with probabilities
+                     # 4 points elicitation with probabilities
                      var3_best = mc2d::rpert(n,
                                              min = 0.6,
                                              mode = 0.7,
