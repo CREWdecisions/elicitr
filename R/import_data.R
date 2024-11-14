@@ -220,6 +220,33 @@ import_data <- function(x,
 
 # Helper functions----
 
+#' Get labels
+#'
+#' Get label to build column names.
+#'
+#' @param n integer, number of variables.
+#' @inheritParams import_data
+#'
+#' @return character vector with the labels
+#' @keywords Internal
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_labels <- function(n,
+                       elic_types) {
+
+  if (n > 1L & length(elic_types) == 1L) {
+    # Recycle variable type
+    elic_types <- rep(elic_types, n)
+  }
+
+  # Labels are stored on the `var_labels` data object
+  raw_labels <- var_labels[elic_types] |>
+    unlist(use.names = FALSE)
+
+  return(raw_labels)
+}
+
 #' Get column names
 #'
 #' `get_col_names()` combines the information provided with `var_names` and
@@ -246,7 +273,7 @@ get_col_names <- function(var_names,
   c("id", var_columns)
 }
 
-# Functions for checking data----
+# Functions for checking function arguments----
 
 #' Check arguments compatibility
 #'
@@ -281,11 +308,11 @@ check_arg_comp <- function(var_names,
   }
 
   if (nzchar(var_error) && nzchar(est_error)) {
-    error <- paste0(head_error, ", ", var_error, ", and ", est_error)
+    error <- paste0(head_error, ", ", var_error, ", and ", est_error, ".")
   } else if (nzchar(var_error)) {
-    error <- paste0(head_error, " and ", var_error)
+    error <- paste0(head_error, " and ", var_error, ".")
   } else if (nzchar(est_error)) {
-    error <- paste0(head_error, " and ", est_error)
+    error <- paste0(head_error, " and ", est_error, ".")
   } else {
     raise_error <- FALSE
   }
@@ -343,7 +370,7 @@ check_file_extension <- function(x) {
 
   if (!x %in% c("csv", "xlsx")) {
     error <- "The file extension is {.field .{x}}, supported are \\
-              {.field .csv} or {.field .xlsx}"
+              {.field .csv} or {.field .xlsx}."
 
     cli::cli_abort(c("Unsupported file extension:",
                      "i" = "See {.fun elicitr::import_data}.",
@@ -388,31 +415,4 @@ check_columns <- function(x,
                      "x" = error),
                    call = rlang::caller_env())
   }
-}
-
-#' Get labels
-#'
-#' Get label to build column names.
-#'
-#' @param n integer, number of variables.
-#' @inheritParams import_data
-#'
-#' @return character vector with the labels
-#' @keywords Internal
-#' @noRd
-#'
-#' @author Sergio Vignali
-get_labels <- function(n,
-                       elic_types) {
-
-  if (n > 1L & length(elic_types) == 1L) {
-    # Recycle variable type
-    elic_types <- rep(elic_types, n)
-  }
-
-  # Labels are stored on the `var_labels` data object
-  raw_labels <- var_labels[elic_types] |>
-    unlist(use.names = FALSE)
-
-  return(raw_labels)
 }

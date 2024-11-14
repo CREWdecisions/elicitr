@@ -14,7 +14,7 @@
       Error in `import_data()`:
       ! Unsupported file extension:
       i See `elicitr::import_data()`.
-      x The file extension is .txt, supported are .csv or .xlsx
+      x The file extension is .txt, supported are .csv or .xlsx.
 
 ---
 
@@ -69,7 +69,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 1 value for `var_names` and 2 short codes for `var_types`
+      x You provided 1 value for `var_names` and 2 short codes for `var_types`.
 
 ---
 
@@ -80,7 +80,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 1 value for `var_names` and 2 short codes for `elic_types`
+      x You provided 1 value for `var_names` and 2 short codes for `elic_types`.
 
 ---
 
@@ -91,7 +91,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 1 value for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`
+      x You provided 1 value for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
 
 ---
 
@@ -102,7 +102,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 3 values for `var_names` and 2 short codes for `var_types`
+      x You provided 3 values for `var_names` and 2 short codes for `var_types`.
 
 ---
 
@@ -113,7 +113,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 3 values for `var_names` and 2 short codes for `elic_types`
+      x You provided 3 values for `var_names` and 2 short codes for `elic_types`.
 
 ---
 
@@ -124,7 +124,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`
+      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
 
 ---
 
@@ -135,7 +135,7 @@
       Error in `import_data()`:
       ! Mismatch between function arguments:
       i See `elicitr::import_data()`.
-      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`
+      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`.
 
 ---
 
