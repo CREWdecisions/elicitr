@@ -140,11 +140,23 @@
 ---
 
     Code
-      import_data(file, var_names = c("var1", "var2", "var5"), var_types = "p",
+      import_data(dplyr::select(elicit, -1), var_names = c("var1", "var2", "var3"),
+      var_types = "p", elic_types = "134")
+    Message
+      v Function arguments are correct
+    Condition
+      Error in `import_data()`:
+      ! Unexpected number of columns:
+      i See Data Format in `elicitr::import_data()`.
+      x The imported dataset has 8 columns but are expected to be 9.
+
+---
+
+    Code
+      import_data(elicit, var_names = c("var1", "var2", "var5"), var_types = "p",
       elic_types = "134")
     Message
       v Function arguments are correct
-      v Data imported from xlsx file
     Condition
       Error in `import_data()`:
       ! Incorrect column names:

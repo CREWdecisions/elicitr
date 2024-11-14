@@ -81,11 +81,14 @@ test_that("Raises errors ", {
                               var_types = c("pN"),
                               elic_type = c("1344")),
                   error = TRUE)
+  # When number of columns is incorrect
+  expect_snapshot(import_data(elicit |> dplyr::select(-1),
+                              var_names = c("var1", "var2", "var3"),
+                              var_types = "p",
+                              elic_types = "134"),
+                  error = TRUE)
   # When column names are incorrect
-  file <- system.file("extdata", package = "elicitr") |>
-    list.files(pattern = "xlsx",
-               full.names = TRUE)
-  expect_snapshot(import_data(file,
+  expect_snapshot(import_data(elicit,
                               var_names = c("var1", "var2", "var5"),
                               var_types = "p",
                               elic_types = "134"),
