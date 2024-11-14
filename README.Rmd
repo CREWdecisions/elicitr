@@ -1,9 +1,8 @@
 ---
 output: github_document
-bibliography: grateful-refs.bib
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit the .rmd file and then use devtools::build_readme() to update the md file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -13,21 +12,27 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# elicitr
+# elicitr 
 
-<!-- badges: start -->
-[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
-<!-- badges: end -->
+<img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
 
-<img src="man/figures/elicitr_logo_scaled.png" width="20%" />
+<!-- badges: start -->[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)<!-- badges: end -->
 
-Elicitr is an R package, used to aggregate elicitation data from googlesheets. 
+### Description 
+
+Elicitr is an R package, used to aggregate elicitation data from googlesheets. \
 This package follows two formal elicitation methods:
 
-* Continuous method (adapted from delphi-protocol for expert elicitation)
-* Categorical method (adapted from Vernet et al. (2020, Biological invasion)) 
+* Continuous method \
+  Adapted from Hemming, V. et al. (2018). A practical guide to structured \
+  expert elicitation using the IDEA protocol. Methods in Ecology and \
+  Evolution, 9(1), 169–180. https://doi.org/10.1111/2041-210X.12857
+* Categorical method \
+  Adapted from Vernet, M. et al. (2024). Assessing invasion risks using \
+  EICAT-based expert elicitation: application to a conservation translocation. \
+  Biological Invasions. https://doi.org/10.1007/s10530-024-03341-2
 
-## Installation
+### Installation
 
 You can install the development version of elicitr from [GitHub](https://github.com/) with:
 
@@ -36,112 +41,10 @@ You can install the development version of elicitr from [GitHub](https://github.
 pak::pak("sgvignali/elicitr")
 ```
 
-## Example
+### Related work
 
-This simulated dataset can be used to unterstand how {elicitr} works.
+* {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. \
+https://doi.org/10.32614/CRAN.package.SHELF
+* {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. \
+https://doi.org/10.32614/CRAN.package.prefeR
 
-Three types of variables are included here:
-
-* "percentage" i.e. [0,1]
-* "positive numbers" i.e. [0,inf)
-* "real numbers" i.e. (-inf,inf)
-
-And three types of elicitations:
-
-* One point estimate (var1_best)\
-* Three point estimate (var2_min, var2_max, var2_best)\
-* Four point estimate (var3_min, var3_max, var3_best, var3_conf)\
-
-```{r elicitr, echo = FALSE}
-set.seed(25)
-n <- 6
-elicit <- data.frame(id = 1:n,
-                     # 1 point estimate with percentages
-                     var1_best = runif(n,
-                                       min = 0.7,
-                                       max = 1),
-                     # 3 points estimate with positive numbers
-                     var2_best = truncnorm::rtruncnorm(n,
-                                                       a = 0,
-                                                       b = 100,
-                                                       mean = 50,
-                                                       sd = 10),
-                     # 4 points estimate with natural numbers
-                     var3_best = truncnorm::rtruncnorm(n,
-                                                       a = -20,
-                                                       b = 20,
-                                                       mean = 0,
-                                                       sd = 10)) |>
-  dplyr::mutate(var2_min = var2_best - runif(n,
-                                             min = 1,
-                                             max = 10),
-                var2_max = var2_best + runif(n,
-                                             min = 1,
-                                             max = 10),
-                var3_min = var3_best - truncnorm::rtruncnorm(n,
-                                                             a = -10,
-                                                             b = 10,
-                                                             mean = 0,
-                                                             sd = 5),
-                var3_max = var3_best + truncnorm::rtruncnorm(n,
-                                                             a = -10,
-                                                             b = 10,
-                                                             mean = 0,
-                                                             sd = 5),
-                var3_conf = sample(50:100,
-                                   size = n,
-                                   replace = TRUE)) |>
-  dplyr::select(id,
-                var1_best,
-                var2_min,
-                var2_max,
-                var2_best,
-                var3_min,
-                var3_max,
-                var3_best,
-                var3_conf) |>
-  dplyr::mutate(var1_best = round(var1_best, digits = 1),
-                dplyr::across(var2_min:var3_best, round))
-print(elicit)
-```
-
-
-This is a basic example which shows you how to use {elicitr} to analyse this data:
-
-```{r example}
-#library(elicitr)
-#elicitate(elicit) #function dbd
-```
-
-```{r plot_elicit_var2, echo = FALSE}
-library(ggplot2)
-
-ggplot2::ggplot(elicit) +
-  ggplot2::geom_point(aes(x = id,
-                             y = var2_best,
-                             color = factor(id)), 
-                      show.legend = FALSE) +
-  ggplot2::geom_errorbar(aes(x = id,
-                             y = var2_best,
-                             ymin = var2_min,
-                             ymax = var2_max,
-                             color = factor(id),
-                             width = 0.05),
-                         show.legend = FALSE) +
-  ggplot2::xlab("id") +
-  ggplot2::ylab("estimates")
-  ggplot2::theme_bw()
-```
-
-## Related work
-
-The functioning and application of {elicitr} is related to following R packages:
-
-* {shelf} : https://shelf.sites.sheffield.ac.uk/software
-* {prefR} : https://jlepird.github.io/prefeR/
-
-## Bibliography
-
-```{r citations, echo = FALSE}
-grateful::cite_packages(output = "paragraph", out.dir = ".")
-```
