@@ -140,6 +140,7 @@ import_data <- function(x,
                              elic_types)
 
   if (inherits(x, "data.frame")) {
+
     check_columns(x,
                   col_names)
     data <- x |>
@@ -148,27 +149,25 @@ import_data <- function(x,
     # When `x` contains the file extension at the end of the string, it is
     # assumed to be a file
     ext <- tools::file_ext(x)
-    if (nzchar(ext)) {
 
+    if (nzchar(ext)) {
       # Check if file exists
       if (!file.exists(x)) {
         cli::cli_abort(c("x" = "File {.file {x}} doesn't exist!"))
       }
 
       # Check file extension
+      check_file_extension(ext)
+      cli::cli_alert_success("Function arguments are correct")
+
+      # Load data
       if (ext == "csv") {
-        cli::cli_alert_success("Function arguments are correct")
         data <- utils::read.csv(x, sep = sep) |>
           tibble::as_tibble()
         cli::cli_alert_success("Data imported from {.field csv} file")
-      } else if (ext == "xlsx") {
-        cli::cli_alert_success("Function arguments are correct")
+      } else {
         data <- openxlsx::read.xlsx(x, sheet = 1)
         cli::cli_alert_success("Data imported from {.field xlsx} file")
-      } else {
-        cli::cli_abort(c("File extension must be {.field .csv} or {.field .xlsx}",
-                         "i" = "See {.fun elicitr::import_data}.",
-                         "x" = "Your file extension is {.field .{ext}} instead"))
       }
 
       # Check number of columns and their name
@@ -296,6 +295,19 @@ check_arg_types <- function(x, type) {
                  x = diff)
     error <- "The incorrect short code{?s} {?is/are} {.field {diff}}."
     cli::cli_abort(c("Incorrect value for {.arg {type}}:",
+                     "i" = "See {.fun elicitr::import_data}.",
+                     "x" = error),
+                   call = rlang::caller_env())
+  }
+}
+
+check_file_extension <- function(x) {
+
+  if (!x %in% c("csv", "xlsx")) {
+    error <- "The file extension is {.field .{x}}, supported are \\
+              {.field .csv} or {.field .xlsx}"
+
+    cli::cli_abort(c("Unsupported file extension:",
                      "i" = "See {.fun elicitr::import_data}.",
                      "x" = error),
                    call = rlang::caller_env())
