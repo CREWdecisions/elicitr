@@ -78,15 +78,15 @@ Valid short codes are:
 \itemize{
 \item \code{Z}: \emph{integers}, when the estimate must be an integer number in the
 interval (-Inf, Inf).
-\item \code{N} for \emph{positive integers}, when the estimate must be an integer number in
+\item \code{N}: \emph{positive integers}, when the estimate must be an integer number in
 the interval (0, Inf).
-\item \code{n} for \emph{negative integers}, when the estimate must be an integer number in
+\item \code{z}: \emph{negative integers}, when the estimate must be an integer number in
 the interval (-Inf, 0].
-\item \code{R} for \emph{reals}, when the estimate must be a real number in the interval
+\item \code{R}: \emph{reals}, when the estimate must be a real number in the interval
 (-Inf, Inf).
-\item \code{s} for \emph{positive reals}, when the estimate must be a real number in the
+\item \code{s}: \emph{positive reals}, when the estimate must be a real number in the
 interval (0, Inf).
-\item \code{r} for \emph{negative reals}, when the estimate must be a real number in the
+\item \code{r}: \emph{negative reals}, when the estimate must be a real number in the
 interval (-Inf, ].
 \item \code{p}: \emph{probability}, when the estimate must be a real number in the interval
 (0, 1).

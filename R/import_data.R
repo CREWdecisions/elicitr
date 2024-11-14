@@ -57,19 +57,19 @@
 #' * `Z`: _integers_, when the estimate must be an integer number in the
 #' interval (-Inf, Inf).
 #'
-#' * `N` for _positive integers_, when the estimate must be an integer number in
+#' * `N`: _positive integers_, when the estimate must be an integer number in
 #' the interval (0, Inf).
 #'
-#' * `z` for _negative integers_, when the estimate must be an integer number in
+#' * `z`: _negative integers_, when the estimate must be an integer number in
 #' the interval (-Inf, 0].
 #'
-#' * `R` for _reals_, when the estimate must be a real number in the interval
+#' * `R`: _reals_, when the estimate must be a real number in the interval
 #' (-Inf, Inf).
 #'
-#' * `s` for _positive reals_, when the estimate must be a real number in the
+#' * `s`: _positive reals_, when the estimate must be a real number in the
 #' interval (0, Inf).
 #'
-#' * `r` for _negative reals_, when the estimate must be a real number in the
+#' * `r`: _negative reals_, when the estimate must be a real number in the
 #' interval (-Inf, ].
 #'
 #' * `p`: _probability_, when the estimate must be a real number in the interval
