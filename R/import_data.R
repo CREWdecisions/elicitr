@@ -164,16 +164,9 @@ import_data <- function(x,
                        "x" = "Your file extension is {.field .{ext}} instead"))
     }
 
-    # Check column names
-    if (!all(names(data) == col_names)) {
-      error <- "The imported dataset has {.field {names(data)}} but it is \\
-                expected {.field {col_names}}"
-      cli::cli_abort(c("Incorrect column names",
-                       "i" = "See {.fun elicitr::import_data}.",
-                       "x" = error))
-    } else {
-      cli::cli_alert_success("Column names are correct")
-    }
+    # Check number of columns and their name
+    check_columns(data,
+                  col_names)
   } else {
     # Assume that `x` is a valid Google Sheets file. Otherwise, the error is
     # handled by the read_sheet() function (this doesn't need to be tested).
@@ -182,8 +175,15 @@ import_data <- function(x,
 
     data <- googlesheets4::read_sheet(x) |>
       suppressMessages() |>
-      dplyr::select(-1) |>
-      stats::setNames(col_names)
+      # Remove timestamp
+      dplyr::select(-1)
+
+    # Check number of columns
+    check_columns(data,
+                  col_names,
+                  full = FALSE)
+
+    names(data) <- col_names
 
     cli::cli_alert_success("Data imported from {.field Google Sheets}")
       # # Remove capital letters
@@ -290,6 +290,29 @@ check_arg_types <- function(x, type) {
                      "x" = error),
                    call = rlang::caller_env())
   }
+}
+
+check_columns <- function(x,
+                          col_names,
+                          full = TRUE) {
+  # Check number of columns
+  if (ncol(x) != length(col_names)) {
+    text <- "Unexpected number of columns:"
+    error <- "The imported dataset has {.field {ncol(data)}} columns but \\
+              are expected to be {.field {length(col_names)}}."
+  # Check column names
+  } else if (!all(names(x) == col_names) && full) {
+    text <- "Incorrect column names:"
+    error <- "The imported dataset has {.field {names(data)}} but it is \\
+              expected {.field {col_names}}."
+  } else {
+    cli::cli_alert_success("The number and name of columns are correct")
+  }
+
+  cli::cli_abort(c(text,
+                   "i" = "See Data Format in {.fun elicitr::import_data}.",
+                   "x" = error),
+                 call = rlang::caller_env())
 }
 
 #' Get labels

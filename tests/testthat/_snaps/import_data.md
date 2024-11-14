@@ -147,7 +147,7 @@
       v Data imported from xlsx file
     Condition
       Error in `import_data()`:
-      ! Incorrect column names
-      i See `elicitr::import_data()`.
-      x The imported dataset has id, var1_best, var2_min, var2_max, var2_best, var3_min, var3_max, var3_best, and var3_conf but it is expected id, var1_best, var2_min, var2_max, var2_best, var5_min, var5_max, var5_best, and var5_conf
+      ! Incorrect column names:
+      i See Data Format in `elicitr::import_data()`.
+      x The imported dataset has but it is expected id, var1_best, var2_min, var2_max, var2_best, var5_min, var5_max, var5_best, and var5_conf.
 
