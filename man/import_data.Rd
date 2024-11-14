@@ -7,8 +7,9 @@
 import_data(x, var_names, var_types, elic_types, ..., sep = ",")
 }
 \arguments{
-\item{x}{Either a string with the path to a \code{csv} or \code{xlmx} file, or anything
-accepted by the \link[googlesheets4:range_read]{read_sheet()} function.}
+\item{x}{Either a \code{\link[base:data.frame]{data.frame}}, a string with the path to
+a \code{csv} or \code{xlmx} file, or anything accepted by the
+\link[googlesheets4:range_read]{read_sheet()} function.}
 
 \item{var_names}{character vector with the name of the estimated variables,
 used only when \code{x} is a Google Sheets file.}

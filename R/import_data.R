@@ -3,8 +3,9 @@
 #' `r lifecycle::badge("experimental")` `load_data()` imports data from
 #' different sources and format them for further analysis.
 #'
-#' @param x Either a string with the path to a `csv` or `xlmx` file, or anything
-#' accepted by the [read_sheet()][googlesheets4::read_sheet] function.
+#' @param x Either a [`data.frame`][base::data.frame], a string with the path to
+#' a `csv` or `xlmx` file, or anything accepted by the
+#' [read_sheet()][googlesheets4::read_sheet] function.
 #' @param var_names character vector with the name of the estimated variables,
 #' used only when `x` is a Google Sheets file.
 #' @param var_types character vector with short codes indicating the variable
@@ -138,54 +139,60 @@ import_data <- function(x,
   col_names <- get_col_names(var_names,
                              elic_types)
 
-  # When `x` contains the file extension at the end of the string, it is assumed
-  # to be a file
-  ext <- tools::file_ext(x)
-  if (nzchar(ext)) {
-
-    # Check if file exists
-    if (!file.exists(x)) {
-      cli::cli_abort(c("x" = "File {.file {x}} doesn't exist!"))
-    }
-
-    # Check file extension
-    if (ext == "csv") {
-      cli::cli_alert_success("Function arguments are correct")
-      data <- utils::read.csv(x, sep = sep) |>
-        tibble::as_tibble()
-      cli::cli_alert_success("Data imported from {.field csv} file")
-    } else if (ext == "xlsx") {
-      cli::cli_alert_success("Function arguments are correct")
-      data <- openxlsx::read.xlsx(x, sheet = 1)
-      cli::cli_alert_success("Data imported from {.field xlsx} file")
-    } else {
-      cli::cli_abort(c("File extension must be {.field .csv} or {.field .xlsx}",
-                       "i" = "See {.fun elicitr::import_data}.",
-                       "x" = "Your file extension is {.field .{ext}} instead"))
-    }
-
-    # Check number of columns and their name
-    check_columns(data,
+  if (inherits(x, "data.frame")) {
+    check_columns(x,
                   col_names)
-  } else {
-    # Assume that `x` is a valid Google Sheets file. Otherwise, the error is
-    # handled by the read_sheet() function (this doesn't need to be tested).
-    # Download data
-    cli::cli_alert_success("Function arguments are correct")
+    data <- x |>
+      tibble::as_tibble()
+  } else if (inherits(x, "character")) {
+    # When `x` contains the file extension at the end of the string, it is
+    # assumed to be a file
+    ext <- tools::file_ext(x)
+    if (nzchar(ext)) {
 
-    data <- googlesheets4::read_sheet(x) |>
-      suppressMessages() |>
-      # Remove timestamp
-      dplyr::select(-1)
+      # Check if file exists
+      if (!file.exists(x)) {
+        cli::cli_abort(c("x" = "File {.file {x}} doesn't exist!"))
+      }
 
-    # Check number of columns
-    check_columns(data,
-                  col_names,
-                  full = FALSE)
+      # Check file extension
+      if (ext == "csv") {
+        cli::cli_alert_success("Function arguments are correct")
+        data <- utils::read.csv(x, sep = sep) |>
+          tibble::as_tibble()
+        cli::cli_alert_success("Data imported from {.field csv} file")
+      } else if (ext == "xlsx") {
+        cli::cli_alert_success("Function arguments are correct")
+        data <- openxlsx::read.xlsx(x, sheet = 1)
+        cli::cli_alert_success("Data imported from {.field xlsx} file")
+      } else {
+        cli::cli_abort(c("File extension must be {.field .csv} or {.field .xlsx}",
+                         "i" = "See {.fun elicitr::import_data}.",
+                         "x" = "Your file extension is {.field .{ext}} instead"))
+      }
 
-    names(data) <- col_names
+      # Check number of columns and their name
+      check_columns(data,
+                    col_names)
+    } else {
+      # Assume that `x` is a valid Google Sheets file. Otherwise, the error is
+      # handled by the read_sheet() function (this doesn't need to be tested).
+      # Download data
+      cli::cli_alert_success("Function arguments are correct")
 
-    cli::cli_alert_success("Data imported from {.field Google Sheets}")
+      data <- googlesheets4::read_sheet(x) |>
+        suppressMessages() |>
+        # Remove timestamp
+        dplyr::select(-1)
+
+      # Check number of columns
+      check_columns(data,
+                    col_names,
+                    full = FALSE)
+
+      names(data) <- col_names
+
+      cli::cli_alert_success("Data imported from {.field Google Sheets}")
       # # Remove capital letters
       #
       # # Order names
@@ -194,7 +201,10 @@ import_data <- function(x,
       # dplyr::select(-c(1, 2)) |>
       # # Create a unique identifier
       # dplyr::mutate(id = dplyr::row_number(), .before = 1)
+    }
   }
+
+
 
   #
   # # There can be only 4 columns per variable plus a unique identifier
@@ -298,21 +308,23 @@ check_columns <- function(x,
   # Check number of columns
   if (ncol(x) != length(col_names)) {
     text <- "Unexpected number of columns:"
-    error <- "The imported dataset has {.field {ncol(data)}} columns but \\
-              are expected to be {.field {length(col_names)}}."
+    error <- "The imported dataset has {.field {ncol(x)}} columns but are \\
+              expected to be {.field {length(col_names)}}."
   # Check column names
   } else if (!all(names(x) == col_names) && full) {
     text <- "Incorrect column names:"
-    error <- "The imported dataset has {.field {names(data)}} but it is \\
-              expected {.field {col_names}}."
+    error <- "The imported dataset has {.field {names(x)}} but it is expected \\
+              {.field {col_names}}."
   } else {
     cli::cli_alert_success("The number and name of columns are correct")
   }
 
-  cli::cli_abort(c(text,
-                   "i" = "See Data Format in {.fun elicitr::import_data}.",
-                   "x" = error),
-                 call = rlang::caller_env())
+  if (exists("error")) {
+    cli::cli_abort(c(text,
+                     "i" = "See Data Format in {.fun elicitr::import_data}.",
+                     "x" = error),
+                   call = rlang::caller_env())
+  }
 }
 
 #' Get labels
