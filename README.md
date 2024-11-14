@@ -1,15 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .rmd file and then use devtools::build_readme() to update the md file -->
 
-<img src="man/figures/elicitr_logo_scaled.png" width="20%" />
-
 # elicitr
 
-<!-- badges: start -->
-
-[![Project Status: Concept – Minimal or no implementation has been done
-yet, or the repository is only intended to be a limited example, demo,
-or
+<img src="man/figures/elicitr_logo_scaled.png" width="20%" />
+<!-- badges: start --> [![Project Status: Concept – Minimal or no
+implementation has been done yet, or the repository is only intended to
+be a limited example, demo, or
 proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 <!-- badges: end -->
 
