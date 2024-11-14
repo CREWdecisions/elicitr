@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .rmd file and then use devtools::build_readme() to update the md file -->
 
-# elicitr <img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
+# elicitr
+
+<img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
 
 <!-- badges: start -->
 
