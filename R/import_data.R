@@ -225,7 +225,6 @@ import_data <- function(x,
 #'
 #' @inheritParams import_data
 #'
-#' @keywords Internal
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -275,7 +274,6 @@ check_arg_comp <- function(var_names,
 #' @param type character, either `var_types` or `elic_types`.
 #' @inheritParams import_data
 #'
-#' @keywords Internal
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -301,6 +299,15 @@ check_arg_types <- function(x, type) {
   }
 }
 
+#' Check file extension
+#'
+#' Check if the file extension is supported, i.e. _csv_ or _xlsx_.
+#'
+#' @param x character containing the file extension
+#'
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_file_extension <- function(x) {
 
   if (!x %in% c("csv", "xlsx")) {
@@ -314,6 +321,19 @@ check_file_extension <- function(x) {
   }
 }
 
+#' Check columns
+#'
+#' Check whether the number of columns and their names correspond to those
+#' expected.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param col_names character vector with the expected column names.
+#' @param full logical indicating whether to check both, number of columns and
+#' their name, or only the number of columns.
+#'
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_columns <- function(x,
                           col_names,
                           full = TRUE) {
