@@ -12,38 +12,35 @@ usethis::use_data(var_labels,
 set.seed(25)
 n <- 6
 elicit <- data.frame(id = 1:n,
-                     # 1 point estimate with percentages
-                     var1_best = runif(n,
-                                       min = 0.7,
-                                       max = 1),
-                     # 3 points estimate with positive numbers
-                     var2_best = truncnorm::rtruncnorm(n,
-                                                       a = 0,
-                                                       b = 100,
-                                                       mean = 50,
-                                                       sd = 10),
-                     # 4 points estimate with natural numbers
-                     var3_best = truncnorm::rtruncnorm(n,
-                                                       a = -20,
-                                                       b = 20,
-                                                       mean = 0,
-                                                       sd = 10)) |>
-  dplyr::mutate(var2_min = var2_best - runif(n,
-                                             min = 0.1,
-                                             max = 0.3),
-                var2_max = var2_best + runif(n,
-                                             min = 0.1,
-                                             max = 0.3),
-                var3_min = var3_best - truncnorm::rtruncnorm(n,
-                                                             a = -10,
-                                                             b = 10,
-                                                             mean = 0,
-                                                             sd = 5),
-                var3_max = var3_best + truncnorm::rtruncnorm(n,
-                                                             a = -10,
-                                                             b = 10,
-                                                             mean = 0,
-                                                             sd = 5),
+                     # 1 point estimate with integers
+                     var1_best = mc2d::rpert(n,
+                                             min = -10,
+                                             mode = -1,
+                                             max = 10) |>
+                       as.integer(),
+                     # 3 points estimate with positive integers
+                     var2_best = mc2d::rpert(n,
+                                             min = 0,
+                                             mode = 20,
+                                             max = 50) |>
+                       as.integer(),
+                     # 4 points estimate with probabilities
+                     var3_best = mc2d::rpert(n,
+                                             min = 0.6,
+                                             mode = 0.7,
+                                             max = 1)) |>
+  dplyr::mutate(var2_min = var2_best - sample(1:6,
+                                              size = n,
+                                              replace = TRUE),
+                var2_max = var2_best + sample(1:6,
+                                              size = n,
+                                              replace = TRUE),
+                var3_min = var3_best - sample(c(0.1, 0.2, 0.3),
+                                              size = n,
+                                              replace = TRUE),
+                var3_max = var3_best + sample(c(0.1, 0.2, 0.3),
+                                              size = n,
+                                              replace = TRUE),
                 var3_conf = sample(50:100,
                                    size = n,
                                    replace = TRUE)) |>
@@ -56,8 +53,8 @@ elicit <- data.frame(id = 1:n,
                 var3_max,
                 var3_best,
                 var3_conf) |>
-  dplyr::mutate(var1_best = round(var1_best, digits = 1),
-                dplyr::across(var2_min:var3_best, round))
+  dplyr::mutate(dplyr::across(var3_min:var3_best, \(x) round(x, digits = 1))) |>
+  tibble::as_tibble()
 
 usethis::use_data(elicit,
                   internal = FALSE,
