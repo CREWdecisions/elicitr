@@ -1,14 +1,3 @@
-# Internal data----
-var_labels <- list("1p" = "best",
-                   "3p" = c("min", "max", "best"),
-                   "4p" = c("min", "max", "best", "conf"))
-
-usethis::use_data(var_labels,
-                  internal = TRUE,
-                  overwrite = TRUE,
-                  version = 3)
-
-# Exported data----
 set.seed(25)
 n <- 6
 elicit <- data.frame(id = 1:n,
