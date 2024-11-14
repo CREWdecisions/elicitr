@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .rmd file and then use devtools::build_readme() to update the md file -->
 
-<img src="man/figures/README-plot_elicit_var2-1.png" width="100%" />
+<img src="man/figures/elicitr_logo_scaled.png" width="20%" />
 
 # elicitr
 
