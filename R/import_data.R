@@ -60,7 +60,7 @@
 #' * `N` for _positive integers_, when the estimate must be an integer number in
 #' the interval (0, Inf).
 #'
-#' * `n` for _negative integers_, when the estimate must be an integer number in
+#' * `z` for _negative integers_, when the estimate must be an integer number in
 #' the interval (-Inf, 0].
 #'
 #' * `R` for _reals_, when the estimate must be a real number in the interval
@@ -342,7 +342,7 @@ check_arg_types <- function(x, type) {
     diff <- setdiff(x, names(var_labels))
   } else {
     # Check allowed variable types
-    diff <- setdiff(x, c("Z", "N", "n", "R", "s", "r", "p"))
+    diff <- setdiff(x, c("Z", "N", "z", "R", "s", "r", "p"))
   }
 
   if (length(diff) > 0) {
