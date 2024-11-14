@@ -89,7 +89,7 @@
 #' confidence estimates are provided.
 #'
 #'
-#' @return A [`tibble`][tibble::tibble] containing...
+#' @return An object of class `elicitr`.
 #' @export
 #'
 #' @author Sergio Vignali
@@ -203,19 +203,16 @@ import_data <- function(x,
       # dplyr::mutate(id = dplyr::row_number(), .before = 1)
     }
   }
+  out <- list(data = data,
+              var_types = var_types,
+              elic_types = elic_types)
 
+  structure(out,
+            class = "elictr")
+}
 
+print.elicitr <- function(x, ...) {
 
-  #
-  # # There can be only 4 columns per variable plus a unique identifier
-  # nc <- ncol(data)
-  # if ((nc - 1) %% 4 != 0) {
-  #   cli::cli_abort(c("The dataset contains a wrong number of columns:",
-  #                    "i" = "See {.emph Details} in {.fun elicitr::import_data}",
-  #                    "x" = "Your dataset has {.strong {nc}} columns."))
-  # }
-  #
-  return(data)
 }
 
 # Helper functions----
@@ -228,7 +225,6 @@ import_data <- function(x,
 #' @inheritParams import_data
 #'
 #' @return character vector with the labels
-#' @keywords Internal
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -255,7 +251,6 @@ get_labels <- function(n,
 #' @inheritParams import_data
 #'
 #' @return character vector with the column names.
-#' @keywords Internal
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -294,17 +289,17 @@ check_arg_comp <- function(var_names,
   n_var_types <- length(var_types)
   n_elic_types <- length(elic_types)
 
-  head_error <- "You provided {.field {n_vars}} value{?s} for {.var var_names}"
+  head_error <- "You provided {.val {n_vars}} value{?s} for {.var var_names}"
   var_error <- ""
   est_error <- ""
   raise_error <- TRUE
 
   if (n_var_types != n_vars) {
-    var_error <- "{.field {n_var_types}} short code{?s} for {.var var_types}"
+    var_error <- "{.val {n_var_types}} short code{?s} for {.var var_types}"
   }
 
   if (n_elic_types != n_vars) {
-    est_error <- "{.field {n_elic_types}} short code{?s} for {.var elic_types}"
+    est_error <- "{.val {n_elic_types}} short code{?s} for {.var elic_types}"
   }
 
   if (nzchar(var_error) && nzchar(est_error)) {
@@ -379,6 +374,8 @@ check_file_extension <- function(x) {
   }
 }
 
+# Function for checking data----
+
 #' Check columns
 #'
 #' Check whether the number of columns and their names correspond to those
@@ -398,15 +395,15 @@ check_columns <- function(x,
   # Check number of columns
   if (ncol(x) != length(col_names)) {
     text <- "Unexpected number of columns:"
-    error <- "The imported dataset has {.field {ncol(x)}} column{?s} but are \\
-              expected to be {.field {length(col_names)}}."
+    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but are \\
+              expected to be {.val {length(col_names)}}."
     # Check column names
   } else if (!all(names(x) == col_names) && full) {
     text <- "Incorrect column names:"
     error <- "The imported dataset has {.field {names(x)}} but it is expected \\
               {.field {col_names}}."
   } else {
-    cli::cli_alert_success("The number and name of columns are correct")
+    cli::cli_alert_success("The number and name of the columns are correct")
   }
 
   if (exists("error")) {
