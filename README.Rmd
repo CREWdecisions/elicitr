@@ -13,19 +13,21 @@ knitr::opts_chunk$set(
 )
 ```
 # elicitr
-<!-- badges: start -->
-[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 
-<img src="man/figures/elicitr_logo_scaled.png" width="20%" />
-<!-- badges: end -->
+<!-- badges: start -->[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)<!-- badges: end -->
 
-Elicitr is an R package, used to aggregate elicitation data from googlesheets.
+### Description 
+<img src="man/figures/elicitr_logo_scaled.png" width="30%" align="right" alt = ""/></a>
+
+Elicitr is an R package, used to aggregate elicitation data from googlesheets. \
 This package follows two formal elicitation methods:
 
-* Continuous method (adapted from delphi-protocol for expert elicitation)
-* Categorical method (adapted from Vernet et al. (2020, Biological invasion)) 
+* Continuous method \
+  Adapted from Hemming, V. et al. (2018). A practical guide to structured expert elicitation using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180. https://doi.org/10.1111/2041-210X.12857
+* Categorical method \
+  Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-based expert elicitation: application to a conservation translocation. Biological Invasions. https://doi.org/10.1007/s10530-024-03341-2
 
-## Installation
+### Installation
 
 You can install the development version of elicitr from [GitHub](https://github.com/) with:
 
@@ -34,8 +36,10 @@ You can install the development version of elicitr from [GitHub](https://github.
 pak::pak("sgvignali/elicitr")
 ```
 
-## Related work
+### Related work
 
-* {shelf} : https://shelf.sites.sheffield.ac.uk/software
-* {prefR} : https://jlepird.github.io/prefeR/
+* {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. \
+https://doi.org/10.32614/CRAN.package.SHELF
+* {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. \
+https://doi.org/10.32614/CRAN.package.prefeR
 
