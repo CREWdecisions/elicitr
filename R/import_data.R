@@ -4,7 +4,7 @@
 #' different sources and format them for further analysis.
 #'
 #' @param x either a [`data.frame`][base::data.frame], a string with the path to
-#' a `csv` or `xlmx` file, or anything accepted by the
+#' a `csv` or `xlsx` file, or anything accepted by the
 #' [read_sheet()][googlesheets4::read_sheet] function.
 #' @param var_names character vector with the name of the estimated variables,
 #' used only when `x` is a Google Sheets file.
@@ -185,7 +185,9 @@ import_data <- function(x,
       data <- googlesheets4::read_sheet(x) |>
         suppressMessages() |>
         # Remove timestamp
-        dplyr::select(-1)
+        dplyr::select(-1) |>
+        # Columns with mixed integer and real numbers are imported as list
+        dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character))
 
       # Check number of columns
       check_columns(data,
@@ -199,8 +201,6 @@ import_data <- function(x,
       #
       # # Order names
       # dplyr::arrange(2) |>
-      # # Remove columns with timestamp and name (expected to be the first 2 ones)
-      # dplyr::select(-c(1, 2)) |>
       # # Create a unique identifier
       # dplyr::mutate(id = dplyr::row_number(), .before = 1)
     }

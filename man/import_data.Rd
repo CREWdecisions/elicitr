@@ -16,7 +16,7 @@ import_data(
 }
 \arguments{
 \item{x}{either a \code{\link[base:data.frame]{data.frame}}, a string with the path to
-a \code{csv} or \code{xlmx} file, or anything accepted by the
+a \code{csv} or \code{xlsx} file, or anything accepted by the
 \link[googlesheets4:range_read]{read_sheet()} function.}
 
 \item{var_names}{character vector with the name of the estimated variables,
