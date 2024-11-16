@@ -196,13 +196,19 @@ read_data <- function(x,
 
       names(data) <- col_names
 
+      to_hash <- Vectorize(rlang::hash,
+                           USE.NAMES = FALSE)
+
+      # Replace internal whitespaces with a single space, leading and trailing
+      # ones are removed by googlesheets4::read_sheet()
+      data <- data |>
+        dplyr::mutate(id = tolower(id),
+                      id = stringr::str_squish(id)) |>
+        # Order by name
+        dplyr::arrange(id) |>
+        dplyr::mutate(id = to_hash(id))
+
       cli::cli_alert_success("Data imported from {.field Google Sheets}")
-      # # Remove capital letters
-      #
-      # # Order names
-      # dplyr::arrange(2) |>
-      # # Create a unique identifier
-      # dplyr::mutate(id = dplyr::row_number(), .before = 1)
     }
   }
   out <- list(var_names = var_names,
