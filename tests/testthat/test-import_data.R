@@ -1,97 +1,97 @@
 googlesheets4::gs4_deauth()
-# Test import_data()----
+# Test read_data()----
 test_that("Raises errors ", {
   file <- withr::local_file("test.txt",
                             code = {writeLines("", "test.txt")})
   # When the file doesn't exist
-  expect_snapshot(import_data("test.csv",
-                              var_names = "var1",
-                              var_types = "p",
-                              elic_type = "1"),
+  expect_snapshot(read_data("test.csv",
+                            var_names = "var1",
+                            var_types = "p",
+                            elic_type = "1"),
                   error = TRUE)
   # When the file extension is not supported
-  expect_snapshot(import_data(file,
-                              var_names = "var1",
-                              var_types = "p",
-                              elic_type = "1"),
+  expect_snapshot(read_data(file,
+                            var_names = "var1",
+                            var_types = "p",
+                            elic_type = "1"),
                   error = TRUE)
   # When 1 variable type is not allowed
-  expect_snapshot(import_data("abc",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = "pqR",
-                              elic_type = "1"),
+  expect_snapshot(read_data("abc",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = "pqR",
+                            elic_type = "1"),
                   error = TRUE)
   # When 2 variable types are not allowed
-  expect_snapshot(import_data("abc",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = "pqG",
-                              elic_type = "1"),
+  expect_snapshot(read_data("abc",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = "pqG",
+                            elic_type = "1"),
                   error = TRUE)
   # When 1 estimate type is not allowed
-  expect_snapshot(import_data("abc",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = "p",
-                              elic_type = "123"),
+  expect_snapshot(read_data("abc",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = "p",
+                            elic_type = "123"),
                   error = TRUE)
   # When 2 estimate types are not allowed
-  expect_snapshot(import_data("abc",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = "p",
-                              elic_type = "1237"),
+  expect_snapshot(read_data("abc",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = "p",
+                            elic_type = "1237"),
                   error = TRUE)
   # When there are less variables than variable types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1"),
-                              var_types = c("pR"),
-                              elic_type = c("1")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1"),
+                            var_types = c("pR"),
+                            elic_type = c("1")),
                   error = TRUE)
   # When there are less variables than estimate types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1"),
-                              var_types = c("p"),
-                              elic_type = c("13")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1"),
+                            var_types = c("p"),
+                            elic_type = c("13")),
                   error = TRUE)
   # When there are less variables than variable types and estimate types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1"),
-                              var_types = c("pR"),
-                              elic_type = c("13")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1"),
+                            var_types = c("pR"),
+                            elic_type = c("13")),
                   error = TRUE)
   # When there are more variables than variable types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = c("pN"),
-                              elic_type = c("1")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = c("pN"),
+                            elic_type = c("1")),
                   error = TRUE)
   # When there are more variables than estimate types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = c("p"),
-                              elic_type = c("13")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = c("p"),
+                            elic_type = c("13")),
                   error = TRUE)
   # When there are more variables than variable types and estimate types
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = c("pN"),
-                              elic_type = c("13")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = c("pN"),
+                            elic_type = c("13")),
                   error = TRUE)
   # When variable names,variable types and estimate types are all not compatible
-  expect_snapshot(import_data("abs",
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = c("pN"),
-                              elic_type = c("1344")),
+  expect_snapshot(read_data("abs",
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = c("pN"),
+                            elic_type = c("1344")),
                   error = TRUE)
   # When number of columns is incorrect
-  expect_snapshot(import_data(elicit |> dplyr::select(-1),
-                              var_names = c("var1", "var2", "var3"),
-                              var_types = "p",
-                              elic_types = "134"),
+  expect_snapshot(read_data(elicit |> dplyr::select(-1),
+                            var_names = c("var1", "var2", "var3"),
+                            var_types = "p",
+                            elic_types = "134"),
                   error = TRUE)
   # When column names are incorrect
-  expect_snapshot(import_data(elicit,
-                              var_names = c("var1", "var2", "var5"),
-                              var_types = "p",
-                              elic_types = "134"),
+  expect_snapshot(read_data(elicit,
+                            var_names = c("var1", "var2", "var5"),
+                            var_types = "p",
+                            elic_types = "134"),
                   error = TRUE)
 })
 

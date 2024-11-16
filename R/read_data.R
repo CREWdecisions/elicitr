@@ -1,6 +1,6 @@
-#' Import data
+#' Read data
 #'
-#' `r lifecycle::badge("experimental")` `load_data()` imports data from
+#' `r lifecycle::badge("experimental")` `load_data()` reads data from
 #' different sources and format them for further analysis.
 #'
 #' @param x either a [`data.frame`][base::data.frame], a string with the path to
@@ -96,13 +96,13 @@
 #' @author Sergio Vignali
 #'
 #' @examples
-import_data <- function(x,
-                        var_names,
-                        var_types,
-                        elic_types,
-                        ...,
-                        name = "Elicitation Dataset",
-                        sep = ",") {
+read_data <- function(x,
+                      var_names,
+                      var_types,
+                      elic_types,
+                      ...,
+                      name = "Elicitation Dataset",
+                      sep = ",") {
 
   n_vars <- length(var_names)
 
@@ -252,7 +252,7 @@ print.elicitr <- function(x, ...) {
 #' Get label to build column names.
 #'
 #' @param n integer, number of variables.
-#' @inheritParams import_data
+#' @inheritParams read_data
 #'
 #' @return character vector with the labels
 #' @noRd
@@ -278,7 +278,7 @@ get_labels <- function(n,
 #' `get_col_names()` combines the information provided with `var_names` and
 #' `elic_types` to construct the column names.
 #'
-#' @inheritParams import_data
+#' @inheritParams read_data
 #'
 #' @return character vector with the column names.
 #' @noRd
@@ -306,7 +306,7 @@ get_col_names <- function(var_names,
 #' values, accounting that values for `var_types` and `est_type` can be recycled
 #' when have length 1.
 #'
-#' @inheritParams import_data
+#' @inheritParams read_data
 #'
 #' @noRd
 #'
@@ -344,7 +344,7 @@ check_arg_comp <- function(var_names,
 
   if (raise_error) {
     cli::cli_abort(c("Mismatch between function arguments:",
-                     "i" = "See {.fun elicitr::import_data}.",
+                     "i" = "See {.fun elicitr::read_data}.",
                      "x" = error),
                    call = rlang::caller_env())
   }
@@ -355,7 +355,7 @@ check_arg_comp <- function(var_names,
 #' Check whether variable or elicitation types are allowed.
 #'
 #' @param type character, either `var_types` or `elic_types`.
-#' @inheritParams import_data
+#' @inheritParams read_data
 #'
 #' @noRd
 #'
@@ -376,7 +376,7 @@ check_arg_types <- function(x, type) {
                  x = diff)
     error <- "The incorrect short code{?s} {?is/are} {.field {diff}}."
     cli::cli_abort(c("Incorrect value for {.arg {type}}:",
-                     "i" = "See {.fun elicitr::import_data}.",
+                     "i" = "See {.fun elicitr::read_data}.",
                      "x" = error),
                    call = rlang::caller_env())
   }
@@ -398,7 +398,7 @@ check_file_extension <- function(x) {
               {.field .csv} or {.field .xlsx}."
 
     cli::cli_abort(c("Unsupported file extension:",
-                     "i" = "See {.fun elicitr::import_data}.",
+                     "i" = "See {.fun elicitr::read_data}.",
                      "x" = error),
                    call = rlang::caller_env())
   }
@@ -438,7 +438,7 @@ check_columns <- function(x,
 
   if (exists("error")) {
     cli::cli_abort(c(text,
-                     "i" = "See Data Format in {.fun elicitr::import_data}.",
+                     "i" = "See Data Format in {.fun elicitr::read_data}.",
                      "x" = error),
                    call = rlang::caller_env())
   }
