@@ -199,11 +199,12 @@ read_data <- function(x,
       to_hash <- Vectorize(digest::digest,
                            USE.NAMES = FALSE)
 
-      # Replace internal whitespaces with a single space, leading and trailing
-      # ones are removed by googlesheets4::read_sheet()
+      # Remove all whitespaces
       data <- data |>
         dplyr::mutate("id" = tolower(.data$id),
-                      "id" = stringr::str_squish(.data$id)) |>
+                      "id" = gsub(pattern = "\\s",
+                                  replacement = "",
+                                  x = .data$id)) |>
         # Order by name
         dplyr::arrange("id") |>
         dplyr::mutate("id" = to_hash(.data$id,
