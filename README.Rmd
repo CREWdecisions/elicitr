@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# elicitr <a href="#"><img src="man/figures/logo.png" style="height:138px; float:right; margin-left:10px;"></a>
+# elicitr <a href="#"><img src="man/figures/logo.png" height="138" align="right"></a>
 
 <!-- badges: start -->
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
