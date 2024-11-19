@@ -13,7 +13,7 @@ proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https:
 
 ### Description
 
-Elicitr is an R package, used to aggregate elicitation data.  
+{elicitr} is an R package, used to aggregate elicitation data.  
 The package is in active development and will implement functions based
 on two formal elicitation methods:
 
@@ -22,9 +22,9 @@ on two formal elicitation methods:
   expert elicitation using the IDEA protocol. Methods in Ecology and
   Evolution, 9(1), 169–180. <https://doi.org/10.1111/2041-210X.12857>
 - Categorical method  
-  Adapted from Vernet, M. et al. (2024) Assessing invasion risks using
+  Adapted from Vernet, M. et al. (2024). Assessing invasion risks using
   EICAT-based expert elicitation: application to a conservation
-  translocation. Biological Invasions.
+  translocation. Biological Invasions, 26(8), 2707–2721.
   <https://doi.org/10.1007/s10530-024-03341-2>
 
 ### Installation
