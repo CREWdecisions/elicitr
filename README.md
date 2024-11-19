@@ -13,7 +13,7 @@ proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https:
 
 ### Description
 
-{elicitr} is an R package, used to aggregate elicitation data.  
+elicitr is an R package, used to aggregate elicitation data.  
 The package is in active development and will implement functions based
 on two formal elicitation methods:
 
@@ -29,8 +29,7 @@ on two formal elicitation methods:
 
 ### Installation
 
-You can install the development version of elicitr from
-[GitHub](https://github.com/) with:
+You can install the development version of elicitr from GitHub with:
 
 ``` r
 #install.packages("pak")
