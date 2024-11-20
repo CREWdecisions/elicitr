@@ -1,4 +1,4 @@
-# ELicitr Code of Conduct
+# elicitr Code of Conduct
 
 ## Our Pledge
 
