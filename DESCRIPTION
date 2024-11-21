@@ -12,16 +12,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     cli,
-    digest,
-    dplyr,
-    googlesheets4,
-    openxlsx,
     rlang,
-    stats,
     stringr,
-    tibble,
-    tools,
-    utils
 Suggests:
     lifecycle,
     mc2d,
