@@ -1,12 +1,23 @@
 Package: elicitr
-Title: What the Package Does (One Line, Title Case)
+Title: A user friendly interface to aggregate elicitation data
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: c(
+    person("Sergio", "Vignali", "crewdecisions@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3390-5442"))
+    person("Maude", "Vernet", "crewdecisions@gmail.com", role = "aut",
+           comment = c(ORCID = "0009-0003-0907-5279"))
+    person("Stefano", "Canessa", "crewdecisions@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0002-0932-826X"))
+    person("University of Bern", role = c("cph", "fnd"),
+           comment = c(ORCID = "0000-0002-0932-826X"))
+)
+Description: Elicitr is an R package, used to aggregate elicitation data. 
+    The package is in active development and will implement 
+    functions based on two formal elicitation methods. You provide 
+    the data, and elicitr transforms them into easily readable graphics.
+URL: https://github.com/orgs/CREWdecisions/elicitr
+BugReports: https://github.com/CREWdecisions/elicitr/issues
+License: `use_gpl3_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
