@@ -99,4 +99,10 @@ test_that("Output format", {
   expect_null(x$data$round_2)
   # Title attribute is created
   expect_false(is.null(attr(x, "title")))
+  # Object structure
+  expect_snapshot_value(x, style = "deparse")
+})
+
+test_that("Print function", {
+
 })

@@ -152,3 +152,9 @@
       x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`.
       i See `elicitr::read_data()`.
 
+# Output format
+
+    structure(list(var_names = c("var1", "var2"), var_types = c("p", 
+    "R"), elic_types = c("4p", "3p"), data = list(round_1 = NULL, 
+        round_2 = NULL)), class = "elicit", title = "Elicitation")
+
