@@ -23,7 +23,9 @@ function.}
 \item{title}{character, used to bind a name to the object.}
 }
 \value{
-An object of class \code{elicit}.
+An object of class \code{elicit} binding metadata related to the
+elicitation process. These metadata are used by other functions to validate
+the correctness of the provided data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{elic_start()} initialises an \code{elicit}
@@ -71,6 +73,37 @@ confidence estimates are provided.
 }
 }
 
+\examples{
+# Create the elict object for a elicitation process that estimates 3
+# variables, the first for a one point estimation of a positive integer, the
+# second for three points estimation of a negative real, and the last for a
+# four point estimation of a probability
+x <- elic_start(var_names = c("var1", "var2", "var3"),
+                var_types = "Nrp",
+                elic_types = "134")
+x
+
+# A title can be added to bind a name to the object:
+x <- elic_start(var_names = c("var1", "var2", "var3"),
+                var_types = "Nrp",
+                elic_types = "134",
+                title = "My elicitation")
+x
+# Notice that if var_types and elic_types are provided as single character,
+# their value is recycled and applyed to all variables. In the following
+# example all thre variables will be considered for a four point estimation
+# to estimate a probability:
+x <- elic_start(var_names = c("var1", "var2", "var3"),
+                var_types = "p",
+                elic_types = "4")
+x
+}
+\references{
+Hemming, V., Burgman, M. A., Hanea, A. M., McBride, M. F., &
+Wintle, B. C. (2018). A practical guide to structured expert elicitation
+using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
+\url{https://doi.org/10.1111/2041-210X.12857}
+}
 \author{
 Sergio Vignali
 }
