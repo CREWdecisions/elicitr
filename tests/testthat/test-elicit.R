@@ -24,3 +24,11 @@ test_that("elicit object", {
   # Object structure
   expect_snapshot_value(x, style = "deparse")
 })
+
+test_that("Print elicit object", {
+  # Without data
+  expect_snapshot(new_elicit(var_names = c("var1", "var2"),
+                             var_types = c("p", "R"),
+                             elic_types = c("4", "3"),
+                             title = "Title"))
+})
