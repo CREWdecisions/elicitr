@@ -20,8 +20,7 @@ new_elicit <- function(var_names,
 #' @export
 print.elicit <- function(x, ...) {
 
-  rounds <- lengths(x$data) |>
-    sum()
+  rounds <- sum(lengths(x$data) != 0)
 
   title <- attr(x, "title")
 
@@ -40,6 +39,7 @@ print.elicit <- function(x, ...) {
   }
 
   if (rounds == 2) {
+    cli::cli_text()
     cli::style_underline("Round 2") |>
       cli::col_magenta() |>
       cli::cli_text()
