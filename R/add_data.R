@@ -18,10 +18,6 @@
 #' referenced by its position with a number or by its name with a string. Used
 #' only when `data_source` is a path to a _xlsx_ file or when data are imported
 #' from _Google Sheets_.
-#' @param skip_first integer indicating whether or not to skip the first column.
-#' Used only when data are imported from _Google Sheets_. This is useful if the
-#' estimates are collected with _Google Forms_ which saves the data in a
-#' _Google Sheet_ adding a column with timestamp.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @details
@@ -94,7 +90,6 @@ elic_add_data <- function(x,
                           ...,
                           sep = ",",
                           sheet = 1,
-                          skip_first = TRUE,
                           verbose = TRUE) {
 
   n_vars <- length(x$var_names)

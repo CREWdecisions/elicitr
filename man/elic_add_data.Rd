@@ -4,16 +4,7 @@
 \alias{elic_add_data}
 \title{Add data}
 \usage{
-elic_add_data(
-  x,
-  data_source,
-  round,
-  ...,
-  sep = ",",
-  sheet = 1,
-  skip_first = TRUE,
-  verbose = TRUE
-)
+elic_add_data(x, data_source, round, ..., sep = ",", sheet = 1, verbose = TRUE)
 }
 \arguments{
 \item{x}{an object of class \code{elicit}.}
@@ -36,11 +27,6 @@ a path to a \emph{csv} file.}
 referenced by its position with a number or by its name with a string. Used
 only when \code{data_source} is a path to a \emph{xlsx} file or when data are imported
 from \emph{Google Sheets}.}
-
-\item{skip_first}{integer indicating whether or not to skip the first column.
-Used only when data are imported from \emph{Google Sheets}. This is useful if the
-estimates are collected with \emph{Google Forms} which saves the data in a
-\emph{Google Sheet} adding a column with timestamp.}
 
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
