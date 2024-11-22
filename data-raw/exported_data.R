@@ -124,13 +124,13 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
 # just use the code strings.
 # ss1 <- googlesheets4::gs4_create("elicitation_round_1",
 #                                 sheets = "Round 1")
-ss1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
+gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
 googlesheets4::sheet_write(round_1,
                            ss = ss1,
                            sheet = 1)
 # ss2 <- googlesheets4::gs4_create("elicitation_round_2",
 #                                  sheets = "Round 2")
-ss2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
+gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
 googlesheets4::sheet_write(round_2,
                            ss = ss2,
                            sheet = 1)
