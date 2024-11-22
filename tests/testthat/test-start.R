@@ -80,9 +80,9 @@ test_that("Errors", {
 })
 
 test_that("Output format", {
-  x <- elic_start(var_names = c("var1", "var2"),
-                  var_types = "pR",
-                  elic_types = "43")
+  expect_snapshot(x <- elic_start(var_names = c("var1", "var2"),
+                                  var_types = "pR",
+                                  elic_types = "43"))
   expect_s3_class(x, class = "elicit", exact = TRUE)
   # Variable names are recorded in the object
   expect_identical(x$var_names, c("var1", "var2"))
