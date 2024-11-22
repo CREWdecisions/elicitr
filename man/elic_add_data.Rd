@@ -48,6 +48,13 @@ The provided object of class \code{elicit} updated with the data.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{load_data()} add data to an \code{elicit}
 object from different sources.
 }
+\details{
+When data are added to the \code{elicit} object, first names are standardised by
+converting capital letters to lower case, and removing whitespaces and any
+punctuation. Then, data are anonymised by converting names to short sha1
+hashes. In this way, sensible information collected during the elicitation
+process never reaches the \code{elicit} object.
+}
 \examples{
 # Create the elict object for an elicitation process that estimates 3
 # variables, the first for a one point estimation of a positive integer, the

@@ -62,3 +62,24 @@ test_that("Generates correct labels", {
                               elic_types = "3p"),
                    c("min", "max", "best", "min", "max", "best"))
 })
+
+# Test stand_names()----
+test_that("Names are standardised", {
+  # Capital letters are changed to lower case
+  expect_identical(stand_names(c("JaneDoe", "JohnSmith")),
+                   c("janedoe", "johnsmith"))
+  # White spaces are removed
+  expect_identical(stand_names(c("Jane Doe", "John J Smith")),
+                   c("janedoe", "johnjsmith"))
+  # Punctuation is removed
+  expect_identical(stand_names(c("J. Doe", "J, J_Smith")),
+                   c("jdoe", "jjsmith"))
+})
+
+# Test hash_names()----
+test_that("Names are converted to short sha1 hashes", {
+  # The function is vectorised and returns strings with 7 characters
+  x <- hash_names(c("Jane Doe", "John Smith"))
+  expect_length(x, 2)
+  expect_identical(nchar(x), c(7L, 7L))
+})

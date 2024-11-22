@@ -23,6 +23,14 @@
 #' estimates are collected with _Google Forms_ which saves the data in a
 #' _Google Sheet_ adding a column with timestamp.
 #'
+#' @details
+#' When data are added to the `elicit` object, first names are standardised by
+#' converting capital letters to lower case, and removing whitespaces and any
+#' punctuation. Then, data are anonymised by converting names to short sha1
+#' hashes. In this way, sensible information collected during the elicitation
+#' process never reaches the `elicit` object.
+#'
+#'
 #' @return The provided object of class `elicit` updated with the data.
 #' @export
 #'
@@ -136,6 +144,18 @@ elic_add_data <- function(x,
     }
   }
 
+  col_1 <- names(data)[1]
+  # Anonymise names
+  data <- data |>
+    dplyr::rename("id" = col_1) |>
+    # Standardise names: remove capital letters, whitespaces, and punctuation
+    dplyr::mutate("id" = stand_names(.data$id)) |>
+    # Order by name
+    dplyr::arrange("id") |>
+    # Hash names
+    dplyr::mutate("id" = hash_names(.data$id))
+
+  # Add data to the given round
   x$data[[round]] <- data
 
   cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} from \\
@@ -152,7 +172,7 @@ elic_add_data <- function(x,
 #'
 #' @inheritParams elic_start
 #'
-#' @return character vector with the column names.
+#' @return Character vector with the column names.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -177,7 +197,7 @@ get_col_names <- function(var_names,
 #' @param n integer, number of variables.
 #' @inheritParams elic_start
 #'
-#' @return character vector with the labels
+#' @return Character vector with the labels
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -194,6 +214,47 @@ get_labels <- function(n,
     unlist(use.names = FALSE)
 
   return(raw_labels)
+}
+
+#' Standardise names
+#'
+#' `stand_names()` converts strings to lower case, removes all whitespaces, and
+#' removes punctuation.
+#'
+#' @param x character vector with strings to be normalised.
+#'
+#' @return Character vector with normalised strings.
+#' @noRd
+#'
+#' @author Sergio Vignali
+stand_names <- function(x) {
+  tolower(x) |>
+    gsub(pattern = "(\\s|[[:punct:]])",
+         replacement = "",
+         x = _)
+}
+
+#' Hash names
+#'
+#' `hash_names()` converts names to short sha1 codes (7 characters), used to
+#' create anonymous ids.
+#'
+#' @param x character vector with names.
+#'
+#' @return a vector with encoded names
+#' @noRd
+#'
+#' @author Sergio Vignali
+hash_names <- function(x) {
+
+  to_hash <- Vectorize(digest::digest,
+                       USE.NAMES = FALSE)
+
+  to_hash(x,
+          algo = "sha1",
+          serialize = FALSE) |>
+    substr(start = 1,
+           stop = 7)
 }
 
 # Checkers----
@@ -219,3 +280,4 @@ check_file_extension <- function(x) {
                    call = rlang::caller_env())
   }
 }
+
