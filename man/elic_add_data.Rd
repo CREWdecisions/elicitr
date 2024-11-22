@@ -4,13 +4,21 @@
 \alias{elic_add_data}
 \title{Add data}
 \usage{
-elic_add_data(x, data_source, round, ..., sep = ",", sheet = 1)
+elic_add_data(
+  x,
+  data_source,
+  round,
+  ...,
+  sep = ",",
+  sheet = 1,
+  skip_first = TRUE
+)
 }
 \arguments{
 \item{x}{an object of class \code{elicit}.}
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
-\code{\link[tibble:tibble]{tibble}}, a string with the path to a \code{csv} or \code{xlsx} file,
+\code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
 or anything accepted by the \link[googlesheets4:range_read]{read_sheet()}
 function.}
 
@@ -21,10 +29,17 @@ elicitation round.}
 function.}
 
 \item{sep}{character used as field separator, used only when \code{data_source} is
-a path to a \code{csv} file.}
+a path to a \emph{csv} file.}
 
-\item{sheet}{integer index or character string with the name of the sheet to
-be selected, used only when \code{data_source} is a path to a \code{xlsx} file.}
+\item{sheet}{integer or character to select the sheet. The sheet can be
+referenced by its position with a number or by its name with a string. Used
+only when \code{data_source} is a path to a \emph{xlsx} file or when data are imported
+from \emph{Google Sheets}.}
+
+\item{skip_first}{integer indicating whether or not to skip the first column.
+Used only when data are imported from \emph{Google Sheets}. This is useful if the
+estimates are collected with \emph{Google Forms} which saves the data in a
+\emph{Google Sheet} adding a column with timestamp.}
 }
 \value{
 The provided object of class \code{elicit} updated with the data.

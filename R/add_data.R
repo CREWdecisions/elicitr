@@ -5,7 +5,7 @@
 #'
 #' @param x an object of class `elicit`.
 #' @param data_source either a [`data.frame`][base::data.frame] or
-#' [`tibble`][tibble::tibble], a string with the path to a `csv` or `xlsx` file,
+#' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
 #' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
 #' function.
 #' @param round integer indicating if the data belongs to the first or second
@@ -13,9 +13,15 @@
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #' @param sep character used as field separator, used only when `data_source` is
-#' a path to a `csv` file.
-#' @param sheet integer index or character string with the name of the sheet to
-#' be selected, used only when `data_source` is a path to a `xlsx` file.
+#' a path to a _csv_ file.
+#' @param sheet integer or character to select the sheet. The sheet can be
+#' referenced by its position with a number or by its name with a string. Used
+#' only when `data_source` is a path to a _xlsx_ file or when data are imported
+#' from _Google Sheets_.
+#' @param skip_first integer indicating whether or not to skip the first column.
+#' Used only when data are imported from _Google Sheets_. This is useful if the
+#' estimates are collected with _Google Forms_ which saves the data in a
+#' _Google Sheet_ adding a column with timestamp.
 #'
 #' @return The provided object of class `elicit` updated with the data.
 #' @export
@@ -72,7 +78,8 @@ elic_add_data <- function(x,
                           round,
                           ...,
                           sep = ",",
-                          sheet = 1) {
+                          sheet = 1,
+                          skip_first = TRUE) {
 
   n_vars <- length(x$var_names)
   # Get column names
@@ -116,12 +123,16 @@ elic_add_data <- function(x,
       # error is handled by the read_sheet() function (this doesn't need to be
       # tested).
       source = "Google Sheets"
-      data <- googlesheets4::read_sheet(data_source) |>
+      data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
         suppressMessages() |>
-        # Remove timestamp
-        dplyr::select(-1) |>
         # Columns with mixed integer and real numbers are imported as list
         dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character))
+
+      if (skip_first) {
+        # Remove timestamp
+        data <- data |>
+          dplyr::select(-1)
+      }
     }
   }
 
