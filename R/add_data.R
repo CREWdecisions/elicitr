@@ -26,10 +26,16 @@
 #'
 #' @details
 #' When data are added to the `elicit` object, first names are standardised by
-#' converting capital letters to lower case, and removing whitespaces and any
+#' converting capital letters to lower case, and by removing any whitespaces and
 #' punctuation. Then, data are anonymised by converting names to short sha1
 #' hashes. In this way, sensible information collected during the elicitation
 #' process never reaches the `elicit` object.
+#'
+#' If the data are imported from _Google Sheets_, `elic_add_data()` performs
+#' additional data cleaning operations. First, if present, removes the column
+#' with the timestamp. Second, checks for consistency of the decimal separator,
+#' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
+#' first one (which contains the names) are forced to numeric.
 #'
 #'
 #' @return The provided object of class `elicit` updated with the data.
@@ -135,14 +141,7 @@ elic_add_data <- function(x,
       source = "Google Sheets"
       data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
         suppressMessages() |>
-        # Columns with mixed integer and real numbers are imported as list
-        dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character))
-
-      if (skip_first) {
-        # Remove timestamp
-        data <- data |>
-          dplyr::select(-1)
-      }
+        clean_gs_data()
     }
   }
 
@@ -259,6 +258,25 @@ hash_names <- function(x) {
           serialize = FALSE) |>
     substr(start = 1,
            stop = 7)
+}
+
+clean_gs_data <- function(x) {
+
+  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x)
+  is_timestamp <- \(x) !inherits(x, "POSIXct")
+  n_cols <- ncol(x)
+
+  x |>
+    # Remove column with timestamp if present (it should be the first column)
+    dplyr::select_if(is_timestamp) |>
+    # Columns with mixed integer and real numbers are imported as list
+    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
+    # Some experts use a comma as decimal separator
+    dplyr::mutate(dplyr::across(dplyr::everything(), clean)) |>
+    # If there is a mix of integer and doubles, or if there are different
+    # decimal separators, or if someone omit the leading zero on a decimal
+    # number, these columns are imported as character
+    dplyr::mutate(dplyr::across(!1, as.numeric))
 }
 
 # Checkers----

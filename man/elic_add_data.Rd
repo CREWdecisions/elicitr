@@ -53,10 +53,16 @@ object from different sources.
 }
 \details{
 When data are added to the \code{elicit} object, first names are standardised by
-converting capital letters to lower case, and removing whitespaces and any
+converting capital letters to lower case, and by removing any whitespaces and
 punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
 process never reaches the \code{elicit} object.
+
+If the data are imported from \emph{Google Sheets}, \code{elic_add_data()} performs
+additional data cleaning operations. First, if present, removes the column
+with the timestamp. Second, checks for consistency of the decimal separator,
+i.e. commas \emph{,} are replaced with periods \emph{.}. Finally, all columns but the
+first one (which contains the names) are forced to numeric.
 }
 \examples{
 # Create the elict object for an elicitation process that estimates 3

@@ -84,3 +84,35 @@ test_that("Names are converted to short sha1 hashes", {
   expect_length(x, 2)
   expect_identical(nchar(x), c(7L, 7L))
 })
+
+# Test clean_gs_data()----
+test_that("Data are cleaned", {
+  # Column with timestamps are removed
+  x <- data.frame(a = rep(Sys.time(), 3),
+                  b = letters[1:3],
+                  c = c("0.9", "0,8", "0.7")) |>
+    clean_gs_data()
+  expect_length(x, 2)
+  expect_named(x, c("b", "c"))
+  # First column is not converted to double (it should contain the names)
+  expect_type(x$b, "character")
+  expect_type(x$c, "double")
+
+  # Columns containing lists are converted to a numeric vector
+  x <- data.frame(a = letters[1:5],
+                  b = 1:5) |>
+    dplyr::mutate(b = as.list(b)) |>
+    clean_gs_data()
+  expect_type(x$a, "character")
+  expect_identical(x$b, as.numeric(1:5))
+  expect_vector(x$b, ptype = double(), size = 5)
+
+  # In column containing mixed decimal separators, commas are replaced with
+  # periods and then characters are converted to numeric
+  x <- data.frame(a = letters[1:3],
+                  b = c("0.9", "0,8", "0.7")) |>
+    clean_gs_data()
+  expect_type(x$a, "character")
+  expect_identical(x$b, c(0.9, 0.8, 0.7))
+  expect_vector(x$b, ptype = double(), size = 3)
+})
