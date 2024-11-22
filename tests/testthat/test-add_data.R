@@ -2,7 +2,8 @@
 test_that("Raises errors ", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
                   var_types = "Nrp",
-                  elic_types = "134")
+                  elic_types = "134",
+                  verbose = FALSE)
 
   file <- withr::local_file("test.txt",
                             code = {writeLines("", "test.txt")})

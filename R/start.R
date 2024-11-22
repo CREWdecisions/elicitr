@@ -14,6 +14,7 @@
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #' @param title character, used to bind a name to the object.
+#' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @section Variable Types:
 #'
@@ -97,7 +98,8 @@ elic_start <- function(var_names,
                        var_types,
                        elic_types,
                        ...,
-                       title = "Elicitation") {
+                       title = "Elicitation",
+                       verbose = TRUE) {
 
   # Check that variable and elicitation types are a single string
   check_arg_length(var_types,
@@ -141,8 +143,10 @@ elic_start <- function(var_names,
                     elic_types,
                     title)
 
-  cli::cli_alert_success("{.code elicit} object for {.val {title}} correctly \\
-                          initialised")
+  if (verbose) {
+    cli::cli_alert_success("{.code elicit} object for {.val {title}} \\
+                             correctly initialised")
+  }
 
   obj
 }

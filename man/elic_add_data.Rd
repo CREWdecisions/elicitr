@@ -11,7 +11,8 @@ elic_add_data(
   ...,
   sep = ",",
   sheet = 1,
-  skip_first = TRUE
+  skip_first = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ from \emph{Google Sheets}.}
 Used only when data are imported from \emph{Google Sheets}. This is useful if the
 estimates are collected with \emph{Google Forms} which saves the data in a
 \emph{Google Sheet} adding a column with timestamp.}
+
+\item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
 The provided object of class \code{elicit} updated with the data.

@@ -22,6 +22,7 @@
 #' Used only when data are imported from _Google Sheets_. This is useful if the
 #' estimates are collected with _Google Forms_ which saves the data in a
 #' _Google Sheet_ adding a column with timestamp.
+#' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @details
 #' When data are added to the `elicit` object, first names are standardised by
@@ -87,7 +88,8 @@ elic_add_data <- function(x,
                           ...,
                           sep = ",",
                           sheet = 1,
-                          skip_first = TRUE) {
+                          skip_first = TRUE,
+                          verbose = TRUE) {
 
   n_vars <- length(x$var_names)
   # Get column names
@@ -158,8 +160,10 @@ elic_add_data <- function(x,
   # Add data to the given round
   x$data[[round]] <- data
 
-  cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} from \\
-                          {.val {source}}")
+  if (verbose) {
+    cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} \\
+                            from {.val {source}}")
+  }
 
   x
 }

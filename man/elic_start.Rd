@@ -4,7 +4,14 @@
 \alias{elic_start}
 \title{Start elicitation}
 \usage{
-elic_start(var_names, var_types, elic_types, ..., title = "Elicitation")
+elic_start(
+  var_names,
+  var_types,
+  elic_types,
+  ...,
+  title = "Elicitation",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{var_names}{character vector with the name of the estimated variables.}
@@ -21,6 +28,8 @@ See Elicitation Types for more.}
 function.}
 
 \item{title}{character, used to bind a name to the object.}
+
+\item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
 An object of class \code{elicit} binding metadata related to the
