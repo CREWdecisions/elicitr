@@ -136,12 +136,15 @@ elic_start <- function(var_names,
                  var_types,
                  elic_types)
 
-  cli::cli_alert_success("{.code elicit} object correctly initialised")
+  obj <- new_elicit(var_names,
+                    var_types,
+                    elic_types,
+                    title)
 
-  new_elicit(var_names,
-             var_types,
-             elic_types,
-             title)
+  cli::cli_alert_success("{.code elicit} object for {.val {title}} correctly \\
+                          initialised")
+
+  obj
 }
 
 # Checkers----

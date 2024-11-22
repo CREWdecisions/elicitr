@@ -157,7 +157,7 @@
     Code
       x <- elic_start(var_names = c("var1", "var2"), var_types = "pR", elic_types = "43")
     Message
-      v `elicit` object correctly initialised
+      v `elicit` object for "Elicitation" correctly initialised
 
 ---
 
