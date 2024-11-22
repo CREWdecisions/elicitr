@@ -125,9 +125,9 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
 times <- runif(n, min = 30, max = 180) |>
   as.POSIXlt(origin = "2024-11-24 14:00:00") |>
   format("%d-%m-%Y %H:%M:%S")
-round_1 <- round_1 |>
+rnd_1 <- round_1 |>
   dplyr::mutate("Time" = times, .before = 1)
-round_2 <- round_2 |>
+rnd_2 <- round_2 |>
   dplyr::mutate("Time" = times, .before = 1)
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
@@ -135,13 +135,13 @@ round_2 <- round_2 |>
 # ss1 <- googlesheets4::gs4_create("elicitation_round_1",
 #                                 sheets = "Round 1")
 gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
-googlesheets4::sheet_write(round_1,
+googlesheets4::sheet_write(rnd_1,
                            ss = gs1,
                            sheet = 1)
 # ss2 <- googlesheets4::gs4_create("elicitation_round_2",
 #                                  sheets = "Round 2")
 gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
-googlesheets4::sheet_write(round_2,
+googlesheets4::sheet_write(rnd_2,
                            ss = gs2,
                            sheet = 1)
 # Once the files are created, go to google drive and make them public for view
