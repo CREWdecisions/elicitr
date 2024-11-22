@@ -154,6 +154,13 @@
 
 # Output format
 
+    Code
+      x <- elic_start(var_names = c("var1", "var2"), var_types = "pR", elic_types = "43")
+    Message
+      v `elicit` object for "Elicitation" correctly initialised
+
+---
+
     structure(list(var_names = c("var1", "var2"), var_types = c("p", 
     "R"), elic_types = c("4p", "3p"), data = list(round_1 = NULL, 
         round_2 = NULL)), class = "elicit", title = "Elicitation")
