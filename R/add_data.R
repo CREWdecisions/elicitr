@@ -176,7 +176,7 @@ elic_add_data <- function(x,
     }
   }
 
-  col_1 <- names(data)[1]
+  col_1 <- colnames(data)[1]
   # Anonymise names
   data <- data |>
     dplyr::rename("id" = col_1) |>
@@ -192,7 +192,7 @@ elic_add_data <- function(x,
                              x$elic_types)
   check_columns(data,
                 col_names)
-  names(data) <- col_names
+  colnames(data) <- col_names
 
   # Add data to the given round
   if (round == 2 && is.null(x$data[[1]])) {

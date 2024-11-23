@@ -29,6 +29,23 @@ test_that("Raises errors ", {
                   error = TRUE)
 })
 
+test_that("Output format", {
+  # Column names are taken from the metadata and have the correct suffix
+  x <- elic_start(var_names = c("cat", "dog", "fish"),
+                  var_types = "Nrp",
+                  elic_types = "134",
+                  verbose = FALSE)
+  y <- round_1
+  colnames(y) <- letters[1:9]
+  z <- elic_add_data(x, data_source = y, round = 1, verbose = FALSE)
+  expect_identical(colnames(z$data$round_1),
+                   c("id", "cat_best", "dog_min", "dog_max", "dog_best",
+                     "fish_min", "fish_max", "fish_best", "fish_conf"))
+  # Column id should have values with 7 characters
+  expect_identical(nchar(z$data$round_1$id), rep(7L, nrow(z$data$round_1)))
+
+})
+
 # Test get_col_names()----
 test_that("Generates correct column names", {
   expect_identical(get_col_names(c("var1", "var2", "var3"),
