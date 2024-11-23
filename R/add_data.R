@@ -85,7 +85,7 @@
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                 var_types = "Nrp",
+#'                 var_types = "ZNp",
 #'                 elic_types = "134",
 #'                 experts = 6)
 #'
