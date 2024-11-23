@@ -47,9 +47,10 @@
 ---
 
     Code
-      elic_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
+      elic_add_data(x, data_source = rbind(round_1, round_1), round = 1, verbose = FALSE)
     Condition
       Error in `elic_add_data()`:
-      ! Incorrect number of rows:
-      x The dataset contains 4 but are expected estimates from 6 experts.
+      ! Incorrect number of rows in dataset:
+      x The dataset contains 12 rows but are expected estimates from 6 experts.
+      i Check raw data or modify the <elicit> object with `obj$experts = 12` and then use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 

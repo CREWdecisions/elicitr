@@ -206,11 +206,20 @@ elic_add_data <- function(x,
     if (round == 1) {
 
       if (nrow(data) != x$experts) {
-        # Number of experts and number of rows in data are not the same
-        error <- "The dataset contains {.val {nrow(data)}} but are expected \\
-                  estimates from {.val {x$experts}} experts."
-        cli::cli_abort(c("Incorrect number of rows:",
-                         "x" = error))
+        # Number of experts and rows in data are not the same in Round 1
+        if (nrow(data) > x$experts) {
+          # More data than experts ==> Raise error
+          error <- "The dataset contains {.val {nrow(data)}} rows but are \\
+                    expected estimates from {.val {x$experts}} experts."
+          info = "Check raw data or modify the {.cls elicit} object with \\
+                  {.code obj$experts = {nrow(data)}} and then use \\
+                  {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
+          cli::cli_abort(c("Incorrect number of rows in dataset:",
+                           "x" = error,
+                           "i" = info))
+        } else {
+          # More experts than rows ==> Add NAs and raise a warn
+        }
       } else {
         x$data[[round]] <- data
       }
@@ -415,7 +424,7 @@ check_file_extension <- function(x) {
 
     cli::cli_abort(c("Unsupported file extension:",
                      "x" = error,
-                     "i" = "See {.fun elicitr::elic_add_data}."),
+                     "i" = "See {.fn elicitr::elic_add_data}."),
                    call = rlang::caller_env())
   }
 }
@@ -438,7 +447,7 @@ check_columns <- function(x,
         expected to be {.val {length(col_names)}}."
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
-                     "i" = "See Data Format in {.fun elicitr::elic_add_data}."),
+                     "i" = "See Data Format in {.fn elicitr::elic_add_data}."),
                    call = rlang::caller_env())
   }
 }

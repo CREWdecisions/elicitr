@@ -1,7 +1,7 @@
 # Test elic_add_data()----
 test_that("Raises errors ", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
-                  var_types = "Nrp",
+                  var_types = "ZNp",
                   elic_types = "134",
                   experts = 6,
                   verbose = FALSE)
@@ -28,8 +28,8 @@ test_that("Raises errors ", {
   # When the number of columns is different from expected
   expect_snapshot(elic_add_data(x, data_source = round_1[, -1], round = 1),
                   error = TRUE)
-  # When number of experts and number of rows in data are not the same
-  expect_snapshot(elic_add_data(x, data_source = round_1[1:4, ],
+  # When there are less experts than number of rows in dataset
+  expect_snapshot(elic_add_data(x, data_source = rbind(round_1, round_1),
                                 round = 1, verbose = FALSE),
                   error = TRUE)
 })
@@ -37,7 +37,7 @@ test_that("Raises errors ", {
 test_that("Output format", {
   # Column names are taken from the metadata and have the correct suffix
   x <- elic_start(var_names = c("cat", "dog", "fish"),
-                  var_types = "Nrp",
+                  var_types = "ZNp",
                   elic_types = "134",
                   experts = 6,
                   verbose = FALSE)
