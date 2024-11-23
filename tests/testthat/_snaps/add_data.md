@@ -54,3 +54,12 @@
       x The dataset contains 12 rows but are expected estimates from 6 experts.
       i Check raw data or modify the <elicit> object with `obj$experts = 12` and then use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 
+# Raises warns
+
+    Code
+      y <- elic_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Dataset has 2 rows but are expected 6 experts, added 2 rows with "NAs".
+      i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+

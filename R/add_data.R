@@ -180,7 +180,7 @@ elic_add_data <- function(x,
   col_1 <- colnames(data)[1]
   # Anonymise names
   data <- data |>
-    dplyr::rename("id" = col_1) |>
+    dplyr::rename("id" = dplyr::all_of(col_1)) |>
     # Standardise names: remove capital letters, whitespaces, and punctuation
     dplyr::mutate("id" = stand_names(.data$id)) |>
     # Order by name
@@ -206,8 +206,10 @@ elic_add_data <- function(x,
     if (round == 1) {
 
       if (nrow(data) != x$experts) {
+
         # Number of experts and rows in data are not the same in Round 1
         if (nrow(data) > x$experts) {
+
           # More data than experts ==> Raise error
           error <- "The dataset contains {.val {nrow(data)}} rows but are \\
                     expected estimates from {.val {x$experts}} experts."
@@ -218,7 +220,19 @@ elic_add_data <- function(x,
                            "x" = error,
                            "i" = info))
         } else {
-          # More experts than rows ==> Add NAs and raise a warn
+          # More experts than data ==> Add NAs and raise a warn
+          n <- x$experts - nrow(data)
+          nas <- matrix(nrow = n, ncol = ncol(data)) |>
+            as.data.frame() |>
+            stats::setNames(colnames(data))
+          x$data[[round]] <- rbind(data, nas)
+          warn <- "Dataset has {.val {n}} rows but are expected \\
+                   {.val {x$experts}} experts, added {.val {n}} row{?s} with \\
+                   {.val NAs}."
+          info = "Check raw data and if you want to update the dataset use \\
+                  {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
+          cli::cli_warn(c("!" = warn,
+                          "i" = info))
         }
       } else {
         x$data[[round]] <- data
