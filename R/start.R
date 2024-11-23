@@ -91,8 +91,8 @@
 #'                 title = "My elicitation")
 #' x
 #' # Notice that if var_types and elic_types are provided as single character,
-#' # their value is recycled and applyed to all variables. In the following
-#' # example all thre variables will be considered for a four point estimation
+#' # their value is recycled and applied to all variables. In the following
+#' # example all three variables will be considered for a four point estimation
 #' # to estimate a probability:
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "p",
