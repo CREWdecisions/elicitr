@@ -133,11 +133,6 @@ elic_add_data <- function(x,
                           overwrite = FALSE,
                           verbose = TRUE) {
 
-  n_vars <- length(x$var_names)
-  # Get column names
-  col_names <- get_col_names(x$var_names,
-                             x$elic_types)
-
   if (inherits(data_source, "data.frame")) {
 
     source <- "data.frame"
@@ -191,6 +186,13 @@ elic_add_data <- function(x,
     dplyr::arrange("id") |>
     # Hash names
     dplyr::mutate("id" = hash_names(.data$id))
+
+  # Prepare column names and set them
+  col_names <- get_col_names(x$var_names,
+                             x$elic_types)
+  check_columns(data,
+                col_names)
+  names(data) <- col_names
 
   # Add data to the given round
   if (round == 2 && is.null(x$data[[1]])) {
@@ -345,6 +347,29 @@ check_file_extension <- function(x) {
     cli::cli_abort(c("Unsupported file extension:",
                      "x" = error,
                      "i" = "See {.fun elicitr::elic_add_data}."),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check columns
+#'
+#' Check whether the number of columns correspond to those expected.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param col_names character vector with the expected column names.
+#'
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_columns <- function(x,
+                          col_names) {
+  # Check number of columns
+  if (ncol(x) != length(col_names)) {
+    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but are \\
+        expected to be {.val {length(col_names)}}."
+    cli::cli_abort(c("Unexpected number of columns:",
+                     "x" = error,
+                     "i" = "See Data Format in {.fun elicitr::elic_add_data}."),
                    call = rlang::caller_env())
   }
 }

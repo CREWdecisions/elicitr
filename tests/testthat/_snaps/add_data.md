@@ -34,3 +34,13 @@
       ! Data for "Round 1" already present:
       i Set `overwrite = TRUE` if you want to overwrite them.
 
+---
+
+    Code
+      elic_add_data(x, data_source = round_1[, -1], round = 1)
+    Condition
+      Error in `elic_add_data()`:
+      ! Unexpected number of columns:
+      x The imported dataset has 8 columns but are expected to be 9.
+      i See Data Format in `elicitr::elic_add_data()`.
+

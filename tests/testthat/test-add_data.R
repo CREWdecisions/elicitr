@@ -24,6 +24,9 @@ test_that("Raises errors ", {
   y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   expect_snapshot(elic_add_data(y, data_source = round_1, round = 1),
                   error = TRUE)
+  # When the number of columns is different from expected
+  expect_snapshot(elic_add_data(x, data_source = round_1[, -1], round = 1),
+                  error = TRUE)
 })
 
 # Test get_col_names()----
