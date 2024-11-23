@@ -17,6 +17,13 @@ test_that("Raises errors ", {
                                 data_source = file,
                                 round = 1),
                   error = TRUE)
+  # When data for round 2 are added before those for round 1
+  expect_snapshot(elic_add_data(x, data_source = round_1, round = 2),
+                  error = TRUE)
+  # When trying to overwrite a dataset
+  y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
+  expect_snapshot(elic_add_data(y, data_source = round_1, round = 1),
+                  error = TRUE)
 })
 
 # Test get_col_names()----

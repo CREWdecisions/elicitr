@@ -18,6 +18,8 @@
 #' referenced by its position with a number or by its name with a string. Used
 #' only when `data_source` is a path to a _xlsx_ file or when data are imported
 #' from _Google Sheets_.
+#' @param overwrite logical, whether to overwrite existing data already added to
+#' the `elicit` object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @details
@@ -90,6 +92,7 @@ elic_add_data <- function(x,
                           ...,
                           sep = ",",
                           sheet = 1,
+                          overwrite = FALSE,
                           verbose = TRUE) {
 
   n_vars <- length(x$var_names)
@@ -152,7 +155,17 @@ elic_add_data <- function(x,
     dplyr::mutate("id" = hash_names(.data$id))
 
   # Add data to the given round
-  x$data[[round]] <- data
+  if (round == 2 && is.null(x$data[[1]])) {
+    cli::cli_abort(c("Data for {.val Round 1} are not present:",
+                     "i" = "Data for {.val Round 2} can be added only after \\
+                            those for {.val Round 1}."))
+  } else if ((!is.null(x$data[[round]]) && overwrite) | is.null(x$data[[round]])) {
+    x$data[[round]] <- data
+  } else {
+    cli::cli_abort(c("Data for {.val Round {round}} already present:",
+                     "i" = "Set {.code overwrite = TRUE} if you want to \\
+                            overwrite them."))
+  }
 
   if (verbose) {
     cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} \\
