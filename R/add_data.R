@@ -205,41 +205,11 @@ elic_add_data <- function(x,
 
     if (round == 1) {
 
-      if (nrow(data) != x$experts) {
+      x$data[[round]] <- check_round_data(x, data, round)
 
-        # Number of experts and rows in data are not the same in Round 1
-        if (nrow(data) > x$experts) {
-
-          # More data than experts ==> Raise error
-          error <- "The dataset contains {.val {nrow(data)}} rows but are \\
-                    expected estimates from {.val {x$experts}} experts."
-          info = "Check raw data or modify the {.cls elicit} object with \\
-                  {.code obj$experts = {nrow(data)}} and then use \\
-                  {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
-          cli::cli_abort(c("Incorrect number of rows in dataset:",
-                           "x" = error,
-                           "i" = info))
-        } else {
-          # More experts than data ==> Add NAs and raise a warn
-          n <- x$experts - nrow(data)
-          nas <- matrix(nrow = n, ncol = ncol(data)) |>
-            as.data.frame() |>
-            stats::setNames(colnames(data))
-          x$data[[round]] <- rbind(data, nas)
-          warn <- "Dataset has {.val {n}} rows but are expected \\
-                   {.val {x$experts}} experts, added {.val {n}} row{?s} with \\
-                   {.val NAs}."
-          info = "Check raw data and if you want to update the dataset use \\
-                  {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
-          cli::cli_warn(c("!" = warn,
-                          "i" = info))
-        }
-      } else {
-        x$data[[round]] <- data
-      }
     } else if (round == 2) {
       # Omogenise data
-      ds <- omogenise_datasets(x$data$round_1, data)
+      ds <- omogenise_datasets(x, data)
       x$data$round_1 <- ds[["round_1"]]
       x$data$round_2 <- ds[["round_2"]]
     }
@@ -387,6 +357,34 @@ clean_gs_data <- function(x) {
     dplyr::mutate(dplyr::across(!1, as.numeric))
 }
 
+#' Add NAs to data
+#'
+#' Adds rows with NAs, used when datasets have less data than experts.
+#'
+#' @param x the elicit object.
+#' @param data tibble with data belonging to the first round.
+#'
+#' @return An error or the data to add to Round 1, eventually with added NAs.
+#' @noRd
+#'
+#' @author Sergio Vignali
+add_nas_rows <- function(x, data, round) {
+
+  n <- x$experts - nrow(data)
+  nas <- matrix(nrow = n, ncol = ncol(data)) |>
+    as.data.frame() |>
+    stats::setNames(colnames(data))
+  warn <- "Dataset for {.val Round {round}} has {.val {n}} rows but are \\
+           expected  {.val {x$experts}} experts, added {.val {n}} row{?s} \\
+           with {.val NAs}."
+  info = "Check raw data and if you want to update the dataset use \\
+                  {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
+  cli::cli_warn(c("!" = warn,
+                  "i" = info))
+
+  rbind(data, nas)
+}
+
 #' Omogenise datasets
 #'
 #' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
@@ -399,19 +397,21 @@ clean_gs_data <- function(x) {
 #' @noRd
 #'
 #' @author Sergio Vignali
-omogenise_datasets <- function(x, y) {
+omogenise_datasets <- function(x, data) {
 
-  idx <- match(x$id, y$id)
+  data <- check_round_data(x, data, 2)
+
+  idx <- match(x$data$round_1$id, data$id)
   n_nas <- sum(is.na(idx))
-  diff <- setdiff(x$id, y$id)
+  diff <- setdiff(x$id, data$id)
   n_x <- nrow(x)
-  n_y <- nrow(y)
+  n_data <- nrow(data)
 
   if (n_nas == 0) {
     # Same number of rows and same elements ==> reorder data in Round 2
-    return(list(round_1 = x,
-                round_2 = y[idx, ]))
-  } else if (n_x == n_y && n_nas == 1) {
+    return(list(round_1 = x$data$round_1,
+                round_2 = data[idx, ]))
+  } else if (n_x == n_data && n_nas == 1) {
     # Same number of ids in Round 1 and Round 2 but one id is different ==>
     # Consider it as a typo and replace it with the one from Round 1. Also raise
     # a warning.
@@ -466,3 +466,44 @@ check_columns <- function(x,
   }
 }
 
+#' Check round 1 data
+#'
+#' Check if the number of rows on the dataset are the same as the number of
+#' experts. If there are more experts than data, adds NAs and raise a warn. If
+#' there are more data than experts, raises an error.
+#'
+#' @param x the elicit object.
+#' @param data tibble with data belonging to the first round.
+#' @param round integer indicating the elicitation round.
+#'
+#' @return An error or the data to add to Round 1, eventually with added NAs.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_round_data <- function(x, data, round) {
+
+  if (nrow(data) != x$experts) {
+
+    # Number of experts and rows in data are not the same in Round 1
+    if (nrow(data) > x$experts) {
+
+      # More data than experts ==> Raise error
+      error <- "The dataset for {.val Round {round}} contains
+                {.val {nrow(data)}} rows but are expected estimates from
+                {.val {x$experts}} experts."
+      info = "Check raw data or modify the {.cls elicit} object with \\
+              {.code obj$experts = {nrow(data)}} and then use \\
+              {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
+      cli::cli_abort(c("Incorrect number of rows in dataset:",
+                       "x" = error,
+                       "i" = info),
+                     call = rlang::caller_env())
+    } else {
+      # More experts than data ==> Add NAs and raise a warn
+      data <- add_nas_rows(x, data, round)
+    }
+  }
+
+  data
+
+}
