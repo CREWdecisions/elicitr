@@ -4,7 +4,16 @@
 \alias{elic_add_data}
 \title{Add data}
 \usage{
-elic_add_data(x, data_source, round, ..., sep = ",", sheet = 1, verbose = TRUE)
+elic_add_data(
+  x,
+  data_source,
+  round,
+  ...,
+  sep = ",",
+  sheet = 1,
+  overwrite = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{x}{an object of class \code{elicit}.}
@@ -28,6 +37,9 @@ referenced by its position with a number or by its name with a string. Used
 only when \code{data_source} is a path to a \emph{xlsx} file or when data are imported
 from \emph{Google Sheets}.}
 
+\item{overwrite}{logical, whether to overwrite existing data already added to
+the \code{elicit} object.}
+
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
@@ -37,7 +49,52 @@ The provided object of class \code{elicit} updated with the data.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{load_data()} add data to an \code{elicit}
 object from different sources.
 }
-\details{
+\section{Data Format}{
+
+
+Data are expected to have the name of the expert always as first column. The
+only exception if for data coming from \emph{Google Sheet} which can have an
+additional column with a timestamp. This column is automatically removed
+before the data are added to the \code{elicit} object (see "Data cleaning"). After
+the name it is expected one or more blocks which follow the specifications
+below:
+
+\emph{One point elicitation}:
+\itemize{
+\item \code{var_best}: best estimate for the variable
+}
+
+\emph{Three points elicitation}:
+\itemize{
+\item \code{var_min}: minimum estimate for the variable
+\item \code{var_max}: maximum estimate for the variable
+\item \code{var_best}: best estimate for the variable
+}
+
+\emph{Four points elicitation}:
+\itemize{
+\item \code{var_min}: minimum estimate for the variable
+\item \code{var_max}: maximum estimate for the variable
+\item \code{var_best}: best estimate for the variable
+\item \code{var_conf}: confidence for the estimate
+}
+
+The column with names is unique, the other columns are a block and can be
+repeated for each variable.
+
+Moreover, the name of the columns is not important, \code{elic_add_data()} will
+overwrite it according to the following convention:
+
+\emph{varname}_\emph{suffix}
+
+with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
+to build the column names is taken from the metadata available in the
+\code{elicit} object.
+}
+
+\section{Data cleaning}{
+
+
 When data are added to the \code{elicit} object, first names are standardised by
 converting capital letters to lower case, and by removing any whitespaces and
 punctuation. Then, data are anonymised by converting names to short sha1
@@ -50,6 +107,7 @@ with the timestamp. Second, checks for consistency of the decimal separator,
 i.e. commas \emph{,} are replaced with periods \emph{.}. Finally, all columns but the
 first one (which contains the names) are forced to numeric.
 }
+
 \examples{
 # Create the elict object for an elicitation process that estimates 3
 # variables, the first for a one point estimation of a positive integer, the
@@ -89,7 +147,7 @@ my_elicit
 
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Add data for the first and second round from Google Sheets
-# googlesheets4::gs4_deauth()
+googlesheets4::gs4_deauth()
 gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
 gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
 my_elicit <- elic_add_data(x, data_source = gs1, round = 1) |>

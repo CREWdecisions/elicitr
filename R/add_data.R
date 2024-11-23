@@ -22,7 +22,46 @@
 #' the `elicit` object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
-#' @details
+#' @section Data Format:
+#'
+#' Data are expected to have the name of the expert always as first column. The
+#' only exception if for data coming from _Google Sheet_ which can have an
+#' additional column with a timestamp. This column is automatically removed
+#' before the data are added to the `elicit` object (see "Data cleaning"). After
+#' the name it is expected one or more blocks which follow the specifications
+#' below:
+#'
+#' _One point elicitation_:
+#'
+#' * `var_best`: best estimate for the variable
+#'
+#' _Three points elicitation_:
+#'
+#' * `var_min`: minimum estimate for the variable
+#' * `var_max`: maximum estimate for the variable
+#' * `var_best`: best estimate for the variable
+#'
+#' _Four points elicitation_:
+#'
+#' * `var_min`: minimum estimate for the variable
+#' * `var_max`: maximum estimate for the variable
+#' * `var_best`: best estimate for the variable
+#' * `var_conf`: confidence for the estimate
+#'
+#' The column with names is unique, the other columns are a block and can be
+#' repeated for each variable.
+#'
+#' Moreover, the name of the columns is not important, `elic_add_data()` will
+#' overwrite it according to the following convention:
+#'
+#' *varname*_*suffix*
+#'
+#' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
+#' to build the column names is taken from the metadata available in the
+#' `elicit` object.
+#'
+#' @section Data cleaning:
+#'
 #' When data are added to the `elicit` object, first names are standardised by
 #' converting capital letters to lower case, and by removing any whitespaces and
 #' punctuation. Then, data are anonymised by converting names to short sha1
@@ -34,7 +73,6 @@
 #' with the timestamp. Second, checks for consistency of the decimal separator,
 #' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
 #' first one (which contains the names) are forced to numeric.
-#'
 #'
 #' @return The provided object of class `elicit` updated with the data.
 #' @export
@@ -80,7 +118,7 @@
 #'
 #' @examplesIf interactive()
 #' # Add data for the first and second round from Google Sheets
-#' # googlesheets4::gs4_deauth()
+#' googlesheets4::gs4_deauth()
 #' gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
 #' gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
 #' my_elicit <- elic_add_data(x, data_source = gs1, round = 1) |>
