@@ -13,9 +13,9 @@
       
       -- Title --
       
-      * Variables: var1 and var2
-      * Variable types: p and R
-      * Elicitation types: 4 and 3
+      * Variables: "var1" and "var2"
+      * Variable types: "p" and "R"
+      * Elicitation types: "4" and "3"
       * Number of experts: 4
       * Number of rounds: 0
       

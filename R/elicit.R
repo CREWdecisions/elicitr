@@ -27,10 +27,10 @@ print.elicit <- function(x, ...) {
   title <- attr(x, "title")
 
   cli::cli_h2(title)
-  cli::cli_li("Variable{?s}: {.field {x$var_names}}")
-  cli::cli_li("Variable type{?s}: {.field {unique(x$var_types)}}")
-  cli::cli_li("Elicitation type{?s}: {.field {unique(x$elic_types)}}")
-  cli::cli_li("Number of expert{?s}: {.field {x$experts}}")
+  cli::cli_li("Variable{?s}: {.val {x$var_names}}")
+  cli::cli_li("Variable type{?s}: {.val {unique(x$var_types)}}")
+  cli::cli_li("Elicitation type{?s}: {.val {unique(x$elic_types)}}")
+  cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
   cli::cli_li("Number of rounds: {.val {rounds}}")
   cli::cli_text()
 
