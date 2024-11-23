@@ -11,6 +11,8 @@
 #' @param elic_types character with short codes indicating the elicitation type.
 #' If only one `elic_type` is provided, its value is recycled for all variables.
 #' See Elicitation Types for more.
+#' @param experts numeric indicating the number of experts participating at the
+#' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #' @param title character, used to bind a name to the object.
@@ -77,13 +79,15 @@
 #' # four point estimation of a probability
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "Nrp",
-#'                 elic_types = "134")
+#'                 elic_types = "134",
+#'                 experts = 4)
 #' x
 #'
 #' # A title can be added to bind a name to the object:
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "Nrp",
 #'                 elic_types = "134",
+#'                 experts = 4,
 #'                 title = "My elicitation")
 #' x
 #' # Notice that if var_types and elic_types are provided as single character,
@@ -92,11 +96,13 @@
 #' # to estimate a probability:
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "p",
-#'                 elic_types = "4")
+#'                 elic_types = "4",
+#'                 experts = 4)
 #' x
 elic_start <- function(var_names,
                        var_types,
                        elic_types,
+                       experts,
                        ...,
                        title = "Elicitation",
                        verbose = TRUE) {
@@ -106,6 +112,9 @@ elic_start <- function(var_names,
                    "var")
   check_arg_length(elic_types,
                    "elic")
+
+  # Check that the argument `experts` is a number
+  check_experts_arg(experts)
 
   n_vars <- length(var_names)
 
@@ -141,6 +150,7 @@ elic_start <- function(var_names,
   obj <- new_elicit(var_names,
                     var_types,
                     elic_types,
+                    experts = experts,
                     title)
 
   if (verbose) {
@@ -181,6 +191,28 @@ check_arg_length <- function(x,
     cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
                      "x" = error,
                      "i" = "See {.str {sect}} in {.fn elicitr::elic_start}."),
+                   call = rlang::caller_env())
+  }
+}
+
+check_experts_arg <- function(x) {
+
+  raise_error <- FALSE
+
+  if (!is.numeric(x)) {
+    raise_error <- TRUE
+    error <- "The value provided for {.arg experts} is a \\
+              {.field {typeof(x)}}, it should be {.field numeric}."
+  } else if (length(x) > 1) {
+    raise_error <- TRUE
+    error <- "The value provided for {.arg experts} has length \\
+              {.val {length(x)}}, it should be a single number."
+  }
+
+  if (raise_error) {
+    cli::cli_abort(c("Incorrect value for {.arg experts}:",
+                     "x" = error,
+                     "y" = "See {.fn elicitr::elic_start}."),
                    call = rlang::caller_env())
   }
 }

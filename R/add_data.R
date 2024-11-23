@@ -86,7 +86,8 @@
 #' # four point estimation of a probability
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "Nrp",
-#'                 elic_types = "134")
+#'                 elic_types = "134",
+#'                 experts = 6)
 #'
 #' # Add data for the first and second round from a data.frame. Notice that the
 #' # two commands can be piped

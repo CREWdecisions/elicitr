@@ -8,6 +8,7 @@ elic_start(
   var_names,
   var_types,
   elic_types,
+  experts,
   ...,
   title = "Elicitation",
   verbose = TRUE
@@ -23,6 +24,9 @@ Variable Types for more.}
 \item{elic_types}{character with short codes indicating the elicitation type.
 If only one \code{elic_type} is provided, its value is recycled for all variables.
 See Elicitation Types for more.}
+
+\item{experts}{numeric indicating the number of experts participating at the
+elicitation process.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -89,13 +93,15 @@ confidence estimates are provided.
 # four point estimation of a probability
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "Nrp",
-                elic_types = "134")
+                elic_types = "134",
+                experts = 4)
 x
 
 # A title can be added to bind a name to the object:
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "Nrp",
                 elic_types = "134",
+                experts = 4,
                 title = "My elicitation")
 x
 # Notice that if var_types and elic_types are provided as single character,
@@ -104,7 +110,8 @@ x
 # to estimate a probability:
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "p",
-                elic_types = "4")
+                elic_types = "4",
+                experts = 4)
 x
 }
 \references{
