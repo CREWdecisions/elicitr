@@ -196,12 +196,31 @@ elic_add_data <- function(x,
   colnames(data) <- col_names
 
   # Add data to the given round
+  obj_data <- x$data[[round]]
   if (round == 2 && is.null(x$data[[1]])) {
     cli::cli_abort(c("Data for {.val Round 1} are not present:",
                      "i" = "Data for {.val Round 2} can be added only after \\
                             those for {.val Round 1}."))
-  } else if ((!is.null(x$data[[round]]) && overwrite) | is.null(x$data[[round]])) {
-    x$data[[round]] <- data
+  } else if ((!is.null(obj_data) && overwrite) || is.null(obj_data)) {
+
+    if (round == 1) {
+
+      if (nrow(data) != x$experts) {
+        # Number of experts and number of rows in data are not the same
+        error <- "The dataset contains {.val {nrow(data)}} but are expected \\
+                  estimates from {.val {x$experts}} experts."
+        cli::cli_abort(c("Incorrect number of rows:",
+                         "x" = error))
+      } else {
+        x$data[[round]] <- data
+      }
+    } else if (round == 2) {
+      # Omogenise data
+      ds <- omogenise_datasets(x$data$round_1, data)
+      x$data$round_1 <- ds[["round_1"]]
+      x$data$round_2 <- ds[["round_2"]]
+    }
+
   } else {
     cli::cli_abort(c("Data for {.val Round {round}} already present:",
                      "i" = "Set {.code overwrite = TRUE} if you want to \\
@@ -309,6 +328,23 @@ hash_names <- function(x) {
            stop = 7)
 }
 
+#' Clean Google Sheets data
+#'
+#' `clean_gs_data()` performs some data cleaning for data coming from
+#' _Google Sheets_.
+#'
+#' @param x data imported form _Google Sheets_
+#'
+#' @details
+#' 1. Remove column with timestamp, if present
+#' 2. Converts columns with lists to character
+#' 3. Standardise decimal separators by replacing commas to periods
+#' 4. Forces all column but the first to be numeric
+#'
+#' @return The cleaned data
+#' @noRd
+#'
+#' @author Sergio Vignali
 clean_gs_data <- function(x) {
 
   clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x)
@@ -326,6 +362,38 @@ clean_gs_data <- function(x) {
     # decimal separators, or if someone omit the leading zero on a decimal
     # number, these columns are imported as character
     dplyr::mutate(dplyr::across(!1, as.numeric))
+}
+
+#' Omogenise datasets
+#'
+#' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
+#'
+#' @param x tibble containing data from Round 1
+#' @param y tibble containing data from Round 2
+#'
+#' @return A list with two elemnts, one containing the omogenised data for Round
+#' 1, and the other containing the omogenised data for Round 2.
+#' @noRd
+#'
+#' @author Sergio Vignali
+omogenise_datasets <- function(x, y) {
+
+  idx <- match(x$id, y$id)
+  n_nas <- sum(is.na(idx))
+  diff <- setdiff(x$id, y$id)
+  n_x <- nrow(x)
+  n_y <- nrow(y)
+
+  if (n_nas == 0) {
+    # Same number of rows and same elements ==> reorder data in Round 2
+    return(list(round_1 = x,
+                round_2 = y[idx, ]))
+  } else if (n_x == n_y && n_nas == 1) {
+    # Same number of ids in Round 1 and Round 2 but one id is different ==>
+    # Consider it as a typo and replace it with the one from Round 1. Also raise
+    # a warning.
+  }
+
 }
 
 # Checkers----

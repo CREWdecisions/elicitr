@@ -3,6 +3,7 @@ test_that("Raises errors ", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
                   var_types = "Nrp",
                   elic_types = "134",
+                  experts = 6,
                   verbose = FALSE)
 
   file <- withr::local_file("test.txt",
@@ -27,6 +28,10 @@ test_that("Raises errors ", {
   # When the number of columns is different from expected
   expect_snapshot(elic_add_data(x, data_source = round_1[, -1], round = 1),
                   error = TRUE)
+  # When number of experts and number of rows in data are not the same
+  expect_snapshot(elic_add_data(x, data_source = round_1[1:4, ],
+                                round = 1, verbose = FALSE),
+                  error = TRUE)
 })
 
 test_that("Output format", {
@@ -34,16 +39,21 @@ test_that("Output format", {
   x <- elic_start(var_names = c("cat", "dog", "fish"),
                   var_types = "Nrp",
                   elic_types = "134",
+                  experts = 6,
                   verbose = FALSE)
   y <- round_1
   colnames(y) <- letters[1:9]
-  z <- elic_add_data(x, data_source = y, round = 1, verbose = FALSE)
-  expect_identical(colnames(z$data$round_1),
-                   c("id", "cat_best", "dog_min", "dog_max", "dog_best",
-                     "fish_min", "fish_max", "fish_best", "fish_conf"))
+  z <- elic_add_data(x, data_source = y, round = 1, verbose = FALSE) |>
+    elic_add_data(data_source = round_2, round = 2, verbose = FALSE)
+  cols <- c("id", "cat_best", "dog_min", "dog_max", "dog_best",
+            "fish_min", "fish_max", "fish_best", "fish_conf")
+  expect_identical(colnames(z$data$round_1), cols)
+  expect_identical(colnames(z$data$round_2), cols)
   # Column id should have values with 7 characters
   expect_identical(nchar(z$data$round_1$id), rep(7L, nrow(z$data$round_1)))
-
+  expect_identical(nchar(z$data$round_2$id), rep(7L, nrow(z$data$round_2)))
+  # Id order should be the same in Round 1 and Round 2
+  expect_identical(z$data$round_1$id, z$data$round_2$id)
 })
 
 # Test get_col_names()----
@@ -143,3 +153,11 @@ test_that("Data are cleaned", {
   expect_identical(x$b, c(0.9, 0.8, 0.7))
   expect_vector(x$b, ptype = double(), size = 3)
 })
+
+# Test get_data_index()----
+# omogenise_datasets("The index is correct", {
+#   x <- c("a", "b", "c", "d")
+#   y <- c("c", "a", "d", "b")
+#   idx <- get_data_index(x, y)
+#   expect_identical(x, y[idx])
+# })

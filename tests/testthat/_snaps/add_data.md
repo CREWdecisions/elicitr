@@ -44,3 +44,12 @@
       x The imported dataset has 8 columns but are expected to be 9.
       i See Data Format in `elicitr::elic_add_data()`.
 
+---
+
+    Code
+      elic_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
+    Condition
+      Error in `elic_add_data()`:
+      ! Incorrect number of rows:
+      x The dataset contains 4 but are expected estimates from 6 experts.
+
