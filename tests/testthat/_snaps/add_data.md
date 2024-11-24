@@ -84,6 +84,16 @@
       x The value 0 is invalid.
       i See `elicitr::elic_add_data()`.
 
+---
+
+    Code
+      out <- elic_add_data(y, data_source = z, round = 2, verbose = FALSE)
+    Condition
+      Error in `elic_add_data()`:
+      ! Dataset for "Round 2" has 2 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
+      x The <id> not present in "Round 1" are "06d2130" and "3b842bc".
+      i Check raw data.
+
 # Raises warns
 
     Code

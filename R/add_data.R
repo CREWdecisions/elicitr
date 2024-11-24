@@ -416,9 +416,10 @@ omogenise_datasets <- function(x, data) {
 
   # No NAs in Round 1 and Round 2 has one row for each expert
   if (!round_1_nas && nrow_round_2 == experts) {
+    n <- nrow(fj) - nrow_round_1
 
-    # Same number of rows and same elements ==> reorder data in Round 2
-    if (nrow(fj) == nrow_round_1) {
+    # Same ids in Round 1 and Round 2 ==> reorder data in Round 2
+    if (n == 0) {
 
       data <- dplyr::rows_upsert(x$data$round_1, data,
                                  by = "id")
@@ -429,7 +430,7 @@ omogenise_datasets <- function(x, data) {
     # Same number of rows in Round 1 and Round 2 but one id is different ==>
     # Consider it as a typo and replace it with the one from Round 1. Also
     # raise a warning.
-    } else if (nrow(fj) == (nrow_round_1 + 1)) {
+    } else if (n == 1) {
       missing_in_round_1 <- setdiff(data$id, x$data$round_1$id)
       missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
 
@@ -450,6 +451,16 @@ omogenise_datasets <- function(x, data) {
 
       return(list(round_1 = x$data$round_1,
                   round_2 = data))
+    # More than 1 id present in Round 1 is not in Round 2 ==> Raise an error
+    } else {
+      missing <- setdiff(data$id, x$data$round_1$id)
+      text <- "Dataset for {.val Round 2} has {.val {n}} {.cls id} not \\
+               present in {.val Round 1}. Automatic match between the two \\
+               datasets is not possible:"
+      error = "The {.cls id} not present in {.val Round 1} are \\
+               {.val {missing}}."
+      cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+                     call = rlang::caller_env())
     }
   }
 }
