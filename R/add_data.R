@@ -183,8 +183,6 @@ elic_add_data <- function(x,
     dplyr::rename("id" = dplyr::all_of(col_1)) |>
     # Standardise names: remove capital letters, whitespaces, and punctuation
     dplyr::mutate("id" = stand_names(.data$id)) |>
-    # Order by name
-    dplyr::arrange("id") |>
     # Hash names
     dplyr::mutate("id" = hash_names(.data$id))
 

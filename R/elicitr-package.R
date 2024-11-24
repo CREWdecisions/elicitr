@@ -11,7 +11,6 @@
 #' @importFrom digest digest
 #' @importFrom dplyr across
 #' @importFrom dplyr all_of
-#' @importFrom dplyr arrange
 #' @importFrom dplyr everything
 #' @importFrom dplyr full_join
 #' @importFrom dplyr mutate
