@@ -415,14 +415,20 @@ omogenise_datasets <- function(x, data) {
   round_1_nas <- sum(is.na(x$data$round_1$id))
 
   # No NAs in Round 1 and Round 2 has one row for each expert
-  if (!round_1_nas && nrow_round_2 == experts) {
+  # if (!round_1_nas && nrow_round_2 == experts) {
+  if (!round_1_nas) {
     n <- nrow(fj) - nrow_round_1
 
     # Same ids in Round 1 and Round 2 ==> reorder data in Round 2
     if (n == 0) {
+      # TODO: update comments
+      missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
 
       data <- dplyr::rows_upsert(x$data$round_1, data,
                                  by = "id")
+      if (length(missing_in_round_2) > 0) {
+        data[data$id %in% missing_in_round_2, -1] <- NA
+      }
 
       return(list(round_1 = x$data$round_1,
                   round_2 = data))
