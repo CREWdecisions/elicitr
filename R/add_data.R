@@ -1,6 +1,6 @@
 #' Add data
 #'
-#' `r lifecycle::badge("experimental")` `load_data()` add data to an `elicit`
+#' `r lifecycle::badge("experimental")` `eli_add_data()` add data to an `elicit`
 #' object from different sources.
 #'
 #' @param x an object of class `elicit`.
@@ -394,44 +394,57 @@ add_nas_rows <- function(data, experts) {
 omogenise_datasets <- function(x, data) {
 
   experts <- x$experts
+  nrow_round_1 <- nrow(x$data$round_1)
+  nrow_round_2 <- nrow(data)
   fj <- dplyr::full_join(x$data$round_1, data,
                          by = "id",
                          keep = TRUE)
 
   round_1_nas <- sum(is.na(x$data$round_1$id))
 
-  if (!round_1_nas && nrow(data) == experts) {
+  # No NAs in Round 1 and Round 2 has one row for each expert
+  if (!round_1_nas && nrow_round_2 == experts) {
 
-    # No NAs in Round 1 and Round 2 has one row for each expert
-    if (nrow(fj) == nrow(x$data$round_1)) {
-      # Same number of rows and same elements ==> reorder data in Round 2
+    # Same number of rows and same elements ==> reorder data in Round 2
+    if (nrow(fj) == nrow_round_1) {
       cols <- which(grepl("\\.y$", colnames(fj)))
       data <- fj[, cols] |>
         stats::setNames(colnames(x$data$round_1))
 
       return(list(round_1 = x$data$round_1,
                   round_2 = data))
+
+    # Same number of rows in Round 1 and Round 2 but one id is different ==>
+    # Consider it as a typo and replace it with the one from Round 1. Also
+    # raise a warning.
+    } else if (nrow(fj) == (nrow_round_1 + 1)) {
+      missing_in_round_1 <- setdiff(data$id, x$data$round_1$id)
+      missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
+      row_idx_missing_in_round_1 <- which(data$id == missing_in_round_1)
+      row_idx_missing_in_round_2 <- which(is.na(data$id))
+
+      cols <- which(grepl("\\.y$", colnames(fj)))
+      data <- fj[, cols] |>
+        stats::setNames(colnames(x$data$round_1))
+
+      data[row_idx_missing_in_round_2, ] <- data[row_idx_missing_in_round_1, ]
+      data <- data[-row_idx_missing_in_round_1, ]
+
+      warn <- "Dataset for {.val Round 2} has {.val 1} {.cls id} not \\
+               present in {.val Round 1}. This is considered a typo by the \\
+               expert {.val {missing_in_round_2}} in {.val Round 2} and its \\
+               value has been replaced."
+
+      info = "Check raw data and if you want to update the dataset in \\
+              {.val Round 2} use {.fn elicitr::elic_add_data} with \\
+              {.code overwrite = TRUE}."
+      cli::cli_warn(c("!" = warn,
+                      "i" = info))
+
+      return(list(round_1 = x$data$round_1,
+                  round_2 = data))
     }
   }
-  # if (sum(round_1_nas, round_2_nas) == 0) {
-  #   idx <- match(x$data$round_1$id, data$id)
-  #   idx_nas <- sum(is.na(idx))
-  #   n_x <- nrow(x$data$round_1)
-  #   n_data <- nrow(data)
-  #
-  #   if (idx_nas == 0) {
-  #     # Same number of rows and same elements ==> reorder data in Round 2
-  #     return(list(round_1 = x$data$round_1,
-  #                 round_2 = data[idx, ]))
-  #   } else if (n_x == n_data && n_nas == 1) {
-  #     # Same number of rows in Round 1 and Round 2 but one id is different ==>
-  #     # Consider it as a typo and replace it with the one from Round 1. Also
-  #     # raise a warning.
-  #   }
-  # }
-
-  # diff <- setdiff(x$id, data$id)
-
 }
 
 # Checkers----

@@ -43,6 +43,12 @@ test_that("Raises warns", {
   # When there are less number of rows in dataset than experts
   expect_snapshot(y <- elic_add_data(x, data_source = round_1[1:4, ],
                                      round = 1, verbose = FALSE))
+  # When one id present in Round 2 in not on Round 1 and there are not NAs
+  y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
+  z <- round_2
+  z$name[3] <- "Jane Doe"
+  expect_snapshot(out <- elic_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE))
 })
 
 test_that("Output format", {

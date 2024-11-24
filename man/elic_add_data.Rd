@@ -46,7 +46,7 @@ the \code{elicit} object.}
 The provided object of class \code{elicit} updated with the data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{load_data()} add data to an \code{elicit}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{eli_add_data()} add data to an \code{elicit}
 object from different sources.
 }
 \section{Data Format}{
