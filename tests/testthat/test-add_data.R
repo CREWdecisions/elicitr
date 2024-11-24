@@ -49,6 +49,9 @@ test_that("Raises warns", {
   z$name[3] <- "Jane Doe"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE))
+  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  idx <- match(round_1$name, round_2$name)
+  expect_identical(out$data$round_2[, -1], round_2[idx, -1])
 })
 
 test_that("Output format", {

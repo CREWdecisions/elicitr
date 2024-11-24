@@ -405,9 +405,9 @@ omogenise_datasets <- function(x, data) {
 
     # Same number of rows and same elements ==> reorder data in Round 2
     if (nrow(fj) == nrow_round_1) {
-      cols <- which(grepl("\\.y$", colnames(fj)))
-      data <- fj[, cols] |>
-        stats::setNames(colnames(x$data$round_1))
+
+      data <- dplyr::rows_upsert(x$data$round_1, data,
+                                 by = "id")
 
       return(list(round_1 = x$data$round_1,
                   round_2 = data))
@@ -418,15 +418,10 @@ omogenise_datasets <- function(x, data) {
     } else if (nrow(fj) == (nrow_round_1 + 1)) {
       missing_in_round_1 <- setdiff(data$id, x$data$round_1$id)
       missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
-      row_idx_missing_in_round_1 <- which(data$id == missing_in_round_1)
-      row_idx_missing_in_round_2 <- which(is.na(data$id))
 
-      cols <- which(grepl("\\.y$", colnames(fj)))
-      data <- fj[, cols] |>
-        stats::setNames(colnames(x$data$round_1))
-
-      data[row_idx_missing_in_round_2, ] <- data[row_idx_missing_in_round_1, ]
-      data <- data[-row_idx_missing_in_round_1, ]
+      data[data$id == missing_in_round_1, "id"] <- missing_in_round_2
+      data <- dplyr::rows_upsert(x$data$round_1, data,
+                                 by = "id")
 
       warn <- "Dataset for {.val Round 2} has {.val 1} {.cls id} not \\
                present in {.val Round 1}. This is considered a typo by the \\

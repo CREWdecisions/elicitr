@@ -14,6 +14,7 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr full_join
 #' @importFrom dplyr mutate
+#' @importFrom dplyr rows_upsert
 #' @importFrom dplyr select
 #' @importFrom dplyr select_if
 #' @importFrom dplyr where
