@@ -54,6 +54,36 @@
       x The dataset for "Round 1" contains 12 rows but are expected estimates from 6 experts.
       i Check raw data or modify the <elicit> object with `obj$experts = 12` and then use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 
+---
+
+    Code
+      elic_add_data("abc", data_source = round_1, round = 1)
+    Condition
+      Error in `elic_add_data()`:
+      ! Argument `x` must be an object of class <elicit>:
+      x An object of class <character> is invalid.
+      See `elicitr::elic_add_data()`.
+
+---
+
+    Code
+      elic_add_data(x, data_source = round_1, round = 3)
+    Condition
+      Error in `elic_add_data()`:
+      ! Argument `round` can be only 1 or 2:
+      x The value 3 is invalid.
+      i See `elicitr::elic_add_data()`.
+
+---
+
+    Code
+      elic_add_data(x, data_source = round_1, round = 0)
+    Condition
+      Error in `elic_add_data()`:
+      ! Argument `round` can be only 1 or 2:
+      x The value 0 is invalid.
+      i See `elicitr::elic_add_data()`.
+
 # Raises warns
 
     Code

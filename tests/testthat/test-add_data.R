@@ -8,6 +8,7 @@ test_that("Raises errors ", {
 
   file <- withr::local_file("test.txt",
                             code = {writeLines("", "test.txt")})
+
   # When the file doesn't exist
   expect_snapshot(elic_add_data(x,
                                 data_source = "test.csv",
@@ -31,6 +32,14 @@ test_that("Raises errors ", {
   # When there are less experts than number of rows in dataset
   expect_snapshot(elic_add_data(x, data_source = rbind(round_1, round_1),
                                 round = 1, verbose = FALSE),
+                  error = TRUE)
+  # When x is not an elicit object
+  expect_snapshot(elic_add_data("abc", data_source = round_1, round = 1),
+                  error = TRUE)
+  # When round is neither 1 nor 2
+  expect_snapshot(elic_add_data(x, data_source = round_1, round = 3),
+                  error = TRUE)
+  expect_snapshot(elic_add_data(x, data_source = round_1, round = 0),
                   error = TRUE)
 })
 
