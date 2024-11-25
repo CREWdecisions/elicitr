@@ -408,6 +408,7 @@ omogenise_datasets <- function(x, data) {
   experts <- x$experts
   nrow_round_1 <- nrow(x$data$round_1)
   nrow_round_2 <- nrow(data)
+  n_diff <- nrow_round_1 - nrow_round_2
   fj <- dplyr::full_join(x$data$round_1, data,
                          by = "id",
                          keep = TRUE)
@@ -439,8 +440,23 @@ omogenise_datasets <- function(x, data) {
     # Consider it as a typo and replace it with the one from Round 1. Also
     # raise a warning.
     } else if (n == 1) {
+
       missing_in_round_1 <- setdiff(data$id, x$data$round_1$id)
       missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
+
+      # Round 2 could have less entries than experts ==> Impossible match, raise
+      # an error
+      if (length(missing_in_round_2) > 0 && n_diff > 0) {
+
+        missing <- setdiff(data$id, x$data$round_1$id)
+        text <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
+               present in {.val Round 1} and {.val {n_diff}} entries with \\
+               NAs. Automatic match between the two datasets is not possible:"
+        error = "The {.cls id} not present in {.val Round 1} are \\
+               {.val {missing}}."
+        cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+                       call = rlang::caller_env())
+      }
 
       data[data$id == missing_in_round_1, "id"] <- missing_in_round_2
       data <- dplyr::rows_upsert(x$data$round_1, data,
@@ -459,7 +475,7 @@ omogenise_datasets <- function(x, data) {
 
       return(list(round_1 = x$data$round_1,
                   round_2 = data))
-    # More than 1 id present in Round 1 is not in Round 2 ==> Raise an error
+    # More than 1 id present in Round 2 is not in Round 1 ==> Raise an error
     } else {
       missing <- setdiff(data$id, x$data$round_1$id)
       text <- "Dataset for {.val Round 2} has {.val {n}} {.cls id} not \\

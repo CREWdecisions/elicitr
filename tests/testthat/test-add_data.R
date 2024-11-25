@@ -49,7 +49,19 @@ test_that("Raises errors ", {
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
-
+  # When 1 id is present in Round 2 but not in Round 1 and there are NAs in
+  # Round 2
+  z <- round_2[1:4, ]
+  z$name[3] <- "Jane Doe"
+  expect_snapshot(out <- elic_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
+                  error = TRUE)
+  # When >=2 id are present in Round 2 but not in Round 1 and there are NAs in
+  # Round 2
+  z$name[4] <- "John Smith"
+  expect_snapshot(out <- elic_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
+                  error = TRUE)
 })
 
 test_that("Raises warns", {
