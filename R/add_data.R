@@ -419,13 +419,15 @@ omogenise_datasets <- function(x, data) {
   if (!round_1_nas) {
     n <- nrow(fj) - nrow_round_1
 
-    # Same ids in Round 1 and Round 2 ==> reorder data in Round 2
+    # All id of Round 2 are also in Round 1 ==> reorder data in Round 2
     if (n == 0) {
-      # TODO: update comments
+
       missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
 
       data <- dplyr::rows_upsert(x$data$round_1, data,
                                  by = "id")
+
+      # Round 2 could have less entries than experts ==> Fill with NAs
       if (length(missing_in_round_2) > 0) {
         data[data$id %in% missing_in_round_2, -1] <- NA
       }
@@ -558,15 +560,14 @@ check_round_data <- function(data, experts, round) {
       if (round == 1) {
         # Add NAs
         data <- add_nas_rows(data, experts)
-        warn <- "Dataset for {.val Round 1} has {.val {n}} rows but are \\
-                 expected {.val {experts}} experts, added {.val {n}} row{?s} \\
-                 with {.val NAs}."
+        warn <- "Dataset for {.val Round 1} has {.val {n}} rows but \\
+                 are expected {.val {experts}} experts, added {.val {n}} \\
+                 row{?s} with {.val NAs}."
       } else {
         # Add NAs is delegated to omogenise_datasets()
-        warn <- "Dataset for {.val Round 2} has {.val {n}} rows but are \\
-                 expected {.val {experts}} experts, data will be matched with \\
-                 {.val Round 1} and eventually rows with {.val NAs} will be \\
-                 added."
+        warn <- "Dataset for {.val Round 2} has {.val {nrow(data)}} rows but \\
+                 are expected {.val {experts}} experts. Missing {.cls id} \\
+                 have been filled with {.val NAs}."
       }
 
       info = "Check raw data and if you want to update the dataset use \\

@@ -49,6 +49,7 @@ test_that("Raises errors ", {
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
+
 })
 
 test_that("Raises warns", {
@@ -57,9 +58,14 @@ test_that("Raises warns", {
                   elic_types = "134",
                   experts = 6,
                   verbose = FALSE)
-  # When there are less number of rows in dataset than experts
+  # When there are less entries in dataset than experts for Round 1
   expect_snapshot(y <- elic_add_data(x, data_source = round_1[1:4, ],
                                      round = 1, verbose = FALSE))
+  idx <- setdiff(seq_along(round_1$name), seq_along(round_1$name[1:4]))
+  for (i in seq_along(idx)) {
+    expect_identical(as.numeric(y$data$round_1[idx[i], -1]),
+                     rep(NA_real_, (ncol(round_1) - 1)))
+  }
   # When one id is present in Round 2 but not in Round 1 and there are not NAs
   y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
@@ -69,6 +75,15 @@ test_that("Raises warns", {
   expect_identical(out$data$round_1$id, out$data$round_2$id)
   idx <- match(round_1$name, round_2$name)
   expect_identical(out$data$round_2[, -1], round_2[idx, -1])
+  # When Round 2 has less entries than Round 1 but all its ids are in Round 1
+  z <- round_2[1:4, ]
+  expect_snapshot(out <- elic_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE))
+  idx <- setdiff(seq_along(round_1$name), match(z$name, round_1$name))
+  for (i in seq_along(idx)) {
+    expect_identical(as.numeric(out$data$round_2[idx[i], -1]),
+                     rep(NA_real_, (ncol(round_2) - 1)))
+  }
 })
 
 test_that("Output format", {

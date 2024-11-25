@@ -112,3 +112,12 @@
       ! Dataset for "Round 2" has "1" <id> not present in "Round 1". This is considered a typo by the expert "3cc9c29" in "Round 2" and its value has been replaced.
       i Check raw data and if you want to update the dataset in "Round 2" use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 
+---
+
+    Code
+      out <- elic_add_data(y, data_source = z, round = 2, verbose = FALSE)
+    Condition
+      Warning:
+      ! Dataset for "Round 2" has 4 rows but are expected 6 experts. Missing <id> have been filled with "NAs".
+      i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+
