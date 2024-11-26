@@ -127,7 +127,7 @@ times <- runif(n, min = 30, max = 180) |>
 new_time <- (times[3] + 66) |>
   format("%d-%m-%Y %H:%M:%S")
 times <- times |>
-  format.POSIXct("%d-%m-%Y %H:%M:%S")
+  format("%d-%m-%Y %H:%M:%S")
 
 rnd_1 <- round_1 |>
   dplyr::mutate("Time" = times, .before = 1)
@@ -162,5 +162,6 @@ gs3 <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
 googlesheets4::sheet_write(rnd,
                            ss = gs3,
                            sheet = 1)
-# Once the files are created, go to Google drive and make them public for view
+# !IMPORTANT! Go to Google Drive and change the Time column format to Date Time
+# Once the files are created, go to Google Drive and make them public for view
 # only
