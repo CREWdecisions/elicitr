@@ -12,7 +12,6 @@
 #' @importFrom dplyr across
 #' @importFrom dplyr all_of
 #' @importFrom dplyr everything
-#' @importFrom dplyr full_join
 #' @importFrom dplyr mutate
 #' @importFrom dplyr rows_upsert
 #' @importFrom dplyr select

@@ -409,15 +409,13 @@ omogenise_datasets <- function(x, data) {
   nrow_round_1 <- nrow(x$data$round_1)
   nrow_round_2 <- nrow(data)
   n_diff <- nrow_round_1 - nrow_round_2
-  fj <- dplyr::full_join(x$data$round_1, data,
-                         by = "id",
-                         keep = TRUE)
+  all_ids <- union(x$data$round_1$id, data$id)
 
   round_1_has_nas <- any(is.na(x$data$round_1$id))
 
   # No NAs in Round 1 and Round 2 has one row for each expert
   if (!round_1_has_nas) {
-    n <- nrow(fj) - nrow_round_1
+    n <- length(all_ids) - nrow_round_1
 
     # All id of Round 2 are also in Round 1 ==> reorder data in Round 2
     if (n == 0) {
@@ -494,7 +492,7 @@ omogenise_datasets <- function(x, data) {
     round_2_has_nas <- length(data$id) < x$experts
 
     # Check if all non NA id in round 1 are also in round 2
-    if (all(round_1_ids[!is.na(round_1_ids)] %in% round_2_ids)) {
+    if (all(stats::na.omit(round_1_ids) %in% round_2_ids)) {
 
       data <- dplyr::rows_upsert(x$data$round_1, data,
                                  by = "id") |>
