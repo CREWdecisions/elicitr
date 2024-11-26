@@ -46,17 +46,19 @@ the \code{elicit} object.}
 The provided object of class \code{elicit} updated with the data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{eli_add_data()} add data to an \code{elicit}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{eli_add_data()} adds data to an \code{elicit}
 object from different sources.
 }
 \section{Data Format}{
 
 
 Data are expected to have the name of the expert always as first column. The
-only exception if for data coming from \emph{Google Sheet} which can have an
+only exception is for data coming from \emph{Google Sheet} which can have an
 additional column with a timestamp. This column is automatically removed
 before the data are added to the \code{elicit} object (see "Data cleaning"). After
-the name it is expected one or more blocks which follow the specifications
+the name there should be one or more blocks which follow the specifications
 below:
 
 \emph{One point elicitation}:
@@ -102,10 +104,15 @@ hashes. In this way, sensible information collected during the elicitation
 process never reaches the \code{elicit} object.
 
 If the data are imported from \emph{Google Sheets}, \code{elic_add_data()} performs
-additional data cleaning operations. First, if present, removes the column
-with the timestamp. Second, checks for consistency of the decimal separator,
-i.e. commas \emph{,} are replaced with periods \emph{.}. Finally, all columns but the
-first one (which contains the names) are forced to numeric.
+additional data cleaning operations. This is relevant when data are collected
+with Google Forms because, for example, there could be multiple submission
+by the same expert or a different decimal separator could be used. When data
+are collected with Google Form, a column with the date and time is recorded.
+First, the function checks for multiple submissions and if present, only the
+last submission is retained. Second, the function removes the column with the
+timestamp. Then it checks for consistency of the decimal separator, i.e.
+commas \emph{,} are replaced with periods \emph{.}. Finally, all columns but the first
+one (which contains the names) are forced to numeric.
 }
 
 \examples{
