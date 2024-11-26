@@ -119,20 +119,40 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
                      overwrite = TRUE)
 
 # Save dataset in Google Sheets
+# Generate random timestamps simulating answers given within 30 seconds and 3
+# minutes (when data are collected with a Google Forms, they are saved in
+# Google Sheets and the timestamps is added as first column)
+times <- runif(n, min = 30, max = 180) |>
+  as.POSIXlt(origin = "2024-11-24 14:00:00") |>
+  format("%d-%m-%Y %H:%M:%S")
+rnd_1 <- round_1 |>
+  dplyr::mutate("Time" = times, .before = 1)
+rnd_2 <- round_2 |>
+  dplyr::mutate("Time" = times, .before = 1)
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
 # just use the code strings.
-# ss1 <- googlesheets4::gs4_create("elicitation_round_1",
+# sg1 <- googlesheets4::gs4_create("elicitation_round_1",
 #                                 sheets = "Round 1")
 gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
-googlesheets4::sheet_write(round_1,
-                           ss = ss1,
+googlesheets4::sheet_write(rnd_1,
+                           ss = gs1,
                            sheet = 1)
-# ss2 <- googlesheets4::gs4_create("elicitation_round_2",
+# sg2 <- googlesheets4::gs4_create("elicitation_round_2",
 #                                  sheets = "Round 2")
 gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
-googlesheets4::sheet_write(round_2,
-                           ss = ss2,
+googlesheets4::sheet_write(rnd_2,
+                           ss = gs2,
                            sheet = 1)
-# Once the files are created, go to google drive and make them public for view
+# This is used only for testing
+rnd <- rnd_1 |>
+  dplyr::select(1:2) |>
+  dplyr::mutate("var1_best" = c("0.1", ".2", "0.3", "0,4", "0.5", "0,6"),
+                "var2_best" = c("0.1", "1", "0.3", "0.4", "0.5", "0.6"))
+# gs3 <- googlesheets4::gs4_create("test_file")
+gs3 <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
+googlesheets4::sheet_write(rnd,
+                           ss = gs3,
+                           sheet = 1)
+# Once the files are created, go to Google drive and make them public for view
 # only

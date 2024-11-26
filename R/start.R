@@ -11,9 +11,12 @@
 #' @param elic_types character with short codes indicating the elicitation type.
 #' If only one `elic_type` is provided, its value is recycled for all variables.
 #' See Elicitation Types for more.
+#' @param experts numeric indicating the number of experts participating at the
+#' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #' @param title character, used to bind a name to the object.
+#' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @section Variable Types:
 #'
@@ -76,34 +79,42 @@
 #' # four point estimation of a probability
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "Nrp",
-#'                 elic_types = "134")
+#'                 elic_types = "134",
+#'                 experts = 4)
 #' x
 #'
 #' # A title can be added to bind a name to the object:
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "Nrp",
 #'                 elic_types = "134",
+#'                 experts = 4,
 #'                 title = "My elicitation")
 #' x
 #' # Notice that if var_types and elic_types are provided as single character,
-#' # their value is recycled and applyed to all variables. In the following
-#' # example all thre variables will be considered for a four point estimation
+#' # their value is recycled and applied to all variables. In the following
+#' # example all three variables will be considered for a four point estimation
 #' # to estimate a probability:
 #' x <- elic_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "p",
-#'                 elic_types = "4")
+#'                 elic_types = "4",
+#'                 experts = 4)
 #' x
 elic_start <- function(var_names,
                        var_types,
                        elic_types,
+                       experts,
                        ...,
-                       title = "Elicitation") {
+                       title = "Elicitation",
+                       verbose = TRUE) {
 
   # Check that variable and elicitation types are a single string
   check_arg_length(var_types,
                    "var")
   check_arg_length(elic_types,
                    "elic")
+
+  # Check that the argument `experts` is a number
+  check_experts_arg(experts)
 
   n_vars <- length(var_names)
 
@@ -139,10 +150,13 @@ elic_start <- function(var_names,
   obj <- new_elicit(var_names,
                     var_types,
                     elic_types,
+                    experts = experts,
                     title)
 
-  cli::cli_alert_success("{.code elicit} object for {.val {title}} correctly \\
-                          initialised")
+  if (verbose) {
+    cli::cli_alert_success("{.code elicit} object for {.val {title}} \\
+                             correctly initialised")
+  }
 
   obj
 }
@@ -177,6 +191,28 @@ check_arg_length <- function(x,
     cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
                      "x" = error,
                      "i" = "See {.str {sect}} in {.fn elicitr::elic_start}."),
+                   call = rlang::caller_env())
+  }
+}
+
+check_experts_arg <- function(x) {
+
+  raise_error <- FALSE
+
+  if (!is.numeric(x)) {
+    raise_error <- TRUE
+    error <- "The value provided for {.arg experts} is a \\
+              {.field {typeof(x)}}, it should be {.field numeric}."
+  } else if (length(x) > 1) {
+    raise_error <- TRUE
+    error <- "The value provided for {.arg experts} has length \\
+              {.val {length(x)}}, it should be a single number."
+  }
+
+  if (raise_error) {
+    cli::cli_abort(c("Incorrect value for {.arg experts}:",
+                     "x" = error,
+                     "y" = "See {.fn elicitr::elic_start}."),
                    call = rlang::caller_env())
   }
 }
@@ -267,7 +303,7 @@ check_arg_mism <- function(var_names,
   if (raise_error) {
     cli::cli_abort(c("Mismatch between function arguments:",
                      "x" = error,
-                     "i" = "See {.fun elicitr::read_data}."),
+                     "i" = "See {.fn elicitr::read_data}."),
                    call = rlang::caller_env())
   }
 }

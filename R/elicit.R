@@ -2,6 +2,7 @@
 new_elicit <- function(var_names,
                        var_types,
                        elic_types,
+                       experts,
                        title,
                        round_1 = NULL,
                        round_2 = NULL) {
@@ -9,6 +10,7 @@ new_elicit <- function(var_names,
   obj <- list(var_names = var_names,
               var_types = var_types,
               elic_types = elic_types,
+              experts = experts,
               data = list(round_1 = round_1,
                           round_2 = round_2))
 
@@ -25,9 +27,10 @@ print.elicit <- function(x, ...) {
   title <- attr(x, "title")
 
   cli::cli_h2(title)
-  cli::cli_li("Variable{?s}: {.field {x$var_names}}")
-  cli::cli_li("Variable type{?s}: {.field {unique(x$var_types)}}")
-  cli::cli_li("Elicitation type{?s}: {.field {unique(x$elic_types)}}")
+  cli::cli_li("Variable{?s}: {.val {x$var_names}}")
+  cli::cli_li("Variable type{?s}: {.val {unique(x$var_types)}}")
+  cli::cli_li("Elicitation type{?s}: {.val {unique(x$elic_types)}}")
+  cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
   cli::cli_li("Number of rounds: {.val {rounds}}")
   cli::cli_text()
 

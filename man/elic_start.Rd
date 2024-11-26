@@ -4,7 +4,15 @@
 \alias{elic_start}
 \title{Start elicitation}
 \usage{
-elic_start(var_names, var_types, elic_types, ..., title = "Elicitation")
+elic_start(
+  var_names,
+  var_types,
+  elic_types,
+  experts,
+  ...,
+  title = "Elicitation",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{var_names}{character vector with the name of the estimated variables.}
@@ -17,10 +25,15 @@ Variable Types for more.}
 If only one \code{elic_type} is provided, its value is recycled for all variables.
 See Elicitation Types for more.}
 
+\item{experts}{numeric indicating the number of experts participating at the
+elicitation process.}
+
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
 \item{title}{character, used to bind a name to the object.}
+
+\item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
 An object of class \code{elicit} binding metadata related to the
@@ -80,22 +93,25 @@ confidence estimates are provided.
 # four point estimation of a probability
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "Nrp",
-                elic_types = "134")
+                elic_types = "134",
+                experts = 4)
 x
 
 # A title can be added to bind a name to the object:
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "Nrp",
                 elic_types = "134",
+                experts = 4,
                 title = "My elicitation")
 x
 # Notice that if var_types and elic_types are provided as single character,
-# their value is recycled and applyed to all variables. In the following
-# example all thre variables will be considered for a four point estimation
+# their value is recycled and applied to all variables. In the following
+# example all three variables will be considered for a four point estimation
 # to estimate a probability:
 x <- elic_start(var_names = c("var1", "var2", "var3"),
                 var_types = "p",
-                elic_types = "4")
+                elic_types = "4",
+                experts = 4)
 x
 }
 \references{
