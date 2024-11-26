@@ -126,7 +126,7 @@
       y <- elic_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
     Condition
       Warning:
-      ! Dataset for "Round 1" has 2 rows but are expected 6 experts, added 2 rows with "NAs".
+      ! The dataset for "Round 1" has 4 rows but are expected 6 experts, added 2 rows with "NAs".
       i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 
 ---
@@ -146,4 +146,54 @@
       Warning:
       ! Dataset for "Round 2" has 4 rows but are expected 6 experts. Missing <id> have been filled with "NAs".
       i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+
+---
+
+    Code
+      out <- elic_add_data(y, data_source = round_2[1:5, ], round = 2, verbose = FALSE)
+    Condition
+      Warning:
+      ! Dataset for "Round 2" has 5 rows but are expected 6 experts. Missing <id> have been filled with "NAs".
+      i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+    Message
+      i The dataset in "Round 2" has 2 <id> not present in "Round 1". These <id> have been added to "Round 1" with NA values.
+
+---
+
+    Code
+      out <- elic_add_data(y, data_source = round_2[1:4, ], round = 2, verbose = FALSE)
+    Condition
+      Warning:
+      ! Dataset for "Round 2" has 4 rows but are expected 6 experts. Missing <id> have been filled with "NAs".
+      i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+      Warning:
+      The dataset in "Round 2" has 2 <id> not present in "Round 1". These <id> have been added to "Round 1" with "NA" values but could be typos in the raw data.
+      i Check raw data and if you want to update the dataset in "Round 2" use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+
+---
+
+    Code
+      out <- elic_add_data(y, data_source = z, round = 2, verbose = FALSE)
+    Condition
+      Warning:
+      ! Dataset for "Round 2" has 4 rows but are expected 6 experts. Missing <id> have been filled with "NAs".
+      i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
+      Error in `omogenise_datasets()`:
+      ! Impossible to combine "Round 1" and "Round 2" datasets:
+      x "Round 2" has 4 <id> not present in "Round 1" which has only 3 "NA" rows.
+      i Check raw data and use `elicitr::elic_add_data()` to add the dataset after manual corrections.
+
+# Raises info
+
+    Code
+      out <- elic_add_data(y, data_source = round_2, round = 2, verbose = FALSE)
+    Message
+      i The dataset in "Round 2" has 1 <id> not present in "Round 1". This <id> has been added to "Round 1" with NA values.
+
+---
+
+    Code
+      out <- elic_add_data(y, data_source = round_2, round = 2, verbose = FALSE)
+    Message
+      i The dataset in "Round 2" has 3 <id> not present in "Round 1". These <id> have been added to "Round 1" with NA values.
 

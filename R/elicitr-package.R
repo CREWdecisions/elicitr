@@ -22,6 +22,7 @@
 #' @importFrom openxlsx read.xlsx
 #' @importFrom rlang .data
 #' @importFrom rlang caller_env
+#' @importFrom stats na.omit
 #' @importFrom stats setNames
 #' @importFrom stringr str_split_1
 #' @importFrom tibble as_tibble

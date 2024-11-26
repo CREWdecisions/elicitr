@@ -413,11 +413,10 @@ omogenise_datasets <- function(x, data) {
                          by = "id",
                          keep = TRUE)
 
-  round_1_nas <- sum(is.na(x$data$round_1$id))
+  round_1_has_nas <- any(is.na(x$data$round_1$id))
 
   # No NAs in Round 1 and Round 2 has one row for each expert
-  # if (!round_1_nas && nrow_round_2 == experts) {
-  if (!round_1_nas) {
+  if (!round_1_has_nas) {
     n <- nrow(fj) - nrow_round_1
 
     # All id of Round 2 are also in Round 1 ==> reorder data in Round 2
@@ -485,6 +484,75 @@ omogenise_datasets <- function(x, data) {
                {.val {missing}}."
       cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
                      call = rlang::caller_env())
+    }
+  } else {
+    round_1_ids <- x$data$round_1$id
+    round_2_ids <- data$id
+    r1_diff_ids <- setdiff(round_2_ids, round_1_ids)
+    r2_diff_ids <- setdiff(round_1_ids, round_2_ids) |>
+      stats::na.omit()
+    round_2_has_nas <- length(data$id) < x$experts
+
+    # Check if all non NA id in round 1 are also in round 2
+    if (all(round_1_ids[!is.na(round_1_ids)] %in% round_2_ids)) {
+
+      data <- dplyr::rows_upsert(x$data$round_1, data,
+                                 by = "id") |>
+        stats::na.omit()
+
+      r1_na_idx <- which(is.na(round_1_ids))
+      x$data$round_1$id[r1_na_idx[seq_along(r1_diff_ids)]] <- r1_diff_ids
+
+      if (round_2_has_nas) {
+        data <- data |>
+          add_nas_rows(x$experts)
+      }
+
+      n <- length(r1_diff_ids)
+      cli::cli_alert_info("The dataset in {.val Round 2} has {.val {n}} \\
+                           {.cls id} not present in {.val Round 1}. \\
+                           Th{?is/ese} {.cls id} ha{?s/ve} been added to \\
+                           {.val Round 1} with {.val {NA}} values.")
+
+      return(list(round_1 = x$data$round_1,
+                  round_2 = data))
+    } else {
+      r1_na_idx <- which(is.na(round_1_ids))
+      n <- length(r1_diff_ids)
+      r1_nas <- sum(is.na(round_1_ids))
+
+      if (r1_nas >= length(r1_diff_ids)) {
+        data <- dplyr::rows_upsert(x$data$round_1, data,
+                                   by = "id") |>
+          stats::na.omit()
+
+        x$data$round_1$id[r1_na_idx[seq_along(r1_diff_ids)]] <- r1_diff_ids
+        r2_na_idx <- which(is.na(round_2_ids))
+        data[data$id == r2_diff_ids, -1] <- NA
+        data <- data |>
+          add_nas_rows(x$experts)
+
+        warn <- "The dataset in {.val Round 2} has {.val {n}} {.cls id} not \\
+                 present in {.val Round 1}. Th{?is/ese} {.cls id} ha{?s/ve} \\
+                 been added to {.val Round 1} with {.val NA} values but \\
+                 could be typo{?s} in the raw data."
+        info = "Check raw data and if you want to update the dataset in \\
+                {.val Round 2} use {.fn elicitr::elic_add_data} with \\
+                {.code overwrite = TRUE}."
+        cli::cli_warn(c(warn, "i" = info))
+
+        return(list(round_1 = x$data$round_1,
+                    round_2 = data))
+      } else {
+        text <- "Impossible to combine {.val Round 1} and {.val Round 2} \\
+                 datasets:"
+        error <- "{.val Round 2} has {.val {n}} {.cls id} not present in \\
+                  {.val Round 1} which has only {.val {r1_nas}} {.val NA} \\
+                  row{?s}."
+        info <- "Check raw data and use {.fn elicitr::elic_add_data} to add \\
+                 the dataset after manual corrections."
+        cli::cli_abort(c(text, "x" = error, "i" = info))
+      }
     }
   }
 }
@@ -571,19 +639,20 @@ check_round_data <- function(data, experts, round) {
                      call = rlang::caller_env())
     } else {
       # More experts than data ==> raise a warn
-      n <- experts - nrow(data)
+      n_round <- nrow(data)
+      n_diff <- experts - n_round
 
       if (round == 1) {
         # Add NAs
         data <- add_nas_rows(data, experts)
-        warn <- "Dataset for {.val Round 1} has {.val {n}} rows but \\
-                 are expected {.val {experts}} experts, added {.val {n}} \\
-                 row{?s} with {.val NAs}."
+        warn <- "The dataset for {.val Round 1} has {.val {n_round}} rows \\
+                 but are expected {.val {experts}} experts, added \\
+                 {.val {n_diff}} row{?s} with {.val NAs}."
       } else {
         # Add NAs is delegated to omogenise_datasets()
-        warn <- "Dataset for {.val Round 2} has {.val {nrow(data)}} rows but \\
-                 are expected {.val {experts}} experts. Missing {.cls id} \\
-                 have been filled with {.val NAs}."
+        warn <- "Dataset for {.val Round 2} has {.val {n_round}} rows but are \\
+                 expected {.val {experts}} experts. Missing {.cls id} have \\
+                 been filled with {.val NAs}."
       }
 
       info = "Check raw data and if you want to update the dataset use \\
