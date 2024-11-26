@@ -16,6 +16,7 @@
 #' @importFrom dplyr rows_upsert
 #' @importFrom dplyr select
 #' @importFrom dplyr select_if
+#' @importFrom dplyr slice_tail
 #' @importFrom dplyr where
 #' @importFrom googlesheets4 read_sheet
 #' @importFrom openxlsx read.xlsx

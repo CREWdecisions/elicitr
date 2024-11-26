@@ -41,7 +41,9 @@ elicitation process. These metadata are used by other functions to validate
 the correctness of the provided data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{elic_start()} initialises an \code{elicit}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{elic_start()} initialises an \code{elicit}
 object which stores important metadata for the data collected during the
 elicitation process.
 }

@@ -1,6 +1,9 @@
 #' Add data
 #'
-#' `r lifecycle::badge("experimental")` `eli_add_data()` add data to an `elicit`
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `eli_add_data()` adds data to an `elicit`
 #' object from different sources.
 #'
 #' @param x an object of class `elicit`.
@@ -25,10 +28,10 @@
 #' @section Data Format:
 #'
 #' Data are expected to have the name of the expert always as first column. The
-#' only exception if for data coming from _Google Sheet_ which can have an
+#' only exception is for data coming from _Google Sheet_ which can have an
 #' additional column with a timestamp. This column is automatically removed
 #' before the data are added to the `elicit` object (see "Data cleaning"). After
-#' the name it is expected one or more blocks which follow the specifications
+#' the name there should be one or more blocks which follow the specifications
 #' below:
 #'
 #' _One point elicitation_:
@@ -69,10 +72,15 @@
 #' process never reaches the `elicit` object.
 #'
 #' If the data are imported from _Google Sheets_, `elic_add_data()` performs
-#' additional data cleaning operations. First, if present, removes the column
-#' with the timestamp. Second, checks for consistency of the decimal separator,
-#' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
-#' first one (which contains the names) are forced to numeric.
+#' additional data cleaning operations. This is relevant when data are collected
+#' with Google Forms because, for example, there could be multiple submission
+#' by the same expert or a different decimal separator could be used. When data
+#' are collected with Google Form, a column with the date and time is recorded.
+#' First, the function checks for multiple submissions and if present, only the
+#' last submission is retained. Second, the function removes the column with the
+#' timestamp. Then it checks for consistency of the decimal separator, i.e.
+#' commas _,_ are replaced with periods _._. Finally, all columns but the first
+#' one (which contains the names) are forced to numeric.
 #'
 #' @return The provided object of class `elicit` updated with the data.
 #' @export
@@ -354,12 +362,18 @@ hash_names <- function(x) {
 clean_gs_data <- function(x) {
 
   clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x)
-  is_timestamp <- \(x) !inherits(x, "POSIXct")
   n_cols <- ncol(x)
 
+  if (inherits(x[[1]], "POSIXct")) {
+    col_2 <- colnames(x)[2]
+    x <- x |>
+      # Keep only last submission from each expert
+      dplyr::slice_tail(n = 1, by = dplyr::all_of(col_2)) |>
+      # Remove column with timestamp (it should be the first column)
+      dplyr::select(-1)
+  }
+
   x |>
-    # Remove column with timestamp if present (it should be the first column)
-    dplyr::select_if(is_timestamp) |>
     # Columns with mixed integer and real numbers are imported as list
     dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
     # Some experts use a comma as decimal separator
