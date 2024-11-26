@@ -1,6 +1,9 @@
 #' Start elicitation
 #'
-#' `r lifecycle::badge("experimental")` `elic_start()` initialises an `elicit`
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `elic_start()` initialises an `elicit`
 #' object which stores important metadata for the data collected during the
 #' elicitation process.
 #'
