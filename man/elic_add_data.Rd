@@ -163,6 +163,11 @@ my_elicit <- elic_add_data(x, data_source = gs1, round = 1) |>
 my_elicit
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+Other data helpers: 
+\code{\link{elic_get_data}()}
+}
 \author{
 Sergio Vignali
 }
+\concept{data helpers}
