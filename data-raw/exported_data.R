@@ -123,8 +123,12 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
 # minutes (when data are collected with a Google Forms, they are saved in
 # Google Sheets and the timestamps is added as first column)
 times <- runif(n, min = 30, max = 180) |>
-  as.POSIXlt(origin = "2024-11-24 14:00:00") |>
+  as.POSIXct(origin = "2024-11-24 14:00:00")
+new_time <- (times[3] + 66) |>
   format("%d-%m-%Y %H:%M:%S")
+times <- times |>
+  format.POSIXct("%d-%m-%Y %H:%M:%S")
+
 rnd_1 <- round_1 |>
   dplyr::mutate("Time" = times, .before = 1)
 rnd_2 <- round_2 |>
@@ -148,7 +152,11 @@ googlesheets4::sheet_write(rnd_2,
 rnd <- rnd_1 |>
   dplyr::select(1:2) |>
   dplyr::mutate("var1_best" = c("0.1", ".2", "0.3", "0,4", "0.5", "0,6"),
-                "var2_best" = c("0.1", "1", "0.3", "0.4", "0.5", "0.6"))
+                "var2_best" = c("0.1", "1", "0.3", "0.4", "0.5", "0.6")) |>
+  dplyr::add_row(Time = new_time,
+                 name = rnd$name[3],
+                 var1_best = "0.4",
+                 var2_best = "0.3")
 # gs3 <- googlesheets4::gs4_create("test_file")
 gs3 <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
 googlesheets4::sheet_write(rnd,
