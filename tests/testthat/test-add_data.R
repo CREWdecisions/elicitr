@@ -62,6 +62,15 @@ test_that("Raises errors ", {
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
+  # Round 2 has several ids not present in Round 1 which has not enough NA rows
+  z <- round_1[1:4, ]
+  z$name[1] <- "Jane Doe"
+  z$name[2] <- "John Doe"
+  z$name[3] <- "Joe Bloggs"
+  z$name[4] <- "John Smith"
+  expect_snapshot(out <- elic_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
+                  error = TRUE)
 })
 
 test_that("Raises warns", {
@@ -96,29 +105,38 @@ test_that("Raises warns", {
     expect_identical(as.numeric(out$data$round_2[idx[i], -1]),
                      rep(NA_real_, (ncol(round_2) - 1)))
   }
-  # All id in Round 1 are also in Round 2 and those not in Round 1 are <=NAs
+  # All id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
   y <- elic_add_data(x, data_source = round_1[1:3, ],
                      round = 1, verbose = FALSE) |>
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2[1:5, ],
                                        round = 2, verbose = FALSE))
-  # Not all id in Round 1 are also in Round 2 and those not in Round 1 are <=NAs
+  expect_identical(as.numeric(out$data$round_2[nrow(out$data$round_2), -1]),
+                   rep(NA_real_, (ncol(round_2) - 1)))
+  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  for (i in seq(4, 6)) {
+    expect_identical(as.numeric(out$data$round_1[i, -1]),
+                     rep(NA_real_, (ncol(round_1) - 1)))
+  }
+
+  # Not all id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
   y <- elic_add_data(x, data_source = round_1[1:3, ],
                      round = 1, verbose = FALSE) |>
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2[1:4, ],
                                        round = 2, verbose = FALSE))
-  # Round 2 has several ids not present in Round 1 which has not enough NA rows
-  z <- round_1[1:4, ]
-  z$name[1] <- "Jane Doe"
-  z$name[2] <- "John Doe"
-  z$name[3] <- "Joe Bloggs"
-  z$name[4] <- "John Smith"
-  expect_snapshot(out <- elic_add_data(y, data_source = z,
-                                       round = 2, verbose = FALSE),
-                  error = TRUE)
+  expect_identical(as.numeric(out$data$round_2[nrow(out$data$round_2), ]),
+                   rep(NA_real_, ncol(round_2)))
+  expect_identical(as.numeric(out$data$round_2[2, -1]),
+                   rep(NA_real_, (ncol(round_2) - 1)))
+  expect_identical(as.numeric(out$data$round_1[nrow(out$data$round_1), ]),
+                   rep(NA_real_, ncol(round_1)))
+  expect_identical(as.numeric(out$data$round_1[4, -1]),
+                   rep(NA_real_, (ncol(round_1) - 1)))
+  expect_identical(as.numeric(out$data$round_1[5, -1]),
+                   rep(NA_real_, (ncol(round_1) - 1)))
 })
 
 test_that("Raises info", {
@@ -134,12 +152,21 @@ test_that("Raises info", {
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2,
                                        round = 2, verbose = FALSE))
+  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  expect_identical(as.numeric(out$data$round_1[6, -1]),
+                   rep(NA_real_, (ncol(round_1) - 1)))
+
   # Round 1 => 3 NAs, Round 2 => 0 NA
   y <- elic_add_data(x, data_source = round_1[1:3, ],
                      round = 1, verbose = FALSE) |>
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2,
                                        round = 2, verbose = FALSE))
+  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  for (i in seq(4, 6)) {
+    expect_identical(as.numeric(out$data$round_1[i, -1]),
+                     rep(NA_real_, (ncol(round_1) - 1)))
+  }
 })
 
 test_that("Output format", {
@@ -162,6 +189,8 @@ test_that("Output format", {
   expect_identical(nchar(z$data$round_2$id), rep(7L, nrow(z$data$round_2)))
   # Id order should be the same in Round 1 and Round 2
   expect_identical(z$data$round_1$id, z$data$round_2$id)
+  # Print document
+  expect_snapshot(z)
 })
 
 # Test get_col_names()----
