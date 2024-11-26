@@ -85,6 +85,8 @@
 #' @return The provided object of class `elicit` updated with the data.
 #' @export
 #'
+#' @family data helpers
+#'
 #' @author Sergio Vignali
 #'
 #' @examples
@@ -142,19 +144,8 @@ elic_add_data <- function(x,
                           overwrite = FALSE,
                           verbose = TRUE) {
 
-  if (!inherits(x, "elicit")) {
-    cli::cli_abort(c("Argument {.arg x} must be an object of class \\
-                      {.cls elicit}:",
-                     "x" = "An object of class {.cls {class(x)}} is invalid.",
-                     "y" = "See {.fn elicitr::elic_add_data}."))
-  }
-
-  if (round > 2 || round <= 0) {
-    cli::cli_abort(c("Argument {.arg round} can be only {.val {1}} or \\
-                      {.val {2}}:",
-                     "x" = "The value {.val {round}} is invalid.",
-                     "i" = "See {.fn elicitr::elic_add_data}."))
-  }
+  check_elicit(x, fun = "elic_add_data")
+  check_round(round, fun = "elic_add_data")
 
   if (inherits(data_source, "data.frame")) {
 
