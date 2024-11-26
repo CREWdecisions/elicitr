@@ -81,7 +81,7 @@ check_var <- function(x, var) {
   if (length(diff) > 0) {
     cli::cli_abort(c("Argument {.arg var} can be only a vector with a \\
                       combination of {.val {x$var_names}} or {.val all}:",
-                     "x" = "The value {.val {var}} is invalid.",
+                     "x" = "The value{?s} {.val {diff}} {?is/are} invalid.",
                      "i" = "See {.fn elicitr::elic_get_data}."),
                    call = rlang::caller_env())
   }
