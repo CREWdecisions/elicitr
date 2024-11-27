@@ -17,13 +17,13 @@ elic_start(
 \arguments{
 \item{var_names}{character vector with the name of the estimated variables.}
 
-\item{var_types}{character with short codes indicating the variable type. If
-only one \code{var_type} is provided, its value is recycled for all variables. See
-Variable Types for more.}
+\item{var_types}{character string with short codes indicating the variable
+type. If only one \code{var_type} is provided, its value is recycled for all
+variables. See Variable Types for more.}
 
-\item{elic_types}{character with short codes indicating the elicitation type.
-If only one \code{elic_type} is provided, its value is recycled for all variables.
-See Elicitation Types for more.}
+\item{elic_types}{character string with short codes indicating the
+elicitation type. If only one \code{elic_type} is provided, its value is recycled
+for all variables. See Elicitation Types for more.}
 
 \item{experts}{numeric indicating the number of experts participating at the
 elicitation process.}

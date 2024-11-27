@@ -8,12 +8,12 @@
 #' elicitation process.
 #'
 #' @param var_names character vector with the name of the estimated variables.
-#' @param var_types character with short codes indicating the variable type. If
-#' only one `var_type` is provided, its value is recycled for all variables. See
-#' Variable Types for more.
-#' @param elic_types character with short codes indicating the elicitation type.
-#' If only one `elic_type` is provided, its value is recycled for all variables.
-#' See Elicitation Types for more.
+#' @param var_types character string with short codes indicating the variable
+#' type. If only one `var_type` is provided, its value is recycled for all
+#' variables. See Variable Types for more.
+#' @param elic_types character string with short codes indicating the
+#' elicitation type. If only one `elic_type` is provided, its value is recycled
+#' for all variables. See Elicitation Types for more.
 #' @param experts numeric indicating the number of experts participating at the
 #' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
@@ -111,30 +111,21 @@ elic_start <- function(var_names,
                        verbose = TRUE) {
 
   # Check that variable and elicitation types are a single string
-  check_arg_length(var_types,
-                   "var")
-  check_arg_length(elic_types,
-                   "elic")
+  check_arg_length(var_types, type = "var")
+  check_arg_length(elic_types, type = "elic")
 
   # Check that the argument `experts` is a number
   check_experts_arg(experts)
 
   n_vars <- length(var_names)
 
-  # Split variable types
+  # Split variable and elicitation types
   var_types <- split_short_codes(var_types)
+  elic_types <- split_short_codes(elic_types, add_p = TRUE)
 
-  # Split elicitation types and add a "p" character
-  elic_types <- split_short_codes(elic_types,
-                                  add_p = TRUE)
-
-  # Check variable types
-  check_arg_types(var_types,
-                  type = "var")
-
-  # Check elicitation types
-  check_arg_types(elic_types,
-                  type = "elic")
+  # Check variable and elicitation types
+  check_arg_types(var_types, type = "var")
+  check_arg_types(elic_types, type = "elic")
 
   # Recycle variable and elicitation types if necessary
   if (n_vars > 1 & length(var_types) == 1) {
@@ -166,38 +157,6 @@ elic_start <- function(var_names,
 
 # Checkers----
 
-#' Check argument length
-#'
-#' `check_arg_length()` throws an error if the length of the provided argument
-#' is greater than 1.
-#'
-#' @param x value passed to `elic_start()` for the variable or elicitation type.
-#' @param type character, either _var_ for `var_types` or _elic_ for èlic_types.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_arg_length <- function(x,
-                             type) {
-
-  n <- length(x)
-
-  if (n > 1) {
-
-    sect <- switch(type,
-                   var = "Variable Types",
-                   elic = "Elicitation types")
-
-    error <- "The value provided for {.arg {type}_types} is a character \\
-              vector of length {.val {n}} but should be a single string with \\
-              short codes."
-
-    cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
-                     "x" = error,
-                     "i" = "See {.str {sect}} in {.fn elicitr::elic_start}."),
-                   call = rlang::caller_env())
-  }
-}
-
 check_experts_arg <- function(x) {
 
   raise_error <- FALSE
@@ -216,46 +175,6 @@ check_experts_arg <- function(x) {
     cli::cli_abort(c("Incorrect value for {.arg experts}:",
                      "x" = error,
                      "y" = "See {.fn elicitr::elic_start}."),
-                   call = rlang::caller_env())
-  }
-}
-
-#' Check argument types
-#'
-#' `check_arg_types()` throws an error if the short codes are not allowed.
-#'
-#' @param x character containing short codes for variable or elicitation types.
-#' @param type character, either _var_ for `var_types` or _elic_ for èlic_types.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_arg_types <- function(x,
-                            type) {
-
-  if (type == "elic") {
-    # Check allowed elicitation types
-    diff <- setdiff(x, names(var_labels)) |>
-      unique()
-  } else {
-    # Check allowed variable types
-    diff <- setdiff(x, c("Z", "N", "z", "R", "s", "r", "p")) |>
-      unique()
-  }
-
-  if (length(diff) > 0) {
-    diff <- gsub(pattern = "p",
-                 replacement = "",
-                 x = diff)
-
-    sect <- switch(type,
-                   var = "Variable Types",
-                   elic = "Elicitation types")
-
-    error <- "The incorrect short code{?s} {?is/are} {.val {diff}}."
-
-    cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
-                     "x" = error,
-                     "i" = "See {.str {sect}} in {.fn elicitr::elic_start}."),
                    call = rlang::caller_env())
   }
 }
@@ -310,29 +229,3 @@ check_arg_mism <- function(var_names,
                    call = rlang::caller_env())
   }
 }
-
-# Helpers----
-#' Split short codes
-#'
-#' `split_short_codes()` converts the string containing short codes to a
-#' character vector with elements corresponding to each short code.
-#'
-#' @param x character containing the short codes.
-#' @param add_p logical, whether to add the "p" character to each short code.
-#' @noRd
-#'
-#' @author Sergio Vignali
-split_short_codes <- function(x,
-                              add_p = FALSE) {
-
-  output <- stringr::str_split_1(x,
-                                 pattern = "")
-
-  if (add_p) {
-    output <- output |>
-      paste0("p")
-  }
-
-  output
-}
-
