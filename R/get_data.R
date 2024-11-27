@@ -44,11 +44,24 @@
 #' # Get all data from round 1
 #' elic_get_data(my_elicit, round = 1)
 #'
+#' # Get data by variable name----
 #' # Get data for var3 from round 2
 #' elic_get_data(my_elicit, round = 2, var = "var3")
 #'
 #' # Get data for var1 and var2 from round 1
 #' elic_get_data(my_elicit, round = 1, var = c("var1", "var2"))
+#'
+#' # Get data by variable type----
+#' # Get data for variables containing integer numbers
+#' elic_get_data(my_elicit, round = 2, var_types = "Z")
+#' # Get data for variables containing positive integers and probabilities
+#' elic_get_data(my_elicit, round = 2, var_types = "Np")
+#'
+#' # Get data by elicitation type----
+#' # Get data for three points estimates
+#' elic_get_data(my_elicit, round = 2, elic_types = "3")
+#' # Get data for one and four points estimates
+#' elic_get_data(my_elicit, round = 2, elic_types = "14")
 elic_get_data <- function(x,
                           round,
                           ...,

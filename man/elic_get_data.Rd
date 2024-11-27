@@ -42,6 +42,10 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 
 Get data from an \code{elicit} object.
 }
+\details{
+One one optional argument can be specified. If more than one is provided, the
+first of the following will be used: \code{var}, \code{var_types}, or \code{elic_types}.
+}
 \section{Variable Types}{
 
 
@@ -96,11 +100,24 @@ my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
 # Get all data from round 1
 elic_get_data(my_elicit, round = 1)
 
+# Get data by variable name----
 # Get data for var3 from round 2
 elic_get_data(my_elicit, round = 2, var = "var3")
 
 # Get data for var1 and var2 from round 1
 elic_get_data(my_elicit, round = 1, var = c("var1", "var2"))
+
+# Get data by variable type----
+# Get data for variables containing integer numbers
+elic_get_data(my_elicit, round = 2, var_types = "Z")
+# Get data for variables containing positive integers and probabilities
+elic_get_data(my_elicit, round = 2, var_types = "Np")
+
+# Get data by elicitation type----
+# Get data for three points estimates
+elic_get_data(my_elicit, round = 2, elic_types = "3")
+# Get data for one and four points estimates
+elic_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
 Other data helpers: 
