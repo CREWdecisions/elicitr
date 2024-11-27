@@ -4,7 +4,14 @@
 \alias{elic_get_data}
 \title{Get data}
 \usage{
-elic_get_data(x, round, ..., var = "all")
+elic_get_data(
+  x,
+  round,
+  ...,
+  var = "all",
+  var_types = "all",
+  elic_types = "all"
+)
 }
 \arguments{
 \item{x}{an object of class \code{elicit}.}
@@ -17,7 +24,15 @@ function.}
 
 \item{var}{character string with the name of the variable or character vector
 with more variable names that you want to extract from the data. Use \code{all}
-for all variables.}
+for all variables. Use \code{all} for all variable types. See Elicitation Types
+for more.}
+
+\item{var_types}{character string with short codes indicating the variable
+type. See Variable Types for more.}
+
+\item{elic_types}{character string with the short codes codes indicating the
+elicitation type. Use \code{all} for all elicitation types. See Elicitation Types
+for more.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the extracted data.
@@ -27,6 +42,47 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 
 Get data from an \code{elicit} object.
 }
+\section{Variable Types}{
+
+
+Variable types must be provided as a single string containing short codes,
+e.g. "pPN".
+
+Valid short codes are:
+\itemize{
+\item \code{Z}: \emph{integers}, when the estimate must be an integer number in the
+interval (-Inf, Inf).
+\item \code{N}: \emph{positive integers}, when the estimate must be an integer number in
+the interval (0, Inf).
+\item \code{z}: \emph{negative integers}, when the estimate must be an integer number in
+the interval (-Inf, 0].
+\item \code{R}: \emph{reals}, when the estimate must be a real number in the interval
+(-Inf, Inf).
+\item \code{s}: \emph{positive reals}, when the estimate must be a real number in the
+interval (0, Inf).
+\item \code{r}: \emph{negative reals}, when the estimate must be a real number in the
+interval (-Inf, ].
+\item \code{p}: \emph{probability}, when the estimate must be a real number in the interval
+(0, 1).
+}
+}
+
+\section{Elicitation types}{
+
+
+Elicitation types must be provided as a single string containing short codes,
+e.g. "134".
+
+Valid short codes are:
+\itemize{
+\item \code{1}: \emph{one point elicitation}, when only the best estimate is provided.
+\item \code{3}: \emph{three points elicitation}, when the minimum, maximum, and best
+estimates are provided.
+\item \code{4}: \emph{four points elicitation}, when the minimum, maximum, best, and
+confidence estimates are provided.
+}
+}
+
 \examples{
 # Create the elict object and add data for the first and second round from a
 # data.frame.

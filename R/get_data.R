@@ -8,7 +8,21 @@
 #' @inheritParams elic_add_data
 #' @param var character string with the name of the variable or character vector
 #' with more variable names that you want to extract from the data. Use `all`
-#' for all variables.
+#' for all variables. Use `all` for all variable types. See Elicitation Types
+#' for more.
+#' @param var_types character string with short codes indicating the variable
+#' type. See Variable Types for more.
+#' @param elic_types character string with the short codes codes indicating the
+#' elicitation type. Use `all` for all elicitation types. See Elicitation Types
+#' for more.
+#'
+#' @details
+#' One one optional argument can be specified. If more than one is provided, the
+#' first of the following will be used: `var`, `var_types`, or `elic_types`.
+#'
+#'
+#' @inheritSection elic_start Variable Types
+#' @inheritSection elic_start Elicitation types
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
@@ -35,21 +49,46 @@
 #'
 #' # Get data for var1 and var2 from round 1
 #' elic_get_data(my_elicit, round = 1, var = c("var1", "var2"))
-
 elic_get_data <- function(x,
                           round,
                           ...,
-                          var = "all") {
+                          var = "all",
+                          var_types = "all",
+                          elic_types = "all") {
 
-  check_elicit(x, fun = "elic_get_data")
-  check_round(round, fun = "elic_get_data")
+  check_elicit(x)
+  check_round(round)
   check_var(x, var)
 
-  if (length(var) == 1) {
+  # Check that variable and elicitation types are a single string
+  check_arg_length(var_types, type = "var")
+  check_arg_length(elic_types, type = "elic")
 
-    if (var == "all") {
-      return(x$data[[round]])
-    }
+  arg <- check_optional_args(var, var_types, elic_types)
+
+  if (arg == "all") {
+
+    return(x$data[[round]])
+
+  } else if (arg == "var_types") {
+    # Split and check variable types
+    var_types <- split_short_codes(var_types)
+    check_arg_types(var_types, type = "var")
+    check_type_in_obj(x, var_types, type = "var_types")
+
+    idx <- match(var_types, x$var_types)
+    var <- x$var_names[idx]
+  } else if (arg == "elic_types") {
+    # Split and check elicitation types
+    elic_types <- split_short_codes(elic_types, add_p = TRUE)
+    check_arg_types(elic_types, type = "elic")
+    check_type_in_obj(x, elic_types, type = "elic_types")
+
+    idx <- match(elic_types, x$elic_types)
+    var <- x$var_names[idx]
+  }
+
+  if (length(var) == 1) {
 
     pattern <- var
 
@@ -59,8 +98,10 @@ elic_get_data <- function(x,
 
   idx <- c(TRUE, grepl(pattern, colnames(x$data[[round]][, -1])))
 
-  x$data[[round]][, idx]
+  return(x$data[[round]][, idx])
 }
+
+# Checkers----
 
 #' Check variable
 #'
@@ -83,6 +124,53 @@ check_var <- function(x, var) {
                       combination of {.val {x$var_names}} or {.val all}:",
                      "x" = "The value{?s} {.val {diff}} {?is/are} invalid.",
                      "i" = "See {.fn elicitr::elic_get_data}."),
+                   call = rlang::caller_env())
+  }
+}
+
+check_optional_args <- function(var, var_types, elic_types) {
+
+  if (length(var) > 1) {
+    var <- "selected_vars"
+  }
+
+  idx <- c(var, var_types, elic_types) != "all"
+  args <- c("var", "var_types", "elic_types")
+  arg <- args[idx][1]
+
+  if (sum(idx) == 0) {
+    arg <- "all"
+  } else if (sum(idx) > 1) {
+    text <- "Only one optional argument can be specified, used the first one: \\
+             {.arg {arg}}"
+    cli::cli_warn(c(text,
+                    "i" = "See Details in {.fn elicitr::elic_get_data}."))
+  }
+
+  arg
+}
+
+check_type_in_obj <- function(obj,
+                              x,
+                              type) {
+  obj_types <- obj[[type]]
+  diff <- setdiff(x, obj_types)
+
+  if (length(diff) > 0) {
+
+    if (type == "var_types") {
+      error <- "Variable type{?s} {.val {diff}} not present in the \\
+                {.cls elicit} object."
+      info <- "Available variable type{?s} {?is/are} {.val {obj_types}}"
+    } else {
+      error <- "Elicitation type{?s} {.val {diff}} not present in the \\
+                {.cls elicit} object."
+      info <- "Available elicitation type{?s} {?is/are} {.val {obj_types}}"
+    }
+
+    cli::cli_abort(c("Invalid value for {.arg {type}}:",
+                     "x" = error,
+                     "i" = info),
                    call = rlang::caller_env())
   }
 }
