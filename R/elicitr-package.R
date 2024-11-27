@@ -13,6 +13,7 @@
 #' @importFrom dplyr all_of
 #' @importFrom dplyr everything
 #' @importFrom dplyr mutate
+#' @importFrom dplyr pull
 #' @importFrom dplyr rows_upsert
 #' @importFrom dplyr select
 #' @importFrom dplyr select_if

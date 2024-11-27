@@ -202,8 +202,7 @@ elic_add_data <- function(x,
   # Prepare column names and set them
   col_names <- get_col_names(x$var_names,
                              x$elic_types)
-  check_columns(data,
-                col_names)
+  check_columns(data, col_names)
   colnames(data) <- col_names
 
   # Add data to the given round
@@ -373,6 +372,48 @@ clean_gs_data <- function(x) {
     # decimal separators, or if someone omit the leading zero on a decimal
     # number, these columns are imported as character
     dplyr::mutate(dplyr::across(!1, as.numeric))
+}
+
+fix_var_order <- function(x,
+                          var_names,
+                          elic_types) {
+
+  # Only 3p and 4p elicitation types should be checked
+  idx_vars <- elic_types != "1p"
+  vars <- var_names[idx_vars]
+
+  for (i in seq_along(vars)) {
+    idx_cols <- grepl(vars[i], colnames(x))
+
+    # The confidence value should not be reordered
+    if (sum(idx_cols) == 4) {
+      idx_cols[length(idx_cols)] <- FALSE
+    }
+
+    idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
+
+    if (sum(idx_rows) > 0) {
+      x[, idx_cols] <- apply(x[, idx_cols], 1, min_max_best) |>
+        t()
+
+      ids <- dplyr::pull(x, 1)[which(idx_rows)]
+
+      warn <- "Variable {.field {vars[i]}} for {.cls id} {.val {ids}} \\
+               w{?as/ere} not in the order {.field min}, {.field max}, and \\
+               {.field best}, {?it/they} ha{?s/ve} been reordered."
+
+      cli::cli_warn(c("!" = warn))
+    }
+  }
+  x
+}
+
+min_max_best <- function(x) {
+  c(min(x), max(x), median(x))
+}
+
+is_not_min_max_best <- function(x) {
+  !all(x == min_max_best(x))
 }
 
 #' Add NAs to data
