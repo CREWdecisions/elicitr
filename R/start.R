@@ -119,15 +119,12 @@ elic_start <- function(var_names,
 
   n_vars <- length(var_names)
 
-  # Split variable types
+  # Split variable and elicitation types
   var_types <- split_short_codes(var_types)
-  # Split elicitation types and add a "p" character
-  elic_types <- split_short_codes(elic_types,
-                                  add_p = TRUE)
+  elic_types <- split_short_codes(elic_types, add_p = TRUE)
 
-  # Check variable types
+  # Check variable and elicitation types
   check_arg_types(var_types, type = "var")
-  # Check elicitation types
   check_arg_types(elic_types, type = "elic")
 
   # Recycle variable and elicitation types if necessary
