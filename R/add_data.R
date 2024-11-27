@@ -144,8 +144,8 @@ elic_add_data <- function(x,
                           overwrite = FALSE,
                           verbose = TRUE) {
 
-  check_elicit(x, fun = "elic_add_data")
-  check_round(round, fun = "elic_add_data")
+  check_elicit(x)
+  check_round(round)
 
   if (inherits(data_source, "data.frame")) {
 
