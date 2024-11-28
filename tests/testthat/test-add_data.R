@@ -105,6 +105,7 @@ test_that("Raises warns", {
     expect_identical(as.numeric(out$data$round_2[idx[i], -1]),
                      rep(NA_real_, (ncol(round_2) - 1)))
   }
+
   # All id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
   y <- elic_add_data(x, data_source = round_1[1:3, ],
@@ -137,6 +138,18 @@ test_that("Raises warns", {
                    rep(NA_real_, (ncol(round_1) - 1)))
   expect_identical(as.numeric(out$data$round_1[5, -1]),
                    rep(NA_real_, (ncol(round_1) - 1)))
+
+  # When values of a variable are not in the order min-max-best
+  z <- round_1
+  z[1, 3:4] <- list(24, 20)
+  z[3, 4:5] <- list(12, 15)
+  z[6, 7:8] <- list(0.65, 0.85)
+  expect_snapshot(out <- elic_add_data(x, data_source = z,
+                                       round = 1, verbose = FALSE))
+  # Check that values have been reordered
+  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[1, 3:5])))
+  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[3, 3:5])))
+  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[6, 6:8])))
 })
 
 test_that("Raises info", {
@@ -310,10 +323,13 @@ test_that("Data are cleaned", {
   expect_vector(x$b, ptype = double(), size = 3)
 })
 
-# Test get_data_index()----
-# omogenise_datasets("The index is correct", {
-#   x <- c("a", "b", "c", "d")
-#   y <- c("c", "a", "d", "b")
-#   idx <- get_data_index(x, y)
-#   expect_identical(x, y[idx])
-# })
+# Test min_max_best()----
+test_that("Values are ordered", {
+  expect_identical(min_max_best(c(0.9, 0.7, 0.5)), c(0.5, 0.9, 0.7))
+})
+
+# Test is_not_min_max_best()----
+test_that("Output is correct", {
+  expect_true(is_not_min_max_best(c(0.9, 0.7, 0.5)))
+  expect_false(is_not_min_max_best(c(0.5, 0.9, 0.7)))
+})

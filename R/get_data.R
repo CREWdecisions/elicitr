@@ -141,6 +141,18 @@ check_var <- function(x, var) {
   }
 }
 
+#' Check optional arguments
+#'
+#' Check that only one optional argument is passed, if not, return the first one
+#' and rise a warning.
+#'
+#' @inheritParams elic_get_data
+#'
+#' @return Character string with one of `var`, `var_types`, `elic_types`. Warns
+#' if more than one optional argument is provided.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_optional_args <- function(var, var_types, elic_types) {
 
   if (length(var) > 1) {
@@ -163,6 +175,20 @@ check_optional_args <- function(var, var_types, elic_types) {
   arg
 }
 
+#' Check type in object
+#'
+#' Check that the given variable or elicitation type/s is/are available in the
+#' `elicit` object.
+#'
+#' @param obj an object of class `elicit`.
+#' @param x character string with the value to be checked.
+#' @param type character string, either `var_types` or `elic:types`.
+#'
+#' @return An error if the variable or elicitation type/s is/are not present in
+#' the `elicit` object.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_type_in_obj <- function(obj,
                               x,
                               type) {

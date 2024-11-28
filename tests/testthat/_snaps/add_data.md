@@ -183,6 +183,16 @@
       The dataset in "Round 2" has 2 <id> not present in "Round 1". These <id> have been added to "Round 1" with "NA" values but could be typos in the raw data.
       i Check raw data and if you want to update the dataset in "Round 2" use `elicitr::elic_add_data()` with `overwrite = TRUE`.
 
+---
+
+    Code
+      out <- elic_add_data(x, data_source = z, round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Reordered <id> "5ac97e0" and "e78cbf4" of the variable var2 according to the order "min-max-best"
+      Warning:
+      ! Reordered <id> "3d32ab9" of the variable var3 according to the order "min-max-best"
+
 # Raises info
 
     Code

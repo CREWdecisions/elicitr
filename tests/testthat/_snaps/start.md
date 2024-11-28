@@ -23,8 +23,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pqR", elic_type = "1",
-      experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pqR",
+      elic_types = "1", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Incorrect value for `var_types`:
@@ -34,8 +34,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "apa", elic_type = "1",
-      experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "apa",
+      elic_types = "1", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Incorrect value for `var_types`:
@@ -45,8 +45,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pqG", elic_type = "1",
-      experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pqG",
+      elic_types = "1", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Incorrect value for `var_types`:
@@ -56,7 +56,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_type = "123",
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_types = "123",
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -67,7 +67,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_type = "232",
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_types = "232",
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -78,7 +78,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_type = "1237",
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_types = "1237",
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -89,7 +89,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_type = c("1"),
+      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("1"),
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -100,7 +100,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("p"), elic_type = c("13"),
+      elic_start(var_names = c("var1"), var_types = c("p"), elic_types = c("13"),
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -111,7 +111,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_type = c("13"),
+      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("13"),
       experts = 3)
     Condition
       Error in `elic_start()`:
@@ -123,7 +123,7 @@
 
     Code
       elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_type = c("1"), experts = 3)
+      elic_types = c("1"), experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -134,7 +134,7 @@
 
     Code
       elic_start(var_names = c("var1", "var2", "var3"), var_types = c("p"),
-      elic_type = c("13"), experts = 3)
+      elic_types = c("13"), experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -145,7 +145,7 @@
 
     Code
       elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_type = c("13"), experts = 3)
+      elic_types = c("13"), experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -156,7 +156,7 @@
 
     Code
       elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_type = c("1344"), experts = 3)
+      elic_types = c("1344"), experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -166,7 +166,7 @@
 ---
 
     Code
-      elic_start(var_names = "var1", var_types = "p", elic_type = "1", experts = "3")
+      elic_start(var_names = "var1", var_types = "p", elic_types = "1", experts = "3")
     Condition
       Error in `elic_start()`:
       ! Incorrect value for `experts`:
@@ -176,7 +176,7 @@
 ---
 
     Code
-      elic_start(var_names = "var1", var_types = "p", elic_type = "1", experts = 1:2)
+      elic_start(var_names = "var1", var_types = "p", elic_types = "1", experts = 1:2)
     Condition
       Error in `elic_start()`:
       ! Incorrect value for `experts`:

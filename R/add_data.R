@@ -202,9 +202,13 @@ elic_add_data <- function(x,
   # Prepare column names and set them
   col_names <- get_col_names(x$var_names,
                              x$elic_types)
-  check_columns(data,
-                col_names)
+  check_columns(data, col_names)
   colnames(data) <- col_names
+
+  # If necessary, fix element order for each variable
+  data <- fix_var_order(data,
+                        var_names = x$var_names,
+                        elic_types = x$elic_types)
 
   # Add data to the given round
   obj_data <- x$data[[round]]
@@ -373,6 +377,88 @@ clean_gs_data <- function(x) {
     # decimal separators, or if someone omit the leading zero on a decimal
     # number, these columns are imported as character
     dplyr::mutate(dplyr::across(!1, as.numeric))
+}
+
+
+#' Fix variable order
+#'
+#' Sometimes values are not in the correct order _min_ _max_ _best_. This
+#' function checks the order for each variable and row that are a three or four
+#' points estimation and, if necessary, reorders the values. It also raises a
+#' warn with information on which variable/s and row/s that has/have been
+#' reordered.
+#'
+#' @param x tibble with the data.
+#' @param var_names character vector with the variable names.
+#' @param elic_types character string with the elicitation types.
+#'
+#' @return The reordered tibble. Also a warn with information on which
+#' variable/s and row/s that has/have been reordered.
+#' @noRd
+#'
+#' @author Sergio Vignali
+fix_var_order <- function(x,
+                          var_names,
+                          elic_types) {
+
+  # Only 3p and 4p elicitation types should be checked
+  idx_vars <- elic_types != "1p"
+  vars <- var_names[idx_vars]
+
+  for (i in seq_along(vars)) {
+    idx_cols <- grepl(vars[i], colnames(x))
+
+    # The confidence value should not be reordered
+    if (sum(idx_cols) == 4) {
+      idx_cols[length(idx_cols)] <- FALSE
+    }
+
+    idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
+
+    if (sum(idx_rows) > 0) {
+      x[, idx_cols] <- apply(x[, idx_cols], 1, min_max_best) |>
+        t()
+
+      ids <- dplyr::pull(x, 1)[which(idx_rows)]
+
+      warn <- "Reordered {.cls id} {.val {ids}} of the variable \\
+               {.field {vars[i]}} according to the order {.val min-max-best}"
+
+      cli::cli_warn(c("!" = warn))
+    }
+  }
+  x
+}
+
+#' Min max best
+#'
+#' Given a vector of three values, the function returns the same vector
+#' reordered following the sequence min-max-best.
+#'
+#' @param x numeric vector of three elements with the values to be reordered.
+#'
+#' @return A vector with the reordered values.
+#' @noRd
+#'
+#' @author Sergio Vignali
+min_max_best <- function(x) {
+  c(min(x), max(x), median(x))
+}
+
+#' Is min max best
+#'
+#' The function checks if the elements of a vector are in the order
+#' min-max-best.
+#'
+#' @param x numeric vector of three elements to be checked.
+#'
+#' @return A logical value with `TRUE` if the elements of the vector are in the
+#' order min-max-best, `FALSE` otherwise.
+#' @noRd
+#'
+#' @author Sergio Vignali
+is_not_min_max_best <- function(x) {
+  !all(x == min_max_best(x))
 }
 
 #' Add NAs to data
