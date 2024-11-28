@@ -23,6 +23,7 @@
 #' @importFrom openxlsx read.xlsx
 #' @importFrom rlang .data
 #' @importFrom rlang caller_env
+#' @importFrom stats median
 #' @importFrom stats na.omit
 #' @importFrom stats setNames
 #' @importFrom stringr str_split_1
