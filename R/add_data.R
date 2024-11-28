@@ -205,6 +205,11 @@ elic_add_data <- function(x,
   check_columns(data, col_names)
   colnames(data) <- col_names
 
+  # If necessary, fix element order for each variable
+  data <- fix_var_order(data,
+                        var_names = x$var_names,
+                        elic_types = x$elic_types)
+
   # Add data to the given round
   obj_data <- x$data[[round]]
   if (round == 2 && is.null(x$data[[1]])) {
@@ -374,6 +379,24 @@ clean_gs_data <- function(x) {
     dplyr::mutate(dplyr::across(!1, as.numeric))
 }
 
+
+#' Fix variable order
+#'
+#' Sometimes values are not in the correct order _min_ _max_ _best_. This
+#' function checks the order for each variable and row that are a three or four
+#' points estimation and, if necessary, reorders the values. It also raises a
+#' warn with information on which variable/s and row/s that has/have been
+#' reordered.
+#'
+#' @param x tibble with the data.
+#' @param var_names character vector with the variable names.
+#' @param elic_types character string with the elicitation types.
+#'
+#' @return The reordered tibble. Also a warn with information on which
+#' variable/s and row/s that has/have been reordered.
+#' @noRd
+#'
+#' @author Sergio Vignali
 fix_var_order <- function(x,
                           var_names,
                           elic_types) {
@@ -398,9 +421,8 @@ fix_var_order <- function(x,
 
       ids <- dplyr::pull(x, 1)[which(idx_rows)]
 
-      warn <- "Variable {.field {vars[i]}} for {.cls id} {.val {ids}} \\
-               w{?as/ere} not in the order {.field min}, {.field max}, and \\
-               {.field best}, {?it/they} ha{?s/ve} been reordered."
+      warn <- "Reordered {.cls id} {.val {ids}} of the variable \\
+               {.field {vars[i]}} according to the order {.val min-max-best}"
 
       cli::cli_warn(c("!" = warn))
     }
@@ -408,10 +430,33 @@ fix_var_order <- function(x,
   x
 }
 
+#' Min max best
+#'
+#' Given a vector of three values, the function returns the same vector
+#' reordered following the sequence min-max-best.
+#'
+#' @param x numeric vector of three elements with the values to be reordered.
+#'
+#' @return A vector with the reordered values.
+#' @noRd
+#'
+#' @author Sergio Vignali
 min_max_best <- function(x) {
   c(min(x), max(x), median(x))
 }
 
+#' Is min max best
+#'
+#' The function checks if the elements of a vector are in the order
+#' min-max-best.
+#'
+#' @param x numeric vector of three elements to be checked.
+#'
+#' @return A logical value with `TRUE` if the elements of the vector are in the
+#' order min-max-best, `FALSE` otherwise.
+#' @noRd
+#'
+#' @author Sergio Vignali
 is_not_min_max_best <- function(x) {
   !all(x == min_max_best(x))
 }
