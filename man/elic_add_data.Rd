@@ -101,7 +101,10 @@ When data are added to the \code{elicit} object, first names are standardised by
 converting capital letters to lower case, and by removing any whitespaces and
 punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
-process never reaches the \code{elicit} object.
+process never reaches the \code{elicit} object. For three and four points
+elicitation processes, the order of the values is checked for each expert. If
+it is not \emph{min-max-best}, the values are swaped accordingly and a informative
+warn is raised.
 
 If the data are imported from \emph{Google Sheets}, \code{elic_add_data()} performs
 additional data cleaning operations. This is relevant when data are collected

@@ -69,7 +69,10 @@
 #' converting capital letters to lower case, and by removing any whitespaces and
 #' punctuation. Then, data are anonymised by converting names to short sha1
 #' hashes. In this way, sensible information collected during the elicitation
-#' process never reaches the `elicit` object.
+#' process never reaches the `elicit` object. For three and four points
+#' elicitation processes, the order of the values is checked for each expert. If
+#' it is not _min-max-best_, the values are swaped accordingly and a informative
+#' warn is raised.
 #'
 #' If the data are imported from _Google Sheets_, `elic_add_data()` performs
 #' additional data cleaning operations. This is relevant when data are collected
@@ -442,7 +445,7 @@ fix_var_order <- function(x,
 #'
 #' @author Sergio Vignali
 min_max_best <- function(x) {
-  c(min(x), max(x), median(x))
+  c(min(x), max(x), stats::median(x))
 }
 
 #' Is min max best
