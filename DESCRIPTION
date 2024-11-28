@@ -9,11 +9,12 @@ Authors@R: c(
     person("Stefano", "Canessa", "crewdecisions@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0002-0932-826X"))
     person("University of Bern", role = c("fnd"))
-)
+    )
 Description: Elicitr is an R package, used to aggregate elicitation data. 
     The package is in active development and will implement 
     functions based on two formal elicitation methods. You provide 
     the data, and elicitr transforms them into easily readable graphics.
+License: GPL (>= 3)
 URL: https://github.com/orgs/CREWdecisions/elicitr
 BugReports: https://github.com/CREWdecisions/elicitr/issues
 Encoding: UTF-8
