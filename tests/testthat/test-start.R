@@ -13,37 +13,37 @@ test_that("Errors", {
                              experts = 3),
                   error = TRUE)
   # check_arg_types()----
-  # When 1 variable type is not allowed
+  # When 1 short code for var_types is not allowed
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "pqR",
-                             elic_types= "1",
+                             elic_types = "1",
                              experts = 3),
                   error = TRUE)
-  # When 2 variable types are not allowed but have the same short code
+  # When 1 short code for var_types is not allowed and is repeated twice
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "apa",
                              elic_types= "1",
                              experts = 3),
                   error = TRUE)
-  # When 2 variable types are not allowed and have different short codes
+  # When 2 short codes for var_types are not allowed
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "pqG",
                              elic_types= "1",
                              experts = 3),
                   error = TRUE)
-  # When 1 estimate type is not allowed
+  # When one short code for elic_types is not allowed
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "p",
                              elic_types = "123",
                              experts = 3),
                   error = TRUE)
-  # When 2 estimate types are not allowed but have the same short code
+  # When 1 short code for elic_types is not allowed and is repeated twice
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "p",
                              elic_types = "232",
                              experts = 3),
                   error = TRUE)
-  # When 2 estimate types are not allowed and have different short codes
+  # When 2 short codes for elic_types are not allowed
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "p",
                              elic_types = "1237",

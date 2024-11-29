@@ -95,7 +95,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names` and 2 short codes for `var_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -106,7 +106,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names` and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -117,7 +117,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -128,7 +128,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names` and 2 short codes for `var_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -139,7 +139,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names` and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -150,7 +150,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
@@ -161,7 +161,7 @@
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 

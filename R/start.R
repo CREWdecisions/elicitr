@@ -225,7 +225,7 @@ check_arg_mism <- function(var_names,
   if (raise_error) {
     cli::cli_abort(c("Mismatch between function arguments:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::read_data}."),
+                     "i" = "See {.fn elicitr::elic_start}."),
                    call = rlang::caller_env())
   }
 }
