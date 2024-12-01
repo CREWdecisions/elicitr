@@ -123,9 +123,6 @@ test_that("Raises warns", {
 
   # Not all id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
-  y <- elic_add_data(x, data_source = round_1[1:3, ],
-                     round = 1, verbose = FALSE) |>
-    suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2[1:4, ],
                                        round = 2, verbose = FALSE))
   expect_identical(as.numeric(out$data$round_2[nrow(out$data$round_2), ]),

@@ -104,7 +104,7 @@
       i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
       Error in `elic_add_data()`:
       ! Dataset for "Round 2" has 1 <id> not present in "Round 1" and 2 entries with NAs. Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" are "06d2130".
+      x The <id> not present in "Round 1" is "06d2130".
       i Check raw data.
 
 ---
@@ -189,9 +189,9 @@
       out <- elic_add_data(x, data_source = z, round = 1, verbose = FALSE)
     Condition
       Warning:
-      ! Reordered <id> "5ac97e0" and "e78cbf4" of the variable var2 according to the order "min-max-best"
+      ! Reordered <id> "5ac97e0" and "e78cbf4" for the variable var2 according to the order "min-max-best"
       Warning:
-      ! Reordered <id> "3d32ab9" of the variable var3 according to the order "min-max-best"
+      ! Reordered <id> "3d32ab9" for the variable var3 according to the order "min-max-best"
 
 # Raises info
 

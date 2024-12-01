@@ -424,7 +424,7 @@ fix_var_order <- function(x,
 
       ids <- dplyr::pull(x, 1)[which(idx_rows)]
 
-      warn <- "Reordered {.cls id} {.val {ids}} of the variable \\
+      warn <- "Reordered {.cls id} {.val {ids}} for the variable \\
                {.field {vars[i]}} according to the order {.val min-max-best}"
 
       cli::cli_warn(c("!" = warn))
@@ -541,10 +541,10 @@ omogenise_datasets <- function(x, data) {
 
         missing <- setdiff(data$id, x$data$round_1$id)
         text <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
-               present in {.val Round 1} and {.val {n_diff}} entries with \\
-               NAs. Automatic match between the two datasets is not possible:"
-        error = "The {.cls id} not present in {.val Round 1} are \\
-               {.val {missing}}."
+                 present in {.val Round 1} and {.val {n_diff}} entries with \\
+                 NAs. Automatic match between the two datasets is not possible:"
+        error = "The {.cls id} not present in {.val Round 1} {?is/are} \\
+                 {.val {missing}}."
         cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
                        call = rlang::caller_env())
       }
