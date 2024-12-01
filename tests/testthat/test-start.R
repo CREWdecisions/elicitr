@@ -22,13 +22,13 @@ test_that("Errors", {
   # When 1 short code for var_types is not allowed and is repeated twice
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "apa",
-                             elic_types= "1",
+                             elic_types = "1",
                              experts = 3),
                   error = TRUE)
   # When 2 short codes for var_types are not allowed
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                              var_types = "pqG",
-                             elic_types= "1",
+                             elic_types = "1",
                              experts = 3),
                   error = TRUE)
   # When one short code for elic_types is not allowed
@@ -51,45 +51,45 @@ test_that("Errors", {
                   error = TRUE)
   # check_arg_mism()----
   # When there are less variables than variable types
-  expect_snapshot(elic_start(var_names = c("var1"),
-                             var_types = c("pR"),
-                             elic_types = c("1"),
+  expect_snapshot(elic_start(var_names = "var1",
+                             var_types = "pR",
+                             elic_types = "1",
                              experts = 3),
                   error = TRUE)
   # When there are less variables than estimate types
-  expect_snapshot(elic_start(var_names = c("var1"),
-                             var_types = c("p"),
-                             elic_types = c("13"),
+  expect_snapshot(elic_start(var_names = "var1",
+                             var_types = "p",
+                             elic_types = "13",
                              experts = 3),
                   error = TRUE)
   # When there are less variables than variable types and estimate types
-  expect_snapshot(elic_start(var_names = c("var1"),
-                             var_types = c("pR"),
-                             elic_types = c("13"),
+  expect_snapshot(elic_start(var_names = "var1",
+                             var_types = "pR",
+                             elic_types = "13",
                              experts = 3),
                   error = TRUE)
   # When there are more variables than variable types (elic_types is recycled)
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
-                             var_types = c("pN"),
-                             elic_types = c("1"),
+                             var_types = "pN",
+                             elic_types = "1",
                              experts = 3),
                   error = TRUE)
   # When there are more variables than estimate types (var_types is recycled)
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
-                             var_types = c("p"),
-                             elic_types = c("13"),
+                             var_types = "p",
+                             elic_types = "13",
                              experts = 3),
                   error = TRUE)
   # When there are more variables than variable types and estimate types
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
-                             var_types = c("pN"),
-                             elic_types = c("13"),
+                             var_types = "pN",
+                             elic_types = "13",
                              experts = 3),
                   error = TRUE)
-  # When variable names,variable types and estimate types are all not compatible
+  # When variable names and types and estimate types are all not compatible
   expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
-                             var_types = c("pN"),
-                             elic_types = c("1344"),
+                             var_types = "pN",
+                             elic_types = "1344",
                              experts = 3),
                   error = TRUE)
   # check_experts_arg()----
@@ -99,7 +99,7 @@ test_that("Errors", {
                              elic_types = "1",
                              experts = "3"),
                   error = TRUE)
-  # When experts is provided as vector
+  # When experts is provided as numeric vector
   expect_snapshot(elic_start(var_names = "var1",
                              var_types = "p",
                              elic_types = "1",

@@ -89,8 +89,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("1"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "pR", elic_types = "1", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -100,8 +99,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("p"), elic_types = c("13"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "p", elic_types = "13", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -111,8 +109,7 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("13"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "pR", elic_types = "13", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -122,8 +119,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("1"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "1",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -133,8 +130,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("p"),
-      elic_types = c("13"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_types = "13",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -144,8 +141,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("13"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "13",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
@@ -155,8 +152,8 @@
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("1344"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "1344",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
