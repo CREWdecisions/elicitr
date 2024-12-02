@@ -4,10 +4,23 @@
 \alias{plot.elicit}
 \title{Title}
 \usage{
-\method{plot}{elicit}(x, round, var, ..., filename = NULL, truth = NULL)
+\method{plot}{elicit}(
+  x,
+  round,
+  var,
+  ...,
+  group = FALSE,
+  group_colour = "orange",
+  truth = NULL,
+  truth_colour = "red",
+  colour = "purple",
+  point_size = 4,
+  line_width = 1.5,
+  theme = NULL
+)
 }
 \arguments{
-\item{truth}{}
+\item{theme}{}
 }
 \description{
 Title
