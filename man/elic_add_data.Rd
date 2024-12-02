@@ -167,7 +167,7 @@ my_elicit
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other data helpers:
+Other data helpers: 
 \code{\link{elic_get_data}()}
 }
 \author{
