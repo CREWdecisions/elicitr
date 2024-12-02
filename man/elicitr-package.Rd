@@ -4,18 +4,14 @@
 \name{elicitr-package}
 \alias{elicitr}
 \alias{elicitr-package}
-\title{elicitr: A user friendly interface to aggregate elicitation data}
+\title{elicitr: What the Package Does (One Line, Title Case)}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Elicitr is an R package, used to aggregate elicitation data. The package is in active development and will implement functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.
+What the package does (one paragraph).
 }
-\seealso{
-Useful links:
-\itemize{
-  \item \url{https://github.com/orgs/CREWdecisions/elicitr}
-  \item Report bugs at \url{https://github.com/CREWdecisions/elicitr/issues}
-}
+\author{
+\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
 \keyword{internal}
