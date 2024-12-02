@@ -120,7 +120,7 @@ elic_get_data(my_elicit, round = 2, elic_types = "3")
 elic_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
-Other data helpers: 
+Other data helpers:
 \code{\link{elic_add_data}()}
 }
 \author{
