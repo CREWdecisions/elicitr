@@ -32,7 +32,6 @@ print.elicit <- function(x, ...) {
   cli::cli_li("Elicitation type{?s}: {.val {unique(x$elic_types)}}")
   cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
   cli::cli_li("Number of rounds: {.val {rounds}}")
-  cli::cli_text()
 
   invisible(x)
 }

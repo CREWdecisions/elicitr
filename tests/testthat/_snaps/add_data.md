@@ -220,5 +220,4 @@
       * Elicitation types: "1p", "3p", and "4p"
       * Number of experts: 6
       * Number of rounds: 2
-      
 
