@@ -119,6 +119,9 @@ get_type <- function(x, var, type) {
 
 # Checkers----
 check_trouth <- function(x, elic_type) {
+
+  n <- length(x)
+
   if (!is.list(x)) {
     error <- "{.arg truth} is a {.cls {class(x)}} but it should a named \\
               {.cls list}."
@@ -126,6 +129,11 @@ check_trouth <- function(x, elic_type) {
                      "x" = error,
                      "i" = "See {.fn elicitr::plot.elicit}"),
                    call = rlang::caller_env())
+  } else {
+
+    if (elic_type == "1p") {
+
+    }
   }
 }
 

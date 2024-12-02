@@ -111,7 +111,7 @@ elic_get_data <- function(x,
 
   idx <- c(TRUE, grepl(pattern, colnames(x$data[[round]][, -1])))
 
-  return(x$data[[round]][, idx])
+  x$data[[round]][, idx]
 }
 
 # Checkers----
