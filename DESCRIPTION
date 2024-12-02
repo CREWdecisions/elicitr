@@ -2,25 +2,25 @@ Package: elicitr
 Title: A user friendly interface to aggregate elicitation data
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Sergio", "Vignali", "crewdecisions@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-3390-5442"))
-    person("Maude", "Vernet", "crewdecisions@gmail.com", role = "aut",
-           comment = c(ORCID = "0009-0003-0907-5279"))
-    person("Stefano", "Canessa", "crewdecisions@gmail.com", role = "aut",
-           comment = c(ORCID = "0000-0002-0932-826X"))
+    person("Sergio", "Vignali", email = "crewdecisions@gmail.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3390-5442")),
+    person("Maude", "Vernet", role = "aut",
+           comment = c(ORCID = "0009-0003-0907-5279")),
+    person("Stefano", "Canessa", role = "aut",
+           comment = c(ORCID = "0000-0002-0932-826X")),
     person("University of Bern", role = c("fnd"))
     )
-Description: Elicitr is an R package, used to aggregate elicitation data. 
-    The package is in active development and will implement 
-    functions based on two formal elicitation methods. You provide 
-    the data, and elicitr transforms them into easily readable graphics.
+Description: Elicitr is an R package, used to aggregate elicitation data. The 
+    package is in active development and will implement functions based on two
+    formal elicitation methods. You provide the data, and elicitr transforms
+    them into easily readable graphics.
 License: GPL (>= 3)
 URL: https://github.com/orgs/CREWdecisions/elicitr
 BugReports: https://github.com/CREWdecisions/elicitr/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Imports: 
+Imports:
     cli,
     digest,
     dplyr,
@@ -39,6 +39,6 @@ Suggests:
     testthat (>= 3.0.0),
     withr (>= 3.0.1)
 Config/testthat/edition: 3
-Depends: 
+Depends:
     R (>= 4.2.0)
 LazyData: true
