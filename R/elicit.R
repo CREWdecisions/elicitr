@@ -34,20 +34,5 @@ print.elicit <- function(x, ...) {
   cli::cli_li("Number of rounds: {.val {rounds}}")
   cli::cli_text()
 
-  if (rounds > 0) {
-    cli::style_underline("Round 1") |>
-      cli::col_magenta() |>
-      cli::cli_text()
-    print(x$data$round_1)
-  }
-
-  if (rounds == 2) {
-    cli::cli_text()
-    cli::style_underline("Round 2") |>
-      cli::col_magenta() |>
-      cli::cli_text()
-    print(x$data$round_2)
-  }
-
   invisible(x)
 }

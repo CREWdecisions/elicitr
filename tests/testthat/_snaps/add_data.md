@@ -104,7 +104,7 @@
       i Check raw data and if you want to update the dataset use `elicitr::elic_add_data()` with `overwrite = TRUE`.
       Error in `elic_add_data()`:
       ! Dataset for "Round 2" has 1 <id> not present in "Round 1" and 2 entries with NAs. Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" are "06d2130".
+      x The <id> not present in "Round 1" is "06d2130".
       i Check raw data.
 
 ---
@@ -189,9 +189,9 @@
       out <- elic_add_data(x, data_source = z, round = 1, verbose = FALSE)
     Condition
       Warning:
-      ! Reordered <id> "5ac97e0" and "e78cbf4" of the variable var2 according to the order "min-max-best"
+      ! Reordered <id> "5ac97e0" and "e78cbf4" for the variable var2 according to the order "min-max-best"
       Warning:
-      ! Reordered <id> "3d32ab9" of the variable var3 according to the order "min-max-best"
+      ! Reordered <id> "3d32ab9" for the variable var3 according to the order "min-max-best"
 
 # Raises info
 
@@ -221,28 +221,4 @@
       * Number of experts: 6
       * Number of rounds: 2
       
-      Round 1
-    Output
-      # A tibble: 6 x 9
-        id     cat_best dog_min dog_max dog_best fish_min fish_max fish_best fish_conf
-        <chr>     <int>   <int>   <int>    <int>    <dbl>    <dbl>     <dbl>     <int>
-      1 5ac97~        1      20      24       22     0.43     0.83      0.73        94
-      2 e5120~        0       7      10        9     0.67     0.87      0.77        69
-      3 e78cb~        0      10      15       12     0.65     0.95      0.85        79
-      4 9fafb~       -7       4      12        9     0.44     0.84      0.64        89
-      5 3cc9c~       -5      13      18       16     0.38     0.88      0.68        56
-      6 3d32a~        3      20      26       25     0.35     0.85      0.65        89
-    Message
-      
-      Round 2
-    Output
-      # A tibble: 6 x 9
-        id     cat_best dog_min dog_max dog_best fish_min fish_max fish_best fish_conf
-        <chr>     <int>   <int>   <int>    <int>    <dbl>    <dbl>     <dbl>     <int>
-      1 5ac97~        0      11      18       15     0.52     0.82      0.72        72
-      2 e5120~       -2      14      18       15     0.55     0.85      0.75        97
-      3 e78cb~       -2      15      21       18     0.62     0.82      0.72        72
-      4 9fafb~       -4      11      15       12     0.52     0.82      0.72        88
-      5 3cc9c~        1      15      20       17     0.58     0.78      0.68        92
-      6 3d32a~        1      18      23       20     0.66     0.86      0.76        80
 

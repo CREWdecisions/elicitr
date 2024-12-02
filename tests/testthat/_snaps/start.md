@@ -89,79 +89,76 @@
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("1"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "pR", elic_types = "1", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names` and 2 short codes for `var_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("p"), elic_types = c("13"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "p", elic_types = "13", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names` and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1"), var_types = c("pR"), elic_types = c("13"),
-      experts = 3)
+      elic_start(var_names = "var1", var_types = "pR", elic_types = "13", experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 1 value for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("1"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "1",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names` and 2 short codes for `var_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("p"),
-      elic_types = c("13"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "p", elic_types = "13",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names` and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("13"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "13",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 
     Code
-      elic_start(var_names = c("var1", "var2", "var3"), var_types = c("pN"),
-      elic_types = c("1344"), experts = 3)
+      elic_start(var_names = c("var1", "var2", "var3"), var_types = "pN", elic_types = "1344",
+      experts = 3)
     Condition
       Error in `elic_start()`:
       ! Mismatch between function arguments:
       x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`.
-      i See `elicitr::read_data()`.
+      i See `elicitr::elic_start()`.
 
 ---
 

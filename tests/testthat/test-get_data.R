@@ -84,7 +84,7 @@ test_that("Output", {
 test_that("Warnings", {
   obj <- create_elicit_obj()
 
-  # Always the first of the optional arguments is used
+  # Always the first optional arguments is used
   expect_snapshot(out <- elic_get_data(obj, round = 1, var = "var1",
                                        elic_types = "4"))
   expect_identical(out, obj$data$round_1[, 1:2])
