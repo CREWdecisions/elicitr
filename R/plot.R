@@ -88,8 +88,8 @@ elic_plot <- function(x,
 
   data <- elic_get_data(x, round = round, var = var)
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
-  elic_type <- get_type(x, var, "elic_types")
-  var_type <- get_type(x, var, "var_types")
+  elic_type <- get_type(x, var, "elic")
+  var_type <- get_type(x, var, "var")
 
   p <- ggplot2::ggplot(data) +
     ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
@@ -136,17 +136,28 @@ elic_plot <- function(x,
       best <- data$best
       conf <- data$conf
 
-      var_min_scaled <- best - (best - data$min) * (scale_conf / (conf))
-      var_max_scaled <- best + (data$max - best) * (scale_conf / (conf))
+      var_min_scaled <- best - (best - data$min) * (scale_conf / conf)
+      var_max_scaled <- best + (data$max - best) * (scale_conf / conf)
+
+      if (var_type == "p") {
+
+        if (any(var_min_scaled < 0) || any(var_max_scaled > 1)) {
+          var_min_scaled <- pmax(0, pmin(1, var_min_scaled))
+          var_max_scaled <- pmax(0, pmin(1, var_max_scaled))
+          warn <- "Some values have been constrained to be between {.val {0}} \\
+                   and {.val {1}}"
+          cli::cli_warn(c("!" = warn))
+        }
+      }
 
       data$min <- var_min_scaled
       data$max <- var_max_scaled
 
       if (!is.null(truth)) {
         truth_min_scaled <- truth$best - (truth$best - truth$min) *
-          (scale_conf / (truth$conf))
+          (scale_conf / truth$conf)
         truth_max_scaled <- truth$best + (truth$max - truth$best) *
-          (scale_conf / (truth$conf))
+          (scale_conf / truth$conf)
         truth$min <- truth_min_scaled
         truth$max <- truth_max_scaled
       }
@@ -215,7 +226,7 @@ elic_plot <- function(x,
 
 # Helpers----
 get_type <- function(x, var, type) {
-  x[[type]][obj$var_names == var]
+  x[[paste0(type, "_types")]][obj$var_names == var]
 }
 
 # Checkers----
