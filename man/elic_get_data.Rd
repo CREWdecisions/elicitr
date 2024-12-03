@@ -94,7 +94,7 @@ my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  elic_add_data(x, data_source = round_1, round = 1) |>
+  elic_add_data(data_source = round_1, round = 1) |>
   elic_add_data(data_source = round_2, round = 2)
 
 # Get all data from round 1
@@ -120,7 +120,7 @@ elic_get_data(my_elicit, round = 2, elic_types = "3")
 elic_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
-Other data helpers:
+Other data helpers: 
 \code{\link{elic_add_data}()}
 }
 \author{
