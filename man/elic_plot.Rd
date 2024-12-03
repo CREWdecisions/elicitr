@@ -50,10 +50,10 @@ function.}
 
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 
-\item{theme}{a \code{\link[=ggplot2]{theme}} function to overwrite the default theme.}
+\item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default theme.}
 }
 \value{
-Invisibly a \code{\link[=ggplot2]{ggplot}} object.
+Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \description{
 Plot elicitation data for a specific round and variable.
@@ -81,26 +81,26 @@ my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
 
 # Plot the elicitation data for the first round and the variable var1 (only
 # the best estimate)
-plot.elicit(my_elicit, round = 1, var = "var1")
+elic_plot(my_elicit, round = 1, var = "var1")
 
 # Plot the elicitation data for the first round and the variable var2 (best
 # estimate with min and max errors)
-plot.elicit(my_elicit, round = 1, var = "var2")
+elic_plot(my_elicit, round = 1, var = "var2")
 
 # Plot the elicitation data for the first round and the variable var3 (best
 # estimate with min and max errors rescaled to the confidence value)
-plot.elicit(my_elicit, round = 1, var = "var3")
+elic_plot(my_elicit, round = 1, var = "var3")
 
 # Add the group mean
-plot.elicit(my_elicit, round = 1, var = "var3", group = TRUE)
+elic_plot(my_elicit, round = 1, var = "var3", group = TRUE)
 
 # Add the true value
-plot.elicit(my_elicit, round = 1, var = "var3",
-            truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
+elic_plot(my_elicit, round = 1, var = "var3",
+          truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 
 # Overwrite the default theme
-plot.elicit(my_elicit, round = 1, var = "var3",
-            theme = ggplot2::theme_classic())
+elic_plot(my_elicit, round = 1, var = "var3",
+          theme = ggplot2::theme_classic())
 }
 \author{
 Sergio Vignali and Stefano Canessa

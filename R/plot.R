@@ -11,7 +11,7 @@
 #' @param colour character string, the colour of estimated values.
 #' @param point_size numeric, the size of the points.
 #' @param line_width numeric, the width of the lines.
-#' @param theme a [`theme`][`ggplot2`] function to overwrite the default theme.
+#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default theme.
 #' @inheritParams elic_add_data
 #'
 #' @details
@@ -25,7 +25,7 @@
 #' _three points elicitation_ estimate, the `conf` element is also required. The
 #' `conf` element is used to rescale the `min` and `max` values.
 #'
-#' @return Invisibly a [`ggplot`][`ggplot2`] object.
+#' @return Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @author Sergio Vignali and Stefano Canessa
@@ -42,26 +42,26 @@
 #'
 #' # Plot the elicitation data for the first round and the variable var1 (only
 #' # the best estimate)
-#' plot.elicit(my_elicit, round = 1, var = "var1")
+#' elic_plot(my_elicit, round = 1, var = "var1")
 #'
 #' # Plot the elicitation data for the first round and the variable var2 (best
 #' # estimate with min and max errors)
-#' plot.elicit(my_elicit, round = 1, var = "var2")
+#' elic_plot(my_elicit, round = 1, var = "var2")
 #'
 #' # Plot the elicitation data for the first round and the variable var3 (best
 #' # estimate with min and max errors rescaled to the confidence value)
-#' plot.elicit(my_elicit, round = 1, var = "var3")
+#' elic_plot(my_elicit, round = 1, var = "var3")
 #'
 #' # Add the group mean
-#' plot.elicit(my_elicit, round = 1, var = "var3", group = TRUE)
+#' elic_plot(my_elicit, round = 1, var = "var3", group = TRUE)
 #'
 #' # Add the true value
-#' plot.elicit(my_elicit, round = 1, var = "var3",
-#'             truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
+#' elic_plot(my_elicit, round = 1, var = "var3",
+#'           truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 #'
 #' # Overwrite the default theme
-#' plot.elicit(my_elicit, round = 1, var = "var3",
-#'             theme = ggplot2::theme_classic())
+#' elic_plot(my_elicit, round = 1, var = "var3",
+#'           theme = ggplot2::theme_classic())
 elic_plot <- function(x,
                       round,
                       var,
@@ -90,7 +90,7 @@ elic_plot <- function(x,
     mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
   ids <- data |>
-    dplyr::pull(id)
+    dplyr::pull(.data$id)
   elic_type <- get_type(x, var, "elic")
   var_type <- get_type(x, var, "var")
   idx <- seq_len(x$experts)
@@ -351,7 +351,7 @@ check_truth <- function(x, elic_type) {
 #'
 #' Custom theme for elicitation plots.
 #'
-#' @return A [`theme`][`ggplot2`] function.
+#' @return A [`theme`][`ggplot2::theme`] function.
 #' @noRd
 #'
 #' @author Sergio Vignali
