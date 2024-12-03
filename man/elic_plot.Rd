@@ -96,7 +96,7 @@ plot.elicit(my_elicit, round = 1, var = "var3", group = TRUE)
 
 # Add the true value
 plot.elicit(my_elicit, round = 1, var = "var3",
-            truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 80))
+            truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 
 # Overwrite the default theme
 plot.elicit(my_elicit, round = 1, var = "var3",

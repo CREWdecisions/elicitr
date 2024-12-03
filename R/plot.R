@@ -57,7 +57,7 @@
 #'
 #' # Add the true value
 #' plot.elicit(my_elicit, round = 1, var = "var3",
-#'             truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 80))
+#'             truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 #'
 #' # Overwrite the default theme
 #' plot.elicit(my_elicit, round = 1, var = "var3",
@@ -77,53 +77,87 @@ elic_plot <- function(x,
                       verbose = TRUE,
                       theme = NULL) {
 
+  # Check arguments
   check_elicit(x)
   check_round(round)
-  # TODO: it should check that only one variable is passed
-  check_var(x, var)
+  check_var_in_obj(x, var)
 
   if (is.null(theme)) {
     theme <- elic_theme()
   }
 
-  data <- elic_get_data(x, round = round, var = var)
+  data <- elic_get_data(x, round = round, var = var) |>
+    mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+  ids <- data |>
+    dplyr::pull(id)
   elic_type <- get_type(x, var, "elic")
   var_type <- get_type(x, var, "var")
-
-  p <- ggplot2::ggplot(data) +
-    ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
-                                               y = .data$id),
-                        colour = colour,
-                        size = point_size) +
-    ggplot2::ggtitle(paste("Round", round, "-", var))
-
-  if (!is.null(truth)) {
-    check_truth(truth, elic_type)
-
-    truth_data <- data.frame(id = "Truth",
-                             best = truth$best)
-
-    p <- p +
-      ggplot2::geom_point(data = truth_data,
-                          mapping = ggplot2::aes(x = .data$best,
-                                                 y = .data$id),
-                          colour = truth_colour,
-                          size = point_size)
-  }
+  idx <- seq_len(x$experts)
 
   if (group) {
 
-    group_data <- data.frame(id = "Group",
-                             best = mean(data$best))
+    ids <- c(ids, "Group")
 
-    p <- p +
-      ggplot2::geom_point(data = group_data,
-                          mapping = ggplot2::aes(x = .data$best,
-                                                 y = .data$id),
-                          colour = group_colour,
-                          size = point_size)
+    if (elic_type == "1p") {
+      data <- data |>
+        dplyr::add_row("id" = "Group",
+                       "best" = mean(data$best, na.rm = TRUE),
+                       "col" = "group")
+    } else if (elic_type == "3p") {
+      data <- data |>
+        dplyr::add_row("id" = "Group",
+                       "best" = mean(data$best, na.rm = TRUE),
+                       "min" = NA,
+                       "max" = NA,
+                       "col" = "group")
+    } else if (elic_type == "4p") {
+      data <- data |>
+        dplyr::add_row("id" = "Group",
+                       "best" = mean(data$best, na.rm = TRUE),
+                       "min" = NA,
+                       "max" = NA,
+                       "conf" = 100,
+                       "col" = "group")
+    }
   }
+
+  if (!is.null(truth)) {
+
+    ids <- c(ids, "Truth")
+
+    if (elic_type == "1p") {
+      data <- data |>
+        dplyr::add_row("id" = "Truth",
+                       "best" = truth$best,
+                       "col" = "truth")
+    } else if (elic_type == "3p") {
+      data <- data |>
+        dplyr::add_row("id" = "Truth",
+                       "best" = truth$best,
+                       "min" = truth$min,
+                       "max" = truth$max,
+                       "col" = "truth")
+    } else if (elic_type == "4p") {
+      data <- data |>
+        dplyr::add_row("id" = "Truth",
+                       "best" = truth$best,
+                       "min" = truth$min,
+                       "max" = truth$max,
+                       "conf" = truth$conf,
+                       "col" = "truth")
+    }
+  }
+
+  data <- data |>
+    mutate("id" = factor(.data$id, levels = ids))
+
+  p <- ggplot2::ggplot(data) +
+    ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
+                                               y = .data$id,
+                                               colour = .data$col),
+                        size = point_size) +
+    ggplot2::ggtitle(paste("Round", round, "-", var))
 
   if (elic_type %in% c("3p", "4p")) {
 
@@ -141,11 +175,11 @@ elic_plot <- function(x,
 
       if (var_type == "p") {
 
-        if (any(var_min_scaled < 0) || any(var_max_scaled > 1)) {
+        if (any(var_min_scaled[idx] < 0) || any(var_max_scaled[idx] > 1)) {
           var_min_scaled <- pmax(0, pmin(1, var_min_scaled))
           var_max_scaled <- pmax(0, pmin(1, var_max_scaled))
           warn <- "Some values have been constrained to be between {.val {0}} \\
-                   and {.val {1}}"
+                   and {.val {1}}."
           cli::cli_warn(c("!" = warn))
         }
       }
@@ -153,60 +187,25 @@ elic_plot <- function(x,
       data$min <- var_min_scaled
       data$max <- var_max_scaled
 
-      if (!is.null(truth)) {
-        truth_min_scaled <- truth$best - (truth$best - truth$min) *
-          (scale_conf / truth$conf)
-        truth_max_scaled <- truth$best + (truth$max - truth$best) *
-          (scale_conf / truth$conf)
-        truth$min <- truth_min_scaled
-        truth$max <- truth_max_scaled
-      }
-
       if (verbose) {
         cli::cli_alert_success("Rescaled min and max")
       }
+    }
+
+    if (group) {
+      data$min[data$id == "Group"] <- mean(data$min[idx], na.rm = TRUE)
+      data$max[data$id == "Group"] <- mean(data$max[idx], na.rm = TRUE)
     }
 
     p <- p +
       ggplot2::geom_errorbarh(data = data,
                               mapping = ggplot2::aes(y = .data$id,
                                                      xmin = .data$min,
-                                                     xmax = .data$max),
-                              colour = colour,
+                                                     xmax = .data$max,
+                                                     colour = .data$col),
                               position = "identity",
                               height = 0,
                               size = line_width)
-
-    if (!is.null(truth)) {
-
-      truth_data$min <- truth$min
-      truth_data$max <- truth$max
-
-      p <- p +
-        ggplot2::geom_errorbarh(data = truth_data,
-                                mapping = ggplot2::aes(y = .data$id,
-                                                       xmin = .data$min,
-                                                       xmax = .data$max),
-                                colour = truth_colour,
-                                position = "identity",
-                                height = 0,
-                                size = line_width)
-    }
-
-    if (group) {
-      group_data$min <- mean(data$min)
-      group_data$max <- mean(data$max)
-
-      p <- p +
-        ggplot2::geom_errorbarh(data = group_data,
-                                mapping = ggplot2::aes(y = .data$id,
-                                                       xmin = .data$min,
-                                                       xmax = .data$max),
-                                colour = group_colour,
-                                position = "identity",
-                                height = 0,
-                                size = line_width)
-    }
   }
 
   if (var_type == "p") {
@@ -221,15 +220,77 @@ elic_plot <- function(x,
 
   p +
     ggplot2::scale_y_discrete(name = "Expert") +
+    ggplot2::scale_colour_manual(values = c("experts" = colour,
+                                            "group" = group_colour,
+                                            "truth" = truth_colour)) +
     theme
 }
 
 # Helpers----
+#' Get type
+#'
+#' Get variable or elicitation type for the given variable.
+#'
+#' @param x an object of class `elicit`.
+#' @param var character string with the variable name.
+#' @param type character string, either `var` or `elic`.
+#'
+#' @return A character string with the variable or elicitation type.
+#' @noRd
+#'
+#' @author Sergio Vignali
 get_type <- function(x, var, type) {
-  x[[paste0(type, "_types")]][obj$var_names == var]
+  x[[paste0(type, "_types")]][x$var_names == var]
 }
 
 # Checkers----
+
+#' Check variable in object
+#'
+#' Check if the variable is present in the `elicit` object and if it is of
+#' length 1.
+#'
+#' @param x an object of class `elicit`.
+#' @param var character to check.
+#'
+#' @return An error if the variable is not present in the object or if it is
+#' not of length 1.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_var_in_obj <- function(x, var) {
+
+  if (length(var) > 1) {
+    error <- "Only one variable can be plotted at a time, you passed \\
+              {.val {length(var)}} variables."
+    cli::cli_abort(c("Incorrect value for {.arg var}:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::plot.elicit}."),
+                   call = rlang::caller_env())
+  }
+
+  if (!var %in% x$var_names) {
+    error <- "Variable {.val {var}} not found in the {.cls elicit} object."
+    cli::cli_abort(c("Invalid value for {.arg var}:",
+                     "x" = error,
+                     "i" = "Available variables are {.val {x$var_names}}."),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check truth argument
+#'
+#' Checks if the `truth` argument is a list with the correct elements for the
+#' given elicitation type.
+#'
+#' @param x the value to be checked.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return An error if `truth` is not a list or if it does not have the correct
+#' elements.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_truth <- function(x, elic_type) {
 
   n <- length(x)
@@ -284,6 +345,16 @@ check_truth <- function(x, elic_type) {
 }
 
 # Plot theme----
+
+
+#' Elic theme
+#'
+#' Custom theme for elicitation plots.
+#'
+#' @return A [`theme`][`ggplot2`] function.
+#' @noRd
+#'
+#' @author Sergio Vignali
 elic_theme <- function() {
   ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "none",
