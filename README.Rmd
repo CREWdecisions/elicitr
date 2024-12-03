@@ -34,7 +34,7 @@ You can install the development version of elicitr from GitHub with:
 
 ```r
 #install.packages("pak")
-pak::pak("sgvignali/elicitr")
+pak::pak("CREWdecisions/elicitr")
 ```
 
 ### Related work
