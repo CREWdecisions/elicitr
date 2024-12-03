@@ -1,4 +1,4 @@
-# Raises errors
+# Errors
 
     Code
       elic_get_data("abc", round = 1)
