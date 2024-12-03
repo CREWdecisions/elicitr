@@ -4,14 +4,15 @@
 #'
 #' @param var character string, the variable to be plotted.
 #' @param group logical, whether to plot the group mean.
-#' @param group_colour character string, the colour of the group mean.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
 #' @param truth list, the true value of the variable, see Details for more.
-#' @param truth_colour character string, the colour of the true value.
 #' @param colour character string, the colour of estimated values.
+#' @param group_colour character string, the colour of the group mean.
+#' @param truth_colour character string, the colour of the true value.
 #' @param point_size numeric, the size of the points.
 #' @param line_width numeric, the width of the lines.
-#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default theme.
+#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
+#' theme.
 #' @inheritParams elic_add_data
 #'
 #' @details
@@ -67,15 +68,15 @@ elic_plot <- function(x,
                       var,
                       ...,
                       group = FALSE,
-                      group_colour = "orange",
                       scale_conf = 100,
                       truth = NULL,
-                      truth_colour = "red",
                       colour = "purple",
+                      group_colour = "orange",
+                      truth_colour = "red",
                       point_size = 4,
                       line_width = 1.5,
-                      verbose = TRUE,
-                      theme = NULL) {
+                      theme = NULL,
+                      verbose = TRUE) {
 
   # Check arguments
   check_elicit(x)
@@ -205,7 +206,7 @@ elic_plot <- function(x,
                                                      colour = .data$col),
                               position = "identity",
                               height = 0,
-                              size = line_width)
+                              linewidth = line_width)
   }
 
   if (var_type == "p") {
@@ -363,7 +364,7 @@ elic_theme <- function() {
                                                       hjust = 0.5),
                    panel.grid.major.x = ggplot2::element_line(colour = "black",
                                                               linetype = 8,
-                                                              size = 0.1),
+                                                              linewidth = 0.1),
                    panel.grid.major.y = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
                    axis.title.y = ggplot2::element_text(size = 16,

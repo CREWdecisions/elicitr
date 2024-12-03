@@ -10,15 +10,15 @@ elic_plot(
   var,
   ...,
   group = FALSE,
-  group_colour = "orange",
   scale_conf = 100,
   truth = NULL,
-  truth_colour = "red",
   colour = "purple",
+  group_colour = "orange",
+  truth_colour = "red",
   point_size = 4,
   line_width = 1.5,
-  verbose = TRUE,
-  theme = NULL
+  theme = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -34,23 +34,24 @@ function.}
 
 \item{group}{logical, whether to plot the group mean.}
 
-\item{group_colour}{character string, the colour of the group mean.}
-
 \item{scale_conf}{numeric, the scale factor for the confidence interval.}
 
 \item{truth}{list, the true value of the variable, see Details for more.}
 
-\item{truth_colour}{character string, the colour of the true value.}
-
 \item{colour}{character string, the colour of estimated values.}
+
+\item{group_colour}{character string, the colour of the group mean.}
+
+\item{truth_colour}{character string, the colour of the true value.}
 
 \item{point_size}{numeric, the size of the points.}
 
 \item{line_width}{numeric, the width of the lines.}
 
-\item{verbose}{logical, if \code{TRUE} prints informative messages.}
+\item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
+theme.}
 
-\item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default theme.}
+\item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
 Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
