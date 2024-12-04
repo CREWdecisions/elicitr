@@ -88,8 +88,10 @@ elic_plot <- function(x,
   }
 
   data <- elic_get_data(x, round = round, var = var) |>
-    mutate(col = "experts")
+    dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
+    dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+
   ids <- data |>
     dplyr::pull(.data$id)
   elic_type <- get_type(x, var, "elic")

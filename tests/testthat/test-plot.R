@@ -287,6 +287,16 @@ test_that("Output", {
 
 })
 
+test_that("Rows with all NAs are removed", {
+  obj <- create_elicit_obj()
+  obj$data$round_1[5:6, 2] <- NA
+  obj$data$round_1[1:2, ] <- NA
+  p <- elic_plot(obj, round = 1, var = "var1", verbose = FALSE)
+  expect_identical(nrow(p$data), 4L)
+  expect_identical(dplyr::pull(p$data[5:6, 2]), rep(NA_integer_, 2))
+
+})
+
 test_that("get_type()", {
   obj <- create_elicit_obj()
   expect_identical(get_type(obj, "var1", "var"), "Z")
