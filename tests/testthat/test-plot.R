@@ -258,6 +258,8 @@ test_that("Output", {
   }
 
   # Colours and shapes----
+  test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
+                                                                  hjust = 1))
   p <- elic_plot(obj, round = 2, var = "var3",
                  truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
                  group = TRUE,
@@ -266,6 +268,7 @@ test_that("Output", {
                  truth_colour = "pink",
                  point_size = 3,
                  line_width = 2,
+                 theme = test_theme,
                  verbose = FALSE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
   n <- obj$experts
@@ -278,6 +281,10 @@ test_that("Output", {
   expect_identical(ld2$colour[n + 1], "brown")
   expect_identical(ld2$colour[n + 2], "pink")
   expect_identical(ld2$linewidth, rep(2, n + 2))
+  expect_identical(p$theme$plot.title$size, 14)
+  expect_identical(p$theme$plot.title$hjust, 1)
+  expect_null(p$theme$plot.face$hjust)
+
 })
 
 test_that("get_type()", {
