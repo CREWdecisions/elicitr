@@ -1,5 +1,5 @@
 # Test elic_add_data()----
-test_that("Raises errors ", {
+test_that("Errors ", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
                   var_types = "ZNp",
                   elic_types = "134",
@@ -73,7 +73,7 @@ test_that("Raises errors ", {
                   error = TRUE)
 })
 
-test_that("Raises warns", {
+test_that("Warnings", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
                   var_types = "ZNp",
                   elic_types = "134",
@@ -149,7 +149,7 @@ test_that("Raises warns", {
   expect_false(is_not_min_max_best(as.numeric(out$data$round_1[6, 6:8])))
 })
 
-test_that("Raises info", {
+test_that("Info", {
   x <- elic_start(var_names = c("var1", "var2", "var3"),
                   var_types = "ZNp",
                   elic_types = "134",
@@ -179,7 +179,7 @@ test_that("Raises info", {
   }
 })
 
-test_that("Output format", {
+test_that("Output", {
   # Column names are taken from the metadata and have the correct suffix
   x <- elic_start(var_names = c("cat", "dog", "fish"),
                   var_types = "ZNp",

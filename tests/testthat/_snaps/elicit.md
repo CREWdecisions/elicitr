@@ -18,5 +18,4 @@
       * Elicitation types: "4" and "3"
       * Number of experts: 4
       * Number of rounds: 0
-      
 

@@ -1,4 +1,4 @@
-# Raises errors 
+# Errors 
 
     Code
       elic_add_data(x, data_source = "test.csv", round = 1)
@@ -133,7 +133,7 @@
       x The <id> not present in "Round 1" are "06d2130", "6c074fa", "7aa9fc1", and "3b842bc".
       i Check raw data.
 
-# Raises warns
+# Warnings
 
     Code
       y <- elic_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
@@ -193,7 +193,7 @@
       Warning:
       ! Reordered <id> "3d32ab9" for the variable var3 according to the order "min-max-best"
 
-# Raises info
+# Info
 
     Code
       out <- elic_add_data(y, data_source = round_2, round = 2, verbose = FALSE)
@@ -207,7 +207,7 @@
     Message
       i The dataset in "Round 2" has 3 <id> not present in "Round 1". These <id> have been added to "Round 1" with NA values.
 
-# Output format
+# Output
 
     Code
       z
@@ -220,5 +220,4 @@
       * Elicitation types: "1p", "3p", and "4p"
       * Number of experts: 6
       * Number of rounds: 2
-      
 

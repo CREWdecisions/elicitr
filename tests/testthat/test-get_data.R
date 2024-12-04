@@ -1,4 +1,4 @@
-test_that("Raises errors", {
+test_that("Errors", {
   obj <- create_elicit_obj()
 
   # When x is not an elicit object

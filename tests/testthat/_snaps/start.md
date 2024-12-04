@@ -180,7 +180,7 @@
       x The value provided for `experts` has length 2, it should be a single number.
       See `elicitr::elic_start()`.
 
-# Output format
+# Output
 
     Code
       x <- elic_start(var_names = c("var1", "var2"), var_types = "pR", elic_types = "43",

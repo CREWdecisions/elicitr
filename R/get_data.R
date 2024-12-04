@@ -38,7 +38,7 @@
 #'                         var_types = "ZNp",
 #'                         elic_types = "134",
 #'                         experts = 6) |>
-#'   elic_add_data(x, data_source = round_1, round = 1) |>
+#'   elic_add_data(data_source = round_1, round = 1) |>
 #'   elic_add_data(data_source = round_2, round = 2)
 #'
 #' # Get all data from round 1
@@ -111,7 +111,7 @@ elic_get_data <- function(x,
 
   idx <- c(TRUE, grepl(pattern, colnames(x$data[[round]][, -1])))
 
-  return(x$data[[round]][, idx])
+  x$data[[round]][, idx]
 }
 
 # Checkers----
