@@ -13,15 +13,15 @@ proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https:
 
 ### Description
 
-elicitr is an R package, used to aggregate elicitation data.  
+elicitr is an R package used to standardize, visualize and aggregate data from expert elicitation.  
 The package is in active development and will implement functions based
 on two formal elicitation methods:
 
-- Continuous method  
-  Adapted from Hemming, V. et al. (2018) A practical guide to structured
+- Elicitation of continuous variables  
+  Adapted from Hemming, V. et al. (2018). A practical guide to structured
   expert elicitation using the IDEA protocol. Methods in Ecology and
   Evolution, 9(1), 169–180. <https://doi.org/10.1111/2041-210X.12857>
-- Categorical method  
+- Elicitation of categorical data  
   Adapted from Vernet, M. et al. (2024). Assessing invasion risks using
   EICAT-based expert elicitation: application to a conservation
   translocation. Biological Invasions, 26(8), 2707–2721.
@@ -36,7 +36,7 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
-### Related work
+### Similar packages
 
 - {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the
   Sheffield Elicitation Framework.
