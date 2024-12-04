@@ -187,7 +187,9 @@ elic_plot <- function(x,
                                                y = .data$id,
                                                colour = .data$col),
                         size = point_size) +
-    ggplot2::ggtitle(paste("Round", round, "-", var))
+    ggplot2::labs(title = paste("Round", round),
+                  x = var,
+                  y = "Expert")
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
@@ -202,16 +204,11 @@ elic_plot <- function(x,
 
   if (var_type == "p") {
     p <- p +
-      ggplot2::scale_x_continuous(name = var,
-                                  limits = c(0, 1),
+      ggplot2::scale_x_continuous(limits = c(0, 1),
                                   expand = c(0, 0))
-  } else {
-    p <- p +
-      ggplot2::scale_x_continuous(name = var)
   }
 
   p +
-    ggplot2::scale_y_discrete(name = "Expert") +
     ggplot2::scale_colour_manual(values = c("experts" = colour,
                                             "group" = group_colour,
                                             "truth" = truth_colour)) +
