@@ -9,8 +9,8 @@ elic_plot(
   round,
   var,
   ...,
-  group = FALSE,
   scale_conf = 100,
+  group = FALSE,
   truth = NULL,
   colour = "purple",
   group_colour = "orange",
@@ -32,9 +32,9 @@ elicitation round.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{group}{logical, whether to plot the group mean.}
-
 \item{scale_conf}{numeric, the scale factor for the confidence interval.}
+
+\item{group}{logical, whether to plot the group mean.}
 
 \item{truth}{list, the true value of the variable, see Details for more.}
 

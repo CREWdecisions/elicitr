@@ -3,8 +3,8 @@
 #' Plot elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
-#' @param group logical, whether to plot the group mean.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
+#' @param group logical, whether to plot the group mean.
 #' @param truth list, the true value of the variable, see Details for more.
 #' @param colour character string, the colour of estimated values.
 #' @param group_colour character string, the colour of the group mean.
@@ -67,8 +67,8 @@ elic_plot <- function(x,
                       round,
                       var,
                       ...,
-                      group = FALSE,
                       scale_conf = 100,
+                      group = FALSE,
                       truth = NULL,
                       colour = "purple",
                       group_colour = "orange",
@@ -153,40 +153,23 @@ elic_plot <- function(x,
   data <- data |>
     mutate("id" = factor(.data$id, levels = ids))
 
-  p <- ggplot2::ggplot(data) +
-    ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
-                                               y = .data$id,
-                                               colour = .data$col),
-                        size = point_size) +
-    ggplot2::ggtitle(paste("Round", round, "-", var))
-
   if (elic_type %in% c("3p", "4p")) {
 
     if (elic_type == "4p") {
 
       # Rescale min and max
-      var_min <- paste0(var, "_min")
-      var_max <- paste0(var, "_max")
-      var_conf <- paste0(var, "_conf")
-      best <- data$best
-      conf <- data$conf
-
-      var_min_scaled <- best - (best - data$min) * (scale_conf / conf)
-      var_max_scaled <- best + (data$max - best) * (scale_conf / conf)
+      data <- rescale_data(data, scale_conf)
 
       if (var_type == "p") {
 
-        if (any(var_min_scaled[idx] < 0) || any(var_max_scaled[idx] > 1)) {
-          var_min_scaled <- pmax(0, pmin(1, var_min_scaled))
-          var_max_scaled <- pmax(0, pmin(1, var_max_scaled))
+        if (any(data$min[idx] < 0) || any(data$max[idx] > 1)) {
+          data$min <- pmax(0, pmin(1, data$min))
+          data$max <- pmax(0, pmin(1, data$max))
           warn <- "Some values have been constrained to be between {.val {0}} \\
                    and {.val {1}}."
           cli::cli_warn(c("!" = warn))
         }
       }
-
-      data$min <- var_min_scaled
-      data$max <- var_max_scaled
 
       if (verbose) {
         cli::cli_alert_success("Rescaled min and max")
@@ -197,10 +180,18 @@ elic_plot <- function(x,
       data$min[data$id == "Group"] <- mean(data$min[idx], na.rm = TRUE)
       data$max[data$id == "Group"] <- mean(data$max[idx], na.rm = TRUE)
     }
+  }
 
+  p <- ggplot2::ggplot(data) +
+    ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
+                                               y = .data$id,
+                                               colour = .data$col),
+                        size = point_size) +
+    ggplot2::ggtitle(paste("Round", round, "-", var))
+
+  if (elic_type %in% c("3p", "4p")) {
     p <- p +
-      ggplot2::geom_errorbarh(data = data,
-                              mapping = ggplot2::aes(y = .data$id,
+      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = .data$id,
                                                      xmin = .data$min,
                                                      xmax = .data$max,
                                                      colour = .data$col),
@@ -242,6 +233,25 @@ elic_plot <- function(x,
 #' @author Sergio Vignali
 get_type <- function(x, var, type) {
   x[[paste0(type, "_types")]][x$var_names == var]
+}
+
+#' Rescale data
+#'
+#' Rescale the min and max values of the data to the confidence value.
+#'
+#' @param x a data.frame with the elicitation data.
+#' @param scale_conf numeric, the scale factor for the confidence interval.
+#'
+#' @return A data.frame with the rescaled min and max values.
+#' @noRd
+#'
+#' @author Sergio Vignali and Stefano Canessa
+rescale_data <- function(x, scale_conf) {
+
+  x$min <- x$best - (x$best - x$min) * scale_conf / x$conf
+  x$max <- x$best + (x$max - x$best) * scale_conf / x$conf
+
+  x
 }
 
 # Checkers----
