@@ -28,6 +28,7 @@ test_that("Info", {
 
 test_that("Output", {
   obj <- create_elicit_obj()
+  # 1p----
   # Plot for a variable with 1 point elicitation
   p <- elic_plot(obj, round = 2, var = "var1", verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
@@ -38,6 +39,7 @@ test_that("Output", {
   expect_identical(unique(p$data$col), "experts")
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), obj$data$round_2$id)
+  expect_identical(p$data$best, obj$data$round_2$var1_best)
 
   # Plot for a variable with 1 point elicitation and group
   p <- elic_plot(obj, round = 2, var = "var1", group = TRUE, verbose = FALSE)
@@ -49,6 +51,8 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group"))
+  expect_identical(p$data$best[7],
+                   mean(obj$data$round_2$var1_best, na.rm = TRUE))
 
   # Plot for a variable with 1 point elicitation and truth
   p <- elic_plot(obj, round = 2, var = "var1", truth = list(best = 0.8),
@@ -61,6 +65,7 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Truth"))
+  expect_identical(p$data$best[7], 0.8)
 
   # Plot for a variable with 1 point elicitation, group and truth
   p <- elic_plot(obj, round = 2, var = "var1", group = TRUE,
@@ -73,7 +78,11 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group", "Truth"))
+  expect_identical(p$data$best[7],
+                   mean(obj$data$round_2$var1_best, na.rm = TRUE))
+  expect_identical(p$data$best[8], 0.8)
 
+  # 3p----
   # Plot for a variable with 3 points elicitation
   p <- elic_plot(obj, round = 2, var = "var2", verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
@@ -85,6 +94,10 @@ test_that("Output", {
   expect_identical(unique(p$data$col), "experts")
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), obj$data$round_2$id)
+  for (i in seq_len(3)) {
+    expect_identical(dplyr::pull(p$data[, i + 1]),
+                     dplyr::pull(obj$data$round_2[, i + 2]))
+  }
 
   # Plot for a variable with 3 points elicitation and group
   p <- elic_plot(obj, round = 2, var = "var2", group = TRUE, verbose = FALSE)
@@ -97,10 +110,18 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group"))
+  for (i in seq_len(3)) {
+    # The mean function converts the column to double
+    expect_equal(dplyr::pull(p$data[-7, i + 1]),
+                 dplyr::pull(obj$data$round_2[-7, i + 2]))
+    expect_identical(dplyr::pull(p$data[7, i + 1]),
+                     mean(dplyr::pull(obj$data$round_2[, i + 2]), na.rm = TRUE))
+  }
 
   # Plot for a variable with 3 points elicitation and truth
+  truth_data <- list(min = 0.7, max = 0.9, best = 0.8)
   p <- elic_plot(obj, round = 2, var = "var2",
-                 truth = list(min = 0.7, max = 0.9, best = 0.8),
+                 truth = truth_data,
                  verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p$layers, 2)
@@ -111,10 +132,17 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Truth"))
+  for (i in seq_len(3)) {
+    # The mean function converts the column to double
+    expect_equal(dplyr::pull(p$data[-7, i + 1]),
+                 dplyr::pull(obj$data$round_2[-7, i + 2]))
+    expect_identical(dplyr::pull(p$data[7, i + 1]),
+                     truth_data[[i]])
+  }
 
   # Plot for a variable with 3 points elicitation, group and truth
   p <- elic_plot(obj, round = 2, var = "var2",
-                 truth = list(min = 0.7, max = 0.9, best = 0.8),
+                 truth = truth_data,
                  group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p$layers, 2)
@@ -125,9 +153,19 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group", "Truth"))
+  for (i in seq_len(3)) {
+    # The mean function converts the column to double
+    expect_equal(dplyr::pull(p$data[1:6, i + 1]),
+                 dplyr::pull(obj$data$round_2[1:6, i + 2]))
+    expect_identical(dplyr::pull(p$data[7, i + 1]),
+                     mean(dplyr::pull(obj$data$round_2[, i + 2]), na.rm = TRUE))
+    expect_identical(dplyr::pull(p$data[8, i + 1]),
+                     truth_data[[i]])
+  }
 
+  # 4p----
   # Plot for a variable with 4 points elicitation
-  p <- elic_plot(obj, round = 2, var = "var3", verbose = FALSE)
+  p <- elic_plot(obj, round = 2, var = "var3", scale_conf = 90, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p$layers, 2)
   expect_identical(class(p$layers[[1]]$geom)[1], "GeomPoint")
@@ -138,9 +176,18 @@ test_that("Output", {
   expect_identical(unique(p$data$col), "experts")
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), obj$data$round_2$id)
+  # Here data are rescaled
+  rescaled_data <- obj$data$round_2[, 6:9] |>
+    stats::setNames(c("min", "max", "best", "conf")) |>
+    rescale_data(scale_conf = 90)
+  for (i in seq_len(4)) {
+    expect_identical(dplyr::pull(p$data[, i + 1]),
+                     dplyr::pull(rescaled_data[, i]))
+  }
 
   # Plot for a variable with 4 points elicitation and group
-  p <- elic_plot(obj, round = 2, var = "var3", group = TRUE, verbose = FALSE)
+  p <- elic_plot(obj, round = 2, var = "var3", scale_conf = 90,
+                 group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p$layers, 2)
   expect_identical(class(p$layers[[1]]$geom)[1], "GeomPoint")
@@ -151,10 +198,20 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group"))
+  for (i in seq_len(4)) {
+    expect_equal(dplyr::pull(p$data[-7, i + 1]),
+                 dplyr::pull(rescaled_data[, i]))
+  }
+  for (i in seq_len(3)) {
+    expect_equal(dplyr::pull(p$data[7, i + 1]),
+                 mean(dplyr::pull(rescaled_data[, i]), na.rm = TRUE))
+  }
 
   # Plot for a variable with 4 points elicitation and truth
-  p <- elic_plot(obj, round = 2, var = "var3",
-                 truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
+  truth_data <- list(min = 0.7, max = 0.9, best = 0.8, conf = 100)
+  truth_data_rescaled <- rescale_data(truth_data, scale_conf = 90)
+  p <- elic_plot(obj, round = 2, var = "var3", scale_conf = 90,
+                 truth = truth_data,
                  verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p$layers, 2)
@@ -166,9 +223,16 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Truth"))
+    for (i in seq_len(4)) {
+    # The mean function converts the column to double
+    expect_equal(dplyr::pull(p$data[-7, i + 1]),
+                 dplyr::pull(rescaled_data[, i]))
+    expect_identical(dplyr::pull(p$data[7, i + 1]),
+                     truth_data_rescaled[[i]])
+  }
 
   # Plot for a variable with 4 points elicitation, group and truth
-  p <- elic_plot(obj, round = 2, var = "var3",
+  p <- elic_plot(obj, round = 2, var = "var3", scale_conf = 90,
                  truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
                  group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
@@ -181,8 +245,19 @@ test_that("Output", {
   expect_identical(unique(p$data$col), c("experts", "group", "truth"))
   expect_true(is.factor(p$data$id))
   expect_identical(levels(p$data$id), c(obj$data$round_2$id, "Group", "Truth"))
+  for (i in seq_len(4)) {
+    # The mean function converts the column to double
+    expect_equal(dplyr::pull(p$data[1:6, i + 1]),
+                 dplyr::pull(rescaled_data[, i]))
+    expect_identical(dplyr::pull(p$data[8, i + 1]),
+                     truth_data_rescaled[[i]])
+  }
+  for (i in seq_len(3)) {
+    expect_equal(dplyr::pull(p$data[7, i + 1]),
+                 mean(dplyr::pull(rescaled_data[, i]), na.rm = TRUE))
+  }
 
-  # Colours and shapes
+  # Colours and shapes----
   p <- elic_plot(obj, round = 2, var = "var3",
                  truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
                  group = TRUE,
