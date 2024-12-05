@@ -4,7 +4,7 @@
       elic_cont_plot("abc", round = 1, var = "var1")
     Condition
       Error in `elic_cont_plot()`:
-      ! Argument `x` must be an object of class <elicit>:
+      ! Argument `x` must be an object of class <elic_cont>:
       x An object of class <character> is invalid.
       See `elicitr::elic_cont_plot()`.
 
@@ -25,7 +25,7 @@
     Condition
       Error in `elic_cont_plot()`:
       ! Invalid value for `var`:
-      x Variable "var5" not found in the <elicit> object.
+      x Variable "var5" not found in the <elic_cont_plot> object.
       i Available variables are "var1", "var2", and "var3".
 
 ---
@@ -36,7 +36,7 @@
       Error in `elic_cont_plot()`:
       ! Incorrect value for `var`:
       x Only one variable can be plotted at a time, you passed 3 variables.
-      i See `elicitr::plot.elicit()`.
+      i See `elicitr::plot.elic_cont()`.
 
 # Warnings
 

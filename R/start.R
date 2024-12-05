@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_start()` initialises an `elicit`
+#' `elic_cont_start()` initialises an `elic_cont`
 #' object which stores important metadata for the data collected during the
 #' elicitation process.
 #'
@@ -63,7 +63,7 @@
 #' confidence estimates are provided.
 #'
 #'
-#' @return An object of class `elicit` binding metadata related to the
+#' @return An object of class `elic_cont` binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export
@@ -141,15 +141,15 @@ elic_cont_start <- function(var_names,
                  var_types,
                  elic_types)
 
-  obj <- new_elicit(var_names,
-                    var_types,
-                    elic_types,
-                    experts = experts,
-                    title)
+  obj <- new_elic_cont(var_names,
+                       var_types,
+                       elic_types,
+                       experts = experts,
+                       title)
 
   if (verbose) {
-    cli::cli_alert_success("{.code elicit} object for {.val {title}} \\
-                             correctly initialised")
+    cli::cli_alert_success("{.cls elic_cont} object for {.val {title}} \\
+                            correctly initialised")
   }
 
   obj

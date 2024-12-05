@@ -53,7 +53,7 @@
       Error in `elic_cont_add_data()`:
       ! Incorrect number of rows in dataset:
       x The dataset for "Round 1" contains 12 rows but are expected estimates from 6 experts.
-      i Check raw data or modify the <elicit> object with `obj$experts = 12` and then use `elicitr::elic_cont_add_data()` with `overwrite = TRUE`.
+      i Check raw data or modify the <elic_cont> object with `obj$experts = 12` and then use `elicitr::elic_cont_add_data()` with `overwrite = TRUE`.
 
 ---
 
@@ -61,7 +61,7 @@
       elic_cont_add_data("abc", data_source = round_1, round = 1)
     Condition
       Error in `elic_cont_add_data()`:
-      ! Argument `x` must be an object of class <elicit>:
+      ! Argument `x` must be an object of class <elic_cont>:
       x An object of class <character> is invalid.
       See `elicitr::elic_cont_add_data()`.
 

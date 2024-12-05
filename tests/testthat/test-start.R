@@ -112,7 +112,7 @@ test_that("Output", {
                                        var_types = "pR",
                                        elic_types = "43",
                                        experts = 3))
-  expect_s3_class(x, class = "elicit", exact = TRUE)
+  expect_s3_class(x, class = "elic_cont", exact = TRUE)
   # Variable names are recorded in the object
   expect_identical(x[["var_names"]], c("var1", "var2"))
   expect_type(x[["var_names"]], "character")

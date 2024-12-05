@@ -16,7 +16,7 @@ elic_cont_add_data(
 )
 }
 \arguments{
-\item{x}{an object of class \code{elicit}.}
+\item{x}{an object of class \code{elic_cont}.}
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
@@ -38,18 +38,18 @@ only when \code{data_source} is a path to a \emph{xlsx} file or when data are im
 from \emph{Google Sheets}.}
 
 \item{overwrite}{logical, whether to overwrite existing data already added to
-the \code{elicit} object.}
+the \code{elic_cont} object.}
 
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
-The provided object of class \code{elicit} updated with the data.
+The provided object of class \code{elic_cont} updated with the data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cont_add_data()} adds data to an \code{elicit}
-object from different sources.
+\code{elic_cont_add_data()} adds data to an \code{elic_cont} object from different
+sources.
 }
 \section{Data Format}{
 
@@ -57,9 +57,9 @@ object from different sources.
 Data are expected to have the name of the expert always as first column. The
 only exception is for data coming from \emph{Google Sheet} which can have an
 additional column with a timestamp. This column is automatically removed
-before the data are added to the \code{elicit} object (see "Data cleaning"). After
-the name there should be one or more blocks which follow the specifications
-below:
+before the data are added to the \code{elic_cont} object (see "Data cleaning").
+After the name there should be one or more blocks which follow the
+specifications below:
 
 \emph{One point elicitation}:
 \itemize{
@@ -91,17 +91,17 @@ will overwrite it according to the following convention:
 
 with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
 to build the column names is taken from the metadata available in the
-\code{elicit} object.
+\code{elic_cont} object.
 }
 
 \section{Data cleaning}{
 
 
-When data are added to the \code{elicit} object, first names are standardised by
-converting capital letters to lower case, and by removing any whitespaces and
-punctuation. Then, data are anonymised by converting names to short sha1
+When data are added to the \code{elic_cont} object, first names are standardised
+by converting capital letters to lower case, and by removing any whitespaces
+and punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
-process never reaches the \code{elicit} object. For three and four points
+process never reaches the \code{elic_cont} object. For three and four points
 elicitation processes, the order of the values is checked for each expert. If
 it is not \emph{min-max-best}, the values are swaped accordingly and a informative
 warn is raised.

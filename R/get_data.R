@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Get data from an `elicit` object.
+#' Get data from an `elic_cont` object.
 #'
 #' @inheritParams elic_cont_add_data
 #' @param var character string with the name of the variable or character vector
@@ -69,7 +69,7 @@ elic_cont_get_data <- function(x,
                                var_types = "all",
                                elic_types = "all") {
 
-  check_elicit(x)
+  check_elic_cont(x)
   check_round(round)
   check_var(x, var)
 
@@ -120,11 +120,12 @@ elic_cont_get_data <- function(x,
 #'
 #' Check the argument `var` for allowed values.
 #'
-#' @param x `elicit` object.
+#' @param x `elic_cont` object.
 #' @param var character with the name of the variable, or the word `all`.
 #'
-#' @return An error if `var` is not one of the variables of the `elicit` object,
-#' or `all`.
+#' @return An error if `var` is not one of the variables of the `elic_cont`
+#' object, or `all`.
+#'
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -180,14 +181,14 @@ check_optional_args <- function(var, var_types, elic_types) {
 #' Check type in object
 #'
 #' Check that the given variable or elicitation type/s is/are available in the
-#' `elicit` object.
+#' `elic_cont` object.
 #'
-#' @param obj an object of class `elicit`.
+#' @param obj an object of class `elic_cont`.
 #' @param x character string with the value to be checked.
 #' @param type character string, either `var_types` or `elic:types`.
 #'
 #' @return An error if the variable or elicitation type/s is/are not present in
-#' the `elicit` object.
+#' the `elic_cont` object.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -201,11 +202,11 @@ check_type_in_obj <- function(obj,
 
     if (type == "var_types") {
       error <- "Variable type{?s} {.val {diff}} not present in the \\
-                {.cls elicit} object."
+                {.cls elic_cont} object."
       info <- "Available variable type{?s} {?is/are} {.val {obj_types}}"
     } else {
       error <- "Elicitation type{?s} {.val {diff}} not present in the \\
-                {.cls elicit} object."
+                {.cls elic_cont} object."
       info <- "Available elicitation type{?s} {?is/are} {.val {obj_types}}"
     }
 

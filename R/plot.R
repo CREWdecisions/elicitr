@@ -82,7 +82,7 @@ elic_cont_plot <- function(x,
                            verbose = TRUE) {
 
   # Check arguments
-  check_elicit(x)
+  check_elic_cont(x)
   check_round(round)
   check_var_in_obj(x, var)
 
@@ -262,7 +262,7 @@ add_truth_data <- function(data, truth, elic_type) {
 #'
 #' Get variable or elicitation type for the given variable.
 #'
-#' @param x an object of class `elicit`.
+#' @param x an object of class `elic_cont_plot`.
 #' @param var character string with the variable name.
 #' @param type character string, either `var` or `elic`.
 #'
@@ -297,10 +297,10 @@ rescale_data <- function(x, s) {
 
 #' Check variable in object
 #'
-#' Check if the variable is present in the `elicit` object and if it is of
-#' length 1.
+#' Check if the variable is present in the `elic_cont_plot` object and if it is
+#' of length 1.
 #'
-#' @param x an object of class `elicit`.
+#' @param x an object of class `elic_cont_plot`.
 #' @param var character to check.
 #'
 #' @return An error if the variable is not present in the object or if it is
@@ -315,12 +315,13 @@ check_var_in_obj <- function(x, var) {
               {.val {length(var)}} variables."
     cli::cli_abort(c("Incorrect value for {.arg var}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::plot.elicit}."),
+                     "i" = "See {.fn elicitr::plot.elic_cont}."),
                    call = rlang::caller_env())
   }
 
   if (!var %in% x[["var_names"]]) {
-    error <- "Variable {.val {var}} not found in the {.cls elicit} object."
+    error <- "Variable {.val {var}} not found in the {.cls elic_cont_plot} \\
+              object."
     cli::cli_abort(c("Invalid value for {.arg var}:",
                      "x" = error,
                      "i" = "Available variables are {.val {x$var_names}}."),
@@ -389,7 +390,7 @@ check_truth <- function(x, elic_type) {
 
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::plot.elicit}"),
+                     "i" = "See {.fn elicitr::plot.elic_cont}"),
                    call = rlang::caller_env())
   }
 }

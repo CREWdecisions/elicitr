@@ -3,10 +3,10 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_add_data()` adds data to an `elicit`
-#' object from different sources.
+#' `elic_cont_add_data()` adds data to an `elic_cont` object from different
+#' sources.
 #'
-#' @param x an object of class `elicit`.
+#' @param x an object of class `elic_cont`.
 #' @param data_source either a [`data.frame`][base::data.frame] or
 #' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
 #' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
@@ -22,7 +22,7 @@
 #' only when `data_source` is a path to a _xlsx_ file or when data are imported
 #' from _Google Sheets_.
 #' @param overwrite logical, whether to overwrite existing data already added to
-#' the `elicit` object.
+#' the `elic_cont` object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @section Data Format:
@@ -30,9 +30,9 @@
 #' Data are expected to have the name of the expert always as first column. The
 #' only exception is for data coming from _Google Sheet_ which can have an
 #' additional column with a timestamp. This column is automatically removed
-#' before the data are added to the `elicit` object (see "Data cleaning"). After
-#' the name there should be one or more blocks which follow the specifications
-#' below:
+#' before the data are added to the `elic_cont` object (see "Data cleaning").
+#' After the name there should be one or more blocks which follow the
+#' specifications below:
 #'
 #' _One point elicitation_:
 #'
@@ -61,15 +61,15 @@
 #'
 #' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
 #' to build the column names is taken from the metadata available in the
-#' `elicit` object.
+#' `elic_cont` object.
 #'
 #' @section Data cleaning:
 #'
-#' When data are added to the `elicit` object, first names are standardised by
-#' converting capital letters to lower case, and by removing any whitespaces and
-#' punctuation. Then, data are anonymised by converting names to short sha1
+#' When data are added to the `elic_cont` object, first names are standardised
+#' by converting capital letters to lower case, and by removing any whitespaces
+#' and punctuation. Then, data are anonymised by converting names to short sha1
 #' hashes. In this way, sensible information collected during the elicitation
-#' process never reaches the `elicit` object. For three and four points
+#' process never reaches the `elic_cont` object. For three and four points
 #' elicitation processes, the order of the values is checked for each expert. If
 #' it is not _min-max-best_, the values are swaped accordingly and a informative
 #' warn is raised.
@@ -85,7 +85,7 @@
 #' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
 #' first one (which contains the names) are forced to numeric.
 #'
-#' @return The provided object of class `elicit` updated with the data.
+#' @return The provided object of class `elic_cont` updated with the data.
 #' @export
 #'
 #' @family data helpers
@@ -148,7 +148,7 @@ elic_cont_add_data <- function(x,
                                overwrite = FALSE,
                                verbose = TRUE) {
 
-  check_elicit(x)
+  check_elic_cont(x)
   check_round(round)
 
   if (inherits(data_source, "data.frame")) {
@@ -528,7 +528,7 @@ add_nas_rows <- function(data, experts) {
 #'
 #' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
 #'
-#' @param x `elicit` object containing data from Round 1.
+#' @param x `elic_cont` object containing data from Round 1.
 #' @param data tibble containing data from Round 2.
 #'
 #' @return A list with two elemnts, one containing the omogenised data for Round
@@ -764,7 +764,7 @@ check_round_data <- function(data, experts, round) {
       error <- "The dataset for {.val Round {round}} contains
                 {.val {nrow(data)}} rows but are expected estimates from
                 {.val {experts}} experts."
-      info <- "Check raw data or modify the {.cls elicit} object with \\
+      info <- "Check raw data or modify the {.cls elic_cont} object with \\
                {.code obj$experts = {nrow(data)}} and then use \\
                {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
       cli::cli_abort(c("Incorrect number of rows in dataset:",
