@@ -15,7 +15,7 @@ Description: Elicitr is an R package, used to aggregate elicitation data. The
     formal elicitation methods. You provide the data, and elicitr transforms
     them into easily readable graphics.
 License: GPL (>= 3)
-URL: https://github.com/orgs/CREWdecisions/elicitr
+URL: https://crewdecisions.github.io/elicitr/
 BugReports: https://github.com/CREWdecisions/elicitr/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
