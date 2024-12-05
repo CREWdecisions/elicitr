@@ -13,7 +13,7 @@ Elicitr is an R package, used to aggregate elicitation data. The package is in a
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/orgs/CREWdecisions/elicitr}
+  \item \url{https://crewdecisions.github.io/elicitr/}
   \item Report bugs at \url{https://github.com/CREWdecisions/elicitr/issues}
 }
 

@@ -1,10 +1,10 @@
 test_that("elicit object", {
-  x <- new_elicit(var_names = c("var1", "var2"),
-                  var_types = c("p", "R"),
-                  elic_types = c("4", "3"),
-                  experts = 5,
-                  title = "Title")
-  expect_s3_class(x, class = "elicit", exact = TRUE)
+  x <- new_elic_cont(var_names = c("var1", "var2"),
+                     var_types = c("p", "R"),
+                     elic_types = c("4", "3"),
+                     experts = 5,
+                     title = "Title")
+  expect_s3_class(x, class = "elic_cont", exact = TRUE)
   # Variable names are recorded in the object as character vector
   expect_vector(x[["var_names"]], ptype = "character", size = 2)
   # Variable type short codes are recorded in the object as character vector
@@ -27,9 +27,9 @@ test_that("elicit object", {
 
 test_that("Print elicit object", {
   # Without data
-  expect_snapshot(new_elicit(var_names = c("var1", "var2"),
-                             var_types = c("p", "R"),
-                             elic_types = c("4", "3"),
-                             experts = 4L,
-                             title = "Title"))
+  expect_snapshot(new_elic_cont(var_names = c("var1", "var2"),
+                                var_types = c("p", "R"),
+                                elic_types = c("4", "3"),
+                                experts = 4L,
+                                title = "Title"))
 })

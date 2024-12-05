@@ -9,10 +9,10 @@ reference:
   desc: >
     Functions for handling and plotting continuous variables.
   contents:
-  - elic_start
-  - elic_add_data
-  - elic_get_data
-  - elic_plot
+  - elic_cont_start
+  - elic_cont_add_data
+  - elic_cont_get_data
+  - elic_cont_plot
 
 - title: "Simulated data"
   desc: >

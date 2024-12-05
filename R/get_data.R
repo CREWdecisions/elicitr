@@ -3,9 +3,9 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Get data from an `elicit` object.
+#' Get data from an `elic_cont` object.
 #'
-#' @inheritParams elic_add_data
+#' @inheritParams elic_cont_add_data
 #' @param var character string with the name of the variable or character vector
 #' with more variable names that you want to extract from the data. Use `all`
 #' for all variables. Use `all` for all variable types. See Elicitation Types
@@ -21,8 +21,8 @@
 #' first of the following will be used: `var`, `var_types`, or `elic_types`.
 #'
 #'
-#' @inheritSection elic_start Variable Types
-#' @inheritSection elic_start Elicitation types
+#' @inheritSection elic_cont_start Variable Types
+#' @inheritSection elic_cont_start Elicitation types
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
@@ -34,42 +34,42 @@
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
 #' # data.frame.
-#' my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                         var_types = "ZNp",
-#'                         elic_types = "134",
-#'                         experts = 6) |>
-#'   elic_add_data(data_source = round_1, round = 1) |>
-#'   elic_add_data(data_source = round_2, round = 2)
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "ZNp",
+#'                              elic_types = "134",
+#'                              experts = 6) |>
+#'   elic_cont_add_data(data_source = round_1, round = 1) |>
+#'   elic_cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Get all data from round 1
-#' elic_get_data(my_elicit, round = 1)
+#' elic_cont_get_data(my_elicit, round = 1)
 #'
 #' # Get data by variable name----
 #' # Get data for var3 from round 2
-#' elic_get_data(my_elicit, round = 2, var = "var3")
+#' elic_cont_get_data(my_elicit, round = 2, var = "var3")
 #'
 #' # Get data for var1 and var2 from round 1
-#' elic_get_data(my_elicit, round = 1, var = c("var1", "var2"))
+#' elic_cont_get_data(my_elicit, round = 1, var = c("var1", "var2"))
 #'
 #' # Get data by variable type----
 #' # Get data for variables containing integer numbers
-#' elic_get_data(my_elicit, round = 2, var_types = "Z")
+#' elic_cont_get_data(my_elicit, round = 2, var_types = "Z")
 #' # Get data for variables containing positive integers and probabilities
-#' elic_get_data(my_elicit, round = 2, var_types = "Np")
+#' elic_cont_get_data(my_elicit, round = 2, var_types = "Np")
 #'
 #' # Get data by elicitation type----
 #' # Get data for three points estimates
-#' elic_get_data(my_elicit, round = 2, elic_types = "3")
+#' elic_cont_get_data(my_elicit, round = 2, elic_types = "3")
 #' # Get data for one and four points estimates
-#' elic_get_data(my_elicit, round = 2, elic_types = "14")
-elic_get_data <- function(x,
-                          round,
-                          ...,
-                          var = "all",
-                          var_types = "all",
-                          elic_types = "all") {
+#' elic_cont_get_data(my_elicit, round = 2, elic_types = "14")
+elic_cont_get_data <- function(x,
+                               round,
+                               ...,
+                               var = "all",
+                               var_types = "all",
+                               elic_types = "all") {
 
-  check_elicit(x)
+  check_elic_cont(x)
   check_round(round)
   check_var(x, var)
 
@@ -120,11 +120,12 @@ elic_get_data <- function(x,
 #'
 #' Check the argument `var` for allowed values.
 #'
-#' @param x `elicit` object.
+#' @param x `elic_cont` object.
 #' @param var character with the name of the variable, or the word `all`.
 #'
-#' @return An error if `var` is not one of the variables of the `elicit` object,
-#' or `all`.
+#' @return An error if `var` is not one of the variables of the `elic_cont`
+#' object, or `all`.
+#'
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -136,7 +137,7 @@ check_var <- function(x, var) {
     cli::cli_abort(c("Argument {.arg var} can be only a vector with a \\
                       combination of {.val {x$var_names}} or {.val all}:",
                      "x" = "The value{?s} {.val {diff}} {?is/are} invalid.",
-                     "i" = "See {.fn elicitr::elic_get_data}."),
+                     "i" = "See {.fn elicitr::elic_cont_get_data}."),
                    call = rlang::caller_env())
   }
 }
@@ -146,7 +147,7 @@ check_var <- function(x, var) {
 #' Check that only one optional argument is passed, if not, return the first one
 #' and rise a warning.
 #'
-#' @inheritParams elic_get_data
+#' @inheritParams elic_cont_get_data
 #'
 #' @return Character string with one of `var`, `var_types`, `elic_types`. Warns
 #' if more than one optional argument is provided.
@@ -169,7 +170,7 @@ check_optional_args <- function(var, var_types, elic_types) {
     text <- "Only one optional argument can be specified, used the first one: \\
              {.arg {arg}}"
     cli::cli_warn(c(text,
-                    "i" = "See Details in {.fn elicitr::elic_get_data}."))
+                    "i" = "See Details in {.fn elicitr::elic_cont_get_data}."))
   } else {
     arg <- args[idx]
   }
@@ -180,14 +181,14 @@ check_optional_args <- function(var, var_types, elic_types) {
 #' Check type in object
 #'
 #' Check that the given variable or elicitation type/s is/are available in the
-#' `elicit` object.
+#' `elic_cont` object.
 #'
-#' @param obj an object of class `elicit`.
+#' @param obj an object of class `elic_cont`.
 #' @param x character string with the value to be checked.
 #' @param type character string, either `var_types` or `elic:types`.
 #'
 #' @return An error if the variable or elicitation type/s is/are not present in
-#' the `elicit` object.
+#' the `elic_cont` object.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -201,11 +202,11 @@ check_type_in_obj <- function(obj,
 
     if (type == "var_types") {
       error <- "Variable type{?s} {.val {diff}} not present in the \\
-                {.cls elicit} object."
+                {.cls elic_cont} object."
       info <- "Available variable type{?s} {?is/are} {.val {obj_types}}"
     } else {
       error <- "Elicitation type{?s} {.val {diff}} not present in the \\
-                {.cls elicit} object."
+                {.cls elic_cont} object."
       info <- "Available elicitation type{?s} {?is/are} {.val {obj_types}}"
     }
 

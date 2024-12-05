@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_plot()` plots elicitation data for a specific round and variable.
+#' `elic_cont_plot()` plots elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
@@ -16,7 +16,7 @@
 #' @param line_width numeric, the width of the lines.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
-#' @inheritParams elic_add_data
+#' @inheritParams elic_cont_add_data
 #'
 #' @details
 #' The `truth` argument is useful when the elicitation process is part of a
@@ -37,52 +37,52 @@
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
 #' # data.frame.
-#' my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                         var_types = "ZNp",
-#'                         elic_types = "134",
-#'                         experts = 6) |>
-#'   elic_add_data(x, data_source = round_1, round = 1) |>
-#'   elic_add_data(data_source = round_2, round = 2)
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "ZNp",
+#'                              elic_types = "134",
+#'                              experts = 6) |>
+#'   elic_cont_add_data(x, data_source = round_1, round = 1) |>
+#'   elic_cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Plot the elicitation data for the first round and the variable var1 (only
 #' # the best estimate)
-#' elic_plot(my_elicit, round = 1, var = "var1")
+#' elic_cont_plot(my_elicit, round = 1, var = "var1")
 #'
 #' # Plot the elicitation data for the first round and the variable var2 (best
 #' # estimate with min and max errors)
-#' elic_plot(my_elicit, round = 1, var = "var2")
+#' elic_cont_plot(my_elicit, round = 1, var = "var2")
 #'
 #' # Plot the elicitation data for the first round and the variable var3 (best
 #' # estimate with min and max errors rescaled to the confidence value)
-#' elic_plot(my_elicit, round = 1, var = "var3")
+#' elic_cont_plot(my_elicit, round = 1, var = "var3")
 #'
 #' # Add the group mean
-#' elic_plot(my_elicit, round = 1, var = "var3", group = TRUE)
+#' elic_cont_plot(my_elicit, round = 1, var = "var3", group = TRUE)
 #'
 #' # Add the true value
-#' elic_plot(my_elicit, round = 1, var = "var3",
-#'           truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
+#' elic_cont_plot(my_elicit, round = 1, var = "var3",
+#'                truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 #'
 #' # Overwrite the default theme
-#' elic_plot(my_elicit, round = 1, var = "var3",
-#'           theme = ggplot2::theme_classic())
-elic_plot <- function(x,
-                      round,
-                      var,
-                      ...,
-                      scale_conf = 100,
-                      group = FALSE,
-                      truth = NULL,
-                      colour = "purple",
-                      group_colour = "orange",
-                      truth_colour = "red",
-                      point_size = 4,
-                      line_width = 1.5,
-                      theme = NULL,
-                      verbose = TRUE) {
+#' elic_cont_plot(my_elicit, round = 1, var = "var3",
+#'                theme = ggplot2::theme_classic())
+elic_cont_plot <- function(x,
+                           round,
+                           var,
+                           ...,
+                           scale_conf = 100,
+                           group = FALSE,
+                           truth = NULL,
+                           colour = "purple",
+                           group_colour = "orange",
+                           truth_colour = "red",
+                           point_size = 4,
+                           line_width = 1.5,
+                           theme = NULL,
+                           verbose = TRUE) {
 
   # Check arguments
-  check_elicit(x)
+  check_elic_cont(x)
   check_round(round)
   check_var_in_obj(x, var)
 
@@ -90,7 +90,7 @@ elic_plot <- function(x,
     theme <- elic_theme()
   }
 
-  data <- elic_get_data(x, round = round, var = var) |>
+  data <- elic_cont_get_data(x, round = round, var = var) |>
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
@@ -262,7 +262,7 @@ add_truth_data <- function(data, truth, elic_type) {
 #'
 #' Get variable or elicitation type for the given variable.
 #'
-#' @param x an object of class `elicit`.
+#' @param x an object of class `elic_cont_plot`.
 #' @param var character string with the variable name.
 #' @param type character string, either `var` or `elic`.
 #'
@@ -297,10 +297,10 @@ rescale_data <- function(x, s) {
 
 #' Check variable in object
 #'
-#' Check if the variable is present in the `elicit` object and if it is of
-#' length 1.
+#' Check if the variable is present in the `elic_cont_plot` object and if it is
+#' of length 1.
 #'
-#' @param x an object of class `elicit`.
+#' @param x an object of class `elic_cont_plot`.
 #' @param var character to check.
 #'
 #' @return An error if the variable is not present in the object or if it is
@@ -315,12 +315,13 @@ check_var_in_obj <- function(x, var) {
               {.val {length(var)}} variables."
     cli::cli_abort(c("Incorrect value for {.arg var}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::plot.elicit}."),
+                     "i" = "See {.fn elicitr::plot.elic_cont}."),
                    call = rlang::caller_env())
   }
 
   if (!var %in% x[["var_names"]]) {
-    error <- "Variable {.val {var}} not found in the {.cls elicit} object."
+    error <- "Variable {.val {var}} not found in the {.cls elic_cont_plot} \\
+              object."
     cli::cli_abort(c("Invalid value for {.arg var}:",
                      "x" = error,
                      "i" = "Available variables are {.val {x$var_names}}."),
@@ -389,7 +390,7 @@ check_truth <- function(x, elic_type) {
 
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::plot.elicit}"),
+                     "i" = "See {.fn elicitr::plot.elic_cont}"),
                    call = rlang::caller_env())
   }
 }
