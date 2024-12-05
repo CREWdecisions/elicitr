@@ -165,23 +165,11 @@ elic_add_data <- function(x,
 
     if (nzchar(ext)) {
 
-      # Check if file exists
-      if (!file.exists(data_source)) {
-        cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"))
-      }
+      data <- read_file(data_source,
+                        ext = ext,
+                        sheet = sheet,
+                        sep = sep)
 
-      # Check file extension
-      check_file_extension(ext)
-
-      # Load data
-      if (ext == "csv") {
-        source <- "csv file"
-        data <- utils::read.csv(data_source, sep = sep) |>
-          tibble::as_tibble()
-      } else {
-        source <- "xlsx file"
-        data <- openxlsx::read.xlsx(data_source, sheet = sheet)
-      }
     } else {
       # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
       # error is handled by the read_sheet() function (this doesn't need to be
@@ -225,7 +213,7 @@ elic_add_data <- function(x,
 
       x[["data"]][[round]] <- check_round_data(data, x[["experts"]], round)
 
-    } else if (round == 2) {
+    } else {
       # Omogenise data
       data <- check_round_data(data, x[["experts"]], round)
       ds <- omogenise_datasets(x, data)
@@ -247,6 +235,56 @@ elic_add_data <- function(x,
   x
 }
 # Helpers----
+
+#' Read file
+#'
+#' `read_file()` reads data from a file and returns a tibble.
+#'
+#' @param data_source character string with the path to the file.
+#' @param ext character string with the file extension.
+#' @param sheet integer or character to select the sheet.
+#' @param sep character used as field separator.
+#'
+#' @return A tibble with the data or an error if the file doesn't exist or the
+#' extension is not supported.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_file <- function(data_source,
+                      ext,
+                      sheet,
+                      sep) {
+
+  # Check if file exists
+  if (!file.exists(data_source)) {
+    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
+                   call = rlang::caller_env())
+  }
+
+  # Load data
+  if (ext == "csv") {
+
+    assign("source", "csv file", envir = rlang::caller_env())
+    data <- utils::read.csv(data_source, sep = sep) |>
+      tibble::as_tibble()
+
+  } else if (ext == "xlsx") {
+
+    assign("source", "xlsx file", envir = rlang::caller_env())
+    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
+
+  } else {
+    error <- "The extension of the provided file is {.val .{ext}}, supported \\
+              are {.val .csv} or {.val .xlsx}."
+
+    cli::cli_abort(c("Unsupported file extension:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::elic_add_data}."),
+                   call = rlang::caller_env())
+  }
+
+  data
+}
 
 #' Get column names
 #'

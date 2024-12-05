@@ -101,55 +101,13 @@ elic_plot <- function(x,
   if (group) {
 
     ids <- c(ids, "Group")
-
-    if (elic_type == "1p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data[["best"]], na.rm = TRUE),
-                       "col" = "group")
-    } else if (elic_type == "3p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data[["best"]], na.rm = TRUE),
-                       "min" = NA,
-                       "max" = NA,
-                       "col" = "group")
-    } else if (elic_type == "4p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data[["best"]], na.rm = TRUE),
-                       "min" = NA,
-                       "max" = NA,
-                       "conf" = 100,
-                       "col" = "group")
-    }
+    data <- add_group_data(data, elic_type)
   }
 
   if (!is.null(truth)) {
 
     ids <- c(ids, "Truth")
-
-    if (elic_type == "1p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth[["best"]],
-                       "col" = "truth")
-    } else if (elic_type == "3p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth[["best"]],
-                       "min" = truth[["min"]],
-                       "max" = truth[["max"]],
-                       "col" = "truth")
-    } else if (elic_type == "4p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth[["best"]],
-                       "min" = truth[["min"]],
-                       "max" = truth[["max"]],
-                       "conf" = truth[["conf"]],
-                       "col" = "truth")
-    }
+    data <- add_truth_data(data, truth, elic_type)
   }
 
   data <- data |>
@@ -219,6 +177,84 @@ elic_plot <- function(x,
 }
 
 # Helpers----
+
+#' Add group data
+#'
+#' Add data for the group mean to the data.frame.
+#'
+#' @param data tibble with the elicitation data.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tibble with the group data added.
+#' @noRd
+#'
+#' @author Sergio Vignali
+add_group_data <- function(data, elic_type) {
+
+  if (elic_type == "1p") {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "col" = "group")
+  } else if (elic_type == "3p") {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "min" = NA,
+                     "max" = NA,
+                     "col" = "group")
+  } else {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "min" = NA,
+                     "max" = NA,
+                     "conf" = 100,
+                     "col" = "group")
+  }
+
+  data
+}
+
+#' Add truth data
+#'
+#' Add data for the true values to the data.frame.
+#'
+#' @param data tibble with the elicitation data.
+#' @param truth list with the true values.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tibble with the true data added.
+#' @noRd
+#'
+#' @author Sergio Vignali
+add_truth_data <- function(data, truth, elic_type) {
+
+  if (elic_type == "1p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "col" = "truth")
+  } else if (elic_type == "3p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "min" = truth[["min"]],
+                     "max" = truth[["max"]],
+                     "col" = "truth")
+  } else if (elic_type == "4p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "min" = truth[["min"]],
+                     "max" = truth[["max"]],
+                     "conf" = truth[["conf"]],
+                     "col" = "truth")
+  }
+
+  data
+}
+
 #' Get type
 #'
 #' Get variable or elicitation type for the given variable.
