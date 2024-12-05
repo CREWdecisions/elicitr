@@ -6,9 +6,6 @@
 #' `elic_plot()` plots elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
-#' @param xlab character, the title of the x axis
-#' @param ylab character, the title of the y axis
-#' @param title character, the title of the plot
 #' @param scale_conf numeric, the scale factor for the confidence interval.
 #' @param group logical, whether to plot the group mean.
 #' @param truth list, the true value of the variable, see Details for more.
@@ -17,6 +14,9 @@
 #' @param truth_colour character string, the colour of the true value.
 #' @param point_size numeric, the size of the points.
 #' @param line_width numeric, the width of the lines.
+#' @param title character, the title of the plot
+#' @param xlab character, the title of the x axis
+#' @param ylab character, the title of the y axis
 #' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
@@ -74,9 +74,6 @@ elic_plot <- function(x,
                       round,
                       var,
                       ...,
-                      xlab = var,
-                      ylab = "Expert",
-                      title = paste("Round", round),
                       scale_conf = 100,
                       group = FALSE,
                       truth = NULL,
@@ -85,6 +82,9 @@ elic_plot <- function(x,
                       truth_colour = "red",
                       point_size = 4,
                       line_width = 1.5,
+                      title = paste("Round", round),
+                      xlab = var,
+                      ylab = "Expert",
                       family = "sans",
                       theme = NULL,
                       verbose = TRUE) {
