@@ -5,10 +5,8 @@
 
 <!-- badges: start -->
 
-[![Project Status: Concept – Minimal or no implementation has been done
-yet, or the repository is only intended to be a limited example, demo,
-or
-proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
+[![Project
+Status](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![R-CMD-check](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml)
 [![lint](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml)
 <!-- badges: end -->
@@ -34,7 +32,7 @@ on two formal elicitation methods:
 You can install the development version of elicitr from GitHub with:
 
 ``` r
-#install.packages("pak")
+# install.packages("pak")
 pak::pak("CREWdecisions/elicitr")
 ```
 
