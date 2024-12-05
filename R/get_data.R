@@ -21,8 +21,8 @@
 #' first of the following will be used: `var`, `var_types`, or `elic_types`.
 #'
 #'
-#' @inheritSection elic_start Variable Types
-#' @inheritSection elic_start Elicitation types
+#' @inheritSection elic_cont_start Variable Types
+#' @inheritSection elic_cont_start Elicitation types
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
@@ -34,10 +34,10 @@
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
 #' # data.frame.
-#' my_elicit <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                         var_types = "ZNp",
-#'                         elic_types = "134",
-#'                         experts = 6) |>
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "ZNp",
+#'                              elic_types = "134",
+#'                              experts = 6) |>
 #'   elic_add_data(data_source = round_1, round = 1) |>
 #'   elic_add_data(data_source = round_2, round = 2)
 #'

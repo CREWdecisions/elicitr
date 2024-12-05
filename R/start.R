@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_start()` initialises an `elicit`
+#' `elic_cont_start()` initialises an `elicit`
 #' object which stores important metadata for the data collected during the
 #' elicitation process.
 #'
@@ -80,35 +80,35 @@
 #' # variables, the first for a one point estimation of a positive integer, the
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability
-#' x <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                 var_types = "Nrp",
-#'                 elic_types = "134",
-#'                 experts = 4)
+#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                      var_types = "Nrp",
+#'                      elic_types = "134",
+#'                      experts = 4)
 #' x
 #'
 #' # A title can be added to bind a name to the object:
-#' x <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                 var_types = "Nrp",
-#'                 elic_types = "134",
-#'                 experts = 4,
-#'                 title = "My elicitation")
+#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                      var_types = "Nrp",
+#'                      elic_types = "134",
+#'                      experts = 4,
+#'                      title = "My elicitation")
 #' x
 #' # Notice that if var_types and elic_types are provided as single character,
 #' # their value is recycled and applied to all variables. In the following
 #' # example all three variables will be considered for a four point estimation
 #' # to estimate a probability:
-#' x <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                 var_types = "p",
-#'                 elic_types = "4",
-#'                 experts = 4)
+#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                      var_types = "p",
+#'                      elic_types = "4",
+#'                      experts = 4)
 #' x
-elic_start <- function(var_names,
-                       var_types,
-                       elic_types,
-                       experts,
-                       ...,
-                       title = "Elicitation",
-                       verbose = TRUE) {
+elic_cont_start <- function(var_names,
+                            var_types,
+                            elic_types,
+                            experts,
+                            ...,
+                            title = "Elicitation",
+                            verbose = TRUE) {
 
   # Check that variable and elicitation types are a single string
   check_arg_length(var_types, type = "var")
@@ -174,7 +174,7 @@ check_experts_arg <- function(x) {
   if (raise_error) {
     cli::cli_abort(c("Incorrect value for {.arg experts}:",
                      "x" = error,
-                     "y" = "See {.fn elicitr::elic_start}."),
+                     "y" = "See {.fn elicitr::elic_cont_start}."),
                    call = rlang::caller_env())
   }
 }
@@ -225,7 +225,7 @@ check_arg_mism <- function(var_names,
   if (raise_error) {
     cli::cli_abort(c("Mismatch between function arguments:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::elic_start}."),
+                     "i" = "See {.fn elicitr::elic_cont_start}."),
                    call = rlang::caller_env())
   }
 }

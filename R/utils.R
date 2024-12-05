@@ -53,8 +53,12 @@ check_round <- function(x) {
 #' `check_arg_length()` throws an error if the length of the provided argument
 #' is greater than 1.
 #'
-#' @param x value passed to `elic_start()` for the variable or elicitation type.
-#' @param type character, either _var_ for `var_types` or _elic_ for èlic_types.
+#' @param x value passed to `elic_cont_start()` for the variable or elicitation
+#' type.
+#' @param type character, either _var_ for `var_types` or _elic_ for
+#' `elic_types`.
+#'
+#' @return An error if the length of `x` is greater than 1.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -88,6 +92,8 @@ check_arg_length <- function(x,
 #'
 #' @param x character containing short codes for variable or elicitation types.
 #' @param type character, either _var_ for `var_types` or _elic_ for èlic_types.
+#'
+#' @return An error if the short codes are not allowed.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -134,6 +140,8 @@ check_arg_types <- function(x,
 #'
 #' @param x character containing the short codes.
 #' @param add_p logical, whether to add the "p" character to each short code.
+#'
+#' @return A character vector with the short codes.
 #' @noRd
 #'
 #' @author Sergio Vignali

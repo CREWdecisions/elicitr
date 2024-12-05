@@ -97,10 +97,10 @@
 #' # variables, the first for a one point estimation of a positive integer, the
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability
-#' x <- elic_start(var_names = c("var1", "var2", "var3"),
-#'                 var_types = "ZNp",
-#'                 elic_types = "134",
-#'                 experts = 6)
+#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                      var_types = "ZNp",
+#'                      elic_types = "134",
+#'                      experts = 6)
 #'
 #' # Add data for the first and second round from a data.frame. Notice that the
 #' # two commands can be piped
@@ -291,7 +291,7 @@ read_file <- function(data_source,
 #' `get_col_names()` combines the information provided with `var_names` and
 #' `elic_types` to construct the column names.
 #'
-#' @inheritParams elic_start
+#' @inheritParams elic_cont_start
 #'
 #' @return Character vector with the column names.
 #' @noRd
@@ -316,7 +316,7 @@ get_col_names <- function(var_names,
 #' Get label to build column names.
 #'
 #' @param n integer, number of variables.
-#' @inheritParams elic_start
+#' @inheritParams elic_cont_start
 #'
 #' @return Character vector with the labels
 #' @noRd

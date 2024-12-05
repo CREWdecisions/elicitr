@@ -1,10 +1,10 @@
 # Test elic_add_data()----
 test_that("Errors ", {
-  x <- elic_start(var_names = c("var1", "var2", "var3"),
-                  var_types = "ZNp",
-                  elic_types = "134",
-                  experts = 6,
-                  verbose = FALSE)
+  x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                       var_types = "ZNp",
+                       elic_types = "134",
+                       experts = 6,
+                       verbose = FALSE)
 
   file <- withr::local_file("test.txt",
                             code = {writeLines("", "test.txt")}) # nolint
@@ -74,11 +74,11 @@ test_that("Errors ", {
 })
 
 test_that("Warnings", {
-  x <- elic_start(var_names = c("var1", "var2", "var3"),
-                  var_types = "ZNp",
-                  elic_types = "134",
-                  experts = 6,
-                  verbose = FALSE)
+  x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                       var_types = "ZNp",
+                       elic_types = "134",
+                       experts = 6,
+                       verbose = FALSE)
   # When there are less entries in dataset than experts for Round 1
   expect_snapshot(y <- elic_add_data(x, data_source = round_1[1:4, ],
                                      round = 1, verbose = FALSE))
@@ -158,11 +158,11 @@ test_that("Warnings", {
 })
 
 test_that("Info", {
-  x <- elic_start(var_names = c("var1", "var2", "var3"),
-                  var_types = "ZNp",
-                  elic_types = "134",
-                  experts = 6,
-                  verbose = FALSE)
+  x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                       var_types = "ZNp",
+                       elic_types = "134",
+                       experts = 6,
+                       verbose = FALSE)
   # All id in Round 1 are also in Round 2 and those not in Round 1 are <=NAs
   # Round 1 => 1 NA, Round 2 => 0 NA
   y <- elic_add_data(x, data_source = round_1[1:5, ],
@@ -193,11 +193,11 @@ test_that("Info", {
 
 test_that("Output", {
   # Column names are taken from the metadata and have the correct suffix
-  x <- elic_start(var_names = c("cat", "dog", "fish"),
-                  var_types = "ZNp",
-                  elic_types = "134",
-                  experts = 6,
-                  verbose = FALSE)
+  x <- elic_cont_start(var_names = c("cat", "dog", "fish"),
+                       var_types = "ZNp",
+                       elic_types = "134",
+                       experts = 6,
+                       verbose = FALSE)
   y <- round_1
   colnames(y) <- letters[1:9]
   z <- elic_add_data(x, data_source = y, round = 1, verbose = FALSE) |>
@@ -221,11 +221,11 @@ test_that("Output", {
   googlesheets4::gs4_deauth()
   # Google Sheet used for testing
   gs <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
-  x <- elic_start(var_names = c("var1", "var2"),
-                  var_types = "pp",
-                  elic_types = "11",
-                  experts = 6,
-                  verbose = FALSE)
+  x <- elic_cont_start(var_names = c("var1", "var2"),
+                       var_types = "pp",
+                       elic_types = "11",
+                       experts = 6,
+                       verbose = FALSE)
   out <- elic_add_data(x,
                        data_source = gs,
                        round = 1,
