@@ -1,6 +1,9 @@
 #' Plot elicitation data
 #'
-#' Plot elicitation data for a specific round and variable.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `elic_plot()` plots elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.

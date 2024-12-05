@@ -57,7 +57,9 @@ theme.}
 Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \description{
-Plot elicitation data for a specific round and variable.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{elic_plot()} plots elicitation data for a specific round and variable.
 }
 \details{
 The \code{truth} argument is useful when the elicitation process is part of a
