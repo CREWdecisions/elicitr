@@ -17,6 +17,10 @@ elic_plot(
   truth_colour = "red",
   point_size = 4,
   line_width = 1.5,
+  title = paste("Round", round),
+  xlab = var,
+  ylab = "Expert",
+  family = "sans",
   theme = NULL,
   verbose = TRUE
 )
@@ -47,6 +51,14 @@ function.}
 \item{point_size}{numeric, the size of the points.}
 
 \item{line_width}{numeric, the width of the lines.}
+
+\item{title}{character, the title of the plot.}
+
+\item{xlab}{character, the title of the x axis.}
+
+\item{ylab}{character, the title of the y axis.}
+
+\item{family}{character, the font family.}
 
 \item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
 theme.}
