@@ -16,7 +16,7 @@
 #' @param line_width numeric, the width of the lines.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
-#' @inheritParams elic_add_data
+#' @inheritParams elic_cont_add_data
 #'
 #' @details
 #' The `truth` argument is useful when the elicitation process is part of a
@@ -41,8 +41,8 @@
 #'                              var_types = "ZNp",
 #'                              elic_types = "134",
 #'                              experts = 6) |>
-#'   elic_add_data(x, data_source = round_1, round = 1) |>
-#'   elic_add_data(data_source = round_2, round = 2)
+#'   elic_cont_add_data(x, data_source = round_1, round = 1) |>
+#'   elic_cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Plot the elicitation data for the first round and the variable var1 (only
 #' # the best estimate)

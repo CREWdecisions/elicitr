@@ -5,7 +5,7 @@
 #'
 #' Get data from an `elicit` object.
 #'
-#' @inheritParams elic_add_data
+#' @inheritParams elic_cont_add_data
 #' @param var character string with the name of the variable or character vector
 #' with more variable names that you want to extract from the data. Use `all`
 #' for all variables. Use `all` for all variable types. See Elicitation Types
@@ -38,8 +38,8 @@
 #'                              var_types = "ZNp",
 #'                              elic_types = "134",
 #'                              experts = 6) |>
-#'   elic_add_data(data_source = round_1, round = 1) |>
-#'   elic_add_data(data_source = round_2, round = 2)
+#'   elic_cont_add_data(data_source = round_1, round = 1) |>
+#'   elic_cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Get all data from round 1
 #' elic_get_data(my_elicit, round = 1)
