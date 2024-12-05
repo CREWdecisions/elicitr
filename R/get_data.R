@@ -81,7 +81,7 @@ elic_get_data <- function(x,
 
   if (arg == "all") {
 
-    return(x$data[[round]])
+    return(x[["data"]][[round]])
 
   } else if (arg == "var_types") {
     # Split and check variable types
@@ -89,16 +89,16 @@ elic_get_data <- function(x,
     check_arg_types(var_types, type = "var")
     check_type_in_obj(x, var_types, type = "var_types")
 
-    idx <- match(var_types, x$var_types)
-    var <- x$var_names[idx]
+    idx <- match(var_types, x[["var_types"]])
+    var <- x[["var_names"]][idx]
   } else if (arg == "elic_types") {
     # Split and check elicitation types
     elic_types <- split_short_codes(elic_types, add_p = TRUE)
     check_arg_types(elic_types, type = "elic")
     check_type_in_obj(x, elic_types, type = "elic_types")
 
-    idx <- match(elic_types, x$elic_types)
-    var <- x$var_names[idx]
+    idx <- match(elic_types, x[["elic_types"]])
+    var <- x[["var_names"]][idx]
   }
 
   if (length(var) == 1) {
@@ -109,9 +109,9 @@ elic_get_data <- function(x,
     pattern <- paste(var, collapse = "|")
   }
 
-  idx <- c(TRUE, grepl(pattern, colnames(x$data[[round]][, -1])))
+  idx <- c(TRUE, grepl(pattern, colnames(x[["data"]][[round]][, -1])))
 
-  x$data[[round]][, idx]
+  x[["data"]][[round]][, idx]
 }
 
 # Checkers----
@@ -130,7 +130,7 @@ elic_get_data <- function(x,
 #' @author Sergio Vignali
 check_var <- function(x, var) {
 
-  diff <- setdiff(var, c(x$var_names, "all"))
+  diff <- setdiff(var, c(x[["var_names"]], "all"))
 
   if (length(diff) > 0) {
     cli::cli_abort(c("Argument {.arg var} can be only a vector with a \\
@@ -161,15 +161,17 @@ check_optional_args <- function(var, var_types, elic_types) {
 
   idx <- c(var, var_types, elic_types) != "all"
   args <- c("var", "var_types", "elic_types")
-  arg <- args[idx][1]
 
   if (sum(idx) == 0) {
     arg <- "all"
   } else if (sum(idx) > 1) {
+    arg <- args[idx][[1]]
     text <- "Only one optional argument can be specified, used the first one: \\
              {.arg {arg}}"
     cli::cli_warn(c(text,
                     "i" = "See Details in {.fn elicitr::elic_get_data}."))
+  } else {
+    arg <- args[idx]
   }
 
   arg

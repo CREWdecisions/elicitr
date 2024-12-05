@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `eli_add_data()` adds data to an `elicit`
+#' `elic_add_data()` adds data to an `elicit`
 #' object from different sources.
 #'
 #' @param x an object of class `elicit`.
@@ -165,57 +165,45 @@ elic_add_data <- function(x,
 
     if (nzchar(ext)) {
 
-      # Check if file exists
-      if (!file.exists(data_source)) {
-        cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"))
-      }
+      data <- read_file(data_source,
+                        ext = ext,
+                        sheet = sheet,
+                        sep = sep)
 
-      # Check file extension
-      check_file_extension(ext)
-
-      # Load data
-      if (ext == "csv") {
-        source = "csv file"
-        data <- utils::read.csv(data_source, sep = sep) |>
-          tibble::as_tibble()
-      } else {
-        source = "xlsx file"
-        data <- openxlsx::read.xlsx(data_source, sheet = sheet)
-      }
     } else {
       # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
       # error is handled by the read_sheet() function (this doesn't need to be
       # tested).
-      source = "Google Sheets"
+      source <- "Google Sheets"
       data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
         suppressMessages() |>
         clean_gs_data()
     }
   }
 
-  col_1 <- colnames(data)[1]
+  col_1 <- colnames(data)[[1]]
   # Anonymise names
   data <- data |>
     dplyr::rename("id" = dplyr::all_of(col_1)) |>
     # Standardise names: remove capital letters, whitespaces, and punctuation
-    dplyr::mutate("id" = stand_names(.data$id)) |>
+    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
     # Hash names
-    dplyr::mutate("id" = hash_names(.data$id))
+    dplyr::mutate("id" = hash_names(.data[["id"]]))
 
   # Prepare column names and set them
-  col_names <- get_col_names(x$var_names,
-                             x$elic_types)
+  col_names <- get_col_names(x[["var_names"]],
+                             x[["elic_types"]])
   check_columns(data, col_names)
   colnames(data) <- col_names
 
   # If necessary, fix element order for each variable
   data <- fix_var_order(data,
-                        var_names = x$var_names,
-                        elic_types = x$elic_types)
+                        var_names = x[["var_names"]],
+                        elic_types = x[["elic_types"]])
 
   # Add data to the given round
-  obj_data <- x$data[[round]]
-  if (round == 2 && is.null(x$data[[1]])) {
+  obj_data <- x[["data"]][[round]]
+  if (round == 2 && is.null(x[["data"]][[1]])) {
     cli::cli_abort(c("Data for {.val Round 1} are not present:",
                      "i" = "Data for {.val Round 2} can be added only after \\
                             those for {.val Round 1}."))
@@ -223,14 +211,14 @@ elic_add_data <- function(x,
 
     if (round == 1) {
 
-      x$data[[round]] <- check_round_data(data, x$experts, round)
+      x[["data"]][[round]] <- check_round_data(data, x[["experts"]], round)
 
-    } else if (round == 2) {
+    } else {
       # Omogenise data
-      data <- check_round_data(data, x$experts, round)
+      data <- check_round_data(data, x[["experts"]], round)
       ds <- omogenise_datasets(x, data)
-      x$data$round_1 <- ds[["round_1"]]
-      x$data$round_2 <- ds[["round_2"]]
+      x[["data"]][["round_1"]] <- ds[["round_1"]]
+      x[["data"]][["round_2"]] <- ds[["round_2"]]
     }
 
   } else {
@@ -248,6 +236,56 @@ elic_add_data <- function(x,
 }
 # Helpers----
 
+#' Read file
+#'
+#' `read_file()` reads data from a file and returns a tibble.
+#'
+#' @param data_source character string with the path to the file.
+#' @param ext character string with the file extension.
+#' @param sheet integer or character to select the sheet.
+#' @param sep character used as field separator.
+#'
+#' @return A tibble with the data or an error if the file doesn't exist or the
+#' extension is not supported.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_file <- function(data_source,
+                      ext,
+                      sheet,
+                      sep) {
+
+  # Check if file exists
+  if (!file.exists(data_source)) {
+    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
+                   call = rlang::caller_env())
+  }
+
+  # Load data
+  if (ext == "csv") {
+
+    assign("source", "csv file", envir = rlang::caller_env())
+    data <- utils::read.csv(data_source, sep = sep) |>
+      tibble::as_tibble()
+
+  } else if (ext == "xlsx") {
+
+    assign("source", "xlsx file", envir = rlang::caller_env())
+    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
+
+  } else {
+    error <- "The extension of the provided file is {.val .{ext}}, supported \\
+              are {.val .csv} or {.val .xlsx}."
+
+    cli::cli_abort(c("Unsupported file extension:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::elic_add_data}."),
+                   call = rlang::caller_env())
+  }
+
+  data
+}
+
 #' Get column names
 #'
 #' `get_col_names()` combines the information provided with `var_names` and
@@ -262,7 +300,7 @@ elic_add_data <- function(x,
 get_col_names <- function(var_names,
                           elic_types) {
   n <- length(var_names)
-  r <- gsub("p", "", elic_types) |>
+  r <- gsub("p", "", elic_types, fixed = TRUE) |>
     as.integer()
   labels <- get_labels(n = n,
                        elic_types = elic_types)
@@ -287,7 +325,7 @@ get_col_names <- function(var_names,
 get_labels <- function(n,
                        elic_types) {
 
-  if (n > 1L & length(elic_types) == 1L) {
+  if (n > 1L && length(elic_types) == 1L) {
     # Recycle variable type
     elic_types <- rep(elic_types, n)
   }
@@ -359,11 +397,11 @@ hash_names <- function(x) {
 #' @author Sergio Vignali
 clean_gs_data <- function(x) {
 
-  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x)
+  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x) # nolint
   n_cols <- ncol(x)
 
   if (inherits(x[[1]], "POSIXct")) {
-    col_2 <- colnames(x)[2]
+    col_2 <- colnames(x)[[2]]
     x <- x |>
       # Keep only last submission from each expert
       dplyr::slice_tail(n = 1, by = dplyr::all_of(col_2)) |>
@@ -499,105 +537,37 @@ add_nas_rows <- function(data, experts) {
 #' @author Sergio Vignali
 omogenise_datasets <- function(x, data) {
 
-  experts <- x$experts
-  nrow_round_1 <- nrow(x$data$round_1)
+  experts <- x[["experts"]]
+  nrow_round_1 <- nrow(x[["data"]][["round_1"]])
   nrow_round_2 <- nrow(data)
   n_diff <- nrow_round_1 - nrow_round_2
-  all_ids <- union(x$data$round_1$id, data$id)
+  all_ids <- union(x[["data"]][["round_1"]][["id"]], data[["id"]])
 
-  round_1_has_nas <- any(is.na(x$data$round_1$id))
+  round_1_has_nas <- anyNA(x[["data"]][["round_1"]][["id"]])
 
-  # No NAs in Round 1 and Round 2 has one row for each expert
-  if (!round_1_has_nas) {
-    n <- length(all_ids) - nrow_round_1
 
-    # All id of Round 2 are also in Round 1 ==> reorder data in Round 2
-    if (n == 0) {
-
-      missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
-
-      data <- dplyr::rows_upsert(x$data$round_1, data,
-                                 by = "id")
-
-      # Round 2 could have less entries than experts ==> Fill with NAs
-      if (length(missing_in_round_2) > 0) {
-        data[data$id %in% missing_in_round_2, -1] <- NA
-      }
-
-      return(list(round_1 = x$data$round_1,
-                  round_2 = data))
-
-    # Same number of rows in Round 1 and Round 2 but one id is different ==>
-    # Consider it as a typo and replace it with the one from Round 1. Also
-    # raise a warning.
-    } else if (n == 1) {
-
-      missing_in_round_1 <- setdiff(data$id, x$data$round_1$id)
-      missing_in_round_2 <- setdiff(x$data$round_1$id, data$id)
-
-      # Round 2 could have less entries than experts ==> Impossible match, raise
-      # an error
-      if (length(missing_in_round_2) > 0 && n_diff > 0) {
-
-        missing <- setdiff(data$id, x$data$round_1$id)
-        text <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
-                 present in {.val Round 1} and {.val {n_diff}} entries with \\
-                 NAs. Automatic match between the two datasets is not possible:"
-        error = "The {.cls id} not present in {.val Round 1} {?is/are} \\
-                 {.val {missing}}."
-        cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
-                       call = rlang::caller_env())
-      }
-
-      data[data$id == missing_in_round_1, "id"] <- missing_in_round_2
-      data <- dplyr::rows_upsert(x$data$round_1, data,
-                                 by = "id")
-
-      warn <- "Dataset for {.val Round 2} has {.val 1} {.cls id} not \\
-               present in {.val Round 1}. This is considered a typo by the \\
-               expert {.val {missing_in_round_2}} in {.val Round 2} and its \\
-               value has been replaced."
-
-      info = "Check raw data and if you want to update the dataset in \\
-              {.val Round 2} use {.fn elicitr::elic_add_data} with \\
-              {.code overwrite = TRUE}."
-      cli::cli_warn(c("!" = warn,
-                      "i" = info))
-
-      return(list(round_1 = x$data$round_1,
-                  round_2 = data))
-    # More than 1 id present in Round 2 is not in Round 1 ==> Raise an error
-    } else {
-      missing <- setdiff(data$id, x$data$round_1$id)
-      text <- "Dataset for {.val Round 2} has {.val {n}} {.cls id} not \\
-               present in {.val Round 1}. Automatic match between the two \\
-               datasets is not possible:"
-      error = "The {.cls id} not present in {.val Round 1} are \\
-               {.val {missing}}."
-      cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
-                     call = rlang::caller_env())
-    }
-  } else {
-    round_1_ids <- x$data$round_1$id
-    round_2_ids <- data$id
+  if (round_1_has_nas) {
+    round_1_ids <- x[["data"]][["round_1"]][["id"]]
+    round_2_ids <- data[["id"]]
     r1_diff_ids <- setdiff(round_2_ids, round_1_ids)
     r2_diff_ids <- setdiff(round_1_ids, round_2_ids) |>
       stats::na.omit()
-    round_2_has_nas <- length(data$id) < x$experts
+    round_2_has_nas <- length(data[["id"]]) < x[["experts"]]
 
     # Check if all non NA id in round 1 are also in round 2
     if (all(stats::na.omit(round_1_ids) %in% round_2_ids)) {
 
-      data <- dplyr::rows_upsert(x$data$round_1, data,
+      data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
                                  by = "id") |>
         stats::na.omit()
 
       r1_na_idx <- which(is.na(round_1_ids))
-      x$data$round_1$id[r1_na_idx[seq_along(r1_diff_ids)]] <- r1_diff_ids
+      selection <- r1_na_idx[seq_along(r1_diff_ids)]
+      x[["data"]][["round_1"]][["id"]][selection] <- r1_diff_ids
 
       if (round_2_has_nas) {
         data <- data |>
-          add_nas_rows(x$experts)
+          add_nas_rows(x[["experts"]])
       }
 
       n <- length(r1_diff_ids)
@@ -606,7 +576,7 @@ omogenise_datasets <- function(x, data) {
                            Th{?is/ese} {.cls id} ha{?s/ve} been added to \\
                            {.val Round 1} with {.val {NA}} values.")
 
-      return(list(round_1 = x$data$round_1,
+      return(list(round_1 = x[["data"]][["round_1"]],
                   round_2 = data))
     } else {
       r1_na_idx <- which(is.na(round_1_ids))
@@ -614,26 +584,27 @@ omogenise_datasets <- function(x, data) {
       r1_nas <- sum(is.na(round_1_ids))
 
       if (r1_nas >= length(r1_diff_ids)) {
-        data <- dplyr::rows_upsert(x$data$round_1, data,
+        data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
                                    by = "id") |>
           stats::na.omit()
 
-        x$data$round_1$id[r1_na_idx[seq_along(r1_diff_ids)]] <- r1_diff_ids
+        selection <- r1_na_idx[seq_along(r1_diff_ids)]
+        x[["data"]][["round_1"]][["id"]][selection] <- r1_diff_ids
         r2_na_idx <- which(is.na(round_2_ids))
-        data[data$id == r2_diff_ids, -1] <- NA
+        data[data[["id"]] == r2_diff_ids, -1] <- NA
         data <- data |>
-          add_nas_rows(x$experts)
+          add_nas_rows(x[["experts"]])
 
         warn <- "The dataset in {.val Round 2} has {.val {n}} {.cls id} not \\
                  present in {.val Round 1}. Th{?is/ese} {.cls id} ha{?s/ve} \\
                  been added to {.val Round 1} with {.val NA} values but \\
                  could be typo{?s} in the raw data."
-        info = "Check raw data and if you want to update the dataset in \\
-                {.val Round 2} use {.fn elicitr::elic_add_data} with \\
-                {.code overwrite = TRUE}."
+        info <- "Check raw data and if you want to update the dataset in \\
+                 {.val Round 2} use {.fn elicitr::elic_add_data} with \\
+                 {.code overwrite = TRUE}."
         cli::cli_warn(c(warn, "i" = info))
 
-        return(list(round_1 = x$data$round_1,
+        return(list(round_1 = x[["data"]][["round_1"]],
                     round_2 = data))
       } else {
         text <- "Impossible to combine {.val Round 1} and {.val Round 2} \\
@@ -645,6 +616,75 @@ omogenise_datasets <- function(x, data) {
                  the dataset after manual corrections."
         cli::cli_abort(c(text, "x" = error, "i" = info))
       }
+    }
+  } else {
+    # No NAs in Round 1 and Round 2 has one row for each expert
+    n <- length(all_ids) - nrow_round_1
+
+    # All id of Round 2 are also in Round 1 ==> reorder data in Round 2
+    if (n == 0) {
+
+      mis_in_round_2 <- setdiff(x[["data"]][["round_1"]][["id"]], data[["id"]])
+
+      data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
+                                 by = "id")
+
+      # Round 2 could have less entries than experts ==> Fill with NAs
+      if (length(mis_in_round_2) > 0) {
+        data[data[["id"]] %in% mis_in_round_2, -1] <- NA
+      }
+
+      return(list(round_1 = x[["data"]][["round_1"]],
+                  round_2 = data))
+
+    } else if (n == 1) {
+      # Same number of rows in Round 1 and Round 2 but one id is different ==>
+      # Consider it as a typo and replace it with the one from Round 1. Also
+      # raise a warning.
+      mis_in_round_1 <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
+      mis_in_round_2 <- setdiff(x[["data"]][["round_1"]][["id"]], data[["id"]])
+
+      # Round 2 could have less entries than experts ==> Impossible match, raise
+      # an error
+      if (length(mis_in_round_2) > 0 && n_diff > 0) {
+
+        missing <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
+        text <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
+                 present in {.val Round 1} and {.val {n_diff}} entries with \\
+                 NAs. Automatic match between the two datasets is not possible:"
+        error <- "The {.cls id} not present in {.val Round 1} {?is/are} \\
+                  {.val {missing}}."
+        cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+                       call = rlang::caller_env())
+      }
+
+      data[data[["id"]] == mis_in_round_1, "id"] <- mis_in_round_2
+      data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
+                                 by = "id")
+
+      warn <- "Dataset for {.val Round 2} has {.val 1} {.cls id} not \\
+               present in {.val Round 1}. This is considered a typo by the \\
+               expert {.val {mis_in_round_2}} in {.val Round 2} and its value \\
+               has been replaced."
+
+      info <- "Check raw data and if you want to update the dataset in \\
+               {.val Round 2} use {.fn elicitr::elic_add_data} with \\
+               {.code overwrite = TRUE}."
+      cli::cli_warn(c("!" = warn,
+                      "i" = info))
+
+      return(list(round_1 = x[["data"]][["round_1"]],
+                  round_2 = data))
+    } else {
+      # More than 1 id present in Round 2 is not in Round 1 ==> Raise an error
+      missing <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
+      text <- "Dataset for {.val Round 2} has {.val {n}} {.cls id} not \\
+               present in {.val Round 1}. Automatic match between the two \\
+               datasets is not possible:"
+      error <- "The {.cls id} not present in {.val Round 1} are \\
+                {.val {missing}}."
+      cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+                     call = rlang::caller_env())
     }
   }
 }
@@ -722,9 +762,9 @@ check_round_data <- function(data, experts, round) {
       error <- "The dataset for {.val Round {round}} contains
                 {.val {nrow(data)}} rows but are expected estimates from
                 {.val {experts}} experts."
-      info = "Check raw data or modify the {.cls elicit} object with \\
-              {.code obj$experts = {nrow(data)}} and then use \\
-              {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
+      info <- "Check raw data or modify the {.cls elicit} object with \\
+               {.code obj$experts = {nrow(data)}} and then use \\
+               {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
       cli::cli_abort(c("Incorrect number of rows in dataset:",
                        "x" = error,
                        "i" = info),
@@ -747,7 +787,7 @@ check_round_data <- function(data, experts, round) {
                  been filled with {.val NAs}."
       }
 
-      info = "Check raw data and if you want to update the dataset use \\
+      info <- "Check raw data and if you want to update the dataset use \\
               {.fn elicitr::elic_add_data} with {.code overwrite = TRUE}."
       cli::cli_warn(c("!" = warn,
                       "i" = info))

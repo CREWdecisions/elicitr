@@ -22,7 +22,7 @@ new_elicit <- function(var_names,
 #' @export
 print.elicit <- function(x, ...) {
 
-  rounds <- sum(lengths(x$data) != 0)
+  rounds <- sum(lengths(x[["data"]]) != 0)
 
   title <- attr(x, "title")
 

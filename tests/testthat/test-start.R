@@ -114,20 +114,20 @@ test_that("Output", {
                                   experts = 3))
   expect_s3_class(x, class = "elicit", exact = TRUE)
   # Variable names are recorded in the object
-  expect_identical(x$var_names, c("var1", "var2"))
-  expect_type(x$var_names, "character")
+  expect_identical(x[["var_names"]], c("var1", "var2"))
+  expect_type(x[["var_names"]], "character")
   # Variable type short codes are split
-  expect_identical(x$var_types, c("p", "R"))
-  expect_type(x$var_types, "character")
+  expect_identical(x[["var_types"]], c("p", "R"))
+  expect_type(x[["var_types"]], "character")
   # Elicitation type short codes are split
-  expect_identical(x$elic_types, c("4p", "3p"))
-  expect_type(x$elic_types, "character")
+  expect_identical(x[["elic_types"]], c("4p", "3p"))
+  expect_type(x[["elic_types"]], "character")
   # Number of experts are present in the object
-  expect_identical(x$experts, 3)
+  expect_identical(x[["experts"]], 3)
   # Data is present and empty
-  expect_type(x$data, "list")
-  expect_null(x$data$round_1)
-  expect_null(x$data$round_2)
+  expect_type(x[["data"]], "list")
+  expect_null(x[["data"]][["round_1"]])
+  expect_null(x[["data"]][["round_2"]])
   # Title attribute is created
   expect_false(is.null(attr(x, "title")))
   # Object structure

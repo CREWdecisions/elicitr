@@ -1,0 +1,9 @@
+linters: all_linters(
+  packages = "lintr",
+  implicit_assignment_linter = NULL,
+  implicit_integer_linter = NULL,
+  keyword_quote_linter = NULL,
+  object_usage_linter = NULL,
+  undesirable_function_linter = NULL)
+encoding: "UTF-8"
+exclusions: list("tests/testthat.R")

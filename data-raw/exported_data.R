@@ -106,16 +106,16 @@ usethis::use_data(round_1, round_2,
 # Save datasets into extdata folder
 # 2 csv files, one for each dataset
 write.csv(round_1,
-          file = "inst/extdata/round_1.csv",
+          file = file.path("inst", "extdata", "round_1.csv"),
           row.names = FALSE)
 write.csv(round_2,
-          file = "inst/extdata/round_2.csv",
+          file = file.path("inst", "extdata", "round_2.csv"),
           row.names = FALSE)
 
 # 1 xlsx file with two sheets
 openxlsx::write.xlsx(list("Round 1" = round_1,
                           "Round 2" = round_2),
-                     file = "inst/extdata/rounds.xlsx",
+                     file = file.path("inst", "extdata", "rounds.xlsx"),
                      overwrite = TRUE)
 
 # Save dataset in Google Sheets
@@ -124,7 +124,7 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
 # Google Sheets and the timestamps is added as first column)
 times <- runif(n, min = 30, max = 180) |>
   as.POSIXct(origin = "2024-11-24 14:00:00")
-new_time <- (times[3] + 66) |>
+new_time <- (times[[3]] + 66) |>
   format("%d-%m-%Y %H:%M:%S")
 times <- times |>
   format("%d-%m-%Y %H:%M:%S")
@@ -136,13 +136,13 @@ rnd_2 <- round_2 |>
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
 # just use the code strings.
-# sg1 <- googlesheets4::gs4_create("elicitation_round_1",
+# gs1 <- googlesheets4::gs4_create("elicitation_round_1",
 #                                 sheets = "Round 1")
 gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
 googlesheets4::sheet_write(rnd_1,
                            ss = gs1,
                            sheet = 1)
-# sg2 <- googlesheets4::gs4_create("elicitation_round_2",
+# gs2 <- googlesheets4::gs4_create("elicitation_round_2",
 #                                  sheets = "Round 2")
 gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
 googlesheets4::sheet_write(rnd_2,
@@ -154,10 +154,10 @@ rnd <- rnd_1 |>
   dplyr::mutate("var1_best" = c("0.1", ".2", "0.3", "0,4", "0.5", "0,6"),
                 "var2_best" = c("0.1", "1", "0.3", "0.4", "0.5", "0.6")) |>
   dplyr::add_row(Time = new_time,
-                 name = rnd$name[3],
+                 name = rnd_1[[3, 2]],
                  var1_best = "0.4",
                  var2_best = "0.3")
-# gs3 <- googlesheets4::gs4_create("test_file")
+# gs3 <- googlesheets4::gs4_create("test_file") nolint
 gs3 <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
 googlesheets4::sheet_write(rnd,
                            ss = gs3,

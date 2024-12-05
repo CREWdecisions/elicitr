@@ -1,6 +1,9 @@
 #' Plot elicitation data
 #'
-#' Plot elicitation data for a specific round and variable.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `elic_plot()` plots elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
@@ -93,67 +96,25 @@ elic_plot <- function(x,
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
 
   ids <- data |>
-    dplyr::pull(.data$id)
+    dplyr::pull(.data[["id"]])
   elic_type <- get_type(x, var, "elic")
   var_type <- get_type(x, var, "var")
-  idx <- seq_len(x$experts)
+  idx <- seq_len(x[["experts"]])
 
   if (group) {
 
     ids <- c(ids, "Group")
-
-    if (elic_type == "1p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data$best, na.rm = TRUE),
-                       "col" = "group")
-    } else if (elic_type == "3p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data$best, na.rm = TRUE),
-                       "min" = NA,
-                       "max" = NA,
-                       "col" = "group")
-    } else if (elic_type == "4p") {
-      data <- data |>
-        dplyr::add_row("id" = "Group",
-                       "best" = mean(data$best, na.rm = TRUE),
-                       "min" = NA,
-                       "max" = NA,
-                       "conf" = 100,
-                       "col" = "group")
-    }
+    data <- add_group_data(data, elic_type)
   }
 
   if (!is.null(truth)) {
 
     ids <- c(ids, "Truth")
-
-    if (elic_type == "1p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth$best,
-                       "col" = "truth")
-    } else if (elic_type == "3p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth$best,
-                       "min" = truth$min,
-                       "max" = truth$max,
-                       "col" = "truth")
-    } else if (elic_type == "4p") {
-      data <- data |>
-        dplyr::add_row("id" = "Truth",
-                       "best" = truth$best,
-                       "min" = truth$min,
-                       "max" = truth$max,
-                       "conf" = truth$conf,
-                       "col" = "truth")
-    }
+    data <- add_truth_data(data, truth, elic_type)
   }
 
   data <- data |>
-    mutate("id" = factor(.data$id, levels = ids))
+    mutate("id" = factor(.data[["id"]], levels = ids))
 
   if (elic_type %in% c("3p", "4p")) {
 
@@ -161,16 +122,15 @@ elic_plot <- function(x,
 
       # Rescale min and max
       data <- rescale_data(data, scale_conf)
+      needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
 
-      if (var_type == "p") {
+      if (var_type == "p" && needs_resc) {
 
-        if (any(data$min[idx] < 0) || any(data$max[idx] > 1)) {
-          data$min <- pmax(0, pmin(1, data$min))
-          data$max <- pmax(0, pmin(1, data$max))
-          warn <- "Some values have been constrained to be between {.val {0}} \\
-                   and {.val {1}}."
-          cli::cli_warn(c("!" = warn))
-        }
+        data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
+        data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
+        warn <- "Some values have been constrained to be between {.val {0}} \\
+                 and {.val {1}}."
+        cli::cli_warn(c("!" = warn))
       }
 
       if (verbose) {
@@ -179,15 +139,17 @@ elic_plot <- function(x,
     }
 
     if (group) {
-      data$min[data$id == "Group"] <- mean(data$min[idx], na.rm = TRUE)
-      data$max[data$id == "Group"] <- mean(data$max[idx], na.rm = TRUE)
+      data[["min"]][data[["id"]] == "Group"] <- mean(data[["min"]][idx],
+                                                     na.rm = TRUE)
+      data[["max"]][data[["id"]] == "Group"] <- mean(data[["max"]][idx],
+                                                     na.rm = TRUE)
     }
   }
 
   p <- ggplot2::ggplot(data) +
-    ggplot2::geom_point(mapping = ggplot2::aes(x = .data$best,
-                                               y = .data$id,
-                                               colour = .data$col),
+    ggplot2::geom_point(mapping = ggplot2::aes(x = .data[["best"]],
+                                               y = .data[["id"]],
+                                               colour = .data[["col"]]),
                         size = point_size) +
     ggplot2::labs(title = paste("Round", round),
                   x = var,
@@ -195,10 +157,10 @@ elic_plot <- function(x,
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
-      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = .data$id,
-                                                     xmin = .data$min,
-                                                     xmax = .data$max,
-                                                     colour = .data$col),
+      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = .data[["id"]],
+                                                     xmin = .data[["min"]],
+                                                     xmax = .data[["max"]],
+                                                     colour = .data[["col"]]),
                               position = "identity",
                               height = 0,
                               linewidth = line_width)
@@ -218,6 +180,84 @@ elic_plot <- function(x,
 }
 
 # Helpers----
+
+#' Add group data
+#'
+#' Add data for the group mean to the data.frame.
+#'
+#' @param data tibble with the elicitation data.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tibble with the group data added.
+#' @noRd
+#'
+#' @author Sergio Vignali
+add_group_data <- function(data, elic_type) {
+
+  if (elic_type == "1p") {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "col" = "group")
+  } else if (elic_type == "3p") {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "min" = NA,
+                     "max" = NA,
+                     "col" = "group")
+  } else {
+    data <- data |>
+      dplyr::add_row("id" = "Group",
+                     "best" = mean(data[["best"]], na.rm = TRUE),
+                     "min" = NA,
+                     "max" = NA,
+                     "conf" = 100,
+                     "col" = "group")
+  }
+
+  data
+}
+
+#' Add truth data
+#'
+#' Add data for the true values to the data.frame.
+#'
+#' @param data tibble with the elicitation data.
+#' @param truth list with the true values.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tibble with the true data added.
+#' @noRd
+#'
+#' @author Sergio Vignali
+add_truth_data <- function(data, truth, elic_type) {
+
+  if (elic_type == "1p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "col" = "truth")
+  } else if (elic_type == "3p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "min" = truth[["min"]],
+                     "max" = truth[["max"]],
+                     "col" = "truth")
+  } else if (elic_type == "4p") {
+    data <- data |>
+      dplyr::add_row("id" = "Truth",
+                     "best" = truth[["best"]],
+                     "min" = truth[["min"]],
+                     "max" = truth[["max"]],
+                     "conf" = truth[["conf"]],
+                     "col" = "truth")
+  }
+
+  data
+}
+
 #' Get type
 #'
 #' Get variable or elicitation type for the given variable.
@@ -231,7 +271,7 @@ elic_plot <- function(x,
 #'
 #' @author Sergio Vignali
 get_type <- function(x, var, type) {
-  x[[paste0(type, "_types")]][x$var_names == var]
+  x[[paste0(type, "_types")]][x[["var_names"]] == var]
 }
 
 #' Rescale data
@@ -239,16 +279,16 @@ get_type <- function(x, var, type) {
 #' Rescale the min and max values of the data to the confidence value.
 #'
 #' @param x a data.frame with the elicitation data.
-#' @param scale_conf numeric, the scale factor for the confidence interval.
+#' @param s numeric, the scale factor for the confidence interval.
 #'
 #' @return A data.frame with the rescaled min and max values.
 #' @noRd
 #'
 #' @author Sergio Vignali and Stefano Canessa
-rescale_data <- function(x, scale_conf) {
+rescale_data <- function(x, s) {
 
-  x$min <- x$best - (x$best - x$min) * scale_conf / x$conf
-  x$max <- x$best + (x$max - x$best) * scale_conf / x$conf
+  x[["min"]] <- x[["best"]] - (x[["best"]] - x[["min"]]) * s / x[["conf"]]
+  x[["max"]] <- x[["best"]] + (x[["max"]] - x[["best"]]) * s / x[["conf"]]
 
   x
 }
@@ -279,7 +319,7 @@ check_var_in_obj <- function(x, var) {
                    call = rlang::caller_env())
   }
 
-  if (!var %in% x$var_names) {
+  if (!var %in% x[["var_names"]]) {
     error <- "Variable {.val {var}} not found in the {.cls elicit} object."
     cli::cli_abort(c("Invalid value for {.arg var}:",
                      "x" = error,
@@ -306,10 +346,7 @@ check_truth <- function(x, elic_type) {
   n <- length(x)
   error <- ""
 
-  if (!is.list(x)) {
-    error <- "{.arg truth} is a {.cls {class(x)}} but it should a named \\
-              {.cls list}."
-  } else {
+  if (is.list(x)) {
 
     if (elic_type == "1p") {
 
@@ -343,6 +380,9 @@ check_truth <- function(x, elic_type) {
                   {.val min}, {.val max}, {.val best} and {.val conf}."
       }
     }
+  } else {
+    error <- "{.arg truth} is a {.cls {class(x)}} but it should a named \\
+              {.cls list}."
   }
 
   if (nchar(error) > 0) {
@@ -383,6 +423,5 @@ elic_theme <- function() {
                                                         color = "black"),
                    axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
                    axis.text = ggplot2::element_text(size = 14),
-                   plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm")
-    )
+                   plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
 }
