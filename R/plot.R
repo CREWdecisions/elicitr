@@ -14,9 +14,9 @@
 #' @param truth_colour character string, the colour of the true value.
 #' @param point_size numeric, the size of the points.
 #' @param line_width numeric, the width of the lines.
-#' @param title character, the title of the plot
-#' @param xlab character, the title of the x axis
-#' @param ylab character, the title of the y axis
+#' @param title character, the title of the plot.
+#' @param xlab character, the title of the x axis.
+#' @param ylab character, the title of the y axis.
 #' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
