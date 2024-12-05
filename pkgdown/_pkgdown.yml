@@ -11,7 +11,7 @@ reference:
   contents:
   - elic_cont_start
   - elic_cont_add_data
-  - elic_get_data
+  - elic_cont_get_data
   - elic_plot
 
 - title: "Simulated data"

@@ -2,8 +2,8 @@
 
 S3method(print,elicit)
 export(elic_cont_add_data)
+export(elic_cont_get_data)
 export(elic_cont_start)
-export(elic_get_data)
 export(elic_plot)
 importFrom(cli,cli_abort)
 importFrom(cli,cli_h2)

@@ -169,7 +169,7 @@ my_elicit
 }
 \seealso{
 Other data helpers: 
-\code{\link{elic_get_data}()}
+\code{\link{elic_cont_get_data}()}
 }
 \author{
 Sergio Vignali

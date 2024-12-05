@@ -140,13 +140,13 @@
 #'   elic_cont_add_data(data_source = gs2, round = 2)
 #' my_elicit
 elic_cont_add_data <- function(x,
-                          data_source,
-                          round,
-                          ...,
-                          sep = ",",
-                          sheet = 1,
-                          overwrite = FALSE,
-                          verbose = TRUE) {
+                               data_source,
+                               round,
+                               ...,
+                               sep = ",",
+                               sheet = 1,
+                               overwrite = FALSE,
+                               verbose = TRUE) {
 
   check_elicit(x)
   check_round(round)
