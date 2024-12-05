@@ -23,9 +23,8 @@ expect_snapshot(elic_start(var_names = c("var1", "var2", "var3"),
                            var_types = "pqR",
                            elic_type = "1"), #<- why is it singular "type"?
                 error = TRUE)
-    # ! argument "experts" is missing, with no default
     ## ! Incorrect value for `var_types`:
-    ### x "q" not amongst the list of available values for `var_types`.
+    ### x "q" not amongst the list of available short codes for `var_types`.
     ## i See "Variable Types" in `elicitr::elic_start()` for the list of variables available.
 
 # When 2 variable types are not allowed but have the same short code
