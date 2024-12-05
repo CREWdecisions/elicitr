@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 [![Project Status](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![R-CMD-check](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml)
 [![lint](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml)
+[![Codecov test coverage](https://codecov.io/gh/CREWdecisions/elicitr/graph/badge.svg)](https://app.codecov.io/gh/CREWdecisions/elicitr)
 <!-- badges: end -->
 
 ### Description
