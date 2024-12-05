@@ -692,28 +692,6 @@ omogenise_datasets <- function(x, data) {
 
 # Checkers----
 
-#' Check file extension
-#'
-#' Check if the file extension is supported, i.e. _csv_ or _xlsx_.
-#'
-#' @param x character containing the file extension
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_file_extension <- function(x) {
-
-  if (!x %in% c("csv", "xlsx")) {
-    error <- "The extension of the provided file is {.val .{x}}, supported \\
-              are {.val .csv} or {.val .xlsx}."
-
-    cli::cli_abort(c("Unsupported file extension:",
-                     "x" = error,
-                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
-                   call = rlang::caller_env())
-  }
-}
-
 #' Check columns
 #'
 #' Check whether the number of columns correspond to those expected.
