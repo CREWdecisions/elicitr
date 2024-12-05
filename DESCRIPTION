@@ -35,6 +35,7 @@ Imports:
     utils
 Suggests:
     lifecycle,
+    lintr,
     mc2d,
     randomNames,
     testthat (>= 3.0.0),
