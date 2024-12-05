@@ -7,7 +7,7 @@ test_that("Errors ", {
                   verbose = FALSE)
 
   file <- withr::local_file("test.txt",
-                            code = {writeLines("", "test.txt")})
+                            code = {writeLines("", "test.txt")}) # nolint
 
   # When the file doesn't exist
   expect_snapshot(elic_add_data(x,
@@ -44,30 +44,30 @@ test_that("Errors ", {
   # When >=2 id are present in Round 2 but not in Round 1 and there are not NAs
   y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
-  z$name[3] <- "Jane Doe"
-  z$name[4] <- "John Smith"
+  z[["name"]][[3]] <- "Jane Doe"
+  z[["name"]][[4]] <- "John Smith"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
   # When 1 id is present in Round 2 but not in Round 1 and there are NAs in
   # Round 2
   z <- round_2[1:4, ]
-  z$name[3] <- "Jane Doe"
+  z[["name"]][[3]] <- "Jane Doe"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
   # When >=2 id are present in Round 2 but not in Round 1 and there are NAs in
   # Round 2
-  z$name[4] <- "John Smith"
+  z[["name"]][[4]] <- "John Smith"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
   # Round 2 has several ids not present in Round 1 which has not enough NA rows
   z <- round_1[1:4, ]
-  z$name[1] <- "Jane Doe"
-  z$name[2] <- "John Doe"
-  z$name[3] <- "Joe Bloggs"
-  z$name[4] <- "John Smith"
+  z[["name"]][[1]] <- "Jane Doe"
+  z[["name"]][[2]] <- "John Doe"
+  z[["name"]][[3]] <- "Joe Bloggs"
+  z[["name"]][[4]] <- "John Smith"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE),
                   error = TRUE)
@@ -82,27 +82,30 @@ test_that("Warnings", {
   # When there are less entries in dataset than experts for Round 1
   expect_snapshot(y <- elic_add_data(x, data_source = round_1[1:4, ],
                                      round = 1, verbose = FALSE))
-  idx <- setdiff(seq_along(round_1$name), seq_along(round_1$name[1:4]))
+  idx <- setdiff(seq_along(round_1[["name"]]),
+                 seq_along(round_1[["name"]][1:4]))
   for (i in seq_along(idx)) {
-    expect_identical(as.numeric(y$data$round_1[idx[i], -1]),
+    expect_identical(as.numeric(y[["data"]][["round_1"]][idx[i], -1]),
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
   # When one id is present in Round 2 but not in Round 1 and there are not NAs
   y <- elic_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
-  z$name[3] <- "Jane Doe"
+  z[["name"]][[3]] <- "Jane Doe"
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE))
-  expect_identical(out$data$round_1$id, out$data$round_2$id)
-  idx <- match(round_1$name, round_2$name)
-  expect_identical(out$data$round_2[, -1], round_2[idx, -1])
+  expect_identical(out[["data"]][["round_1"]][["id"]],
+                   out[["data"]][["round_2"]][["id"]])
+  idx <- match(round_1[["name"]], round_2[["name"]])
+  expect_identical(out[["data"]][["round_2"]][, -1], round_2[idx, -1])
   # When Round 2 has less entries than Round 1 but all its ids are in Round 1
   z <- round_2[1:4, ]
   expect_snapshot(out <- elic_add_data(y, data_source = z,
                                        round = 2, verbose = FALSE))
-  idx <- setdiff(seq_along(round_1$name), match(z$name, round_1$name))
+  idx <- setdiff(seq_along(round_1[["name"]]),
+                 match(z[["name"]], round_1[["name"]]))
   for (i in seq_along(idx)) {
-    expect_identical(as.numeric(out$data$round_2[idx[i], -1]),
+    expect_identical(as.numeric(out[["data"]][["round_2"]][idx[i], -1]),
                      rep(NA_real_, (ncol(round_2) - 1)))
   }
 
@@ -113,11 +116,13 @@ test_that("Warnings", {
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2[1:5, ],
                                        round = 2, verbose = FALSE))
-  expect_identical(as.numeric(out$data$round_2[nrow(out$data$round_2), -1]),
+  out_round_1 <- out[["data"]][["round_1"]]
+  out_round_2 <- out[["data"]][["round_2"]]
+  expect_identical(as.numeric(out_round_2[nrow(out_round_2), -1]),
                    rep(NA_real_, (ncol(round_2) - 1)))
-  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  expect_identical(out_round_1[["id"]], out_round_2[["id"]])
   for (i in seq(4, 6)) {
-    expect_identical(as.numeric(out$data$round_1[i, -1]),
+    expect_identical(as.numeric(out_round_1[i, -1]),
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
 
@@ -125,15 +130,17 @@ test_that("Warnings", {
   # Round 1 => 3 NA, Round 2 => 1 NA
   expect_snapshot(out <- elic_add_data(y, data_source = round_2[1:4, ],
                                        round = 2, verbose = FALSE))
-  expect_identical(as.numeric(out$data$round_2[nrow(out$data$round_2), ]),
+  out_round_1 <- out[["data"]][["round_1"]]
+  out_round_2 <- out[["data"]][["round_2"]]
+  expect_identical(as.numeric(out_round_2[nrow(out_round_2), ]),
                    rep(NA_real_, ncol(round_2)))
-  expect_identical(as.numeric(out$data$round_2[2, -1]),
+  expect_identical(as.numeric(out_round_2[2, -1]),
                    rep(NA_real_, (ncol(round_2) - 1)))
-  expect_identical(as.numeric(out$data$round_1[nrow(out$data$round_1), ]),
+  expect_identical(as.numeric(out_round_1[nrow(out_round_1), ]),
                    rep(NA_real_, ncol(round_1)))
-  expect_identical(as.numeric(out$data$round_1[4, -1]),
+  expect_identical(as.numeric(out_round_1[4, -1]),
                    rep(NA_real_, (ncol(round_1) - 1)))
-  expect_identical(as.numeric(out$data$round_1[5, -1]),
+  expect_identical(as.numeric(out_round_1[5, -1]),
                    rep(NA_real_, (ncol(round_1) - 1)))
 
   # When values of a variable are not in the order min-max-best
@@ -143,10 +150,11 @@ test_that("Warnings", {
   z[6, 7:8] <- list(0.65, 0.85)
   expect_snapshot(out <- elic_add_data(x, data_source = z,
                                        round = 1, verbose = FALSE))
+  out_round_1 <- out[["data"]][["round_1"]]
   # Check that values have been reordered
-  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[1, 3:5])))
-  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[3, 3:5])))
-  expect_false(is_not_min_max_best(as.numeric(out$data$round_1[6, 6:8])))
+  expect_false(is_not_min_max_best(as.numeric(out_round_1[1, 3:5])))
+  expect_false(is_not_min_max_best(as.numeric(out_round_1[3, 3:5])))
+  expect_false(is_not_min_max_best(as.numeric(out_round_1[6, 6:8])))
 })
 
 test_that("Info", {
@@ -162,8 +170,10 @@ test_that("Info", {
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2,
                                        round = 2, verbose = FALSE))
-  expect_identical(out$data$round_1$id, out$data$round_2$id)
-  expect_identical(as.numeric(out$data$round_1[6, -1]),
+  out_round_1 <- out[["data"]][["round_1"]]
+  out_round_2 <- out[["data"]][["round_2"]]
+  expect_identical(out_round_1[["id"]], out_round_2[["id"]])
+  expect_identical(as.numeric(out_round_1[6, -1]),
                    rep(NA_real_, (ncol(round_1) - 1)))
 
   # Round 1 => 3 NAs, Round 2 => 0 NA
@@ -172,9 +182,11 @@ test_that("Info", {
     suppressWarnings()
   expect_snapshot(out <- elic_add_data(y, data_source = round_2,
                                        round = 2, verbose = FALSE))
-  expect_identical(out$data$round_1$id, out$data$round_2$id)
+  out_round_1 <- out[["data"]][["round_1"]]
+  out_round_2 <- out[["data"]][["round_2"]]
+  expect_identical(out_round_1[["id"]], out_round_2[["id"]])
   for (i in seq(4, 6)) {
-    expect_identical(as.numeric(out$data$round_1[i, -1]),
+    expect_identical(as.numeric(out_round_1[i, -1]),
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
 })
@@ -192,13 +204,16 @@ test_that("Output", {
     elic_add_data(data_source = round_2, round = 2, verbose = FALSE)
   cols <- c("id", "cat_best", "dog_min", "dog_max", "dog_best",
             "fish_min", "fish_max", "fish_best", "fish_conf")
-  expect_identical(colnames(z$data$round_1), cols)
-  expect_identical(colnames(z$data$round_2), cols)
+  expect_identical(colnames(z[["data"]][["round_1"]]), cols)
+  expect_identical(colnames(z[["data"]][["round_2"]]), cols)
   # Column id should have values with 7 characters
-  expect_identical(nchar(z$data$round_1$id), rep(7L, nrow(z$data$round_1)))
-  expect_identical(nchar(z$data$round_2$id), rep(7L, nrow(z$data$round_2)))
+  expect_identical(nchar(z[["data"]][["round_1"]][["id"]]),
+                   rep(7L, nrow(z[["data"]][["round_1"]])))
+  expect_identical(nchar(z[["data"]][["round_2"]][["id"]]),
+                   rep(7L, nrow(z[["data"]][["round_2"]])))
   # Id order should be the same in Round 1 and Round 2
-  expect_identical(z$data$round_1$id, z$data$round_2$id)
+  expect_identical(z[["data"]][["round_1"]][["id"]],
+                   z[["data"]][["round_2"]][["id"]])
   # Print document
   expect_snapshot(z)
 
@@ -216,10 +231,12 @@ test_that("Output", {
                        round = 1,
                        verbose = FALSE)
   # Double entry has been removed
-  expect_identical(length(unique(out$data$round_1$id)), 6L)
+  expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric
-  expect_vector(out$data$round_1$var1_best, ptype = double(), size = 6)
-  expect_vector(out$data$round_1$var2_best, ptype = double(), size = 6)
+  expect_vector(out[["data"]][["round_1"]][["var1_best"]],
+                ptype = double(), size = 6)
+  expect_vector(out[["data"]][["round_1"]][["var2_best"]],
+                ptype = double(), size = 6)
 })
 
 # Test get_col_names()----
@@ -293,31 +310,33 @@ test_that("Data are cleaned", {
   # Column with timestamps are removed
   x <- data.frame(a = rep(Sys.time(), 3),
                   b = letters[1:3],
-                  c = c("0.9", "0,8", "0.7")) |>
+                  c = c("0.9", "0,8", "0.7"),
+                  stringsAsFactors = FALSE) |>
     clean_gs_data()
   expect_length(x, 2)
   expect_named(x, c("b", "c"))
   # First column is not converted to double (it should contain the names)
-  expect_type(x$b, "character")
-  expect_type(x$c, "double")
+  expect_type(x[["b"]], "character")
+  expect_type(x[["c"]], "double")
 
   # Columns containing lists are converted to a numeric vector
   x <- data.frame(a = letters[1:5],
                   b = 1:5) |>
     dplyr::mutate(b = as.list(b)) |>
     clean_gs_data()
-  expect_type(x$a, "character")
-  expect_identical(x$b, as.numeric(1:5))
-  expect_vector(x$b, ptype = double(), size = 5)
+  expect_type(x[["a"]], "character")
+  expect_identical(x[["b"]], as.numeric(1:5))
+  expect_vector(x[["b"]], ptype = double(), size = 5)
 
   # In column containing mixed decimal separators, commas are replaced with
   # periods and then characters are converted to numeric
   x <- data.frame(a = letters[1:3],
-                  b = c("0.9", "0,8", "0.7")) |>
+                  b = c("0.9", "0,8", "0.7"),
+                  stringsAsFactors = FALSE) |>
     clean_gs_data()
-  expect_type(x$a, "character")
-  expect_identical(x$b, c(0.9, 0.8, 0.7))
-  expect_vector(x$b, ptype = double(), size = 3)
+  expect_type(x[["a"]], "character")
+  expect_identical(x[["b"]], c(0.9, 0.8, 0.7))
+  expect_vector(x[["b"]], ptype = double(), size = 3)
 })
 
 # Test min_max_best()----

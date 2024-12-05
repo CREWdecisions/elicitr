@@ -128,11 +128,11 @@ elic_start <- function(var_names,
   check_arg_types(elic_types, type = "elic")
 
   # Recycle variable and elicitation types if necessary
-  if (n_vars > 1 & length(var_types) == 1) {
+  if (n_vars > 1 && length(var_types) == 1) {
     var_types <- rep(var_types, n_vars)
   }
 
-  if (n_vars > 1 & length(elic_types) == 1) {
+  if (n_vars > 1 && length(elic_types) == 1) {
     elic_types <- rep(elic_types, n_vars)
   }
 

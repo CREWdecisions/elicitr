@@ -107,7 +107,8 @@ check_arg_types <- function(x,
   if (length(diff) > 0) {
     diff <- gsub(pattern = "p",
                  replacement = "",
-                 x = diff)
+                 x = diff,
+                 fixed = TRUE)
 
     sect <- switch(type,
                    var = "Variable Types",
