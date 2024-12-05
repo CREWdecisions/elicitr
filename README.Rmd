@@ -23,12 +23,12 @@ knitr::opts_chunk$set(
 
 ### Description
 
-elicitr is an R package, used to aggregate elicitation data.\
+elicitr is an R package used to standardise, visualise and aggregate data from expert elicitation.\
 The package is in active development and will implement functions based on two formal elicitation methods:
 
-* Continuous method\
-  Adapted from Hemming, V. et al. (2018) A practical guide to structured expert elicitation using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180. https://doi.org/10.1111/2041-210X.12857
-* Categorical method\
+* Elicitation of continuous variables\
+  Adapted from Hemming, V. et al. (2018). A practical guide to structured expert elicitation using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180. https://doi.org/10.1111/2041-210X.12857
+* Elicitation of categorical data\
   Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-based expert elicitation: application to a conservation translocation. Biological Invasions, 26(8), 2707–2721. https://doi.org/10.1007/s10530-024-03341-2
 
 ### Installation
@@ -40,7 +40,7 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
-### Related work
+### Similar packages
 
 * {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. https://doi.org/10.32614/CRAN.package.SHELF
 * {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. https://doi.org/10.32614/CRAN.package.prefeR

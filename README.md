@@ -15,14 +15,16 @@ coverage](https://codecov.io/gh/CREWdecisions/elicitr/graph/badge.svg)](https://
 
 ### Description
 
-elicitr is an R package used to standardize, visualize and aggregate data from expert elicitation.  
+elicitr is an R package used to standardise, visualise and aggregate
+data from expert elicitation.  
 The package is in active development and will implement functions based
 on two formal elicitation methods:
 
 - Elicitation of continuous variables  
-  Adapted from Hemming, V. et al. (2018). A practical guide to structured
-  expert elicitation using the IDEA protocol. Methods in Ecology and
-  Evolution, 9(1), 169–180. <https://doi.org/10.1111/2041-210X.12857>
+  Adapted from Hemming, V. et al. (2018). A practical guide to
+  structured expert elicitation using the IDEA protocol. Methods in
+  Ecology and Evolution, 9(1), 169–180.
+  <https://doi.org/10.1111/2041-210X.12857>
 - Elicitation of categorical data  
   Adapted from Vernet, M. et al. (2024). Assessing invasion risks using
   EICAT-based expert elicitation: application to a conservation
