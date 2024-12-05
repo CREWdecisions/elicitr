@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_plot()` plots elicitation data for a specific round and variable.
+#' `elic_cont_plot()` plots elicitation data for a specific round and variable.
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
@@ -46,40 +46,40 @@
 #'
 #' # Plot the elicitation data for the first round and the variable var1 (only
 #' # the best estimate)
-#' elic_plot(my_elicit, round = 1, var = "var1")
+#' elic_cont_plot(my_elicit, round = 1, var = "var1")
 #'
 #' # Plot the elicitation data for the first round and the variable var2 (best
 #' # estimate with min and max errors)
-#' elic_plot(my_elicit, round = 1, var = "var2")
+#' elic_cont_plot(my_elicit, round = 1, var = "var2")
 #'
 #' # Plot the elicitation data for the first round and the variable var3 (best
 #' # estimate with min and max errors rescaled to the confidence value)
-#' elic_plot(my_elicit, round = 1, var = "var3")
+#' elic_cont_plot(my_elicit, round = 1, var = "var3")
 #'
 #' # Add the group mean
-#' elic_plot(my_elicit, round = 1, var = "var3", group = TRUE)
+#' elic_cont_plot(my_elicit, round = 1, var = "var3", group = TRUE)
 #'
 #' # Add the true value
-#' elic_plot(my_elicit, round = 1, var = "var3",
-#'           truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
+#' elic_cont_plot(my_elicit, round = 1, var = "var3",
+#'                truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 #'
 #' # Overwrite the default theme
-#' elic_plot(my_elicit, round = 1, var = "var3",
-#'           theme = ggplot2::theme_classic())
-elic_plot <- function(x,
-                      round,
-                      var,
-                      ...,
-                      scale_conf = 100,
-                      group = FALSE,
-                      truth = NULL,
-                      colour = "purple",
-                      group_colour = "orange",
-                      truth_colour = "red",
-                      point_size = 4,
-                      line_width = 1.5,
-                      theme = NULL,
-                      verbose = TRUE) {
+#' elic_cont_plot(my_elicit, round = 1, var = "var3",
+#'                theme = ggplot2::theme_classic())
+elic_cont_plot <- function(x,
+                           round,
+                           var,
+                           ...,
+                           scale_conf = 100,
+                           group = FALSE,
+                           truth = NULL,
+                           colour = "purple",
+                           group_colour = "orange",
+                           truth_colour = "red",
+                           point_size = 4,
+                           line_width = 1.5,
+                           theme = NULL,
+                           verbose = TRUE) {
 
   # Check arguments
   check_elicit(x)

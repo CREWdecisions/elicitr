@@ -63,11 +63,11 @@
 #' # Get data for one and four points estimates
 #' elic_cont_get_data(my_elicit, round = 2, elic_types = "14")
 elic_cont_get_data <- function(x,
-                          round,
-                          ...,
-                          var = "all",
-                          var_types = "all",
-                          elic_types = "all") {
+                               round,
+                               ...,
+                               var = "all",
+                               var_types = "all",
+                               elic_types = "all") {
 
   check_elicit(x)
   check_round(round)
