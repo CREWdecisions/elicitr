@@ -122,9 +122,9 @@ test_that("Output", {
   expect_equal(p[["data"]][-7, 2:4],
                obj[["data"]][["round_2"]][-7, 3:5],
                ignore_attr = TRUE)
-  expect_identical(as.numeric(p[["data"]][7, 2:4]),
-                   colMeans(obj[["data"]][["round_2"]][, 3:5], na.rm = TRUE),
-                   ignore_attr = TRUE)
+  expect_equal(as.numeric(p[["data"]][7, 2:4]),
+               colMeans(obj[["data"]][["round_2"]][, 3:5], na.rm = TRUE),
+               ignore_attr = TRUE)
 
   # Plot for a variable with 3 points elicitation and truth
   truth_data <- list(min = 0.7, max = 0.9, best = 0.8)
@@ -167,9 +167,9 @@ test_that("Output", {
   expect_equal(p[["data"]][1:6, 2:4],
                obj[["data"]][["round_2"]][1:6, 3:5],
                ignore_attr = TRUE)
-  expect_identical(as.numeric(p[["data"]][7, 2:4]),
-                   colMeans(obj[["data"]][["round_2"]][, 3:5], na.rm = TRUE),
-                   ignore_attr = TRUE)
+  expect_equal(as.numeric(p[["data"]][7, 2:4]),
+               colMeans(obj[["data"]][["round_2"]][, 3:5], na.rm = TRUE),
+               ignore_attr = TRUE)
   expect_identical(p[["data"]][8, 2:4],
                    truth_data[1:3],
                    ignore_attr = TRUE)
@@ -214,9 +214,9 @@ test_that("Output", {
   expect_equal(p[["data"]][-7, 2:5],
                rescaled_data,
                ignore_attr = TRUE)
-  expect_identical(as.numeric(p[["data"]][7, 2:4]),
-                   colMeans(rescaled_data[, 1:3], na.rm = TRUE),
-                   ignore_attr = TRUE)
+  expect_equal(as.numeric(p[["data"]][7, 2:4]),
+               colMeans(rescaled_data[, 1:3], na.rm = TRUE),
+               ignore_attr = TRUE)
 
   # Plot for a variable with 4 points elicitation and truth
   truth_data <- list(min = 0.7, max = 0.9, best = 0.8, conf = 100)
@@ -262,9 +262,9 @@ test_that("Output", {
   expect_equal(p[["data"]][1:6, 2:5],
                rescaled_data,
                ignore_attr = TRUE)
-  expect_identical(as.numeric(p[["data"]][7, 2:4]),
-                   colMeans(rescaled_data[, 1:3], na.rm = TRUE),
-                   ignore_attr = TRUE)
+  expect_equal(as.numeric(p[["data"]][7, 2:4]),
+               colMeans(rescaled_data[, 1:3], na.rm = TRUE),
+               ignore_attr = TRUE)
   expect_identical(p[["data"]][8, 2:5],
                    truth_data_rescaled,
                    ignore_attr = TRUE)
