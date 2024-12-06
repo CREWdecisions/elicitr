@@ -1,0 +1,22 @@
+url: https://crewdecisions.github.io/elicitr/
+template:
+  bootstrap: 5
+  math-rendering: mathjax
+  light-switch: true
+
+reference:
+- title: "Elicitation of continuous variables"
+  desc: >
+    Functions for handling and plotting continuous variables.
+  contents:
+  - elic_cont_start
+  - elic_cont_add_data
+  - elic_cont_get_data
+  - elic_cont_plot
+
+- title: "Simulated data"
+  desc: >
+    Datasets of simulated data used for demonstration.
+  contents:
+  - round_1
+  - round_2

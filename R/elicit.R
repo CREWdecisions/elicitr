@@ -1,11 +1,11 @@
-# Constructor fro the `elicit` object
-new_elicit <- function(var_names,
-                       var_types,
-                       elic_types,
-                       experts,
-                       title,
-                       round_1 = NULL,
-                       round_2 = NULL) {
+# Constructor for the `elic_cont` object
+new_elic_cont <- function(var_names,
+                          var_types,
+                          elic_types,
+                          experts,
+                          title,
+                          round_1 = NULL,
+                          round_2 = NULL) {
 
   obj <- list(var_names = var_names,
               var_types = var_types,
@@ -15,12 +15,12 @@ new_elicit <- function(var_names,
                           round_2 = round_2))
 
   structure(obj,
-            class = "elicit",
+            class = "elic_cont",
             title = title)
 }
 
 #' @export
-print.elicit <- function(x, ...) {
+print.elic_cont <- function(x, ...) {
 
   rounds <- sum(lengths(x[["data"]]) != 0)
 
