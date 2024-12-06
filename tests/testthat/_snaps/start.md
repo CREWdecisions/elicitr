@@ -6,7 +6,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
-      x The value provided for `var_types` should be a character string of short codes, i.e. "pN" and not `c(p, N)`.
+      x The value provided for `var_types` should be a character string of short codes, i.e. "pN" and not `c("p", "N")`.
       i See "Variable Types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -17,7 +17,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `elic_types`:
-      x The value provided for `elic_types` should be a character string of short codes, i.e. "43" and not `c(4, 3)`.
+      x The value provided for `elic_types` should be a character string of short codes, i.e. "43" and not `c("4", "3")`.
       i See "Elicitation types" in `elicitr::elic_cont_start()`.
 
 ---

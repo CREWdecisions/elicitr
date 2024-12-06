@@ -45,7 +45,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `var_types`:
-      x The value provided for `var_types` should be a character string of short codes, i.e. "ZN" and not `c(Z, N)`.
+      x The value provided for `var_types` should be a character string of short codes, i.e. "ZN" and not `c("Z", "N")`.
       i See "Variable Types" in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -55,7 +55,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `elic_types`:
-      x The value provided for `elic_types` should be a character string of short codes, i.e. "14" and not `c(1, 4)`.
+      x The value provided for `elic_types` should be a character string of short codes, i.e. "14" and not `c("1", "4")`.
       i See "Elicitation types" in `elicitr::elic_cont_get_data()`.
 
 ---

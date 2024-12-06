@@ -74,7 +74,7 @@ check_arg_length <- function(x,
                    var = "Variable Types",
                    elic = "Elicitation types")
     short_codes <- paste(x, collapse = "")
-    wrong_values <- paste0("c(", paste(x, collapse = ", "), ")")
+    wrong_values <- paste0("c(", paste0('"', x, '"', collapse = ", "), ")")
 
     error <- "The value provided for {.arg {type}_types} should be a \\
               character string of short codes, i.e. {.val {short_codes}} and \\
