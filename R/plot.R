@@ -86,7 +86,7 @@ elic_cont_plot <- function(x,
                            line_width = 1.5,
                            title = paste("Round", round),
                            xlab = var,
-                           ylab = "Expert",
+                           ylab = "Experts",
                            family = "sans",
                            theme = NULL,
                            verbose = TRUE) {
