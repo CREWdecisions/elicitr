@@ -59,6 +59,10 @@ elic_cont_plot() plots elicitation data for a specific round and variable."><met
 <span>  truth_colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  line_width <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Round"</span>, <span class="va">round</span><span class="op">)</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="va">var</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Expert"</span>,</span>
+<span>  family <span class="op">=</span> <span class="st">"sans"</span>,</span>
 <span>  theme <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -118,6 +122,22 @@ function.</p></dd>
 <dd><p>numeric, the width of the lines.</p></dd>
 
 
+<dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
+<dd><p>character, the title of the plot.</p></dd>
+
+
+<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
+<dd><p>character, the title of the x axis.</p></dd>
+
+
+<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
+<dd><p>character, the title of the y axis.</p></dd>
+
+
+<dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
+<dd><p>character, the font family.</p></dd>
+
+
 <dt id="arg-theme">theme<a class="anchor" aria-label="anchor" href="#arg-theme"></a></dt>
 <dd><p>a <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></code> function to overwrite the default
 theme.</p></dd>
@@ -142,10 +162,11 @@ elements: <code>min</code>, <code>max</code>, <code>best</code>, and <code>conf<
 elements are also required. Finally, when <code>var</code> refers to a
 <em>three points elicitation</em> estimate, the <code>conf</code> element is also required. The
 <code>conf</code> element is used to rescale the <code>min</code> and <code>max</code> values.</p>
+<p>If a <code>theme</code> is provided, the <code>family</code> argument is ignored.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Sergio Vignali and Stefano Canessa</p>
+    <p>Sergio Vignali, Maude Vernet and Stefano Canessa</p>
     </div>
 
     <div class="section level2">
