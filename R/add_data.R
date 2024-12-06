@@ -617,7 +617,8 @@ omogenise_datasets <- function(x, data) {
                   row{?s}."
         info <- "Check raw data and use {.fn elicitr::elic_cont_add_data} to \\
                  add the dataset after manual corrections."
-        cli::cli_abort(c(text, "x" = error, "i" = info))
+        cli::cli_abort(c(text, "x" = error, "i" = info),
+                       call = rlang::caller_env())
       }
     }
   } else {

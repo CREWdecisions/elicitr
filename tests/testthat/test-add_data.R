@@ -75,6 +75,14 @@ test_that("Errors ", {
   expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
                                             round = 2, verbose = FALSE),
                   error = TRUE)
+
+  # When Round 1 has NAs and Round 2 has several ids not present in Round 1
+  y <- elic_cont_add_data(x, data_source = round_1[1:4, ],
+                          round = 1, verbose = FALSE) |>
+    suppressWarnings()
+  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
+                                            round = 2, verbose = FALSE),
+                  error = TRUE)
 })
 
 test_that("Warnings", {

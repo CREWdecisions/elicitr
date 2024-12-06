@@ -145,6 +145,19 @@
       x The <id> not present in "Round 1" are "06d2130", "6c074fa", "7aa9fc1", and "3b842bc".
       i Check raw data to identify the mismatch.
 
+---
+
+    Code
+      out <- elic_cont_add_data(y, data_source = z, round = 2, verbose = FALSE)
+    Condition
+      Warning:
+      ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::elic_cont_add_data()` with `overwrite = TRUE`.
+      Error in `elic_cont_add_data()`:
+      ! Impossible to combine "Round 1" and "Round 2" datasets:
+      x "Round 2" has 4 <id> not present in "Round 1" which has only 2 "NA" rows.
+      i Check raw data and use `elicitr::elic_cont_add_data()` to add the dataset after manual corrections.
+
 # Warnings
 
     Code
