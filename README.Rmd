@@ -91,6 +91,7 @@ round1_elicit <- elicitr::elic_cont_add_data(elicit_object,
 ```
 
 The information message confirms that the data for the first round has been added to the metadata from a `data.frame`.\
+
 If you conducted further rounds of elicitation, these can be added subsequently to the metadata:
 
 ```{r, echo = TRUE}
