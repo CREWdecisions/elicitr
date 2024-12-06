@@ -40,8 +40,99 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
+### Getting started
+
+First, you must inform elicitr of the number of variables (var) that you are eliciting (i.e. the number of topics in your elicitation).
+
+From there, you need to inform elictr of the type of variable (var_type) that you elicited for each of these variables. Available options are:
+
+* Z: integers, when the estimate must be an integer number in the interval (-Inf, Inf).
+
+* N: positive integers, when the estimate must be an integer number in the interval (0, Inf).
+
+* z: negative integers, when the estimate must be an integer number in the interval (-Inf, 0].
+
+* R: reals, when the estimate must be a real number in the interval (-Inf, Inf).
+
+* s: positive reals, when the estimate must be a real number in the interval (0, Inf).
+
+* r: negative reals, when the estimate must be a real number in the interval (-Inf, ].
+
+* p: probability, when the estimate must be a real number in the interval (0, 1).
+
+Finally, you need to inform elicitr of the type of elicitation (elic_type) you conducted for each of these variables. Three options are available in elicitr:
+
+* 1: You elicit only the best guess for this variable.
+
+* 3: You elicit the best guess for this variable and the minimum and maximum value.
+
+* 4: You elicit the best guess, minimum and maximum for this variable, and the confidence of the experts. Here, confidence (in percent) can be any number between 60 and 100 (because any number under 50 means that the correctness of the estimates is only due to chance).
+
+```r
+library(elicitr)
+```
+
+##### Elicitation of continuous variables
+
+###### Simulated datasets
+
+Two simulated datasets are included in elicitr:\
+
+```{r, echo = TRUE}
+elicitr::round_1
+```
+###
+```{r, echo = TRUE}
+elicitr::round_2
+```
+
+###### First step: create your object of class elicit
+
+```{r, echo = TRUE}
+elicit_object <- elicitr::elic_cont_start(var = c("var1", "var2", "var3"),
+                                          var_types = "ZNp",
+                                          elic_types = "134",
+                                          experts = 6)
+```
+
+###### Second step: add your data for round 1
+
+```{r, echo = TRUE}
+round1_elicit <- elicitr::elic_cont_add_data(elicit_object,
+                                             elicitr::round_1,
+                                             round = 1)
+```
+
+###### Third step: add your data for round 2
+
+```{r, echo = TRUE}
+round2_elicit <- elicitr::elic_cont_add_data(round1_elicit,
+                                             elicitr::round_2,
+                                             round = 2)
+```
+
+###### Fourth step: check your data
+
+```{r, echo = TRUE}
+elicitr::elic_cont_get_data(round2_elicit, round = 1, var = "all")
+```
+
+###### Final step: plot your data
+
+```{r continuous plot, echo = TRUE}
+elicitr::elic_cont_plot(round2_elicit,
+                        round = 2,
+                        group = TRUE,
+                        var = "var3",
+                        xlab = "Variable 3",
+                        ylab = "Experts")
+```
+
+##### Elicitation of continuous variables
+
+###### In development
+
 ### Similar packages
 
 * {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. https://doi.org/10.32614/CRAN.package.SHELF
 * {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. https://doi.org/10.32614/CRAN.package.prefeR
-
