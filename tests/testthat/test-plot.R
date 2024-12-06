@@ -13,6 +13,38 @@ test_that("Errors", {
   expect_snapshot(elic_cont_plot(obj, round = 1,
                                  var = c("var1", "var5", "var7")),
                   error = TRUE)
+  # Truth for 1p----
+  # When truth is not a list
+  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1", truth = 0.8),
+                  error = TRUE)
+  # When truth is a list with wrong elements
+  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1",
+                                 truth = list(min = 0.7, max = 0.9)),
+                  error = TRUE)
+  # When truth is a list with the right amount of elements but wrong name
+  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1",
+                                 truth = list(beast = 0.8)),
+                  error = TRUE)
+  # Truth for 3p----
+  # When truth is a list with wrong elements
+  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var2",
+                                 truth = list(min = 0.7, max = 0.9)),
+                  error = TRUE)
+  # When truth is a list with the right amount of elements but wrong names
+  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var2",
+                                 truth = list(min = 0.7, beast = 0.8,
+                                              max = 0.9)),
+                  error = TRUE)
+  # Truth for 4p----
+  # When truth is a list with wrong elements
+  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var3",
+                                 truth = list(min = 0.7, max = 0.9)),
+                  error = TRUE)
+  # When truth is a list with the right amount of elements but wrong names
+  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var3",
+                                 truth = list(min = 0.7, beast = 0.8,
+                                              max = 0.9, conf = 100)),
+                  error = TRUE)
 })
 
 test_that("Warnings", {

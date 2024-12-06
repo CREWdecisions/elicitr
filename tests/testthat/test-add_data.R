@@ -212,8 +212,10 @@ test_that("Info", {
   expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
                                             round = 1))
   expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
-  expect_identical(dplyr::pull(out[["data"]][["round_1"]], id),
-  hash_names(stand_names(dplyr::pull(round_1, "name"))))
+  hashed_id <- dplyr::pull(round_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
                      pattern = "xlsx",
@@ -221,7 +223,7 @@ test_that("Info", {
   expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
   expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
                ignore_attr = TRUE)
-  expect_identical(dplyr::pull(out[["data"]][["round_1"]], id),
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
                    hash_names(stand_names(dplyr::pull(round_1, "name"))))
 })
 
