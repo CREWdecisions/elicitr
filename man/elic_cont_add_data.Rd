@@ -78,7 +78,9 @@ specifications below:
 \item \code{var_min}: minimum estimate for the variable
 \item \code{var_max}: maximum estimate for the variable
 \item \code{var_best}: best estimate for the variable
-\item \code{var_conf}: confidence for the estimate
+\item \code{var_conf}: confidence for the estimate (confidence (in percent) can be any
+number between 60 and 100 (because any number under 50 implies that the
+accuracy of the estimates is only due to chance)
 }
 
 The column with names is unique, the other columns are a block and can be
