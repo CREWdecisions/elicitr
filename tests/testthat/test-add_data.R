@@ -29,9 +29,13 @@ test_that("Errors ", {
   # When the number of columns is different from expected
   expect_snapshot(elic_cont_add_data(x, data_source = round_1[, -1], round = 1),
                   error = TRUE)
-  # When there are less experts than number of rows in dataset
+  # When there are less experts than number of rows in dataset for round 1
   expect_snapshot(elic_cont_add_data(x, data_source = rbind(round_1, round_1),
                                      round = 1, verbose = FALSE),
+                  error = TRUE)
+  # When there are less experts than number of rows in dataset for round 2
+  expect_snapshot(elic_cont_add_data(y, data_source = rbind(round_2, round_2),
+                                     round = 2, verbose = FALSE),
                   error = TRUE)
   # When x is not an elicit object
   expect_snapshot(elic_cont_add_data("abc", data_source = round_1, round = 1),
@@ -68,6 +72,14 @@ test_that("Errors ", {
   z[["name"]][[2]] <- "John Doe"
   z[["name"]][[3]] <- "Joe Bloggs"
   z[["name"]][[4]] <- "John Smith"
+  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
+                                            round = 2, verbose = FALSE),
+                  error = TRUE)
+
+  # When Round 1 has NAs and Round 2 has several ids not present in Round 1
+  y <- elic_cont_add_data(x, data_source = round_1[1:4, ],
+                          round = 1, verbose = FALSE) |>
+    suppressWarnings()
   expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
                                             round = 2, verbose = FALSE),
                   error = TRUE)
@@ -189,6 +201,30 @@ test_that("Info", {
     expect_identical(as.numeric(out_round_1[i, -1]),
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
+
+  # Success adding data.frame
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = round_1,
+                                            round = 1))
+  # Success adding csv file
+  files <- list.files(path = system.file("extdata", package = "elicitr"),
+                      pattern = "csv",
+                      full.names = TRUE)
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
+                                            round = 1))
+  expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
+  hashed_id <- dplyr::pull(round_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
+  # Success adding xlsx file
+  file <- list.files(path = system.file("extdata", package = "elicitr"),
+                     pattern = "xlsx",
+                     full.names = TRUE)
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
+  expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
+               ignore_attr = TRUE)
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
+                   hash_names(stand_names(dplyr::pull(round_1, "name"))))
 })
 
 test_that("Output", {
@@ -214,7 +250,7 @@ test_that("Output", {
   # Id order should be the same in Round 1 and Round 2
   expect_identical(z[["data"]][["round_1"]][["id"]],
                    z[["data"]][["round_2"]][["id"]])
-  # Print document
+  # Print object
   expect_snapshot(z)
 
   # Data imported from Google Sheets

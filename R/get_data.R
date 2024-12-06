@@ -131,13 +131,14 @@ elic_cont_get_data <- function(x,
 #' @author Sergio Vignali
 check_var <- function(x, var) {
 
-  diff <- setdiff(var, c(x[["var_names"]], "all"))
+  vars <- x[["var_names"]]
+  diff <- setdiff(var, c(vars, "all"))
 
   if (length(diff) > 0) {
-    cli::cli_abort(c("Argument {.arg var} can be only a vector with a \\
-                      combination of {.val {x$var_names}} or {.val all}:",
-                     "x" = "The value{?s} {.val {diff}} {?is/are} invalid.",
-                     "i" = "See {.fn elicitr::elic_cont_get_data}."),
+    cli::cli_abort(c("Invalid value for {.arg var}:",
+                     "x" = "Variable{?s} {.val {diff}} not present in the \\
+                            {.cls elic_cont} object.",
+                     "i" = "Available variable{?s} {?is/are} {.val {vars}}."),
                    call = rlang::caller_env())
   }
 }
@@ -167,8 +168,8 @@ check_optional_args <- function(var, var_types, elic_types) {
     arg <- "all"
   } else if (sum(idx) > 1) {
     arg <- args[idx][[1]]
-    text <- "Only one optional argument can be specified, used the first one: \\
-             {.arg {arg}}"
+    text <- "Only one optional argument can be specified, used the first one \\
+             provided: {.arg {arg}}"
     cli::cli_warn(c(text,
                     "i" = "See Details in {.fn elicitr::elic_cont_get_data}."))
   } else {

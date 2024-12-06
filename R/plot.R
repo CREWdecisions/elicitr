@@ -120,6 +120,7 @@ elic_cont_plot <- function(x,
   if (!is.null(truth)) {
 
     ids <- c(ids, "Truth")
+    check_truth(truth, elic_type)
     data <- add_truth_data(data, truth, elic_type)
   }
 
@@ -359,48 +360,53 @@ check_truth <- function(x, elic_type) {
 
   if (is.list(x)) {
 
+    info <- "See Details in {.fn elicitr::elic_cont_plot}."
+
     if (elic_type == "1p") {
 
       if (n != 1) {
-        error <- "{.arg truth} is a list with {.val {n}} elements but it \\
-                  should have only {.val {1}} element."
+        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
+                  but it should have only {.val {1}} element named {.val best}."
       } else if (names(x) != "best") {
-        error <- "{.arg truth} is a list with an element named \\
-                  {.val {names(x)}} but its name should be {.val best}."
+        error <- "The name of the element in {.arg truth} should be \\
+                  {.val best} and not {.val {names(x)}}."
       }
 
     } else if (elic_type == "3p") {
 
       if (n != 3) {
-        error <- "{.arg truth} is a list with {.val {n}} elements but it \\
-                  should have {.val {3}} elements."
+        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
+                  but should have {.val {3}} elements named {.val min}, \
+                  {.val max} and {.val best}."
       } else if (!all(c("min", "max", "best") %in% names(x))) {
-        error <- "{.arg truth} is a list with elements named \\
-                  {.val {names(x)}} but it should have elements named \\
-                  {.val min}, {.val max} and {.val best}."
+        error <- "The name of the element in {.arg truth} should be \\
+                  {.val min}, {.val max}, and {.val best} and not \\
+                  {.val {names(x)}}."
       }
 
     } else if (elic_type == "4p") {
 
       if (n != 4) {
-        error <- "{.arg truth} is a list with {.val {n}} elements but it \\
-                  should have {.val {4}} elements."
+        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
+                  but should have {.val {4}} elements named {.val min}, \
+                  {.val max}, {.val best} and {.val conf}."
       } else if (!all(c("min", "max", "best", "conf") %in% names(x))) {
-        error <- "{.arg truth} is a list with elements named \\
-                  {.val {names(x)}} but it should have elements named \\
-                  {.val min}, {.val max}, {.val best} and {.val conf}."
+        error <- "The name of the element in {.arg truth} should be \\
+                  {.val min}, {.val max}, {.val best}, and {.val conf} and \\
+                  not {.val {names(x)}}."
       }
     }
   } else {
-    error <- "{.arg truth} is a {.cls {class(x)}} but it should a named \\
-              {.cls list}."
+    error <- "Argument {.arg truth} is of class {.cls {class(x)}} but it \\
+              should be a named {.cls list}."
+    info <- "See {.fn elicitr::elic_cont_plot}."
   }
 
   if (nchar(error) > 0) {
 
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::plot.elic_cont}"),
+                     "i" = info),
                    call = rlang::caller_env())
   }
 }
