@@ -40,8 +40,90 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
+### Getting started
+
+```r
+library(elicitr)
+```
+
+All the functions in the elicitr package start with the prefix `elic_`. After that, two prefixes are available: `elic_cont` and `elic_cat`. This design choice is intended to enhance functions discovery.
+
+### Elicitation of continuous variables
+
+##### Simulated datasets
+
+Two simulated datasets are included in elicitr:\
+
+```{r, echo = TRUE}
+elicitr::round_1
+```
+###
+```{r, echo = TRUE}
+elicitr::round_2
+```
+
+The core of the elicitr package is an object of class `elicit`. Just as you create
+a form to collect estimates in an elicitation process, you need to create the metadata file to hold the data from that elicitation. Any analysis starts by creating the `elicit` object with the function `elic_cont_start()`. This will allows to check whether all experts have given their answers in the expected way.\
+To build this `elicit` object, three parameters must be specified: 
+
+* the number of variables `var` (i.e. the number of topics in your elicitation),
+* the type of variables `var_types` for each of these variables (many options are available, ranging from reel numbers to probabilities),
+* the type of elicitation `elic_types` for each of these variables (three options are available, ranging from one estimate elicitations, to more elaborate ones with minimum and maximum values, best guess, and confidence level of experts)
+
+```{r, echo = TRUE}
+elicit_object <- elicitr::elic_cont_start(var = c("var1", "var2", "var3"),
+                                          var_types = "ZNp",
+                                          elic_types = "134",
+                                          experts = 6,
+                                          title = "elicitation example",
+                                          verbose = FALSE)
+```
+```{r, echo = FALSE}
+elicit_object
+```
+
+Once the metadata has been created, the data of the first round of elicitation can be added with the function `elic_cont_add_data()`.
+
+```{r, echo = TRUE}
+round1_elicit <- elicitr::elic_cont_add_data(elicit_object,
+                                             elicitr::round_1,
+                                             round = 1)
+```
+
+The information message confirms that the data for the first round has been added to the metadata from a `data.frame`.\
+
+If you conducted further rounds of elicitation, these can be added subsequently to the metadata:
+
+```{r, echo = TRUE}
+round2_elicit <- elicitr::elic_cont_add_data(round1_elicit,
+                                             elicitr::round_2,
+                                             round = 2)
+```
+
+To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the `id` column. These are then used to match the expert’s answers in the multiple rounds.\
+
+The function `elic_cont_get_data()` retrieves data from an `elicit` object. It is possible to get the whole dataset of a given round, or extract only the data for a given `var`, `var_types`, or `elic_types`.
+
+```{r, echo = TRUE}
+elicitr::elic_cont_get_data(round2_elicit, round = 1, var = "all")
+```
+
+Finally, data can be plotted using the function `elic_cont_plot()`. This function plots data belonging to a given `round` and for a given `var`.
+
+```{r cont_plot, echo = TRUE}
+elicitr::elic_cont_plot(round2_elicit,
+                        round = 2,
+                        group = TRUE,
+                        var = "var3",
+                        xlab = "Variable 3",
+                        ylab = "Experts")
+```
+
+### Elicitation of continuous variables
+
+###### In development
+
 ### Similar packages
 
 * {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. https://doi.org/10.32614/CRAN.package.SHELF
 * {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. https://doi.org/10.32614/CRAN.package.prefeR
-
