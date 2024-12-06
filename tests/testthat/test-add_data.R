@@ -29,9 +29,13 @@ test_that("Errors ", {
   # When the number of columns is different from expected
   expect_snapshot(elic_cont_add_data(x, data_source = round_1[, -1], round = 1),
                   error = TRUE)
-  # When there are less experts than number of rows in dataset
+  # When there are less experts than number of rows in dataset for round 1
   expect_snapshot(elic_cont_add_data(x, data_source = rbind(round_1, round_1),
                                      round = 1, verbose = FALSE),
+                  error = TRUE)
+  # When there are less experts than number of rows in dataset for round 2
+  expect_snapshot(elic_cont_add_data(y, data_source = rbind(round_2, round_2),
+                                     round = 2, verbose = FALSE),
                   error = TRUE)
   # When x is not an elicit object
   expect_snapshot(elic_cont_add_data("abc", data_source = round_1, round = 1),

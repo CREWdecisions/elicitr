@@ -684,7 +684,8 @@ omogenise_datasets <- function(x, data) {
                datasets is not possible:"
       error <- "The {.cls id} not present in {.val Round 1} are \\
                 {.val {missing}}."
-      cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+      info <- "Check raw data to identify the mismatch."
+      cli::cli_abort(c(text, "x" = error, "i" = info),
                      call = rlang::caller_env())
     }
   }
@@ -706,8 +707,8 @@ check_columns <- function(x,
                           col_names) {
   # Check number of columns
   if (ncol(x) != length(col_names)) {
-    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but are \\
-        expected to be {.val {length(col_names)}}."
+    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
+              {.val {length(col_names)}} are expected."
     info <- "See Data Format in {.fn elicitr::elic_cont_add_data}."
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
@@ -739,12 +740,19 @@ check_round_data <- function(data, experts, round) {
     if (nrow(data) > experts) {
 
       # More data than experts ==> Raise error
-      error <- "The dataset for {.val Round {round}} contains
-                {.val {nrow(data)}} rows but are expected estimates from
+      error <- "The dataset for {.val Round {round}} contains \\
+                {.val {nrow(data)}} rows but expects estimates from \\
                 {.val {experts}} experts."
-      info <- "Check raw data or modify the {.cls elic_cont} object with \\
-               {.code obj$experts = {nrow(data)}} and then use \\
-               {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
+
+      if (round == 1) {
+        info <- "Check raw data or modify the {.cls elic_cont} object by \\
+                 setting the number of experts to {.val {nrow(data)}} with \\
+                 {.code obj$experts = {nrow(data)}}."
+      } else {
+        info <- "Check raw data."
+      }
+
+
       cli::cli_abort(c("Incorrect number of rows in dataset:",
                        "x" = error,
                        "i" = info),
@@ -758,8 +766,8 @@ check_round_data <- function(data, experts, round) {
         # Add NAs
         data <- add_nas_rows(data, experts)
         warn <- "The dataset for {.val Round 1} has {.val {n_round}} rows \\
-                 but are expected {.val {experts}} experts, added \\
-                 {.val {n_diff}} row{?s} with {.val NAs}."
+                 but expects {.val {experts}} experts. {.val {NA}}s added to \\
+                 missing {.cls id}."
       } else {
         # Add NAs is delegated to omogenise_datasets()
         warn <- "Dataset for {.val Round 2} has {.val {n_round}} rows but are \\

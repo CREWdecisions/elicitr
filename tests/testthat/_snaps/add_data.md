@@ -41,7 +41,7 @@
     Condition
       Error in `elic_cont_add_data()`:
       ! Unexpected number of columns:
-      x The imported dataset has 8 columns but are expected to be 9.
+      x The imported dataset has 8 columns but 9 are expected.
       i See Data Format in `elicitr::elic_cont_add_data()`.
 
 ---
@@ -52,8 +52,19 @@
     Condition
       Error in `elic_cont_add_data()`:
       ! Incorrect number of rows in dataset:
-      x The dataset for "Round 1" contains 12 rows but are expected estimates from 6 experts.
-      i Check raw data or modify the <elic_cont> object with `obj$experts = 12` and then use `elicitr::elic_cont_add_data()` with `overwrite = TRUE`.
+      x The dataset for "Round 1" contains 12 rows but expects estimates from 6 experts.
+      i Check raw data or modify the <elic_cont> object by setting the number of experts to 12 with `obj$experts = 12`.
+
+---
+
+    Code
+      elic_cont_add_data(y, data_source = rbind(round_2, round_2), round = 2,
+      verbose = FALSE)
+    Condition
+      Error in `elic_cont_add_data()`:
+      ! Incorrect number of rows in dataset:
+      x The dataset for "Round 2" contains 12 rows but expects estimates from 6 experts.
+      i Check raw data.
 
 ---
 
@@ -71,8 +82,8 @@
       elic_cont_add_data(x, data_source = round_1, round = 3)
     Condition
       Error in `elic_cont_add_data()`:
-      ! Argument `round` can be only 1 or 2:
-      x The value 3 is invalid.
+      ! Incorrect value for `round`:
+      x `round` can only be 1 or 2.
       i See `elicitr::elic_cont_add_data()`.
 
 ---
@@ -81,8 +92,8 @@
       elic_cont_add_data(x, data_source = round_1, round = 0)
     Condition
       Error in `elic_cont_add_data()`:
-      ! Argument `round` can be only 1 or 2:
-      x The value 0 is invalid.
+      ! Incorrect value for `round`:
+      x `round` can only be 1 or 2.
       i See `elicitr::elic_cont_add_data()`.
 
 ---
@@ -93,7 +104,7 @@
       Error in `elic_cont_add_data()`:
       ! Dataset for "Round 2" has 2 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
       x The <id> not present in "Round 1" are "06d2130" and "3b842bc".
-      i Check raw data.
+      i Check raw data to identify the mismatch.
 
 ---
 
@@ -119,7 +130,7 @@
       Error in `elic_cont_add_data()`:
       ! Dataset for "Round 2" has 2 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
       x The <id> not present in "Round 1" are "06d2130" and "3b842bc".
-      i Check raw data.
+      i Check raw data to identify the mismatch.
 
 ---
 
@@ -132,7 +143,7 @@
       Error in `elic_cont_add_data()`:
       ! Dataset for "Round 2" has 4 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
       x The <id> not present in "Round 1" are "06d2130", "6c074fa", "7aa9fc1", and "3b842bc".
-      i Check raw data.
+      i Check raw data to identify the mismatch.
 
 # Warnings
 
@@ -140,7 +151,7 @@
       y <- elic_cont_add_data(x, data_source = round_1[1:4, ], round = 1, verbose = FALSE)
     Condition
       Warning:
-      ! The dataset for "Round 1" has 4 rows but are expected 6 experts, added 2 rows with "NAs".
+      ! The dataset for "Round 1" has 4 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::elic_cont_add_data()` with `overwrite = TRUE`.
 
 ---

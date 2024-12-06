@@ -14,8 +14,8 @@
       elic_cont_get_data(obj, round = 3)
     Condition
       Error in `elic_cont_get_data()`:
-      ! Argument `round` can be only 1 or 2:
-      x The value 3 is invalid.
+      ! Incorrect value for `round`:
+      x `round` can only be 1 or 2.
       i See `elicitr::elic_cont_get_data()`.
 
 ---
@@ -45,7 +45,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `var_types`:
-      x The value provided for `var_types` is a character vector of length 2 but should be a single string with short codes.
+      x The value provided for `var_types` should be a character string of short codes, i.e. "ZN" and not `c(Z, N)`.
       i See "Variable Types" in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -55,7 +55,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `elic_types`:
-      x The value provided for `elic_types` is a character vector of length 2 but should be a single string with short codes.
+      x The value provided for `elic_types` should be a character string of short codes, i.e. "14" and not `c(1, 4)`.
       i See "Elicitation types" in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -65,7 +65,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `var_types`:
-      x The incorrect short code is "q".
+      x "q" is not in the list of available short codes.
       i See "Variable Types" in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -75,7 +75,7 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `elic_types`:
-      x The incorrect short code is "2".
+      x "2" is not in the list of available short codes.
       i See "Elicitation types" in `elicitr::elic_cont_get_data()`.
 
 ---

@@ -40,9 +40,8 @@ check_round <- function(x) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
-    cli::cli_abort(c("Argument {.arg round} can be only {.val {1}} or \\
-                      {.val {2}}:",
-                     "x" = "The value {.val {x}} is invalid.",
+    cli::cli_abort(c("Incorrect value for {.arg round}:",
+                     "x" = "{.arg round} can only be {.val {1}} or {.val {2}}.",
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
@@ -74,10 +73,12 @@ check_arg_length <- function(x,
     sect <- switch(type,
                    var = "Variable Types",
                    elic = "Elicitation types")
+    short_codes <- paste(x, collapse = "")
+    wrong_values <- paste0("c(", paste(x, collapse = ", "), ")")
 
-    error <- "The value provided for {.arg {type}_types} is a character \\
-              vector of length {.val {n}} but should be a single string with \\
-              short codes."
+    error <- "The value provided for {.arg {type}_types} should be a \\
+              character string of short codes, i.e. {.val {short_codes}} and \\
+              not {.code {wrong_values}}."
 
     cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
                      "x" = error,
@@ -122,7 +123,8 @@ check_arg_types <- function(x,
 
     fn <- as.list(sys.call(-1))[[1]]
 
-    error <- "The incorrect short code{?s} {?is/are} {.val {diff}}."
+    error <- "{.val {diff}} {?is/are} not in the list of available short \\
+              codes."
 
     cli::cli_abort(c("Incorrect value for {.arg {type}_types}:",
                      "x" = error,

@@ -14,8 +14,8 @@
       elic_cont_plot(obj, round = 3, var = "var1")
     Condition
       Error in `elic_cont_plot()`:
-      ! Argument `round` can be only 1 or 2:
-      x The value 3 is invalid.
+      ! Incorrect value for `round`:
+      x `round` can only be 1 or 2.
       i See `elicitr::elic_cont_plot()`.
 
 ---
