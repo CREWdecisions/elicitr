@@ -463,8 +463,10 @@ fix_var_order <- function(x,
 
       ids <- dplyr::pull(x, 1)[which(idx_rows)]
 
-      warn <- "Reordered {.cls id} {.val {ids}} for the variable \\
-               {.field {vars[i]}} according to the order {.val min-max-best}"
+      warn <- "{.field {vars[i]}} of {.cls id} {.val {ids}} reordered \\
+                following the order {.val min-max-best}."
+      info <- "Check raw data and if you want to update the dataset use
+               {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
 
       cli::cli_warn(c("!" = warn))
     }
@@ -663,10 +665,10 @@ omogenise_datasets <- function(x, data) {
       data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
                                  by = "id")
 
-      warn <- "Dataset for {.val Round 2} has {.val 1} {.cls id} not \\
-               present in {.val Round 1}. This is considered a typo by the \\
-               expert {.val {mis_in_round_2}} in {.val Round 2} and its value \\
-               has been replaced."
+      warn <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
+               present in {.val Round 1}. This is considered a typo by \\
+               expert {.val {mis_in_round_2}} in {.val Round 2} and the \\
+               {.cls id} has been replaced."
 
       info <- "Check raw data and if you want to update the dataset in \\
                {.val Round 2} use {.fn elicitr::elic_cont_add_data} with \\
@@ -762,21 +764,17 @@ check_round_data <- function(data, experts, round) {
       n_round <- nrow(data)
       n_diff <- experts - n_round
 
+      # Add NAs is delegated to omogenise_datasets() when round == 2
       if (round == 1) {
         # Add NAs
         data <- add_nas_rows(data, experts)
-        warn <- "The dataset for {.val Round 1} has {.val {n_round}} rows \\
-                 but expects {.val {experts}} experts. {.val {NA}}s added to \\
-                 missing {.cls id}."
-      } else {
-        # Add NAs is delegated to omogenise_datasets()
-        warn <- "Dataset for {.val Round 2} has {.val {n_round}} rows but are \\
-                 expected {.val {experts}} experts. Missing {.cls id} have \\
-                 been filled with {.val NAs}."
       }
 
+      warn <- "The dataset for {.val Round {round}} has {.val {n_round}} rows \\
+               but expects {.val {experts}} experts. {.val {NA}}s added to \\
+               missing {.cls id}."
       info <- "Check raw data and if you want to update the dataset use \\
-              {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
+               {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
       cli::cli_warn(c("!" = warn,
                       "i" = info))
     }

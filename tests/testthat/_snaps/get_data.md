@@ -24,9 +24,9 @@
       elic_cont_get_data(obj, round = 1, var = "var5")
     Condition
       Error in `elic_cont_get_data()`:
-      ! Argument `var` can be only a vector with a combination of "var1", "var2", and "var3" or "all":
-      x The value "var5" is invalid.
-      i See `elicitr::elic_cont_get_data()`.
+      ! Invalid value for `var`:
+      x Variable "var5" not present in the <elic_cont> object.
+      i Available variables are "var1", "var2", and "var3".
 
 ---
 
@@ -34,9 +34,9 @@
       elic_cont_get_data(obj, round = 1, var = c("var1", "var5", "var7"))
     Condition
       Error in `elic_cont_get_data()`:
-      ! Argument `var` can be only a vector with a combination of "var1", "var2", and "var3" or "all":
-      x The values "var5" and "var7" are invalid.
-      i See `elicitr::elic_cont_get_data()`.
+      ! Invalid value for `var`:
+      x Variables "var5" and "var7" not present in the <elic_cont> object.
+      i Available variables are "var1", "var2", and "var3".
 
 ---
 
@@ -124,7 +124,7 @@
       out <- elic_cont_get_data(obj, round = 1, var = "var1", elic_types = "4")
     Condition
       Warning:
-      Only one optional argument can be specified, used the first one: `var`
+      Only one optional argument can be specified, used the first one provided: `var`
       i See Details in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -133,7 +133,7 @@
       out <- elic_cont_get_data(obj, round = 1, var = "var2", var_types = "ZN")
     Condition
       Warning:
-      Only one optional argument can be specified, used the first one: `var`
+      Only one optional argument can be specified, used the first one provided: `var`
       i See Details in `elicitr::elic_cont_get_data()`.
 
 ---
@@ -142,6 +142,6 @@
       out <- elic_cont_get_data(obj, round = 1, var_types = "Zp", elic_types = "4")
     Condition
       Warning:
-      Only one optional argument can be specified, used the first one: `var_types`
+      Only one optional argument can be specified, used the first one provided: `var_types`
       i See Details in `elicitr::elic_cont_get_data()`.
 
