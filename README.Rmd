@@ -110,7 +110,7 @@ elicitr::elic_cont_get_data(round2_elicit, round = 1, var = "all")
 
 Finally, data can be plotted using the function `elic_cont_plot()`. This function plots data belonging to a given `round` and for a given `var`.
 
-```{r continuous plot, echo = TRUE}
+```{r cont_plot, echo = TRUE}
 elicitr::elic_cont_plot(round2_elicit,
                         round = 2,
                         group = TRUE,

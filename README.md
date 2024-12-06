@@ -179,7 +179,7 @@ elicitr::elic_cont_plot(round2_elicit,
 #> ✔ Rescaled min and max
 ```
 
-<img src="man/figures/README-continuous plot-1.png" width="100%" />
+<img src="man/figures/README-cont_plot-1.png" width="100%" />
 
 ### Elicitation of continuous variables
 
