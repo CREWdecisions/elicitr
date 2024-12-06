@@ -303,6 +303,7 @@ test_that("Output", {
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.x"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
+  expect_identical(ggplot2::layer_scales(p)[["x"]][["limits"]], c(0, 1))
 
   # Test theme
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
