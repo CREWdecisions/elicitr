@@ -294,9 +294,12 @@ test_that("Output", {
   expect_identical(ld2[["colour"]][n + 1], "brown")
   expect_identical(ld2[["colour"]][n + 2], "pink")
   expect_identical(ld2[["linewidth"]], rep(2, n + 2))
-  expect_identical(ggplot2::ggplot_build(p)$plot$plot_env$title, "Test")
-  expect_identical(ggplot2::ggplot_build(p)$plot$plot_env$xlab, "test")
-  expect_identical(ggplot2::ggplot_build(p)$plot$plot_env$ylab, "Text")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
+                   "Test")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["xlab"]],
+                   "test")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
+                   "Text")
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.x"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
