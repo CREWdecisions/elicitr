@@ -193,6 +193,21 @@ test_that("Info", {
     expect_identical(as.numeric(out_round_1[i, -1]),
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
+
+  # Success adding data.frame
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = round_1,
+                                            round = 1))
+  # Success adding csv file
+  files <- list.files(path = system.file("extdata", package = "elicitr"),
+                      pattern = "csv",
+                      full.names = TRUE)
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
+                                            round = 1))
+  # Success adding xlsx file
+  file <- list.files(path = system.file("extdata", package = "elicitr"),
+                     pattern = "xlsx",
+                     full.names = TRUE)
+  expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
 })
 
 test_that("Output", {

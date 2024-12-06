@@ -219,6 +219,27 @@
     Message
       i The dataset in "Round 2" has 3 <id> not present in "Round 1". These <id> have been added to "Round 1" with NA values.
 
+---
+
+    Code
+      out <- elic_cont_add_data(x, data_source = round_1, round = 1)
+    Message
+      v Data added to "Round 1" from "data.frame"
+
+---
+
+    Code
+      out <- elic_cont_add_data(x, data_source = files[[1]], round = 1)
+    Message
+      v Data added to "Round 1" from "csv file"
+
+---
+
+    Code
+      out <- elic_cont_add_data(x, data_source = file, round = 1)
+    Message
+      v Data added to "Round 1" from "xlsx file"
+
 # Output
 
     Code
