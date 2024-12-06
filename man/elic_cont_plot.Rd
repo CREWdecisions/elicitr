@@ -17,6 +17,10 @@ elic_cont_plot(
   truth_colour = "red",
   point_size = 4,
   line_width = 1.5,
+  title = paste("Round", round),
+  xlab = var,
+  ylab = "Expert",
+  family = "sans",
   theme = NULL,
   verbose = TRUE
 )
@@ -48,6 +52,14 @@ function.}
 
 \item{line_width}{numeric, the width of the lines.}
 
+\item{title}{character, the title of the plot.}
+
+\item{xlab}{character, the title of the x axis.}
+
+\item{ylab}{character, the title of the y axis.}
+
+\item{family}{character, the font family.}
+
 \item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
 theme.}
 
@@ -71,6 +83,8 @@ elements: \code{min}, \code{max}, \code{best}, and \code{conf}. When \code{var} 
 elements are also required. Finally, when \code{var} refers to a
 \emph{three points elicitation} estimate, the \code{conf} element is also required. The
 \code{conf} element is used to rescale the \code{min} and \code{max} values.
+
+If a \code{theme} is provided, the \code{family} argument is ignored.
 }
 \examples{
 # Create the elict object and add data for the first and second round from a
@@ -106,5 +120,5 @@ elic_cont_plot(my_elicit, round = 1, var = "var3",
                theme = ggplot2::theme_classic())
 }
 \author{
-Sergio Vignali and Stefano Canessa
+Sergio Vignali, Maude Vernet and Stefano Canessa
 }

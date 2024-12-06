@@ -14,6 +14,10 @@
 #' @param truth_colour character string, the colour of the true value.
 #' @param point_size numeric, the size of the points.
 #' @param line_width numeric, the width of the lines.
+#' @param title character, the title of the plot.
+#' @param xlab character, the title of the x axis.
+#' @param ylab character, the title of the y axis.
+#' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
 #' @inheritParams elic_cont_add_data
@@ -29,10 +33,12 @@
 #' _three points elicitation_ estimate, the `conf` element is also required. The
 #' `conf` element is used to rescale the `min` and `max` values.
 #'
+#' If a `theme` is provided, the `family` argument is ignored.
+#'
 #' @return Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
-#' @author Sergio Vignali and Stefano Canessa
+#' @author Sergio Vignali, Maude Vernet and Stefano Canessa
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -78,6 +84,10 @@ elic_cont_plot <- function(x,
                            truth_colour = "red",
                            point_size = 4,
                            line_width = 1.5,
+                           title = paste("Round", round),
+                           xlab = var,
+                           ylab = "Expert",
+                           family = "sans",
                            theme = NULL,
                            verbose = TRUE) {
 
@@ -87,7 +97,7 @@ elic_cont_plot <- function(x,
   check_var_in_obj(x, var)
 
   if (is.null(theme)) {
-    theme <- elic_theme()
+    theme <- elic_theme(family = family)
   }
 
   data <- elic_cont_get_data(x, round = round, var = var) |>
@@ -151,9 +161,9 @@ elic_cont_plot <- function(x,
                                                y = .data[["id"]],
                                                colour = .data[["col"]]),
                         size = point_size) +
-    ggplot2::labs(title = paste("Round", round),
-                  x = var,
-                  y = "Expert")
+    ggplot2::labs(title = title,
+                  x = xlab,
+                  y = ylab)
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
@@ -405,24 +415,28 @@ check_truth <- function(x, elic_type) {
 #' @return A [`theme`][`ggplot2::theme`] function.
 #' @noRd
 #'
-#' @author Sergio Vignali
-elic_theme <- function() {
+#' @author Sergio Vignali and Maude Vernet
+elic_theme <- function(family = "sans") {
   ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "none",
                    plot.title = ggplot2::element_text(size = 16,
                                                       face = "bold",
-                                                      hjust = 0.5),
+                                                      hjust = 0.5,
+                                                      family = family),
                    panel.grid.major.x = ggplot2::element_line(colour = "black",
                                                               linetype = 8,
                                                               linewidth = 0.1),
                    panel.grid.major.y = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
                    axis.title.y = ggplot2::element_text(size = 16,
-                                                        color = "black"),
+                                                        color = "black",
+                                                        family = family),
                    axis.title.x = ggplot2::element_text(vjust = -1.2,
                                                         size = 16,
-                                                        color = "black"),
+                                                        color = "black",
+                                                        family = family),
                    axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
-                   axis.text = ggplot2::element_text(size = 14),
+                   axis.text = ggplot2::element_text(size = 14,
+                                                     family = family),
                    plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
 }

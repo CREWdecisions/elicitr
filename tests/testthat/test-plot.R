@@ -276,6 +276,21 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Colours and shapes----
+  p <- elic_cont_plot(obj, round = 2, var = "var3",
+                      truth = list(min = 0.7, max = 0.9,
+                                   best = 0.8, conf = 100),
+                      group = TRUE,
+                      colour = "yellow",
+                      group_colour = "brown",
+                      truth_colour = "pink",
+                      point_size = 3,
+                      line_width = 2,
+                      title = "Test",
+                      xlab = "test",
+                      ylab = "Text",
+                      family = "serif",
+                      verbose = FALSE)
+
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
   p <- elic_cont_plot(obj,
@@ -289,7 +304,10 @@ test_that("Output", {
                       truth_colour = "pink",
                       point_size = 3,
                       line_width = 2,
-                      theme = test_theme,
+                      title = "Test",
+                      xlab = "test",
+                      ylab = "Text",
+                      family = "serif",
                       verbose = FALSE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
   n <- obj[["experts"]]
@@ -302,6 +320,26 @@ test_that("Output", {
   expect_identical(ld2[["colour"]][n + 1], "brown")
   expect_identical(ld2[["colour"]][n + 2], "pink")
   expect_identical(ld2[["linewidth"]], rep(2, n + 2))
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
+                   "Test")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["xlab"]],
+                   "test")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
+                   "Text")
+  expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["axis.title.x"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
+  expect_identical(ggplot2::layer_scales(p)[["x"]][["limits"]], c(0, 1))
+
+  # Test theme
+  test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
+                                                                  hjust = 1))
+  p <- elic_cont_plot(obj, round = 2, var = "var3",
+                      truth = list(min = 0.7, max = 0.9,
+                                   best = 0.8, conf = 100),
+                      group = TRUE,
+                      theme = test_theme,
+                      verbose = FALSE)
   expect_identical(p[["theme"]][["plot.title"]][["size"]], 14)
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
