@@ -203,11 +203,18 @@ test_that("Info", {
                       full.names = TRUE)
   expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
                                             round = 1))
+  expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], id),
+  hash_names(stand_names(dplyr::pull(round_1, "name"))))
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
                      pattern = "xlsx",
                      full.names = TRUE)
   expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
+  expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
+               ignore_attr = TRUE)
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], id),
+                   hash_names(stand_names(dplyr::pull(round_1, "name"))))
 })
 
 test_that("Output", {
@@ -233,7 +240,7 @@ test_that("Output", {
   # Id order should be the same in Round 1 and Round 2
   expect_identical(z[["data"]][["round_1"]][["id"]],
                    z[["data"]][["round_2"]][["id"]])
-  # Print document
+  # Print object
   expect_snapshot(z)
 
   # Data imported from Google Sheets
