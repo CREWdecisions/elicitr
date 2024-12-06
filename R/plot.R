@@ -31,12 +31,14 @@
 #' `var` refers to a  _two points elicitation_.estimate, the `min` and `max`
 #' elements are also required. Finally, when `var` refers to a
 #' _three points elicitation_ estimate, the `conf` element is also required. The
-#' `conf` element is used to rescale the `min` and `max` values.
+#' `conf` element is used to rescale the `min` and `max` values. If a `theme` is
+#' provided, the `family`argument will be replaced by the font family specified in the
+#' theme.
 #'
 #' @return Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
-#' @author Sergio Vignali and Stefano Canessa
+#' @author Sergio Vignali, Maude Vernet and Stefano Canessa
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -412,7 +414,7 @@ check_truth <- function(x, elic_type) {
 #' @return A [`theme`][`ggplot2::theme`] function.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 elic_theme <- function(family = "sans") {
   ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "none",
