@@ -144,7 +144,7 @@ round2_elicit <- elicitr::elic_cont_add_data(round1_elicit,
 #> ✔ Data added to "Round 2" from "data.frame"
 ```
 
-To keep the anonymity of the experts, their names are converted to short
+To keep the anonymity of experts, their names are converted to short
 sha1 hashes and saved in the `id` column. These are then used to match
 the expert’s answers in the multiple rounds.  
 

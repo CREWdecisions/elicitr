@@ -100,7 +100,7 @@ round2_elicit <- elicitr::elic_cont_add_data(round1_elicit,
                                              round = 2)
 ```
 
-To keep the anonymity of the experts, their names are converted to short sha1 hashes and saved in the `id` column. These are then used to match the expert’s answers in the multiple rounds.\
+To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the `id` column. These are then used to match the expert’s answers in the multiple rounds.\
 
 The function `elic_cont_get_data()` retrieves data from an `elicit` object. It is possible to get the whole dataset of a given round, or extract only the data for a given `var`, `var_types`, or `elic_types`.
 
