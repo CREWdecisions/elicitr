@@ -40,6 +40,74 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
+### Getting started
+
+elicitr works by 
+
+```r
+library(elicitr)
+```
+
+##### Elicitation of continuous variables
+
+###### Simulated datasets
+
+Two simulated datasets are included in elicitr:\
+
+```{r, echo = TRUE}
+elicitr::round_1
+```
+###
+```{r, echo = TRUE}
+elicitr::round_2
+```
+
+###### First step: create your object of class elicit
+
+```{r, echo = TRUE}
+elicit_object <- elicitr::elic_start(var = c("var1", "var2", "var3"),
+                                          var_types = "ZNs",
+                                          elic_types = "134",
+                                          experts = 6)
+```
+
+###### Second step: add your data for round 1
+
+```{r, echo = TRUE}
+round1_elicit <- elicitr::elic_add_data(elicit_object,
+                                             elicitr::round_1,
+                                             round = 1)
+```
+
+###### Third step: add your data for round 2
+
+```{r, echo = TRUE}
+round2_elicit <- elicitr::elic_add_data(round1_elicit,
+                                             elicitr::round_2,
+                                             round = 2)
+```
+
+###### Fourth step: check your data
+
+```{r, echo = TRUE}
+elicitr::elic_get_data(round2_elicit, round = 1, var = "all")
+```
+
+###### Final step: plot your data
+
+```{r continuous plot, echo = TRUE}
+elicitr::elic_plot(round2_elicit,
+                        round = 2,
+                        group = TRUE,
+                        var = "var3",
+                        xlab = "variable 3",
+                        ylab = "Experts")
+```
+
+##### Elicitation of continuous variables
+
+###### In development
+
 ### Similar packages
 
 * {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. https://doi.org/10.32614/CRAN.package.SHELF
