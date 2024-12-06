@@ -82,9 +82,9 @@ elements: \code{min}, \code{max}, \code{best}, and \code{conf}. When \code{var} 
 \code{var} refers to a  \emph{two points elicitation}.estimate, the \code{min} and \code{max}
 elements are also required. Finally, when \code{var} refers to a
 \emph{three points elicitation} estimate, the \code{conf} element is also required. The
-\code{conf} element is used to rescale the \code{min} and \code{max} values. If a \code{theme} is
-provided, the \code{family}argument will be replaced by the font family specified in the
-theme.
+\code{conf} element is used to rescale the \code{min} and \code{max} values.
+
+If a \code{theme} is provided, the \code{family} argument is ignored.
 }
 \examples{
 # Create the elict object and add data for the first and second round from a

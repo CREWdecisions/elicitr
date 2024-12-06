@@ -276,19 +276,20 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Colours and shapes----
-  p <- elic_plot(obj, round = 2, var = "var3",
-                 truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
-                 group = TRUE,
-                 colour = "yellow",
-                 group_colour = "brown",
-                 truth_colour = "pink",
-                 point_size = 3,
-                 line_width = 2,
-                 title = "Test",
-                 xlab = "test",
-                 ylab = "Text",
-                 family = "serif",
-                 verbose = FALSE)
+  p <- elic_cont_plot(obj, round = 2, var = "var3",
+                      truth = list(min = 0.7, max = 0.9,
+                                   best = 0.8, conf = 100),
+                      group = TRUE,
+                      colour = "yellow",
+                      group_colour = "brown",
+                      truth_colour = "pink",
+                      point_size = 3,
+                      line_width = 2,
+                      title = "Test",
+                      xlab = "test",
+                      ylab = "Text",
+                      family = "serif",
+                      verbose = FALSE)
 
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
@@ -303,7 +304,10 @@ test_that("Output", {
                       truth_colour = "pink",
                       point_size = 3,
                       line_width = 2,
-                      theme = test_theme,
+                      title = "Test",
+                      xlab = "test",
+                      ylab = "Text",
+                      family = "serif",
                       verbose = FALSE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
   n <- obj[["experts"]]
@@ -330,11 +334,12 @@ test_that("Output", {
   # Test theme
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
-  p <- elic_plot(obj, round = 2, var = "var3",
-                 truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
-                 group = TRUE,
-                 theme = test_theme,
-                 verbose = FALSE)
+  p <- elic_cont_plot(obj, round = 2, var = "var3",
+                      truth = list(min = 0.7, max = 0.9,
+                                   best = 0.8, conf = 100),
+                      group = TRUE,
+                      theme = test_theme,
+                      verbose = FALSE)
   expect_identical(p[["theme"]][["plot.title"]][["size"]], 14)
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
