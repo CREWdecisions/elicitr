@@ -38,6 +38,7 @@ Suggests:
     lintr,
     mc2d,
     randomNames,
+    Surrogate,
     testthat (>= 3.0.0),
     withr (>= 3.0.1)
 Config/testthat/edition: 3

@@ -207,7 +207,7 @@ test_that("Info", {
                                             round = 1))
   # Success adding csv file
   files <- list.files(path = system.file("extdata", package = "elicitr"),
-                      pattern = "csv",
+                      pattern = "round_",
                       full.names = TRUE)
   expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
                                             round = 1))
@@ -218,7 +218,7 @@ test_that("Info", {
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
-                     pattern = "xlsx",
+                     pattern = "rounds",
                      full.names = TRUE)
   expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
   expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],

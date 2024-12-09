@@ -12,7 +12,7 @@
 #' type.
 #' * `elic_types`: character string with short codes indicating the elicitation
 #' type.
-#' * `experts`: numeric indicating the number of experts participating at the
+#' * `experts`: numeric indicating the number of experts participating in the
 #' elicitation process.
 #' * `data`: list with the data collected during the elicitation process. The
 #' list has two elements, `round_1` and `round_2`, which store the data

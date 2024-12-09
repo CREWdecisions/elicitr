@@ -17,7 +17,7 @@ There are 5 elements in the \code{elic_cont} object:
 type.
 \item \code{elic_types}: character string with short codes indicating the elicitation
 type.
-\item \code{experts}: numeric indicating the number of experts participating at the
+\item \code{experts}: numeric indicating the number of experts participating in the
 elicitation process.
 \item \code{data}: list with the data collected during the elicitation process. The
 list has two elements, \code{round_1} and \code{round_2}, which store the data
