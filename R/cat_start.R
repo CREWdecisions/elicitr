@@ -67,7 +67,7 @@
 #' x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
 #'                     sites = c("Site_1", "Site_2", "Site_3"),
 #'                     experts = 8,
-#'                     mechanisms = c("mechanism_1","mechanism_2")),
+#'                     mechanisms = c("mechanism_1","mechanism_2"),
 #'                     title = "My elicitation")
 #' x
 elic_cat_start <- function(levels,
