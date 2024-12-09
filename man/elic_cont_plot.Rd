@@ -79,9 +79,9 @@ workshop and is used for demonstration. In this case the true value is known
 and can be added to the plot. This argument must be a list with the following
 elements: \code{min}, \code{max}, \code{best}, and \code{conf}. When \code{var} refers to a
 \emph{one point elicitation} estimate, only the \code{best} element is required. When
-\code{var} refers to a  \emph{two points elicitation}.estimate, the \code{min} and \code{max}
+\code{var} refers to a  \emph{three points elicitation}.estimate, the \code{min} and \code{max}
 elements are also required. Finally, when \code{var} refers to a
-\emph{three points elicitation} estimate, the \code{conf} element is also required. The
+\emph{four points elicitation} estimate, the \code{conf} element is also required. The
 \code{conf} element is used to rescale the \code{min} and \code{max} values.
 
 If a \code{theme} is provided, the \code{family} argument is ignored.
