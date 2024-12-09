@@ -95,7 +95,7 @@ to build the column names is taken from the metadata available in the
 
 \code{var_conf}, given in percents, can be any number between 60 and 100. Any
 value under 50 would imply that the accuracy of the estimates is only due to
-chance)
+chance).
 }
 
 \section{Data cleaning}{
