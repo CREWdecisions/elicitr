@@ -48,16 +48,22 @@ library(elicitr)
 
 All the functions in the elicitr package start with the prefix `elic_`.
 After that, two prefixes are available: `elic_cont` and `elic_cat`. This
-design choice is intended to enhance functions discovery.
+design choice is intended to enhance functions discovery.  
+`elic_cont` functions are used for the elicitation of continuous
+variables and `elic_cat` functions for the elicitation of categorical
+variables.
 
 ### Elicitation of continuous variables
 
-##### Simulated datasets
+#### Simulated datasets
 
-Two simulated datasets are included in elicitr:  
+Two simulated datasets are included in elicitr. These datasets are
+intended to demonstrate the functionality of the package and do not
+represent an actual elicitation process (names are also randomly
+generated).
 
 ``` r
-elicitr::round_1
+round_1
 #> # A tibble: 6 × 9
 #>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
 #>   <chr>            <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
@@ -73,7 +79,7 @@ elicitr::round_1
 ### 
 
 ``` r
-elicitr::round_2
+round_2
 #> # A tibble: 6 × 9
 #>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
 #>   <chr>            <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
@@ -86,34 +92,39 @@ elicitr::round_2
 #> # ℹ 1 more variable: var3_conf <int>
 ```
 
-The core of the elicitr package is an object of class `elicit`. Just as
-you create a form to collect estimates in an elicitation process, you
-need to create the metadata file to hold the data from that elicitation.
-Any analysis starts by creating the `elicit` object with the function
-`elic_cont_start()`. This will allows to check whether all experts have
-given their answers in the expected way.  
-To build this `elicit` object, three parameters must be specified:
+#### How elicitr works
 
-- the number of variables `var` (i.e. the number of topics in your
-  elicitation),
-- the type of variables `var_types` for each of these variables (many
-  options are available, ranging from reel numbers to probabilities),
-- the type of elicitation `elic_types` for each of these variables
-  (three options are available, ranging from one estimate elicitations,
-  to more elaborate ones with minimum and maximum values, best guess,
-  and confidence level of experts)
+For the analysis of continuous variables, the core of the elicitr
+package is an object of class `elic_cont`. Just as you create a form to
+collect estimates in an elicitation process, you need to create the
+`elic_cont` object to store metadata information. This allows to check
+whether all experts have given their answers in the expected way.  
+Any analysis starts by creating the `elic_cont` object with the function
+`elic_cont_start()`.To build this `elic_cont` object, Four parameters
+must be specified:
+
+- `var` the number of variables (i.e. the number of topics in your
+  elicitation)
+- `var_types` the type of variables for each of these variables (many
+  options are available, ranging from real numbers to probabilities)
+- `elic_types` the type of elicitation for each of these variables
+  (three options are available: one, three, and four points
+  elicitations)
+- `experts` the number of experts that replied to the elicitation
 
 ``` r
-elicit_object <- elicitr::elic_cont_start(var = c("var1", "var2", "var3"),
-                                          var_types = "ZNp",
-                                          elic_types = "134",
-                                          experts = 6,
-                                          title = "elicitation example",
-                                          verbose = FALSE)
+my_elicitation <- elic_cont_start(var = c("var1", "var2", "var3"),
+                                  var_types = "ZNp",
+                                  elic_types = "134",
+                                  experts = 6,
+                                  title = "Elicitation example")
+#> ✔ <elic_cont> object for "Elicitation example" correctly initialised
 ```
 
+### 
+
     #> 
-    #> ── elicitation example ──
+    #> ── Elicitation example ──
     #> 
     #> • Variables: "var1", "var2", and "var3"
     #> • Variable types: "Z", "N", and "p"
@@ -121,39 +132,45 @@ elicit_object <- elicitr::elic_cont_start(var = c("var1", "var2", "var3"),
     #> • Number of experts: 6
     #> • Number of rounds: 0
 
-Once the metadata has been created, the data of the first round of
-elicitation can be added with the function `elic_cont_add_data()`.
+Once the metadata has been added to the `elic_cont`object, the data of
+the first round of elicitation can be added with the function
+`elic_cont_add_data()`;
 
 ``` r
-round1_elicit <- elicitr::elic_cont_add_data(elicit_object,
-                                             elicitr::round_1,
-                                             round = 1)
+my_elicitation <- elic_cont_add_data(my_elicitation,
+                                    data_source = round_1,
+                                    round = 1)
 #> ✔ Data added to "Round 1" from "data.frame"
 ```
 
 The information message confirms that the data for the first round has
-been added to the metadata from a `data.frame`.  
+been added to the metadata from a `data.frame`. Besides `data frames`,
+elicitr also allows users to add data from `.csv` or `.xlsx` files, and
+from Google Sheets.
 
-If you conducted further rounds of elicitation, these can be added
-subsequently to the metadata:
+If you conducted a second round of elicitation, it can be added to the
+`elic_cont` object after the first round has been added:
 
 ``` r
-round2_elicit <- elicitr::elic_cont_add_data(round1_elicit,
-                                             elicitr::round_2,
-                                             round = 2)
+my_elicitation <- elic_cont_add_data(my_elicitation,
+                                    data_source = round_2,
+                                    round = 2)
 #> ✔ Data added to "Round 2" from "data.frame"
 ```
 
 To keep the anonymity of experts, their names are converted to short
 sha1 hashes and saved in the `id` column. These are then used to match
-the expert’s answers in the multiple rounds.  
+the expert’s answers in the two rounds.
 
 The function `elic_cont_get_data()` retrieves data from an `elicit`
 object. It is possible to get the whole dataset of a given round, or
-extract only the data for a given `var`, `var_types`, or `elic_types`.
+extract only the data for a given variable, variable type, or
+elicitation type.
 
 ``` r
-elicitr::elic_cont_get_data(round2_elicit, round = 1, var = "all")
+elic_cont_get_data(my_elicitation,
+                   round = 1,
+                   var = "all")
 #> # A tibble: 6 × 9
 #>   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best
 #>   <chr>       <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
@@ -167,21 +184,63 @@ elicitr::elic_cont_get_data(round2_elicit, round = 1, var = "all")
 ```
 
 Finally, data can be plotted using the function `elic_cont_plot()`. This
-function plots data belonging to a given `round` and for a given `var`.
+function plots data belonging to a given round and for a given variable.
 
 ``` r
-elicitr::elic_cont_plot(round2_elicit,
-                        round = 2,
-                        group = TRUE,
-                        var = "var3",
-                        xlab = "Variable 3",
-                        ylab = "Experts")
+elic_cont_plot(my_elicitation,
+               round = 2,
+               group = TRUE,
+               var = "var3",
+               xlab = "Variable 3",
+               ylab = "Experts")
 #> ✔ Rescaled min and max
 ```
 
 <img src="man/figures/README-cont_plot-1.png" width="100%" />
 
-### Elicitation of continuous variables
+The variable plotted in this case is the result of a four points
+elicitation, where minimum and maximum estimates, best guess, and expert
+confidence is provided. In the plot, the best guess is represented with
+a dot, and the range between minimum and maximum estimates is
+represented with a line. Expert estimates are represented in purple,
+while the group’s mean is represented in orange.
+
+The message printed here informs users that the minimum and maximum
+value given by experts have been rescaled using their provided
+confidence level. Users can choose how they want to rescale these values
+by providing a `scale_conf` argument.
+
+The scaled minimum and maximum values are obtained with:
+$\text{minimum} = \text{best guess} - \frac{\text{scale_conf }(\text{best guess} - \text{minimum})}{\text{confidence}}$
+$\text{maximum} = \text{best guess} + \frac{\text{scale_conf }(\text{maximum} - \text{best guess})}{\text{confidence}}$
+
+`scale_conf` can also be used to avoid rescaling the minimum and maximum
+values. To do this, the confidence of experts must be provided for
+`scale_conf`. If `group` is set to `TRUE`, a value will have to be
+provided for the scaling of the group (here we set this value to 100%).
+
+``` r
+round2_var3 <- elic_cont_get_data(my_elicitation,
+                                  round = 2,
+                                  var = "var3")
+
+expert_confidence <- round2_var3$var3_conf
+```
+
+``` r
+elic_cont_plot(my_elicitation,
+               round = 2,
+               group = TRUE,
+               var = "var3",
+               xlab = "Variable 3",
+               ylab = "Experts",
+               scale_conf = c(expert_confidence, 100))
+#> ✔ Rescaled min and max
+```
+
+<img src="man/figures/README-cont_plot_noscale-1.png" width="100%" />
+
+### Elicitation of categorical variables
 
 ###### In development
 
