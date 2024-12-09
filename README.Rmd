@@ -129,27 +129,9 @@ The variable plotted in this case is the result of a four points elicitation, wh
 The message printed here informs users that the minimum and maximum value given by experts have been rescaled using their provided confidence level. Users can choose how they want to rescale these values by providing a `scale_conf` argument.
 
 The scaled minimum and maximum values are obtained with:
-$\text{minimum} = \text{best guess} - \frac{\text{scale_conf }(\text{best guess} - \text{minimum})}{\text{confidence}}$
-$\text{maximum} = \text{best guess} + \frac{\text{scale_conf }(\text{maximum} - \text{best guess})}{\text{confidence}}$
 
-`scale_conf` can also be used to avoid rescaling the minimum and maximum values. To do this, the confidence of experts must be provided for `scale_conf`. If `group` is set to `TRUE`, a value will have to be provided for the scaling of the group (here we set this value to 100%).
-
-```{r}
-round2_var3 <- elic_cont_get_data(my_elicitation,
-                                  round = 2,
-                                  var = "var3")
-
-expert_confidence <- round2_var3$var3_conf
-```
-```{r cont_plot_noscale}
-elic_cont_plot(my_elicitation,
-               round = 2,
-               group = TRUE,
-               var = "var3",
-               xlab = "Variable 3",
-               ylab = "Experts",
-               scale_conf = c(expert_confidence, 100))
-```
+$minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}{confidence}$
+$maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}{confidence}$
 
 ### Elicitation of categorical variables
 
