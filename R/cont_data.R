@@ -1,11 +1,11 @@
 #' Elicitation data for continuous variables
 #'
 #' Simulated data for the first and second round of an elicitation process
-#' estimating three variables with three different elicitation methods.
+#' estimating three variables with three different elicitation types.
 #'
 #' @format A data frame with 6 rows and 9 columns:
 #' \describe{
-#'   \item{name}{Name of the expert (randomly generater).}
+#'   \item{name}{Name of the experts (randomly generated).}
 #'   \item{var1_best}{Best estimate of `var1`. The estimate contains integer
 #'         numbers referring to the one point elicitation method.}
 #'   \item{var2_min, var2_max, var2_best}{Minimum, maximum, and best estimates
