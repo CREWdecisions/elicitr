@@ -1,19 +1,26 @@
-#' Elicitation data for continuous variables
+#' Elicitation data for categorical variables
 #'
-#' Simulated data for the first and second round of an elicitation process
-#' estimating three variables with three different elicitation methods.
+#' Simulated data for two mechanisms of impact investigated in an elicitation
+#' process.
 #'
-#' @format A data frame with 6 rows and 9 columns:
+#' @format A data frame with 120 rows and 5 columns:
 #' \describe{
-#'   \item{name}{Name of the expert (randomly generater).}
-#'   \item{var1_best}{Best estimate of `var1`. The estimate contains integer
-#'         numbers referring to the one point elicitation method.}
-#'   \item{var2_min, var2_max, var2_best}{Minimum, maximum, and best estimates
-#'         of `var2`. The estimates contain positive integer numbers referring
-#'         to the three points elicitation method.}
-#'   \item{var3_min, var3_max, var3_best, var3_conf}{Minimum, maximum, best, and
-#'         confidence estimates of `var3`. The estimates contain probabilities
-#'         referring to the four points elicitation method.}
+#'   \item{expert}{Name of the experts (randomly generated).}
+#'   \item{level}{The name of the levels. There are 5 different levels per
+#'         site.}
+#'   \item{site}{The name of the sites. There are 4 different sites}
+#'   \item{confidence}{The confidence of the experts given in percentages.
+#'         One confidence level is given for each site.}
+#'   \item{estimate}{Expert estimates given in probabilities.}
 #' }
 #' @source Randomly generated numbers and names.
-"mechanism"
+#' @name cat_data
+NULL
+
+#' Elicitation data for Round 1
+#' @rdname cat_data
+"mechanism_1"
+
+#' Elicitation data for Round 2
+#' @rdname cat_data
+"mechanism_2"
