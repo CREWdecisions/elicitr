@@ -3,9 +3,9 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_start()` initialises an `elic_cont`
-#' object which stores important metadata for the data collected during the
-#' elicitation process.
+#' `elic_cont_start()` initialises an `elic_cont` object which stores important
+#' metadata for the data collected during the elicitation process of continuous
+#' variables.
 #'
 #' @param var_names character vector with the name of the estimated variables.
 #' @param var_types character string with short codes indicating the variable
@@ -156,40 +156,6 @@ elic_cont_start <- function(var_names,
 }
 
 # Checkers----
-
-#' Check experts argument
-#'
-#' Check if the value for the `experts` argument is either 1 or 2.
-#'
-#' @param x the value to be checked.
-#'
-#' @return An error if `x` is not a single number and its value is neither 1 nor
-#' 2.
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_experts_arg <- function(x) {
-
-  raise_error <- FALSE
-
-  if (!is.numeric(x)) {
-    raise_error <- TRUE
-    error <- "The value provided for {.arg experts} is a \\
-              {.field {typeof(x)}}, it should be {.field numeric}."
-  } else if (length(x) > 1) {
-    raise_error <- TRUE
-    error <- "The value provided for {.arg experts} has length \\
-              {.val {length(x)}}, it should be a single number."
-  }
-
-  if (raise_error) {
-    cli::cli_abort(c("Incorrect value for {.arg experts}:",
-                     "x" = error,
-                     "y" = "See {.fn elicitr::elic_cont_start}."),
-                   call = rlang::caller_env())
-  }
-}
 
 #' Check arguments compatibility
 #'
