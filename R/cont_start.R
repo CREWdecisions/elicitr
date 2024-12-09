@@ -14,7 +14,7 @@
 #' @param elic_types character string with short codes indicating the
 #' elicitation type. If only one `elic_type` is provided, its value is recycled
 #' for all variables. See Elicitation Types for more.
-#' @param experts numeric indicating the number of experts participating at the
+#' @param experts numeric indicating the number of experts participating in the
 #' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
@@ -61,7 +61,6 @@
 #' estimates are provided.
 #' * `4`: _four points elicitation_, when the minimum, maximum, best, and
 #' confidence estimates are provided.
-#'
 #'
 #' @return An object of class `elic_cont` binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate

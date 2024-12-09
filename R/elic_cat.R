@@ -7,11 +7,11 @@
 #'
 #' There are 6 elements in the `elic_cat` object:
 #'
-#' * `levels`: character vector with the name of the levels of impact.
-#' * `sites`: character vector with the name of the sites investigated.
+#' * `levels`: character vector with the names of the levels of impact.
+#' * `sites`: character vector with the names of the sites investigated.
 #' * `experts`: numeric, indicating the maximum number of experts participating
 #' in the elicitation process for one mechanism.
-#' * `mechanisms`: character vector with the name of the mechanisms of impact
+#' * `mechanisms`: character vector with the names of the mechanisms of impact
 #' investigated.
 #' * `data`: list with the data collected during the elicitation process. The
 #' list has multiple elements, corresponding to the mechanisms of impact

@@ -12,11 +12,11 @@ store the data collected during the elicitation process and their matadata.
 
 There are 6 elements in the \code{elic_cat} object:
 \itemize{
-\item \code{levels}: character vector with the name of the levels of impact.
-\item \code{sites}: character vector with the name of the sites investigated.
+\item \code{levels}: character vector with the names of the levels of impact.
+\item \code{sites}: character vector with the names of the sites investigated.
 \item \code{experts}: numeric, indicating the maximum number of experts participating
 in the elicitation process for one mechanism.
-\item \code{mechanisms}: character vector with the name of the mechanisms of impact
+\item \code{mechanisms}: character vector with the names of the mechanisms of impact
 investigated.
 \item \code{data}: list with the data collected during the elicitation process. The
 list has multiple elements, corresponding to the mechanisms of impact

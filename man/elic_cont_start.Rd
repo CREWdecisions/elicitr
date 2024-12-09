@@ -25,7 +25,7 @@ variables. See Variable Types for more.}
 elicitation type. If only one \code{elic_type} is provided, its value is recycled
 for all variables. See Elicitation Types for more.}
 
-\item{experts}{numeric indicating the number of experts participating at the
+\item{experts}{numeric indicating the number of experts participating in the
 elicitation process.}
 
 \item{...}{Unused arguments, included only for future extensions of the

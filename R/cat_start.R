@@ -7,35 +7,34 @@
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
-#' @param levels character vector with the name of the levels of impact.
-#' @param sites character vector with the name of all sites investigated.
+#' @param levels character vector with the names of the levels of impact. See
+#' Levels for more.
+#' @param sites character vector with the names of all sites investigated. See
+#' Sites for more.
 #' @param experts numeric, indicating the maximum number of experts
-#' participating in the elicitation process for one mechanism.
+#' participating in the elicitation process for one mechanism. See Experts for
+#' more.
 #' @param mechanisms character vector with the name of the mechanisms of impact
 #' investigated.
-#' @param ... Unused arguments, included only for future extensions of the
-#' function.
-#' @param title character, used to bind a name to the object.
-#' @param verbose logical, if `TRUE` prints informative messages.
+#' @inheritParams elic_cont_start
 #'
-#' @section levels:
+#' @section Levels:
 #'
 #' Levels are inherited between mechanisms. A minimum of two levels are needed.
 #' If only one level is investigated, please refer to the functions for the
 #' elicitation of continuous data (elic_cont_start()).
 #'
-#' @section sites:
+#' @section Sites:
 #'
 #' The site parameter is a character vector containing the names of all the
 #' sites investigated in the elicitation. However, not all sites have to be
 #' investigated in every mechanism of impact.
 #'
-#' @section experts:
+#' @section Experts:
 #'
 #' The expert parameter is a number indicating the maximum number of experts
 #' taking part in the elicitation of one of the investigated mechanisms of
 #' impact. The number and IDs of experts can differ between the mechanisms.
-#'
 #'
 #' @return An object of class `elic_cat` binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
@@ -52,24 +51,23 @@
 #' Moehrenschlager, A. & Canessa, S. (2024) Assessing invasion risks using
 #' EICAT‐based expert elicitation: application to a conservation translocation.
 #' Biological Invasions, 26(8), 2707–2721.
-#' https://doi.org/10.1007/s10530-024-03341-2
-#'
+#' <https://doi.org/10.1007/s10530-024-03341-2>
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process over 2 mechanisms of
-#' impact, 3 sites, 3 levels per sites, and a maximum number of experts per
-#' mechanism of 8.
-#' x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3")
-#'                     sites = c("Site_1", "Site_2", "Site_3")
+#' # impact, 3 sites, 3 levels per sites, and a maximum number of experts per
+#' # mechanism of 8.
+#' x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#'                     sites = c("Site_1", "Site_2", "Site_3"),
 #'                     experts = 8,
 #'                     mechanisms = c("mechanism_1","mechanism_2"))
 #' x
 #'
 #' # A title can be added to bind a name to the object:
-#' x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3")
-#'                     sites = c("Site_1", "Site_2", "Site_3")
+#' x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#'                     sites = c("Site_1", "Site_2", "Site_3"),
 #'                     experts = 8,
-#'                     mechanisms = c("mechanism_1","mechanism_2"))
+#'                     mechanisms = c("mechanism_1","mechanism_2"),
 #'                     title = "My elicitation")
 #' x
 elic_cat_start <- function(levels,
