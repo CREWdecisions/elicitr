@@ -75,19 +75,19 @@ impact. The number and IDs of experts can differ between the mechanisms.
 # Create the elic_cat object for an elicitation process over 2 mechanisms of
 # impact, 3 sites, 3 levels per sites, and a maximum number of experts per
 # mechanism of 8.
-x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-                    sites = c("Site_1", "Site_2", "Site_3"),
-                    experts = 8,
-                    mechanisms = c("mechanism_1","mechanism_2"))
-x
+my_elicit <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+                            sites = c("Site_1", "Site_2", "Site_3"),
+                            experts = 8,
+                            mechanisms = c("mechanism_1","mechanism_2"))
+my_elicit
 
 # A title can be added to bind a name to the object:
-x <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-                    sites = c("Site_1", "Site_2", "Site_3"),
-                    experts = 8,
-                    mechanisms = c("mechanism_1","mechanism_2"),
-                    title = "My elicitation")
-x
+my_elicit <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+                            sites = c("Site_1", "Site_2", "Site_3"),
+                            experts = 8,
+                            mechanisms = c("mechanism_1","mechanism_2"),
+                            title = "My elicitation")
+my_elicit
 }
 \references{
 Hemming, V., Burgman, M. A., Hanea, A. M., McBride, M. F., &
