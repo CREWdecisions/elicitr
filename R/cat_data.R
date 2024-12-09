@@ -17,10 +17,14 @@
 #' @name cat_data
 NULL
 
-#' Elicitation data for Round 1
+#' Elicitation data for mechanism 1
 #' @rdname cat_data
 "mechanism_1"
 
-#' Elicitation data for Round 2
+#' Elicitation data for mechanism 2
 #' @rdname cat_data
 "mechanism_2"
+
+#' Elicitation data for mehcnaism 3
+#' @rdname cat_data
+"mechanism_3"
