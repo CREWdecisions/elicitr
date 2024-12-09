@@ -8,12 +8,13 @@
 \alias{mechanism_3}
 \title{Elicitation data for categorical variables}
 \format{
-A data frame with 120 rows and 5 columns:
+A data frame with:
 \describe{
 \item{expert}{Name of the experts (randomly generated).}
 \item{level}{The name of the levels. There are 5 different levels per
 site.}
-\item{site}{The name of the sites. There are 4 different sites}
+\item{site}{The name of the sites. Mechanism 1 and 2 have 4 sites, while
+mechanism 3 has 3 sites.}
 \item{confidence}{The confidence of the experts given in percentages.
 One confidence level is given for each site.}
 \item{estimate}{Expert estimates given in probabilities.}
