@@ -60,7 +60,7 @@ mechanism_3 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
                                                   replace = TRUE),
                                            each = n_levels),
                           estimate = get_values()) |>
-  dplyr::filter(site != sites[4]) |>
+  dplyr::filter(site != sites[[4]]) |>
   tibble::as_tibble()
 
 usethis::use_data(mechanism_1, mechanism_2, mechanism_3,
