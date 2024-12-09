@@ -25,7 +25,7 @@ variables. See Variable Types for more.}
 elicitation type. If only one \code{elic_type} is provided, its value is recycled
 for all variables. See Elicitation Types for more.}
 
-\item{experts}{numeric indicating the number of experts participating at the
+\item{experts}{numeric indicating the number of experts participating in the
 elicitation process.}
 
 \item{...}{Unused arguments, included only for future extensions of the
@@ -89,7 +89,7 @@ confidence estimates are provided.
 }
 
 \examples{
-# Create the elict object for an elicitation process that estimates 3
+# Create the elic_cont object for an elicitation process that estimates 3
 # variables, the first for a one point estimation of a positive integer, the
 # second for three points estimation of a negative real, and the last for a
 # four point estimation of a probability

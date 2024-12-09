@@ -14,7 +14,7 @@
 #' @param elic_types character string with short codes indicating the
 #' elicitation type. If only one `elic_type` is provided, its value is recycled
 #' for all variables. See Elicitation Types for more.
-#' @param experts numeric indicating the number of experts participating at the
+#' @param experts numeric indicating the number of experts participating in the
 #' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
@@ -76,7 +76,7 @@
 #' <https://doi.org/10.1111/2041-210X.12857>
 #'
 #' @examples
-#' # Create the elict object for an elicitation process that estimates 3
+#' # Create the elic_cont object for an elicitation process that estimates 3
 #' # variables, the first for a one point estimation of a positive integer, the
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability

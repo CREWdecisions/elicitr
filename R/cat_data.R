@@ -1,6 +1,6 @@
 #' Elicitation data for categorical variables
 #'
-#' Simulated data for two mechanisms of impact investigated in an elicitation
+#' Simulated data for three mechanisms of impact investigated in an elicitation
 #' process.
 #'
 #' @format A data frame with:
