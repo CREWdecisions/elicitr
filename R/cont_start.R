@@ -62,7 +62,6 @@
 #' * `4`: _four points elicitation_, when the minimum, maximum, best, and
 #' confidence estimates are provided.
 #'
-#'
 #' @return An object of class `elic_cont` binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
