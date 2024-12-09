@@ -43,9 +43,9 @@ the correctness of the provided data.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cont_start()} initialises an \code{elic_cont}
-object which stores important metadata for the data collected during the
-elicitation process.
+\code{elic_cont_start()} initialises an \code{elic_cont} object which stores important
+metadata for the data collected during the elicitation process of continuous
+variables.
 }
 \section{Variable Types}{
 
