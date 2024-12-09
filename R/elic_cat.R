@@ -1,3 +1,27 @@
+#' elic_cat class
+#'
+#' The `elic_cat` class is a container for the elicitation data. It is used to
+#' store the data collected during the elicitation process and their matadata.
+#'
+#' @section Object elements:
+#'
+#' There are 6 elements in the `elic_cat` object:
+#'
+#' * `levels`: character vector with the name of the levels of impact.
+#' * `sites`: character vector with the name of the sites investigated.
+#' * `experts`: numeric, indicating the maximum number of experts participating
+#' in the elicitation process for one mechanism.
+#' * `mechanisms`: character vector with the name of the mechanisms of impact
+#' investigated.
+#' * `data`: list with the data collected during the elicitation process. The
+#' list has multiple elements, corresponding to the mechanisms of impact
+#' investigated, which store the data collected during the elicitation process.
+#'
+#' Moreover, the object has a `title` attribute that binds a name to the object.
+#'
+#' @name elic_cat
+NULL
+
 # Constructor for the `elic_cat` object
 new_elic_cat <- function(levels,
                          sites,

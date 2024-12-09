@@ -37,7 +37,7 @@ mechanism_2
 mechanism_3
 }
 \description{
-Simulated data for two mechanisms of impact investigated in an elicitation
+Simulated data for three mechanisms of impact investigated in an elicitation
 process.
 }
 \keyword{datasets}
