@@ -128,6 +128,7 @@ test_that("Output", {
   expect_type(x[["data"]], "list")
   expect_null(x[["data"]][["round_1"]])
   expect_null(x[["data"]][["round_2"]])
+  expect_named(x[["data"]], c("round_1", "round_2"))
   # Title attribute is created
   expect_false(is.null(attr(x, "title")))
   # Object structure

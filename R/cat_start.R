@@ -80,6 +80,11 @@ elic_cat_start <- function(levels,
                            title = "Elicitation",
                            verbose = TRUE) {
 
+  # Check that levels, sites, and mechanisms are character vectors
+  check_is_character(levels, "levels")
+  check_is_character(sites, "sites")
+  check_is_character(mechanisms, "mechanisms")
+
   # Check that the argument `experts` is a number
   check_experts_arg(experts)
 
@@ -95,4 +100,27 @@ elic_cat_start <- function(levels,
   }
 
   obj
+}
+
+# Checkers----
+
+#' Check if the argument `x` is a character vector
+#'
+#' @param x the object to be checked.
+#' @param arg_name character string with the name of the argument to be checked.
+#'
+#' @return An error if `x` is not a character vector.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_character <- function(x, arg_name) {
+
+  if (!is.character(x)) {
+    error <- "Argument {.arg {arg_name}} must be {.cls character} not \\
+              {.cls {class(x)}}."
+    cli::cli_abort(c("Invalid value for {.arg {arg_name}}:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::elic_cat_start}."),
+                   call = rlang::caller_env())
+  }
 }
