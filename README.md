@@ -62,7 +62,7 @@ their answers in the expected way.
 Any analysis starts by creating this object with the `start` function.
 Then, data can be added and retrieved using the `add_data` and
 `get_data` functions respectively. Finally data can be plotted using the
-plot function. Details about the implementation and example usages of
+`plot` function. Details about the implementation and example usages of
 these functions can be seen bellow.
 
 ### Elicitation of continuous variables
