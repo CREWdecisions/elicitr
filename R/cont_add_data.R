@@ -9,8 +9,7 @@
 #' @param x an object of class [elic_cont].
 #' @param data_source either a [`data.frame`][base::data.frame] or
 #' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
-#' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
-#' function.
+#' or anything accepted by the [read_sheet][googlesheets4::read_sheet] function.
 #' @param round integer indicating if the data belongs to the first or second
 #' elicitation round.
 #' @param ... Unused arguments, included only for future extensions of the
@@ -152,41 +151,15 @@ elic_cont_add_data <- function(x,
                                overwrite = FALSE,
                                verbose = TRUE) {
 
-  check_elic_cont(x)
+  check_elic_obj(x, type = "cont")
   check_round(round)
 
-  if (inherits(data_source, "data.frame")) {
-
-    source <- "data.frame"
-
-    # Make sure is a tibble
-    data <- data_source |>
-      tibble::as_tibble()
-
-  } else if (inherits(data_source, "character")) {
-    # When `data_source` contains the file extension at the end of the string,
-    # it is assumed to be a file
-    ext <- tools::file_ext(data_source)
-
-    if (nzchar(ext)) {
-
-      data <- read_file(data_source,
-                        ext = ext,
-                        sheet = sheet,
-                        sep = sep)
-
-    } else {
-      # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
-      # error is handled by the read_sheet() function (this doesn't need to be
-      # tested).
-      source <- "Google Sheets"
-      data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
-        suppressMessages() |>
-        clean_gs_data()
-    }
-  }
+  data <- read_data(data_source,
+                    sep = sep,
+                    sheet = sheet)
 
   col_1 <- colnames(data)[[1]]
+
   # Anonymise names
   data <- data |>
     dplyr::rename("id" = dplyr::all_of(col_1)) |>
@@ -234,62 +207,12 @@ elic_cont_add_data <- function(x,
 
   if (verbose) {
     cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} \\
-                            from {.val {source}}")
+                            from {.val {src}}")
   }
 
   x
 }
 # Helpers----
-
-#' Read file
-#'
-#' `read_file()` reads data from a file and returns a tibble.
-#'
-#' @param data_source character string with the path to the file.
-#' @param ext character string with the file extension.
-#' @param sheet integer or character to select the sheet.
-#' @param sep character used as field separator.
-#'
-#' @return A tibble with the data or an error if the file doesn't exist or the
-#' extension is not supported.
-#' @noRd
-#'
-#' @author Sergio Vignali
-read_file <- function(data_source,
-                      ext,
-                      sheet,
-                      sep) {
-
-  # Check if file exists
-  if (!file.exists(data_source)) {
-    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
-                   call = rlang::caller_env())
-  }
-
-  # Load data
-  if (ext == "csv") {
-
-    assign("source", "csv file", envir = rlang::caller_env())
-    data <- utils::read.csv(data_source, sep = sep) |>
-      tibble::as_tibble()
-
-  } else if (ext == "xlsx") {
-
-    assign("source", "xlsx file", envir = rlang::caller_env())
-    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
-
-  } else {
-    error <- "The extension of the provided file is {.val .{ext}}, supported \\
-              are {.val .csv} or {.val .xlsx}."
-
-    cli::cli_abort(c("Unsupported file extension:",
-                     "x" = error,
-                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
-                   call = rlang::caller_env())
-  }
-
-  data
-}
 
 #' Get column names
 #'

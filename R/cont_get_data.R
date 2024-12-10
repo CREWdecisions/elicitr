@@ -69,7 +69,7 @@ elic_cont_get_data <- function(x,
                                var_types = "all",
                                elic_types = "all") {
 
-  check_elic_cont(x)
+  check_elic_obj(x, type = "cont")
   check_round(round)
   check_var(x, var)
 
