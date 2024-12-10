@@ -3,13 +3,13 @@ test_that("Errors", {
   expect_snapshot(elic_cat_start(levels = 1:3,
                                  sites = c("site_1", "site_2", "site_3"),
                                  experts = 8,
-                                 mechanisms = c("mechanism_1","mechanism_2")),
+                                 mechanisms = c("mechanism_1", "mechanism_2")),
                   error = TRUE)
   # When sites is not a character vector
   expect_snapshot(elic_cat_start(levels = c("level_1", "level_2", "level_3"),
                                  sites = 1:3,
                                  experts = 8,
-                                 mechanisms = c("mechanism_1","mechanism_2")),
+                                 mechanisms = c("mechanism_1", "mechanism_2")),
                   error = TRUE)
   # When mechanisms is not a character vector
   expect_snapshot(elic_cat_start(levels = c("level_1", "level_2", "level_3"),
@@ -21,13 +21,13 @@ test_that("Errors", {
   expect_snapshot(elic_cat_start(levels = c("level_1", "level_2", "level_3"),
                                  sites = c("site_1", "site_2", "site_3"),
                                  experts = "8",
-                                 mechanisms = c("mechanism_1","mechanism_2")),
+                                 mechanisms = c("mechanism_1", "mechanism_2")),
                   error = TRUE)
   # When experts is a numeric vector
   expect_snapshot(elic_cat_start(levels = c("level_1", "level_2", "level_3"),
                                  sites = c("site_1", "site_2", "site_3"),
                                  experts = 1:3,
-                                 mechanisms = c("mechanism_1","mechanism_2")),
+                                 mechanisms = c("mechanism_1", "mechanism_2")),
                   error = TRUE)
 })
 
