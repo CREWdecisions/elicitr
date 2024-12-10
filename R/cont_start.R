@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_start()` initialises an `elic_cont` object which stores important
+#' `elic_cont_start()` initialises an [elic_cont] object which stores important
 #' metadata for the data collected during the elicitation process of continuous
 #' variables.
 #'
@@ -62,7 +62,7 @@
 #' * `4`: _four points elicitation_, when the minimum, maximum, best, and
 #' confidence estimates are provided.
 #'
-#' @return An object of class `elic_cont` binding metadata related to the
+#' @return An object of class [elic_cont] binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export

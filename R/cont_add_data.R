@@ -3,10 +3,10 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_add_data()` adds data to an `elic_cont` object from different
+#' `elic_cont_add_data()` adds data to an [elic_cont] object from different
 #' sources.
 #'
-#' @param x an object of class `elic_cont`.
+#' @param x an object of class [elic_cont].
 #' @param data_source either a [`data.frame`][base::data.frame] or
 #' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
 #' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
@@ -22,7 +22,7 @@
 #' only when `data_source` is a path to a _xlsx_ file or when data are imported
 #' from _Google Sheets_.
 #' @param overwrite logical, whether to overwrite existing data already added to
-#' the `elic_cont` object.
+#' the [elic_cont] object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
 #' @section Data Format:
@@ -30,7 +30,7 @@
 #' Data are expected to have the name of the expert always as first column. The
 #' only exception is for data coming from _Google Sheet_ which can have an
 #' additional column with a timestamp. This column is automatically removed
-#' before the data are added to the `elic_cont` object (see "Data cleaning").
+#' before the data are added to the [elic_cont] object (see "Data cleaning").
 #' After the name there should be one or more blocks which follow the
 #' specifications below:
 #'
@@ -61,7 +61,7 @@
 #'
 #' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
 #' to build the column names is taken from the metadata available in the
-#' `elic_cont` object.
+#' [elic_cont] object.
 #'
 #' `var_conf`, given in percents, can be any number between 60 and 100. Any
 #' value under 50 would imply that the accuracy of the estimates is only due to
@@ -69,11 +69,11 @@
 #'
 #' @section Data cleaning:
 #'
-#' When data are added to the `elic_cont` object, first names are standardised
+#' When data are added to the [elic_cont] object, first names are standardised
 #' by converting capital letters to lower case, and by removing any whitespaces
 #' and punctuation. Then, data are anonymised by converting names to short sha1
 #' hashes. In this way, sensible information collected during the elicitation
-#' process never reaches the `elic_cont` object. For three and four points
+#' process never reaches the [elic_cont] object. For three and four points
 #' elicitation processes, the order of the values is checked for each expert. If
 #' it is not _min-max-best_, the values are swaped accordingly and a informative
 #' warn is raised.
@@ -89,7 +89,7 @@
 #' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
 #' first one (which contains the names) are forced to numeric.
 #'
-#' @return The provided object of class `elic_cont` updated with the data.
+#' @return The provided object of class [elic_cont] updated with the data.
 #' @export
 #'
 #' @family cont data helpers
@@ -534,7 +534,7 @@ add_nas_rows <- function(data, experts) {
 #'
 #' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
 #'
-#' @param x `elic_cont` object containing data from Round 1.
+#' @param x [elic_cont] object containing data from Round 1.
 #' @param data tibble containing data from Round 2.
 #'
 #' @return A list with two elemnts, one containing the omogenised data for Round

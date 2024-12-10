@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Get data from an `elic_cont` object.
+#' Get data from an [elic_cont] object.
 #'
 #' @inheritParams elic_cont_add_data
 #' @param var character string with the name of the variable or character vector
@@ -120,10 +120,10 @@ elic_cont_get_data <- function(x,
 #'
 #' Check the argument `var` for allowed values.
 #'
-#' @param x `elic_cont` object.
+#' @param x [elic_cont] object.
 #' @param var character with the name of the variable, or the word `all`.
 #'
-#' @return An error if `var` is not one of the variables of the `elic_cont`
+#' @return An error if `var` is not one of the variables of the [elic_cont]
 #' object, or `all`.
 #'
 #' @noRd
@@ -182,14 +182,14 @@ check_optional_args <- function(var, var_types, elic_types) {
 #' Check type in object
 #'
 #' Check that the given variable or elicitation type/s is/are available in the
-#' `elic_cont` object.
+#' [elic_cont] object.
 #'
-#' @param obj an object of class `elic_cont`.
+#' @param obj an object of class [elic_cont].
 #' @param x character string with the value to be checked.
-#' @param type character string, either `var_types` or `elic:types`.
+#' @param type character string, either `var_types` or `elic_types`.
 #'
 #' @return An error if the variable or elicitation type/s is/are not present in
-#' the `elic_cont` object.
+#' the [elic_cont] object.
 #' @noRd
 #'
 #' @author Sergio Vignali

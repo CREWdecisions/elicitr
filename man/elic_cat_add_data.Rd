@@ -35,7 +35,7 @@ only when \code{data_source} is a path to a \emph{xlsx} file or when data are im
 from \emph{Google Sheets}.}
 
 \item{overwrite}{logical, whether to overwrite existing data already added to
-the \code{elic_cont} object.}
+the \link{elic_cont} object.}
 
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
@@ -48,3 +48,8 @@ The provided object of class \link{elic_cat} updated with the data.
 \code{elic_cat_add_data()} adds data to an \link{elic_cat} object from different
 sources.
 }
+\seealso{
+Other cat data helpers: 
+\code{\link{elic_cat_start}()}
+}
+\concept{cat data helpers}
