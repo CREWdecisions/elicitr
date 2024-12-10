@@ -16,7 +16,7 @@ elic_cat_add_data(
 )
 }
 \arguments{
-\item{x}{an object of class \code{elic_cont}.}
+\item{x}{an object of class \link{elic_cat}.}
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
@@ -40,11 +40,11 @@ the \code{elic_cont} object.}
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
-The provided object of class \code{elic_cat} updated with the data.
+The provided object of class \link{elic_cat} updated with the data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cat_add_data()} adds data to an \code{elic_cat} object from different
+\code{elic_cat_add_data()} adds data to an \link{elic_cat} object from different
 sources.
 }
