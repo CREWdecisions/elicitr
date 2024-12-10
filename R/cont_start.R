@@ -67,6 +67,8 @@
 #' the correctness of the provided data.
 #' @export
 #'
+#' @family cont data helpers
+#'
 #' @author Sergio Vignali
 #'
 #' @references Hemming, V., Burgman, M. A., Hanea, A. M., McBride, M. F., &

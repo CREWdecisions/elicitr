@@ -122,6 +122,12 @@ Wintle, B. C. (2018). A practical guide to structured expert elicitation
 using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
 \url{https://doi.org/10.1111/2041-210X.12857}
 }
+\seealso{
+Other cont data helpers: 
+\code{\link{elic_cont_add_data}()},
+\code{\link{elic_cont_get_data}()}
+}
 \author{
 Sergio Vignali
 }
+\concept{cont data helpers}
