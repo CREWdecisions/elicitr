@@ -91,8 +91,6 @@ round_1
 #> # ℹ 1 more variable: var3_conf <int>
 ```
 
-#### 
-
 ``` r
 round_2
 #> # A tibble: 6 × 9
@@ -245,8 +243,6 @@ mechanism_1
 #> # ℹ 110 more rows
 ```
 
-### 
-
 ``` r
 mechanism_2
 #> # A tibble: 100 × 5
@@ -264,8 +260,6 @@ mechanism_2
 #> 10 Christopher Felix level_5 site_2         20     0.31
 #> # ℹ 90 more rows
 ```
-
-### 
 
 ``` r
 mechanism_3

@@ -64,7 +64,7 @@ Two datasets that simulate the elicitation of continuous variables are included 
 ```{r}
 round_1
 ```
-####
+
 ```{r}
 round_2
 ```
@@ -141,11 +141,11 @@ Three datasets that simulate the elicitation of categorical variables are includ
 ```{r}
 mechanism_1
 ```
-###
+
 ```{r}
 mechanism_2
 ```
-###
+
 ```{r}
 mechanism_3
 ```
