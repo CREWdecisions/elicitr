@@ -170,7 +170,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `experts`:
-      x The value provided for `experts` is a character, it should be numeric.
+      x Argument `experts` must be <numeric> not <character>.
       See `elicitr::elic_cont_start()`.
 
 ---
@@ -181,7 +181,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `experts`:
-      x The value provided for `experts` has length 2, it should be a single number.
+      x Argument `experts` must be a single number not a vector of length 2.
       See `elicitr::elic_cont_start()`.
 
 # Output
