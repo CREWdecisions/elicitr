@@ -120,10 +120,10 @@ elic_cont_get_data(my_elicit, round = 2, elic_types = "3")
 elic_cont_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
-Other data helpers: 
+Other cont data helpers: 
 \code{\link{elic_cont_add_data}()}
 }
 \author{
 Sergio Vignali
 }
-\concept{data helpers}
+\concept{cont data helpers}

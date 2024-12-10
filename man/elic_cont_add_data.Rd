@@ -168,10 +168,10 @@ my_elicit
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other data helpers: 
+Other cont data helpers: 
 \code{\link{elic_cont_get_data}()}
 }
 \author{
 Sergio Vignali
 }
-\concept{data helpers}
+\concept{cont data helpers}

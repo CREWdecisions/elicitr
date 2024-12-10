@@ -88,7 +88,7 @@
 #' @return The provided object of class `elic_cont` updated with the data.
 #' @export
 #'
-#' @family data helpers
+#' @family cont data helpers
 #'
 #' @author Sergio Vignali
 #'
