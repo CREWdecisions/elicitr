@@ -157,6 +157,18 @@ elic_cont_start <- function(var_names,
 
 # Checkers----
 
+#' Check experts argument
+#'
+#' Check if the value for the `experts` argument is either 1 or 2.
+#'
+#' @param x the value to be checked.
+#'
+#' @return An error if `x` is not a single number and its value is neither 1 nor
+#' 2.
+#'
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_experts_arg <- function(x) {
 
   raise_error <- FALSE
@@ -188,6 +200,10 @@ check_experts_arg <- function(x) {
 #' @param var_names character vector with the name of the estimated variables.
 #' @param var_types character with short codes indicating the variable type.
 #' @param elic_types character with short codes indicating the elicitation type.
+#'
+#' @return An error if `var_names`, `var_types` and `elic_types` have
+#' incompatible values or length.
+#'
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -199,25 +215,27 @@ check_arg_mism <- function(var_names,
   n_var_types <- length(var_types)
   n_elic_types <- length(elic_types)
 
-  head_error <- "You provided {.val {n_vars}} value{?s} for {.var var_names}"
+  head_error <- "The number of short codes in"
+  tail_error <- "should be either {.val {1}} or equal to the number of \\
+                 elements in {.arg var_names}."
   var_error <- ""
   est_error <- ""
   raise_error <- TRUE
 
   if (n_var_types != n_vars) {
-    var_error <- "{.val {n_var_types}} short code{?s} for {.var var_types}"
+    var_error <- "{.arg var_types}"
   }
 
   if (n_elic_types != n_vars) {
-    est_error <- "{.val {n_elic_types}} short code{?s} for {.var elic_types}"
+    est_error <- "{.arg elic_types}"
   }
 
   if (nzchar(var_error) && nzchar(est_error)) {
-    error <- paste0(head_error, ", ", var_error, ", and ", est_error, ".")
+    error <- paste(head_error, var_error, " and", est_error, tail_error)
   } else if (nzchar(var_error)) {
-    error <- paste0(head_error, " and ", var_error, ".")
+    error <- paste(head_error, var_error, tail_error)
   } else if (nzchar(est_error)) {
-    error <- paste0(head_error, " and ", est_error, ".")
+    error <- paste0(head_error, est_error, tail_error)
   } else {
     raise_error <- FALSE
   }

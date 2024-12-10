@@ -5,16 +5,20 @@ template:
   light-switch: true
 
 reference:
-- title: "Elicitation of continuous variables"
-  desc: >
-    Functions for handling and plotting continuous variables.
+- title: Elicitation of continuous variables
+  desc: Functions for handling and plotting continuous variables.
   contents:
   - elic_cont_start
   - elic_cont_add_data
   - elic_cont_get_data
   - elic_cont_plot
 
-- title: "Simulated data"
+- title: Classes
+  desc: Description of the classes available in the package.
+  contents:
+  - elic_cont
+
+- title: Simulated data
   desc: >
     Datasets of simulated data used for demonstration.
   contents:

@@ -6,7 +6,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
-      x The value provided for `var_types` is a character vector of length 2 but should be a single string with short codes.
+      x The value provided for `var_types` should be a character string of short codes, i.e. "pN" and not `c("p", "N")`.
       i See "Variable Types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -17,7 +17,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `elic_types`:
-      x The value provided for `elic_types` is a character vector of length 2 but should be a single string with short codes.
+      x The value provided for `elic_types` should be a character string of short codes, i.e. "43" and not `c("4", "3")`.
       i See "Elicitation types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -28,7 +28,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
-      x The incorrect short code is "q".
+      x "q" is not in the list of available short codes.
       i See "Variable Types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -39,7 +39,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
-      x The incorrect short code is "a".
+      x "a" is not in the list of available short codes.
       i See "Variable Types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -50,7 +50,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
-      x The incorrect short codes are "q" and "G".
+      x "q" and "G" are not in the list of available short codes.
       i See "Variable Types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -61,7 +61,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `elic_types`:
-      x The incorrect short code is "2".
+      x "2" is not in the list of available short codes.
       i See "Elicitation types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -72,7 +72,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `elic_types`:
-      x The incorrect short code is "2".
+      x "2" is not in the list of available short codes.
       i See "Elicitation types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -83,7 +83,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Incorrect value for `elic_types`:
-      x The incorrect short codes are "2" and "7".
+      x "2" and "7" are not in the list of available short codes.
       i See "Elicitation types" in `elicitr::elic_cont_start()`.
 
 ---
@@ -94,7 +94,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 1 value for `var_names` and 2 short codes for `var_types`.
+      x The number of short codes in `var_types` should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -105,7 +105,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 1 value for `var_names` and 2 short codes for `elic_types`.
+      x The number of short codes in`elic_types`should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -116,7 +116,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 1 value for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
+      x The number of short codes in `var_types` and `elic_types` should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -127,7 +127,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 3 values for `var_names` and 2 short codes for `var_types`.
+      x The number of short codes in `var_types` should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -138,7 +138,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 3 values for `var_names` and 2 short codes for `elic_types`.
+      x The number of short codes in`elic_types`should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -149,7 +149,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 2 short codes for `elic_types`.
+      x The number of short codes in `var_types` and `elic_types` should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
@@ -160,7 +160,7 @@
     Condition
       Error in `elic_cont_start()`:
       ! Mismatch between function arguments:
-      x You provided 3 values for `var_names`, 2 short codes for `var_types`, and 4 short codes for `elic_types`.
+      x The number of short codes in `var_types` and `elic_types` should be either 1 or equal to the number of elements in `var_names`.
       i See `elicitr::elic_cont_start()`.
 
 ---
