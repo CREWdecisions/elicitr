@@ -5,7 +5,7 @@
 \title{elic_cat class}
 \description{
 The \code{elic_cat} class is a container for the elicitation data. It is used to
-store the data collected during the elicitation process and their matadata.
+store the data collected during the elicitation process and their metadata.
 }
 \section{Object elements}{
 
@@ -20,7 +20,7 @@ in the elicitation process for one mechanism.
 investigated.
 \item \code{data}: list with the data collected during the elicitation process. The
 list has multiple elements, corresponding to the mechanisms of impact
-investigated, which store the data collected during the elicitation process.
+investigated.
 }
 
 Moreover, the object has a \code{title} attribute that binds a name to the object.

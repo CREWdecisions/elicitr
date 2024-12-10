@@ -1,7 +1,7 @@
 #' elic_cat class
 #'
 #' The `elic_cat` class is a container for the elicitation data. It is used to
-#' store the data collected during the elicitation process and their matadata.
+#' store the data collected during the elicitation process and their metadata.
 #'
 #' @section Object elements:
 #'
@@ -15,7 +15,7 @@
 #' investigated.
 #' * `data`: list with the data collected during the elicitation process. The
 #' list has multiple elements, corresponding to the mechanisms of impact
-#' investigated, which store the data collected during the elicitation process.
+#' investigated.
 #'
 #' Moreover, the object has a `title` attribute that binds a name to the object.
 #'
