@@ -92,6 +92,10 @@ will overwrite it according to the following convention:
 with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
 to build the column names is taken from the metadata available in the
 \code{elic_cont} object.
+
+\code{var_conf}, given in percents, can be any number between 60 and 100. Any
+value under 50 would imply that the accuracy of the estimates is only due to
+chance).
 }
 
 \section{Data cleaning}{

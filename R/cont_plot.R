@@ -22,6 +22,23 @@
 #' theme.
 #' @inheritParams elic_cont_add_data
 #'
+#' @section scale_conf:
+#'
+#' If the variable plotted is the result of a four points elicitation where
+#' expert confidence is provided, the minimum and maximum values provided by
+#' each expert are rescaled using their provided confidence levels. Users can
+#' choose how they want to rescale minimum and maximum values by providing a
+#' value for the `scale_conf` argument. If no argument is provided, a default
+#' value of 100 is used for scale_conf.
+#'
+#' The scaled minimum and maximum values are obtained with:
+#'
+#' \eqn{minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
+#' {confidence}}
+#'
+#' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
+#' {confidence}}
+#'
 #' @details
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
