@@ -13,6 +13,8 @@
 #' @return The provided object of class [elic_cat] updated with the data.
 #' @export
 #'
+#' @family cat data helpers
+#'
 #' @examples
 elic_cat_add_data <- function(x,
                               data_source,
