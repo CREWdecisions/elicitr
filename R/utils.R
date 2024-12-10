@@ -205,6 +205,108 @@ check_length <- function(x,
 
 # Helpers----
 
+#' Read data
+#'
+#' `read_data()` reads data from a data frame, a file or a Google Sheets file
+#' and returns a tibble.
+#'
+#' @param data_source data frame, character string with the path to the file or
+#' Google Sheets file.
+#' @param sep character used as field separator.
+#' @param sheet integer or character to select the sheet.
+#'
+#' @return A tibble with the data.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_data <- function(data_source,
+                      sep,
+                      sheet) {
+
+  if (inherits(data_source, "data.frame")) {
+
+    assign("src", "data.frame", envir = rlang::caller_env())
+
+    # Make sure is a tibble
+    data <- data_source |>
+      tibble::as_tibble()
+
+  } else if (inherits(data_source, "character")) {
+    # When `data_source` contains the file extension at the end of the string,
+    # it is assumed to be a file
+    ext <- tools::file_ext(data_source)
+
+    if (nzchar(ext)) {
+
+      data <- read_file(data_source,
+                        ext = ext,
+                        sheet = sheet,
+                        sep = sep)
+
+    } else {
+      # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
+      # error is handled by the read_sheet() function (this doesn't need to be
+      # tested).
+      assign("src", "Google Sheets", envir = rlang::caller_env())
+      data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
+        suppressMessages() |>
+        clean_gs_data()
+    }
+  }
+
+  data
+}
+
+#' Read file
+#'
+#' `read_file()` reads data from a file and returns a tibble.
+#'
+#' @param data_source character string with the path to the file.
+#' @param ext character string with the file extension.
+#' @param sheet integer or character to select the sheet.
+#' @param sep character used as field separator.
+#'
+#' @return A tibble with the data or an error if the file doesn't exist or the
+#' extension is not supported.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_file <- function(data_source,
+                      ext,
+                      sheet,
+                      sep) {
+
+  # Check if file exists
+  if (!file.exists(data_source)) {
+    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
+                   call = rlang::caller_env(n = 2))
+  }
+
+  # Load data
+  if (ext == "csv") {
+
+    assign("src", "csv file", envir = rlang::caller_env(n = 2))
+    data <- utils::read.csv(data_source, sep = sep) |>
+      tibble::as_tibble()
+
+  } else if (ext == "xlsx") {
+
+    assign("src", "xlsx file", envir = rlang::caller_env(n = 2))
+    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
+
+  } else {
+    error <- "The extension of the provided file is {.val .{ext}}, supported \\
+              are {.val .csv} or {.val .xlsx}."
+
+    cli::cli_abort(c("Unsupported file extension:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
+                   call = rlang::caller_env(n = 2))
+  }
+
+  data
+}
+
 #' Split short codes
 #'
 #' `split_short_codes()` converts the string containing short codes to a
