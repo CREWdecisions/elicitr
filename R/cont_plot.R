@@ -109,7 +109,7 @@ elic_cont_plot <- function(x,
                            verbose = TRUE) {
 
   # Check arguments
-  check_elic_cont(x)
+  check_elic_obj(x, type = "cont")
   check_round(round)
   check_var_in_obj(x, var)
 

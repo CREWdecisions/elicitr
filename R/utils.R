@@ -2,23 +2,29 @@
 
 #' Check elicit
 #'
-#' Check if `x` is an [elic_cont] object.
+#' Check if `x` is an [elic_cont] or an [elic_cat] object.
 #'
 #' @param x the object to be checked.
+#' @param type character, either _cont_ or _cat_.
 #'
-#' @return An error if `x` is not and [elic_cont] object.
+#' @return An error if `x` is not and [elic_cont]or an [elic_cat] object.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_elic_cont <- function(x) {
+check_elic_obj <- function(x,
+                           type) {
 
-  if (!inherits(x, "elic_cont")) {
+  cl <- paste0("elic_", type)
+
+  if (!inherits(x, cl)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
-    cli::cli_abort(c("Argument {.arg x} must be an object of class \\
-                      {.cls elic_cont}:",
-                     "x" = "An object of class {.cls {class(x)}} is invalid.",
+    error <- "Argument {.arg x} must be an object of class {.cls {cl}} and \\
+              not of class {.cls {class(x)}}."
+
+    cli::cli_abort(c("Invalid value for {.arg x}:",
+                     "x" = error,
                      "y" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }

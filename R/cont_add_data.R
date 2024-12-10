@@ -152,7 +152,7 @@ elic_cont_add_data <- function(x,
                                overwrite = FALSE,
                                verbose = TRUE) {
 
-  check_elic_cont(x)
+  check_elic_obj(x, type = "cont")
   check_round(round)
 
   if (inherits(data_source, "data.frame")) {
