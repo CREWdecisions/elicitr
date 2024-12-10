@@ -20,8 +20,7 @@ elic_cat_add_data(
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
-or anything accepted by the \link[googlesheets4:range_read]{read_sheet()}
-function.}
+or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}

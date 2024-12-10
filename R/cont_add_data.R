@@ -9,8 +9,7 @@
 #' @param x an object of class [elic_cont].
 #' @param data_source either a [`data.frame`][base::data.frame] or
 #' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
-#' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
-#' function.
+#' or anything accepted by the [read_sheet][googlesheets4::read_sheet] function.
 #' @param round integer indicating if the data belongs to the first or second
 #' elicitation round.
 #' @param ... Unused arguments, included only for future extensions of the
