@@ -175,6 +175,34 @@ check_experts_arg <- function(x) {
   }
 }
 
+#' Check length
+#'
+#' @param x The object to be checked.
+#' @param arg The name of the function argument.
+#' @param length The expected length of the object.
+#'
+#' @return An error if the length of `x` is not equal to `length`.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_length <- function(x,
+                         arg,
+                         length) {
+
+  if (length(x) != length) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg {arg}} must have length {.val {length}} not \\
+              {.val {length(x)}}."
+
+    cli::cli_abort(c("Incorrect value for {.arg {arg}}:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Split short codes

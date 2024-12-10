@@ -37,7 +37,7 @@ test_that("Errors ", {
   expect_snapshot(elic_cont_add_data(y, data_source = rbind(round_2, round_2),
                                      round = 2, verbose = FALSE),
                   error = TRUE)
-  # When x is not an elicit object
+  # When x is not an elic_cont object
   expect_snapshot(elic_cont_add_data("abc", data_source = round_1, round = 1),
                   error = TRUE)
   # When round is neither 1 nor 2

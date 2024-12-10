@@ -25,4 +25,9 @@ elic_cat_add_data <- function(x,
                               overwrite = FALSE,
                               verbose = TRUE) {
 
+  # Check if the object is of class elic_cat
+  check_elic_obj(x, type = "cat")
+  check_is_character(mechanisms, "mechanisms")
+  check_length(mechanisms, "mechanism", 1)
+
 }
