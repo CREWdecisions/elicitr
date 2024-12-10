@@ -25,7 +25,7 @@ variables. See Variable Types for more.}
 elicitation type. If only one \code{elic_type} is provided, its value is recycled
 for all variables. See Elicitation Types for more.}
 
-\item{experts}{numeric indicating the number of experts participating at the
+\item{experts}{numeric indicating the number of experts participating in the
 elicitation process.}
 
 \item{...}{Unused arguments, included only for future extensions of the
@@ -43,9 +43,9 @@ the correctness of the provided data.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cont_start()} initialises an \code{elic_cont}
-object which stores important metadata for the data collected during the
-elicitation process.
+\code{elic_cont_start()} initialises an \code{elic_cont} object which stores important
+metadata for the data collected during the elicitation process of continuous
+variables.
 }
 \section{Variable Types}{
 
@@ -89,32 +89,32 @@ confidence estimates are provided.
 }
 
 \examples{
-# Create the elict object for an elicitation process that estimates 3
+# Create the elic_cont object for an elicitation process that estimates 3
 # variables, the first for a one point estimation of a positive integer, the
 # second for three points estimation of a negative real, and the last for a
 # four point estimation of a probability
-x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-                     var_types = "Nrp",
-                     elic_types = "134",
-                     experts = 4)
-x
+my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "Nrp",
+                             elic_types = "134",
+                             experts = 4)
+my_elicit
 
 # A title can be added to bind a name to the object:
-x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-                     var_types = "Nrp",
-                     elic_types = "134",
-                     experts = 4,
-                     title = "My elicitation")
-x
+my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "Nrp",
+                             elic_types = "134",
+                             experts = 4,
+                             title = "My elicitation")
+my_elicit
 # Notice that if var_types and elic_types are provided as single character,
 # their value is recycled and applied to all variables. In the following
 # example all three variables will be considered for a four point estimation
 # to estimate a probability:
-x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-                     var_types = "p",
-                     elic_types = "4",
-                     experts = 4)
-x
+my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "p",
+                             elic_types = "4",
+                             experts = 4)
+my_elicit
 }
 \references{
 Hemming, V., Burgman, M. A., Hanea, A. M., McBride, M. F., &
@@ -122,6 +122,12 @@ Wintle, B. C. (2018). A practical guide to structured expert elicitation
 using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
 \url{https://doi.org/10.1111/2041-210X.12857}
 }
+\seealso{
+Other cont data helpers: 
+\code{\link{elic_cont_add_data}()},
+\code{\link{elic_cont_get_data}()}
+}
 \author{
 Sergio Vignali
 }
+\concept{cont data helpers}

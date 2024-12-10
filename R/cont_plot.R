@@ -45,9 +45,9 @@
 #' and can be added to the plot. This argument must be a list with the following
 #' elements: `min`, `max`, `best`, and `conf`. When `var` refers to a
 #' _one point elicitation_ estimate, only the `best` element is required. When
-#' `var` refers to a  _two points elicitation_.estimate, the `min` and `max`
+#' `var` refers to a  _three points elicitation_.estimate, the `min` and `max`
 #' elements are also required. Finally, when `var` refers to a
-#' _three points elicitation_ estimate, the `conf` element is also required. The
+#' _four points elicitation_ estimate, the `conf` element is also required. The
 #' `conf` element is used to rescale the `min` and `max` values.
 #'
 #' If a `theme` is provided, the `family` argument is ignored.

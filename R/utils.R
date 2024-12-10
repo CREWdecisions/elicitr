@@ -133,6 +133,42 @@ check_arg_types <- function(x,
   }
 }
 
+#' Check experts argument
+#'
+#' Check if the value for the `experts` argument is a number.
+#'
+#' @param x the value to be checked.
+#'
+#' @return An error if `x` is not a single number and its value is neither 1 nor
+#' 2.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_experts_arg <- function(x) {
+
+  error <- ""
+
+  if (!is.numeric(x)) {
+    raise_error <- TRUE
+    error <- "Argument {.arg experts} must be {.cls numeric} not \\
+              {.cls {class(x)}}."
+  } else if (length(x) > 1) {
+    raise_error <- TRUE
+    error <- "Argument {.arg experts} must be a single number not a \\
+              vector of length {.val {length(x)}}."
+  }
+
+  if (nchar(error) > 0) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    cli::cli_abort(c("Incorrect value for {.arg experts}:",
+                     "x" = error,
+                     "y" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Split short codes

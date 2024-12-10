@@ -3,9 +3,9 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_start()` initialises an `elic_cont`
-#' object which stores important metadata for the data collected during the
-#' elicitation process.
+#' `elic_cont_start()` initialises an `elic_cont` object which stores important
+#' metadata for the data collected during the elicitation process of continuous
+#' variables.
 #'
 #' @param var_names character vector with the name of the estimated variables.
 #' @param var_types character string with short codes indicating the variable
@@ -14,7 +14,7 @@
 #' @param elic_types character string with short codes indicating the
 #' elicitation type. If only one `elic_type` is provided, its value is recycled
 #' for all variables. See Elicitation Types for more.
-#' @param experts numeric indicating the number of experts participating at the
+#' @param experts numeric indicating the number of experts participating in the
 #' elicitation process.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
@@ -62,11 +62,12 @@
 #' * `4`: _four points elicitation_, when the minimum, maximum, best, and
 #' confidence estimates are provided.
 #'
-#'
 #' @return An object of class `elic_cont` binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export
+#'
+#' @family cont data helpers
 #'
 #' @author Sergio Vignali
 #'
@@ -76,32 +77,32 @@
 #' <https://doi.org/10.1111/2041-210X.12857>
 #'
 #' @examples
-#' # Create the elict object for an elicitation process that estimates 3
+#' # Create the elic_cont object for an elicitation process that estimates 3
 #' # variables, the first for a one point estimation of a positive integer, the
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability
-#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-#'                      var_types = "Nrp",
-#'                      elic_types = "134",
-#'                      experts = 4)
-#' x
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "Nrp",
+#'                              elic_types = "134",
+#'                              experts = 4)
+#' my_elicit
 #'
 #' # A title can be added to bind a name to the object:
-#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-#'                      var_types = "Nrp",
-#'                      elic_types = "134",
-#'                      experts = 4,
-#'                      title = "My elicitation")
-#' x
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "Nrp",
+#'                              elic_types = "134",
+#'                              experts = 4,
+#'                              title = "My elicitation")
+#' my_elicit
 #' # Notice that if var_types and elic_types are provided as single character,
 #' # their value is recycled and applied to all variables. In the following
 #' # example all three variables will be considered for a four point estimation
 #' # to estimate a probability:
-#' x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-#'                      var_types = "p",
-#'                      elic_types = "4",
-#'                      experts = 4)
-#' x
+#' my_elicit <- elic_cont_start(var_names = c("var1", "var2", "var3"),
+#'                              var_types = "p",
+#'                              elic_types = "4",
+#'                              experts = 4)
+#' my_elicit
 elic_cont_start <- function(var_names,
                             var_types,
                             elic_types,
@@ -156,40 +157,6 @@ elic_cont_start <- function(var_names,
 }
 
 # Checkers----
-
-#' Check experts argument
-#'
-#' Check if the value for the `experts` argument is either 1 or 2.
-#'
-#' @param x the value to be checked.
-#'
-#' @return An error if `x` is not a single number and its value is neither 1 nor
-#' 2.
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_experts_arg <- function(x) {
-
-  raise_error <- FALSE
-
-  if (!is.numeric(x)) {
-    raise_error <- TRUE
-    error <- "The value provided for {.arg experts} is a \\
-              {.field {typeof(x)}}, it should be {.field numeric}."
-  } else if (length(x) > 1) {
-    raise_error <- TRUE
-    error <- "The value provided for {.arg experts} has length \\
-              {.val {length(x)}}, it should be a single number."
-  }
-
-  if (raise_error) {
-    cli::cli_abort(c("Incorrect value for {.arg experts}:",
-                     "x" = error,
-                     "y" = "See {.fn elicitr::elic_cont_start}."),
-                   call = rlang::caller_env())
-  }
-}
 
 #' Check arguments compatibility
 #'

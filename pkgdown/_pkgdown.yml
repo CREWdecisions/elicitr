@@ -13,10 +13,16 @@ reference:
   - elic_cont_get_data
   - elic_cont_plot
 
+- title: Elicitation of categorical data
+  desc: Functions for handling and plotting categorical data.
+  contents:
+  - elic_cat_start
+
 - title: Classes
   desc: Description of the classes available in the package.
   contents:
   - elic_cont
+  - elic_cat
 
 - title: Simulated data
   desc: >
@@ -24,3 +30,6 @@ reference:
   contents:
   - round_1
   - round_2
+  - mechanism_1
+  - mechanism_2
+  - mechanism_3
