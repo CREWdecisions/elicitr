@@ -184,7 +184,7 @@
       x Argument `experts` must be a single number not a vector of length 2.
       See `elicitr::elic_cont_start()`.
 
-# Output
+# Info
 
     Code
       x <- elic_cont_start(var_names = c("var1", "var2"), var_types = "pR",
@@ -192,7 +192,7 @@
     Message
       v <elic_cont> object for "Elicitation" correctly initialised
 
----
+# Output
 
     structure(list(var_names = c("var1", "var2"), var_types = c("p", 
     "R"), elic_types = c("4p", "3p"), experts = 3, data = list(round_1 = NULL, 

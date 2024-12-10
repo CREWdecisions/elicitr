@@ -7,17 +7,21 @@ test_that("elic_cont object", {
   expect_s3_class(x, class = "elic_cont", exact = TRUE)
   # Variable names are recorded in the object as character vector
   expect_vector(x[["var_names"]], ptype = "character", size = 2)
+  expect_identical(x[["var_names"]], c("var1", "var2"))
   # Variable type short codes are recorded in the object as character vector
   expect_vector(x[["var_types"]], ptype = "character", size = 2)
+  expect_identical(x[["var_types"]], c("p", "R"))
   # Elicitation type short codes are recorded in the object as character vector
   expect_vector(x[["elic_types"]], ptype = "character", size = 2)
+  expect_identical(x[["elic_types"]], c("4", "3"))
   # Number of experts are recorded in the object
-  expect_type(x[["experts"]], "double")
+  expect_identical(x[["experts"]], 5)
   # Data is present and empty with default function arguments
   expect_type(x[["data"]], "list")
   expect_length(x[["data"]], 2)
   expect_null(x[["data"]][["round_1"]])
   expect_null(x[["data"]][["round_2"]])
+  expect_named(x[["data"]], c("round_1", "round_2"))
   # Title attribute is created
   expect_false(is.null(attr(x, "title")))
   expect_identical(attr(x, "title"), "Title")

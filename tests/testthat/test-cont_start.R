@@ -107,11 +107,19 @@ test_that("Errors", {
                   error = TRUE)
 })
 
-test_that("Output", {
+test_that("Info", {
   expect_snapshot(x <- elic_cont_start(var_names = c("var1", "var2"),
                                        var_types = "pR",
                                        elic_types = "43",
                                        experts = 3))
+})
+
+test_that("Output", {
+  expect_no_message(x <- elic_cont_start(var_names = c("var1", "var2"),
+                                         var_types = "pR",
+                                         elic_types = "43",
+                                         experts = 3,
+                                         verbose = FALSE))
   expect_s3_class(x, class = "elic_cont", exact = TRUE)
   # Variable names are recorded in the object
   expect_identical(x[["var_names"]], c("var1", "var2"))

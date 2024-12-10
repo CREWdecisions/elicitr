@@ -55,7 +55,7 @@
       x Argument `experts` must be a single number not a vector of length 3.
       See `elicitr::elic_cat_start()`.
 
-# Output
+# Info
 
     Code
       x <- elic_cat_start(levels = c("level_1", "level_2"), sites = c("site_1",
@@ -63,7 +63,7 @@
     Message
       v <elic_cat> object for "Elicitation" correctly initialised
 
----
+# Output
 
     structure(list(levels = c("level_1", "level_2"), sites = c("site_1", 
     "site_2", "site_3"), experts = 8, data = list(mechanism_1 = NULL, 

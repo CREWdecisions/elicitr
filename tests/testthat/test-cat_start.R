@@ -31,12 +31,22 @@ test_that("Errors", {
                   error = TRUE)
 })
 
-test_that("Output", {
+test_that("Info", {
   expect_snapshot(x <- elic_cat_start(levels = c("level_1", "level_2"),
                                       sites = c("site_1", "site_2", "site_3"),
                                       experts = 8,
                                       mechanisms = c("mechanism_1",
                                                      "mechanism_2")))
+})
+
+test_that("Output", {
+  # The argument verbose is used
+  expect_no_message(x <- elic_cat_start(levels = c("level_1", "level_2"),
+                                        sites = c("site_1", "site_2", "site_3"),
+                                        experts = 8,
+                                        mechanisms = c("mechanism_1",
+                                                       "mechanism_2"),
+                                        verbose = FALSE))
   expect_s3_class(x, class = "elic_cat", exact = TRUE)
   # Levels are recorded in the object
   expect_identical(x[["levels"]], c("level_1", "level_2"))
@@ -48,6 +58,7 @@ test_that("Output", {
   expect_identical(x[["experts"]], 8)
   # Data is present and empty
   expect_type(x[["data"]], "list")
+  expect_length(x[["data"]], 2)
   expect_null(x[["data"]][["mechanism_1"]])
   expect_null(x[["data"]][["mechanism_1"]])
   expect_named(x[["data"]], c("mechanism_1", "mechanism_2"))
