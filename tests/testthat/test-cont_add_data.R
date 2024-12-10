@@ -262,10 +262,9 @@ test_that("Output", {
                        elic_types = "11",
                        experts = 6,
                        verbose = FALSE)
-  out <- elic_cont_add_data(x,
-                            data_source = gs,
-                            round = 1,
-                            verbose = FALSE)
+  expect_snapshot(out <- elic_cont_add_data(x,
+                                            data_source = gs,
+                                            round = 1))
   # Double entry has been removed
   expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric
