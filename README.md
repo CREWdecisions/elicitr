@@ -63,11 +63,12 @@ Any analysis starts by creating this object with the `start` function.
 Then, data can be added and retrieved using the `add_data` and
 `get_data` functions respectively. Finally data can be plotted using the
 `plot` function. Details about the implementation and example usages of
-these functions based on the simulated datasets inluded in elicitr can
+these functions based on the simulated datasets included in elicitr can
 be seen bellow.  
-Their are five simulated datasets provided in elictr. They are intended
-to demonstrate the functionality of the package and do not represent an
-actual elicitation process (names are also randomly generated).
+In total, there are five simulated datasets provided in the package.
+They are intended to demonstrate the functionality of the package and do
+not represent an actual elicitation process (names are also randomly
+generated).
 
 ### Elicitation of continuous variables
 
@@ -321,62 +322,9 @@ my_elicitation_cat
 
 #### Functions under development
 
-Once the metadata has been added to the `elic_cat` object, the data for
-each of the machanisms can be added with the function
-`elic_cat_add_data()`:
-
-``` r
-my_elicitation_cat <- elic_cat_add_data(my_elicitation_cat,
-                                        data_source = mechanism_1,
-                                        mechanism = 1)
-```
-
-The information message confirms that the data has been added to the
-`elic_cont` object from a `data.frame`. Besides `data frames`, elicitr
-also allows users to add data from `.csv` or `.xlsx` files, and from
-Google Sheets.
-
-If you conducted an elicitation for more than one mechanism, the data
-for the subsequent mechanisms can be added to the `elic_cont` object
-after the data for the first mechanism has been added:
-
-``` r
-my_elicitation_cat <- elic_cat_add_data(my_elicitation_cat,
-                                        data_source = mechanism_2,
-                                        mechanism = 2)
-```
-
-``` r
-my_elicitation_cat <- elic_cat_add_data(my_elicitation_cat,
-                                        data_source = mechanism_3,
-                                        mechanism = 3)
-```
-
-To keep the anonymity of experts, their names are converted to short
-sha1 hashes and saved in the `id` column. These are then used to match
-the expert’s answers in the two rounds.
-
-The function `elic_cat_get_data()` retrieves data from an `elicit`
-object. It is possible to get the whole dataset of a given round, or
-extract only the data for a given variable, variable type, or
-elicitation type:
-
-``` r
-elic_cat_get_data(my_elicitation_cat,
-                  mechanism = 1,
-                  var = "all")
-```
-
-Finally, data can be plotted using the function `elic_cat_plot()`. This
-function plots data belonging to a given round and for a given variable.
-
-``` r
-elic_cat_plot(my_elicitation_cat,
-              mechanism = 1,
-              site = "all",
-              method = "all",
-              title = "Mechanism 1")
-```
+- `elic_cat_add_data()`
+- `elic_cat_get_data()`
+- `elic_cat_plot_data`
 
 ### Similar packages
 
