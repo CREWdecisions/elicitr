@@ -1,4 +1,4 @@
-test_that("elicit object", {
+test_that("elic_cont object", {
   x <- new_elic_cont(var_names = c("var1", "var2"),
                      var_types = c("p", "R"),
                      elic_types = c("4", "3"),
@@ -25,7 +25,7 @@ test_that("elicit object", {
   expect_snapshot_value(x, style = "deparse")
 })
 
-test_that("Print elicit object", {
+test_that("Print elic_cont object", {
   # Without data
   expect_snapshot(new_elic_cont(var_names = c("var1", "var2"),
                                 var_types = c("p", "R"),
