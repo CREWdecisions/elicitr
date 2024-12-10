@@ -91,6 +91,135 @@ Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-bas
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"CREWdecisions/elicitr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
+<h3 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://crewdecisions.github.io/elicitr/">elicitr</a></span><span class="op">)</span></span></code></pre></div>
+<p>All the functions in the elicitr package start with the prefix <code>elic_</code>. After that, two prefixes are available: <code>elic_cont</code> and <code>elic_cat</code>. This design choice is intended to enhance functions discovery.<br><code>elic_cont</code> functions are used for the elicitation of continuous variables while <code>elic_cat</code> functions for the elicitation of categorical variables.</p>
+<div class="section level4">
+<h4 id="how-elicitr-works">How elicitr works<a class="anchor" aria-label="anchor" href="#how-elicitr-works"></a>
+</h4>
+<p>Just like you create a form to collect estimates in an elicitation process, the core of elicitr is the creation of an object to store the metadata information. This allows to check whether experts have given their answers in the expected way.<br>
+Any analysis starts by creating this object with the <code>start</code> function. Then, data can be added and retrieved using the <code>add_data</code> and <code>get_data</code> functions respectively. Finally data can be plotted using the <code>plot</code> function. Details about the implementation and example usages of these functions can be seen bellow.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="elicitation-of-continuous-variables">Elicitation of continuous variables<a class="anchor" aria-label="anchor" href="#elicitation-of-continuous-variables"></a>
+</h3>
+<div class="section level4">
+<h4 id="simulated-datasets">Simulated datasets<a class="anchor" aria-label="anchor" href="#simulated-datasets"></a>
+</h4>
+<p>Two simulated datasets are included in elicitr. These datasets are intended to demonstrate the functionality of the package and do not represent an actual elicitation process (names are also randomly generated).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">round_1</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
+<span><span class="co">#&gt;   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Derek Macle…         1       20       24        22     0.43     0.83      0.73</span></span>
+<span><span class="co">#&gt; 2 Christopher…         0        7       10         9     0.67     0.87      0.77</span></span>
+<span><span class="co">#&gt; 3 Mar'Quasa B…         0       10       15        12     0.65     0.95      0.85</span></span>
+<span><span class="co">#&gt; 4 Mastoora al…        -7        4       12         9     0.44     0.84      0.64</span></span>
+<span><span class="co">#&gt; 5 Eriberto Mu…        -5       13       18        16     0.38     0.88      0.68</span></span>
+<span><span class="co">#&gt; 6 Paul Bol             3       20       26        25     0.35     0.85      0.65</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="section"></h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">round_2</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
+<span><span class="co">#&gt;   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Mar'Quasa B…        -2       15       21        18     0.62     0.82      0.72</span></span>
+<span><span class="co">#&gt; 2 Mastoora al…        -4       11       15        12     0.52     0.82      0.72</span></span>
+<span><span class="co">#&gt; 3 Eriberto Mu…         1       15       20        17     0.58     0.78      0.68</span></span>
+<span><span class="co">#&gt; 4 Derek Macle…         0       11       18        15     0.52     0.82      0.72</span></span>
+<span><span class="co">#&gt; 5 Christopher…        -2       14       18        15     0.55     0.85      0.75</span></span>
+<span><span class="co">#&gt; 6 Paul Bol             1       18       23        20     0.66     0.86      0.76</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+</h4>
+<p>Any analysis of continuous variables starts by creating the <code>elic_cont</code> object with the function <code><a href="reference/elic_cont_start.html">elic_cont_start()</a></code> to store the metadata of the elicitation.To build this <code>elic_cont</code> object, four parameters must be specified:</p>
+<ul>
+<li>
+<code>var</code> the number of variables (i.e. the number of topics in your elicitation)</li>
+<li>
+<code>var_types</code> the type of variables for each of these variables (many options are available, ranging from real numbers to probabilities)</li>
+<li>
+<code>elic_types</code> the type of elicitation for each of these variables (three options are available: one, three, and four points elicitations)</li>
+<li>
+<code>experts</code> the number of experts that replied to the elicitation</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_elicitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_start.html">elic_cont_start</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span>
+<span>                                  var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span>
+<span>                                  elic_types <span class="op">=</span> <span class="st">"134"</span>,</span>
+<span>                                  experts <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                                  title <span class="op">=</span> <span class="st">"Elicitation example"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ &lt;elic_cont&gt; object for "Elicitation example" correctly initialised</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_elicitation</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Elicitation example ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • Variables: "var1", "var2", and "var3"</span></span>
+<span><span class="co">#&gt; • Variable types: "Z", "N", and "p"</span></span>
+<span><span class="co">#&gt; • Elicitation types: "1p", "3p", and "4p"</span></span>
+<span><span class="co">#&gt; • Number of experts: 6</span></span>
+<span><span class="co">#&gt; • Number of rounds: 0</span></span></code></pre></div>
+<p>Once the metadata has been added to the <code>elic_cont</code> object, the data of the first round of elicitation can be added with the function <code><a href="reference/elic_cont_add_data.html">elic_cont_add_data()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_elicitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_add_data.html">elic_cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>,</span>
+<span>                                     data_source <span class="op">=</span> <span class="va">round_1</span>,</span>
+<span>                                     round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Data added to "Round 1" from "data.frame"</span></span></code></pre></div>
+<p>The information message confirms that the data for the first round has been added to the <code>elic_cont</code> object from a <code>data.frame</code>. Besides <code>data frames</code>, elicitr also allows users to add data from <code>.csv</code> or <code>.xlsx</code> files, and from Google Sheets.</p>
+<p>If you conducted a second round of elicitation, it can be added to the <code>elic_cont</code> object after the first round has been added:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_elicitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_add_data.html">elic_cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>,</span>
+<span>                                     data_source <span class="op">=</span> <span class="va">round_2</span>,</span>
+<span>                                     round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Data added to "Round 2" from "data.frame"</span></span></code></pre></div>
+<p>To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the <code>id</code> column. These are then used to match the expert’s answers in the two rounds.</p>
+<p>The function <code><a href="reference/elic_cont_get_data.html">elic_cont_get_data()</a></code> retrieves data from an <code>elicit</code> object. It is possible to get the whole dataset of a given round, or extract only the data for a given variable, variable type, or elicitation type:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/elic_cont_get_data.html">elic_cont_get_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>,</span>
+<span>                   round <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                   var <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
+<span><span class="co">#&gt;   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 5ac97e0         1       20       24        22     0.43     0.83      0.73</span></span>
+<span><span class="co">#&gt; 2 e51202e         0        7       10         9     0.67     0.87      0.77</span></span>
+<span><span class="co">#&gt; 3 e78cbf4         0       10       15        12     0.65     0.95      0.85</span></span>
+<span><span class="co">#&gt; 4 9fafbee        -7        4       12         9     0.44     0.84      0.64</span></span>
+<span><span class="co">#&gt; 5 3cc9c29        -5       13       18        16     0.38     0.88      0.68</span></span>
+<span><span class="co">#&gt; 6 3d32ab9         3       20       26        25     0.35     0.85      0.65</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
+<p>Finally, data can be plotted using the function <code><a href="reference/elic_cont_plot.html">elic_cont_plot()</a></code>. This function plots data belonging to a given round and for a given variable.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/elic_cont_plot.html">elic_cont_plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>,</span>
+<span>               round <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>               group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>               var <span class="op">=</span> <span class="st">"var3"</span>,</span>
+<span>               xlab <span class="op">=</span> <span class="st">"Variable 3"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Rescaled min and max</span></span></code></pre></div>
+<p><img src="reference/figures/README-cont_plot-1.png" width="100%"></p>
+<p>Variable 3 (the plotted variable) is the result of a four points elicitation, where minimum and maximum estimates, best guess, and expert confidence is provided. In the plot, the best guess is represented with a dot, and the range between minimum and maximum estimates is represented with a line. Expert estimates are represented in purple, while the group’s mean is represented in orange.</p>
+<p>The message printed when the function is ran informs users that the minimum and maximum value given by experts have been rescaled using their provided confidence level.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="elicitation-of-categorical-variables">Elicitation of categorical variables<a class="anchor" aria-label="anchor" href="#elicitation-of-categorical-variables"></a>
+</h3>
+<div class="section level4">
+<h4 id="in-development">In development<a class="anchor" aria-label="anchor" href="#in-development"></a>
+</h4>
+</div>
+</div>
+<div class="section level3">
 <h3 id="similar-packages">Similar packages<a class="anchor" aria-label="anchor" href="#similar-packages"></a>
 </h3>
 <ul>

@@ -165,6 +165,23 @@ elements are also required. Finally, when <code>var</code> refers to a
 <p>If a <code>theme</code> is provided, the <code>family</code> argument is ignored.</p>
     </div>
     <div class="section level2">
+    <h2 id="scale-conf">scale_conf<a class="anchor" aria-label="anchor" href="#scale-conf"></a></h2>
+
+
+
+<p>If the variable plotted is the result of a four points elicitation where
+expert confidence is provided, the minimum and maximum values provided by
+each expert are rescaled using their provided confidence levels. Users can
+choose how they want to rescale minimum and maximum values by providing a
+value for the <code>scale_conf</code> argument. If no argument is provided, a default
+value of 100 is used for scale_conf.</p>
+<p>The scaled minimum and maximum values are obtained with:</p>
+<p>\(minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
+{confidence}\)</p>
+<p>\(maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
+{confidence}\)</p>
+    </div>
+    <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Sergio Vignali, Maude Vernet and Stefano Canessa</p>
     </div>
