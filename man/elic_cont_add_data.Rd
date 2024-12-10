@@ -136,7 +136,7 @@ my_elicit
 
 # Add data for the first and second round from a csv file
 files <- list.files(path = system.file("extdata", package = "elicitr"),
-                    pattern = "csv",
+                    pattern = "round_",
                     full.names = TRUE)
 my_elicit <- elic_cont_add_data(x, data_source = files[1], round = 1) |>
   elic_cont_add_data(data_source = files[2], round = 2)
@@ -144,7 +144,7 @@ my_elicit
 
 # Add data for the first and second round from a xlsx file with two sheets
 file <- list.files(path = system.file("extdata", package = "elicitr"),
-                   pattern = "xlsx",
+                   pattern = "rounds",
                    full.names = TRUE)
 # Using the sheet index
 my_elicit <- elic_cont_add_data(x, data_source = file,
@@ -168,10 +168,11 @@ my_elicit
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other data helpers: 
-\code{\link{elic_cont_get_data}()}
+Other cont data helpers: 
+\code{\link{elic_cont_get_data}()},
+\code{\link{elic_cont_start}()}
 }
 \author{
 Sergio Vignali
 }
-\concept{data helpers}
+\concept{cont data helpers}

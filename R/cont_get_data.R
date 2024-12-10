@@ -27,7 +27,7 @@
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
 #'
-#' @family data helpers
+#' @family cont data helpers
 #'
 #' @author Sergio Vignali
 #'

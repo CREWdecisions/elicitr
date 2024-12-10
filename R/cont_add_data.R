@@ -88,7 +88,7 @@
 #' @return The provided object of class `elic_cont` updated with the data.
 #' @export
 #'
-#' @family data helpers
+#' @family cont data helpers
 #'
 #' @author Sergio Vignali
 #'
@@ -110,7 +110,7 @@
 #'
 #' # Add data for the first and second round from a csv file
 #' files <- list.files(path = system.file("extdata", package = "elicitr"),
-#'                     pattern = "csv",
+#'                     pattern = "round_",
 #'                     full.names = TRUE)
 #' my_elicit <- elic_cont_add_data(x, data_source = files[1], round = 1) |>
 #'   elic_cont_add_data(data_source = files[2], round = 2)
@@ -118,7 +118,7 @@
 #'
 #' # Add data for the first and second round from a xlsx file with two sheets
 #' file <- list.files(path = system.file("extdata", package = "elicitr"),
-#'                    pattern = "xlsx",
+#'                    pattern = "rounds",
 #'                    full.names = TRUE)
 #' # Using the sheet index
 #' my_elicit <- elic_cont_add_data(x, data_source = file,
