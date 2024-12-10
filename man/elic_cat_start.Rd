@@ -52,7 +52,7 @@ data.
 
 Levels are inherited between mechanisms. A minimum of two levels are needed.
 If only one level is investigated, please refer to the functions for the
-elicitation of continuous data (elic_cont_start()).
+elicitation of continuous data (e.g. \link{elic_cont_start}).
 }
 
 \section{Sites}{
@@ -103,3 +103,4 @@ Biological Invasions, 26(8), 2707–2721.
 \author{
 Sergio Vignali and Maude Vernet
 }
+\concept{cat data helpers}

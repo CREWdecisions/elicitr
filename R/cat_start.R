@@ -22,7 +22,7 @@
 #'
 #' Levels are inherited between mechanisms. A minimum of two levels are needed.
 #' If only one level is investigated, please refer to the functions for the
-#' elicitation of continuous data (elic_cont_start()).
+#' elicitation of continuous data (e.g. [elic_cont_start]).
 #'
 #' @section Sites:
 #'
@@ -40,6 +40,8 @@
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export
+#'
+#' @family cat data helpers
 #'
 #' @author Sergio Vignali and Maude Vernet
 #'
