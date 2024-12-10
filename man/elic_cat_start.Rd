@@ -25,7 +25,7 @@ Sites for more.}
 participating in the elicitation process for one mechanism. See Experts for
 more.}
 
-\item{mechanisms}{character vector with the name of the mechanisms of impact
+\item{mechanisms}{character vector with the names of the mechanisms of impact
 investigated.}
 
 \item{...}{Unused arguments, included only for future extensions of the
