@@ -30,4 +30,7 @@ elic_cat_add_data <- function(x,
   check_is_character(mechanisms, "mechanisms")
   check_length(mechanisms, "mechanism", 1)
 
+  data <- read_data(data_source,
+                    sep = sep,
+                    sheet = sheet)
 }
