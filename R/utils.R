@@ -77,7 +77,7 @@ check_arg_length <- function(x,
     fn <- as.list(sys.call(-1))[[1]]
 
     sect <- switch(type,
-                   var = "Variable Types",
+                   var = "Variable types",
                    elic = "Elicitation types")
     short_codes <- paste(x, collapse = "")
     wrong_values <- paste0("c(", paste0('"', x, '"', collapse = ", "), ")")
@@ -124,7 +124,7 @@ check_arg_types <- function(x,
                  fixed = TRUE)
 
     sect <- switch(type,
-                   var = "Variable Types",
+                   var = "Variable types",
                    elic = "Elicitation types")
 
     fn <- as.list(sys.call(-1))[[1]]

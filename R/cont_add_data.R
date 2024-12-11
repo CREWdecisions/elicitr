@@ -24,7 +24,7 @@
 #' the [elic_cont] object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
-#' @section Data Format:
+#' @section Data format:
 #'
 #' Data are expected to have the name of the expert always as first column. The
 #' only exception is for data coming from _Google Sheet_ which can have an
@@ -639,7 +639,7 @@ check_columns <- function(x,
   if (ncol(x) != length(col_names)) {
     error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
               {.val {length(col_names)}} are expected."
-    info <- "See Data Format in {.fn elicitr::elic_cont_add_data}."
+    info <- "See Data format in {.fn elicitr::elic_cont_add_data}."
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
                      "i" = info),

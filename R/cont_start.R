@@ -10,7 +10,7 @@
 #' @param var_names character vector with the name of the estimated variables.
 #' @param var_types character string with short codes indicating the variable
 #' type. If only one `var_type` is provided, its value is recycled for all
-#' variables. See Variable Types for more.
+#' variables. See Variable types for more.
 #' @param elic_types character string with short codes indicating the
 #' elicitation type. If only one `elic_type` is provided, its value is recycled
 #' for all variables. See Elicitation Types for more.
@@ -21,7 +21,7 @@
 #' @param title character, used to bind a name to the object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
-#' @section Variable Types:
+#' @section Variable types:
 #'
 #' Variable types must be provided as a single string containing short codes,
 #' e.g. "pPN".

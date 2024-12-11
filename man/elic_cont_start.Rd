@@ -19,7 +19,7 @@ elic_cont_start(
 
 \item{var_types}{character string with short codes indicating the variable
 type. If only one \code{var_type} is provided, its value is recycled for all
-variables. See Variable Types for more.}
+variables. See Variable types for more.}
 
 \item{elic_types}{character string with short codes indicating the
 elicitation type. If only one \code{elic_type} is provided, its value is recycled
@@ -47,7 +47,7 @@ the correctness of the provided data.
 metadata for the data collected during the elicitation process of continuous
 variables.
 }
-\section{Variable Types}{
+\section{Variable types}{
 
 
 Variable types must be provided as a single string containing short codes,

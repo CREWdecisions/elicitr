@@ -46,7 +46,7 @@
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `var_types`:
       x The value provided for `var_types` should be a character string of short codes, i.e. "ZN" and not `c("Z", "N")`.
-      i See "Variable Types" in `elicitr::elic_cont_get_data()`.
+      i See "Variable types" in `elicitr::elic_cont_get_data()`.
 
 ---
 
@@ -66,7 +66,7 @@
       Error in `elic_cont_get_data()`:
       ! Incorrect value for `var_types`:
       x "q" is not in the list of available short codes.
-      i See "Variable Types" in `elicitr::elic_cont_get_data()`.
+      i See "Variable types" in `elicitr::elic_cont_get_data()`.
 
 ---
 

@@ -50,7 +50,7 @@ The provided object of class \link{elic_cont} updated with the data.
 \code{elic_cont_add_data()} adds data to an \link{elic_cont} object from different
 sources.
 }
-\section{Data Format}{
+\section{Data format}{
 
 
 Data are expected to have the name of the expert always as first column. The

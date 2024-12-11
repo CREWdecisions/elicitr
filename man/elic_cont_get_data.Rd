@@ -28,7 +28,7 @@ for all variables. Use \code{all} for all variable types. See Elicitation Types
 for more.}
 
 \item{var_types}{character string with short codes indicating the variable
-type. See Variable Types for more.}
+type. See Variable types for more.}
 
 \item{elic_types}{character string with the short codes codes indicating the
 elicitation type. Use \code{all} for all elicitation types. See Elicitation Types
@@ -46,7 +46,7 @@ Get data from an \link{elic_cont} object.
 One one optional argument can be specified. If more than one is provided, the
 first of the following will be used: \code{var}, \code{var_types}, or \code{elic_types}.
 }
-\section{Variable Types}{
+\section{Variable types}{
 
 
 Variable types must be provided as a single string containing short codes,

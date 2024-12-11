@@ -11,7 +11,7 @@
 #' for all variables. Use `all` for all variable types. See Elicitation Types
 #' for more.
 #' @param var_types character string with short codes indicating the variable
-#' type. See Variable Types for more.
+#' type. See Variable types for more.
 #' @param elic_types character string with the short codes codes indicating the
 #' elicitation type. Use `all` for all elicitation types. See Elicitation Types
 #' for more.
@@ -21,7 +21,7 @@
 #' first of the following will be used: `var`, `var_types`, or `elic_types`.
 #'
 #'
-#' @inheritSection elic_cont_start Variable Types
+#' @inheritSection elic_cont_start Variable types
 #' @inheritSection elic_cont_start Elicitation types
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.

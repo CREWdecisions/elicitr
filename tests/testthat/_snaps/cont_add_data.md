@@ -42,7 +42,7 @@
       Error in `elic_cont_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 8 columns but 9 are expected.
-      i See Data Format in `elicitr::elic_cont_add_data()`.
+      i See Data format in `elicitr::elic_cont_add_data()`.
 
 ---
 
