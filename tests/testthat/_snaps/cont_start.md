@@ -7,7 +7,7 @@
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
       x The value provided for `var_types` should be a character string of short codes, i.e. "pN" and not `c("p", "N")`.
-      i See "Variable Types" in `elicitr::elic_cont_start()`.
+      i See "Variable types" in `elicitr::elic_cont_start()`.
 
 ---
 
@@ -29,7 +29,7 @@
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
       x "q" is not in the list of available short codes.
-      i See "Variable Types" in `elicitr::elic_cont_start()`.
+      i See "Variable types" in `elicitr::elic_cont_start()`.
 
 ---
 
@@ -40,7 +40,7 @@
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
       x "a" is not in the list of available short codes.
-      i See "Variable Types" in `elicitr::elic_cont_start()`.
+      i See "Variable types" in `elicitr::elic_cont_start()`.
 
 ---
 
@@ -51,7 +51,7 @@
       Error in `elic_cont_start()`:
       ! Incorrect value for `var_types`:
       x "q" and "G" are not in the list of available short codes.
-      i See "Variable Types" in `elicitr::elic_cont_start()`.
+      i See "Variable types" in `elicitr::elic_cont_start()`.
 
 ---
 

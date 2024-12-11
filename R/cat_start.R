@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cat_start()` initialises an `elic_cat` object which stores important
+#' `elic_cat_start()` initialises an [elic_cat] object which stores important
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
@@ -36,7 +36,7 @@
 #' taking part in the elicitation of one of the investigated mechanisms of
 #' impact. The number and IDs of experts can differ between the mechanisms.
 #'
-#' @return An object of class `elic_cat` binding metadata related to the
+#' @return An object of class [elic_cat] binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export

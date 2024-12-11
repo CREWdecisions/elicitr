@@ -3,14 +3,14 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_start()` initialises an `elic_cont` object which stores important
+#' `elic_cont_start()` initialises an [elic_cont] object which stores important
 #' metadata for the data collected during the elicitation process of continuous
 #' variables.
 #'
 #' @param var_names character vector with the name of the estimated variables.
 #' @param var_types character string with short codes indicating the variable
 #' type. If only one `var_type` is provided, its value is recycled for all
-#' variables. See Variable Types for more.
+#' variables. See Variable types for more.
 #' @param elic_types character string with short codes indicating the
 #' elicitation type. If only one `elic_type` is provided, its value is recycled
 #' for all variables. See Elicitation Types for more.
@@ -21,7 +21,7 @@
 #' @param title character, used to bind a name to the object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
-#' @section Variable Types:
+#' @section Variable types:
 #'
 #' Variable types must be provided as a single string containing short codes,
 #' e.g. "pPN".
@@ -62,7 +62,7 @@
 #' * `4`: _four points elicitation_, when the minimum, maximum, best, and
 #' confidence estimates are provided.
 #'
-#' @return An object of class `elic_cont` binding metadata related to the
+#' @return An object of class [elic_cont] binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
 #' the correctness of the provided data.
 #' @export

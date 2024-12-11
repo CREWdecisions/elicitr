@@ -17,6 +17,7 @@ reference:
   desc: Functions for handling and plotting categorical data.
   contents:
   - elic_cat_start
+  - elic_cat_add_data
 
 - title: Classes
   desc: Description of the classes available in the package.

@@ -36,14 +36,14 @@ function.}
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
-An object of class \code{elic_cat} binding metadata related to the
+An object of class \link{elic_cat} binding metadata related to the
 elicitation process. These metadata are used by other functions to validate
 the correctness of the provided data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cat_start()} initialises an \code{elic_cat} object which stores important
+\code{elic_cat_start()} initialises an \link{elic_cat} object which stores important
 metadata for the data collected during the elicitation process of categorical
 data.
 }
@@ -99,6 +99,10 @@ Moehrenschlager, A. & Canessa, S. (2024) Assessing invasion risks using
 EICAT‐based expert elicitation: application to a conservation translocation.
 Biological Invasions, 26(8), 2707–2721.
 \url{https://doi.org/10.1007/s10530-024-03341-2}
+}
+\seealso{
+Other cat data helpers: 
+\code{\link{elic_cat_add_data}()}
 }
 \author{
 Sergio Vignali and Maude Vernet

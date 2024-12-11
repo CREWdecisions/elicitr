@@ -37,7 +37,7 @@ test_that("Errors ", {
   expect_snapshot(elic_cont_add_data(y, data_source = rbind(round_2, round_2),
                                      round = 2, verbose = FALSE),
                   error = TRUE)
-  # When x is not an elicit object
+  # When x is not an elic_cont object
   expect_snapshot(elic_cont_add_data("abc", data_source = round_1, round = 1),
                   error = TRUE)
   # When round is neither 1 nor 2
@@ -262,10 +262,9 @@ test_that("Output", {
                        elic_types = "11",
                        experts = 6,
                        verbose = FALSE)
-  out <- elic_cont_add_data(x,
-                            data_source = gs,
-                            round = 1,
-                            verbose = FALSE)
+  expect_snapshot(out <- elic_cont_add_data(x,
+                                            data_source = gs,
+                                            round = 1))
   # Double entry has been removed
   expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric

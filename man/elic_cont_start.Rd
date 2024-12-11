@@ -19,7 +19,7 @@ elic_cont_start(
 
 \item{var_types}{character string with short codes indicating the variable
 type. If only one \code{var_type} is provided, its value is recycled for all
-variables. See Variable Types for more.}
+variables. See Variable types for more.}
 
 \item{elic_types}{character string with short codes indicating the
 elicitation type. If only one \code{elic_type} is provided, its value is recycled
@@ -36,18 +36,18 @@ function.}
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
-An object of class \code{elic_cont} binding metadata related to the
+An object of class \link{elic_cont} binding metadata related to the
 elicitation process. These metadata are used by other functions to validate
 the correctness of the provided data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cont_start()} initialises an \code{elic_cont} object which stores important
+\code{elic_cont_start()} initialises an \link{elic_cont} object which stores important
 metadata for the data collected during the elicitation process of continuous
 variables.
 }
-\section{Variable Types}{
+\section{Variable types}{
 
 
 Variable types must be provided as a single string containing short codes,

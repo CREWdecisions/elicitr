@@ -16,12 +16,11 @@ elic_cont_add_data(
 )
 }
 \arguments{
-\item{x}{an object of class \code{elic_cont}.}
+\item{x}{an object of class \link{elic_cont}.}
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
-or anything accepted by the \link[googlesheets4:range_read]{read_sheet()}
-function.}
+or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
 
 \item{round}{integer indicating if the data belongs to the first or second
 elicitation round.}
@@ -38,26 +37,26 @@ only when \code{data_source} is a path to a \emph{xlsx} file or when data are im
 from \emph{Google Sheets}.}
 
 \item{overwrite}{logical, whether to overwrite existing data already added to
-the \code{elic_cont} object.}
+the \link{elic_cont} object.}
 
 \item{verbose}{logical, if \code{TRUE} prints informative messages.}
 }
 \value{
-The provided object of class \code{elic_cont} updated with the data.
+The provided object of class \link{elic_cont} updated with the data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{elic_cont_add_data()} adds data to an \code{elic_cont} object from different
+\code{elic_cont_add_data()} adds data to an \link{elic_cont} object from different
 sources.
 }
-\section{Data Format}{
+\section{Data format}{
 
 
 Data are expected to have the name of the expert always as first column. The
 only exception is for data coming from \emph{Google Sheet} which can have an
 additional column with a timestamp. This column is automatically removed
-before the data are added to the \code{elic_cont} object (see "Data cleaning").
+before the data are added to the \link{elic_cont} object (see "Data cleaning").
 After the name there should be one or more blocks which follow the
 specifications below:
 
@@ -91,7 +90,7 @@ will overwrite it according to the following convention:
 
 with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
 to build the column names is taken from the metadata available in the
-\code{elic_cont} object.
+\link{elic_cont} object.
 
 \code{var_conf}, given in percents, can be any number between 60 and 100. Any
 value under 50 would imply that the accuracy of the estimates is only due to
@@ -101,11 +100,11 @@ chance).
 \section{Data cleaning}{
 
 
-When data are added to the \code{elic_cont} object, first names are standardised
+When data are added to the \link{elic_cont} object, first names are standardised
 by converting capital letters to lower case, and by removing any whitespaces
 and punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
-process never reaches the \code{elic_cont} object. For three and four points
+process never reaches the \link{elic_cont} object. For three and four points
 elicitation processes, the order of the values is checked for each expert. If
 it is not \emph{min-max-best}, the values are swaped accordingly and a informative
 warn is raised.
@@ -123,7 +122,7 @@ first one (which contains the names) are forced to numeric.
 }
 
 \examples{
-# Create the elict object for an elicitation process that estimates 3
+# Create the elic_cont object for an elicitation process that estimates 3
 # variables, the first for a one point estimation of a positive integer, the
 # second for three points estimation of a negative real, and the last for a
 # four point estimation of a probability
