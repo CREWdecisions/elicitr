@@ -17,6 +17,7 @@
 #' @param title character, the title of the plot.
 #' @param xlab character, the title of the x axis.
 #' @param ylab character, the title of the y axis.
+#' @param ylab_ID character, the names given to experts on the plot.
 #' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
@@ -104,6 +105,7 @@ elic_cont_plot <- function(x,
                            title = paste("Round", round),
                            xlab = var,
                            ylab = "Experts",
+                           ylab_ID = NULL,
                            family = "sans",
                            theme = NULL,
                            verbose = TRUE) {
@@ -121,6 +123,10 @@ elic_cont_plot <- function(x,
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+
+  if (!is.null(ylab_ID)) {
+    data[["id"]] <- ylab_ID
+  }
 
   ids <- data |>
     dplyr::pull(.data[["id"]])

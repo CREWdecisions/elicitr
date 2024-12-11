@@ -320,6 +320,7 @@ test_that("Output", {
                       title = "Test",
                       xlab = "test",
                       ylab = "Text",
+                      ylab_ID = as.character(1:obj[["experts"]]),
                       family = "serif",
                       verbose = FALSE)
 
@@ -339,6 +340,7 @@ test_that("Output", {
                       title = "Test",
                       xlab = "test",
                       ylab = "Text",
+                      ylab_ID = as.character(1:obj[["experts"]]),
                       family = "serif",
                       verbose = FALSE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
@@ -358,6 +360,8 @@ test_that("Output", {
                    "test")
   expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
                    "Text")
+  expect_identical(ggplot2::ggplot_build(p)[["layout"]][["panel_params"]][[1]][["y"]]
+                   [["limits"]],c(as.character(1:obj[["experts"]]), "Group", "Truth"))
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.x"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")

@@ -20,6 +20,7 @@ elic_cont_plot(
   title = paste("Round", round),
   xlab = var,
   ylab = "Experts",
+  ylab_ID = NULL,
   family = "sans",
   theme = NULL,
   verbose = TRUE
@@ -57,6 +58,8 @@ function.}
 \item{xlab}{character, the title of the x axis.}
 
 \item{ylab}{character, the title of the y axis.}
+
+\item{ylab_ID}{character, the names given to experts on the plot.}
 
 \item{family}{character, the font family.}
 
