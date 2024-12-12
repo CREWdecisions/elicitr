@@ -149,10 +149,29 @@ elic_cat_add_data <- function(x,
   check_columns_type(data[1:3], "character")
   check_columns_type(data[4:5], c("numeric", "integer"))
 
+  # First check that names, levels and sites are as expected
+  # Check that unique names are <= expected experts
+  check_names_levels_sites(x, data, type = "name")
+
+  # Check that levels are those recorded in the object
+  check_names_levels_sites(x, data, type = "levels")
+
+  # Check that sites are those recorded in the object
+  check_names_levels_sites(x, data, type = "sites")
+
+  # Check that each name is repeated as many times as the number of levels and
+  # sites
+  # check_column_name(x, data)
+
+  # Check that each level block is repeated as many times as the number of
+  #experts and sites
+  # check_column_level(x, data)
+
   # Anonymise names
   data <- anonimise_names(data)
 
-  # Check if estimates for each expert and site sum to 1
+  # Check if estimates for each expert and site sum to 1. This is done after
+  # anonymising the names to avoid exposing the names in the error message.
   check_sum_1(data)
 
   x[["data"]][[mechanism]] <- data
@@ -199,6 +218,127 @@ check_value_in_element <- function(x,
   }
 }
 
+check_names_levels_sites <- function(x, data, type) {
+
+  error <- ""
+
+  if (type == "name") {
+    names <- unique(data[["id"]])
+    n <- x[["experts"]]
+
+    if (length(names) > n) {
+
+      text <- "The number of unique names is greater than the expected number \\
+               of experts:"
+      error <- "There are {.val {length(names)}} unique names but they should \\
+                be no more than {.val {n}}."
+    }
+
+  } else if (type == "levels") {
+
+    levels <- unique(data[["level"]])
+    diff <- setdiff(levels, x[["levels"]])
+
+    if (length(diff) > 0) {
+
+      text <- "The column with the name of the levels contains unexpected \\
+               values:"
+      error <- "The value{?s} {.val {diff}} {?is/are} not valid."
+    }
+
+  } else if (type == "sites") {
+
+    sites <- unique(data[["site"]])
+    diff <- setdiff(sites, x[["sites"]])
+
+    if (length(diff) > 0) {
+
+      text <- "The column with the name of the sites contains unexpected \\
+               values:"
+      error <- "The value{?s} {.val {diff}} {?is/are} not valid."
+    }
+  }
+
+  if (nchar(error) > 0) {
+
+    info <- "Check the metadata in the {.cls elic_cat} object."
+
+    cli::cli_abort(c(text,
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check column name
+#'
+#' First it checks if the unique names are <= the expected experts. Then it
+#' checks if the column containing the name is formatted as expected. The name
+#' should be repeated as many times as the number of levels and sites.
+#'
+#' @param x [elic_cat] object.
+#' @param data data.frame with the data to be checked.
+#'
+#' @return An error if the unique names are > than the expected experts or if
+#' the column containing the name is not formatted as expected.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_column_name <- function(x, data) {
+
+  n_levels <- length(x[["levels"]])
+  n_sites <- length(x[["sites"]])
+
+  expected_names <- rep(names, each = n_levels * n_sites)
+
+  if (!identical(data[["id"]], expected_names)) {
+
+    error <- "The column containing the expert name is not formatted as \\
+              expected."
+    info <- "See Data format in {.fn elicitr::elic_cat_add_data}."
+
+    cli::cli_abort(c("Malformatted dataset:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check column level
+#'
+#' First it checks if the unique names levels are those reordered in the
+#' object. Then checks if the column containing the levels is formatted as
+#' expected. Each level block should be repeated as many times as the number of
+#' experts and sites.
+#'
+#' @param x [elic_cat] object.
+#' @param data data.frame with the data to be checked.
+#'
+#' @return An error if the levels are not those recorded in the object or if the
+#' column containing the levels is not formatted as expected.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_column_level <- function(x, data) {
+
+  n_experts <- length(data[["level"]])
+  n_sites <- length(data[["site"]])
+
+  expected_names <- rep(names, n_levels * n_sites)
+
+  if (!identical(data[["id"]], expected_names)) {
+
+    error <- "The column containing the expert name is not formatted as \\
+              expected."
+    info <- "See Data format in {.fn elicitr::elic_cat_add_data}."
+
+    cli::cli_abort(c("Malformatted dataset:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
 #' Check estimates
 #'
 #' Check if estimates for each expert and site sum to 1.
@@ -212,7 +352,9 @@ check_value_in_element <- function(x,
 check_sum_1 <- function(x) {
 
   sums <- x |>
-    dplyr::mutate("id" = factor(.data$id, levels = unique(.data$id))) |>
+    # Convert to facto to avoid unwanted reorder of the table rows
+    dplyr::mutate("id" = factor(.data[["id"]],
+                                levels = unique(.data[["id"]]))) |>
     dplyr::group_by(id, site) |>
     dplyr::summarise(sum = sum(estimate))
   sums_vector <- sums |>

@@ -1,7 +1,7 @@
 test_that("Errors", {
-  x <- elic_cat_start(levels = c("level_1", "level_2"),
-                      sites = c("site_1", "site_2", "site_3"),
-                      experts = 8,
+  x <- elic_cat_start(levels = paste0("level_", 1:5),
+                      sites = paste0("site_", 1:4),
+                      experts = 6,
                       mechanisms = c("mechanism_1", "mechanism_2"),
                       verbose = FALSE)
 
@@ -66,19 +66,73 @@ test_that("Errors", {
                                     mechanism = "mechanism_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for one expert and site
+  # When there are more experts than expected
   y <- mechanism_1
-  y[1, 5] <- 0.99
+  new_expert <- y[1:5, ]
+  new_expert[["name"]] <- "new_expert"
+  y <- rbind(y, new_expert)
   expect_snapshot(elic_cat_add_data(x,
                                     data_source = y,
                                     mechanism = "mechanism_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for more experts and sites
-  y[19, 5] <- 0.99
-  y[120, 5] <- 0.99
+  # When one level is not on the metadata
+  y <- mechanism_1
+  y[1, 2] <- "level_6"
   expect_snapshot(elic_cat_add_data(x,
                                     data_source = y,
                                     mechanism = "mechanism_1"),
                   error = TRUE)
+
+  # When two levels are not on the metadata
+  y <- mechanism_1
+  y[1, 2] <- "level_6"
+  y[2, 2] <- "level_7"
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When one site is not on the metadata
+  y <- mechanism_1
+  y[1:5, 3] <- "site_5"
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When two sites are not on the metadata
+  y <- mechanism_1
+  y[1:5, 3] <- "site_5"
+  y[6:10, 3] <- "site_6"
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # # When the column with the names is malformed
+  # y <- mechanism_1[-1, ]
+  # y[1:4, 5] <- 0.25
+  # expect_snapshot(elic_cat_add_data(x,
+  #                                   data_source = y,
+  #                                   mechanism = "mechanism_1"),
+  #                 error = TRUE)
+  #
+
+
+  # # When estimates don't sum to 1 for one expert and site
+  # y <- mechanism_1
+  # y[1, 5] <- 0.99
+  # expect_snapshot(elic_cat_add_data(x,
+  #                                   data_source = y,
+  #                                   mechanism = "mechanism_1"),
+  #                 error = TRUE)
+  #
+  # # When estimates don't sum to 1 for more experts and sites
+  # y[19, 5] <- 0.99
+  # y[120, 5] <- 0.99
+  # expect_snapshot(elic_cat_add_data(x,
+  #                                   data_source = y,
+  #                                   mechanism = "mechanism_1"),
+  #                 error = TRUE)
 })

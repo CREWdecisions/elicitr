@@ -93,9 +93,9 @@
       elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
     Condition
       Error in `elic_cat_add_data()`:
-      ! Invalid value for `estimate`:
-      x Estimates of one expert and one site don't sum to 1.
-      * Check id "5ac97e0" for site "site_1": sum 1.91
+      ! The number of unique names is greater than the expected number of experts:
+      x There are 7 unique names but they should be no more than 6.
+      i Check the metadata in the <elic_cat> object.
 
 ---
 
@@ -103,9 +103,37 @@
       elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
     Condition
       Error in `elic_cat_add_data()`:
-      ! Invalid value for `estimate`:
-      x Estimates of one/some experts for one/some sites don't sum to 1.
-      * Check id "5ac97e0" for site "site_1": sum 1.91
-      * Check id "5ac97e0" for site "site_4": sum 1.94
-      * Check id "3d32ab9" for site "site_4": sum 1.96
+      ! The column with the name of the levels contains unexpected values:
+      x The value "level_6" is not valid.
+      i Check the metadata in the <elic_cat> object.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! The column with the name of the levels contains unexpected values:
+      x The values "level_6" and "level_7" are not valid.
+      i Check the metadata in the <elic_cat> object.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! The column with the name of the sites contains unexpected values:
+      x The value "site_5" is not valid.
+      i Check the metadata in the <elic_cat> object.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! The column with the name of the sites contains unexpected values:
+      x The values "site_5" and "site_6" are not valid.
+      i Check the metadata in the <elic_cat> object.
 
