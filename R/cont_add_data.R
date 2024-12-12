@@ -154,25 +154,20 @@ elic_cont_add_data <- function(x,
   check_elic_obj(x, type = "cont")
   check_round(round)
 
+  # Read data
   data <- read_data(data_source,
                     sep = sep,
                     sheet = sheet)
 
-  col_1 <- colnames(data)[[1]]
-
-  # Anonymise names
-  data <- data |>
-    dplyr::rename("id" = dplyr::all_of(col_1)) |>
-    # Standardise names: remove capital letters, whitespaces, and punctuation
-    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
-    # Hash names
-    dplyr::mutate("id" = hash_names(.data[["id"]]))
-
   # Prepare column names and set them
   col_names <- get_col_names(x[["var_names"]],
                              x[["elic_types"]])
-  check_columns(data, col_names)
+  # Check if data has the correct number of columns
+  check_columns(data, length(col_names))
   colnames(data) <- col_names
+
+  # Anonymise names
+  data <- anonimise_names(data)
 
   # If necessary, fix element order for each variable
   data <- fix_var_order(data,
@@ -263,47 +258,6 @@ get_labels <- function(n,
     unlist(use.names = FALSE)
 
   return(raw_labels)
-}
-
-#' Standardise names
-#'
-#' `stand_names()` converts strings to lower case, removes all whitespaces, and
-#' removes punctuation.
-#'
-#' @param x character vector with strings to be normalised.
-#'
-#' @return Character vector with normalised strings.
-#' @noRd
-#'
-#' @author Sergio Vignali
-stand_names <- function(x) {
-  tolower(x) |>
-    gsub(pattern = "(\\s|[[:punct:]])",
-         replacement = "",
-         x = _)
-}
-
-#' Hash names
-#'
-#' `hash_names()` converts names to short sha1 codes (7 characters), used to
-#' create anonymous ids.
-#'
-#' @param x character vector with names.
-#'
-#' @return a vector with encoded names
-#' @noRd
-#'
-#' @author Sergio Vignali
-hash_names <- function(x) {
-
-  to_hash <- Vectorize(digest::digest,
-                       USE.NAMES = FALSE)
-
-  to_hash(x,
-          algo = "sha1",
-          serialize = FALSE) |>
-    substr(start = 1,
-           stop = 7)
 }
 
 #' Clean Google Sheets data
@@ -622,30 +576,6 @@ omogenise_datasets <- function(x, data) {
 }
 
 # Checkers----
-
-#' Check columns
-#'
-#' Check whether the number of columns correspond to those expected.
-#'
-#' @param x data.frame or tibble with the imported data.
-#' @param col_names character vector with the expected column names.
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_columns <- function(x,
-                          col_names) {
-  # Check number of columns
-  if (ncol(x) != length(col_names)) {
-    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
-              {.val {length(col_names)}} are expected."
-    info <- "See Data format in {.fn elicitr::elic_cont_add_data}."
-    cli::cli_abort(c("Unexpected number of columns:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
-  }
-}
 
 #' Check round data
 #'

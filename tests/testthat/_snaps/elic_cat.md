@@ -16,6 +16,6 @@
       * Levels: "level_1" and "level_2"
       * Sites: "site_1", "site_2", and "site_3"
       * Number of experts: 8
-      * Mechanismss: "mechanism_1" and "mechanism_2"
+      * Mechanisms: "mechanism_1" and "mechanism_2"
       * Data available for 0 mechanisms
 
