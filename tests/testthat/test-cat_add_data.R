@@ -65,9 +65,18 @@ test_that("Errors", {
                                     data_source = y,
                                     mechanism = "mechanism_1"),
                   error = TRUE)
+
   # When estimates don't sum to 1 for one expert and site
   y <- mechanism_1
   y[1, 5] <- 0.99
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When estimates don't sum to 1 for more experts and sites
+  y[19, 5] <- 0.99
+  y[120, 5] <- 0.99
   expect_snapshot(elic_cat_add_data(x,
                                     data_source = y,
                                     mechanism = "mechanism_1"),

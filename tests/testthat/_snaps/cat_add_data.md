@@ -87,3 +87,25 @@
       x The columns "level" and "site" are not of type "character" but of type "factor".
       i See Data format in `elicitr::elic_cat_add_data()`.
 
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `estimate`:
+      x Estimates of one expert and one site don't sum to 1.
+      * Check id "5ac97e0" for site "site_1": sum 1.91
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `estimate`:
+      x Estimates of one/some experts for one/some sites don't sum to 1.
+      * Check id "5ac97e0" for site "site_1": sum 1.91
+      * Check id "5ac97e0" for site "site_4": sum 1.94
+      * Check id "3d32ab9" for site "site_4": sum 1.96
+

@@ -149,11 +149,11 @@ elic_cat_add_data <- function(x,
   check_columns_type(data[1:3], "character")
   check_columns_type(data[4:5], c("numeric", "integer"))
 
-  # Check if estimates for each expert and site sum to 1
-  check_sum_1(data)
-
   # Anonymise names
   data <- anonimise_names(data)
+
+  # Check if estimates for each expert and site sum to 1
+  check_sum_1(data)
 
   x[["data"]][[mechanism]] <- data
 
@@ -175,7 +175,6 @@ elic_cat_add_data <- function(x,
 #'
 #' @return An error if `value` is not among the available values of list
 #' element.
-#'
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -200,29 +199,48 @@ check_value_in_element <- function(x,
   }
 }
 
+#' Check estimates
+#'
+#' Check if estimates for each expert and site sum to 1.
+#'
+#' @param x data.frame with the data to be checked.
+#'
+#' @return An error if estimates for each expert and site don't sum to 1.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_sum_1 <- function(x) {
 
   sums <- x |>
+    dplyr::mutate("id" = factor(.data$id, levels = unique(.data$id))) |>
     dplyr::group_by(id, site) |>
-    dplyr::summarise(sum = sum(estimate)) |>
+    dplyr::summarise(sum = sum(estimate))
+  sums_vector <- sums |>
     dplyr::pull(sum)
 
-  total <- sum(sums != 1)
+  total <- sum(sums_vector != 1)
 
   if (total > 0) {
 
-    idx <- which(sums != 1)
-    wrong_data <- x[idx, c(1, 3)]
+    idx <- which(sums_vector != 1)
+    wrong_data <- sums[idx, ]
 
-    error <- "Estimates of {cli::qty(total)} {?one/some} expert{?s} don't sum \\
-              to 1."
-    msg <- "Check {.arg id}: {.val {wrong_data[[1]]}} at \\
-            {.val {wrong_data[[2]]}}"
-    info <- cli::cli_ul(msg)
+    if (total == 1) {
+      error <- "Estimates of one expert and one site don't sum to 1."
+    } else {
+      error <- "Estimates of one/some experts for one/some sites don't sum \\
+                to 1."
+    }
+
+    msg <- paste0("{cli::symbol$bullet} Check {.field id} {.val ",
+                  wrong_data[[1]],
+                  "} for {.field site} {.val ",
+                  wrong_data[[2]], "}: sum {.val {",
+                  wrong_data[[3]], "}}")
 
     cli::cli_abort(c("Invalid value for {.arg estimate}:",
                      "x" = error,
-                     "i" = info),
+                     msg),
                    call = rlang::caller_env())
   }
 }
