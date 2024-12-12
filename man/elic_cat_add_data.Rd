@@ -22,7 +22,8 @@ elic_cat_add_data(
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
 or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
 
-\item{mechanism}{character string indicating what mechanism the data belongs to.}
+\item{mechanism}{character string that indicates the machanism to which the
+data belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -55,23 +56,23 @@ sources.
 For each mechanism, data are expected to have five columns, built as follows:
 \itemize{
 \item The first column of the data should hold the names of the experts. The name
-of each expert should be repeated as many times as there are impact levels
-and sites considered in the elicitation
+of each expert should be repeated as many times as many times as the number
+of impact levels and sites.
 (i.e. each expert should appear \eqn{number\ of\ levels
 \cdot number\ of\ sites} times).
 \item The second column should be the names of the levels of impact considered in
 the elicitation. Each block of levels of impact should be repeated as many
-times as there are sites considered.
+times as the number of sites investigated/considered.
 \item The third column should hold the names of the sites considered in the
-study. The name of each site should be repeated as many times as there are
-levels of impact considered.
+study. The name of each site should be repeated as many times as the number
+of levels of impact considered.
 \item The fourth column should be the experts confidence in their own estimates
 (given in percent). Experts should estimate how confident they are in their
-estimates for each block of level of impact and for each site. Therefore,
-expert confidence estimates should be repeated as many times as there are
+estimates for each block of levels of impact and for each site. Therefore,
+expert confidence estimates should be repeated as many times as the number of
 levels of impact considered.
 \item The final column should be the estimates of each expert for each site and
-confidence level.
+impact level.
 }
 }
 
@@ -99,7 +100,7 @@ x <- elic_cat_start(levels = c("levels_1", "levels_2", "levels_3",
 # Add data for the three mechanisms from a data.frame. Notice that the
 # three commands can be piped
 my_elicit <- elic_cat_add_data(x, data_source = mechanism_1,
-mechanism = "mechanism_1") |>
+                               mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 my_elicit
@@ -109,7 +110,7 @@ files <- list.files(path = system.file("extdata", package = "elicitr"),
                     pattern = "mechanism_",
                     full.names = TRUE)
 my_elicit <- elic_cat_add_data(x, data_source = files[1],
-mechanism = "mechanism_1") |>
+                               mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = files[3], mechanism = "mechanism_3")
 my_elicit
@@ -122,7 +123,7 @@ file <- list.files(path = system.file("extdata", package = "elicitr"),
 my_elicit <- elic_cat_add_data(x, data_source = file,
                                sheet = 1, mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = file, sheet = 2,
-  mechanism = "mechanism_2") |>
+                    mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = file, sheet = 3, mechanism = "mechanism_3")
 my_elicit
 # Using the sheet name
