@@ -74,6 +74,32 @@ levels of impact considered.
 \item The final column should be the estimates of each expert for each site and
 impact level.
 }
+
+The name of the columns is not important, \code{elic_cat_add_data()} will
+overwrite them according to the following convention:
+\itemize{
+\item The first column will be renamed \code{name}, the second column \code{level}, the
+third column \code{site}, the fourth column \code{confidence}, and the fifth column
+\code{estimate}.
+}
+
+Here is an example of how data correctly formatted should look like, for an
+elicitation with two experts, two levels of impact,two sites,  and one
+mechanism:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{name       level       site      confidence      estimate
+---------------------------------------------------------
+expert 1   level 1     site 1            15          0.08
+expert 1   level 2     site 1            15             0
+expert 1   level 3     site 1            15          0.84
+expert 1   level 4     site 1            15          0.02
+expert 1   level 5     site 1            15          0.06
+expert 1   level 1     site 2            35          0.02
+expert 1   level 2     site 2            35          0.11
+expert 1   level 3     site 2            35          0.19
+expert 1   level 4     site 2            35          0.02
+expert 1   level 5     site 2            35          0.66
+}\if{html}{\out{</div>}}
 }
 
 \section{Data cleaning}{
