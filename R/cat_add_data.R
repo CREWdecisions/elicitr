@@ -33,6 +33,31 @@
 #' * The final column should be the estimates of each expert for each site and
 #' impact level.
 #'
+#' The name of the columns is not important, `elic_cat_add_data()` will
+#' overwrite them according to the following convention:
+#' * The first column will be renamed `name`, the second column `level`, the
+#' third column `site`, the fourth column `confidence`, and the fifth column
+#' `estimate`.
+#'
+#' Here is an example of how data correctly formatted should look like, for an
+#' elicitation with two experts, two levels of impact,two sites,  and one
+#' mechanism:
+#'
+#' ```
+#' name       level       site      confidence      estimate
+#' ---------------------------------------------------------
+#' expert 1   level 1     site 1            15          0.08
+#' expert 1   level 2     site 1            15             0
+#' expert 1   level 3     site 1            15          0.84
+#' expert 1   level 4     site 1            15          0.02
+#' expert 1   level 5     site 1            15          0.06
+#' expert 1   level 1     site 2            35          0.02
+#' expert 1   level 2     site 2            35          0.11
+#' expert 1   level 3     site 2            35          0.19
+#' expert 1   level 4     site 2            35          0.02
+#' expert 1   level 5     site 2            35          0.66
+#' ```
+#'
 #' @section Data cleaning:
 #'
 #' When data are added to the [elic_cat] object, first names are standardised
