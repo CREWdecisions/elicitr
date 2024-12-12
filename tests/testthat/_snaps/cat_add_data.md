@@ -8,3 +8,82 @@
       x Argument `x` must be an object of class <elic_cat> and not of class <character>.
       See `elicitr::elic_cat_add_data()`.
 
+---
+
+    Code
+      elic_cat_add_data(x, data_source = "test.csv", mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      x File 'test.csv' doesn't exist!
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = file, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Unsupported file extension:
+      x The extension of the provided file is ".txt", supported are ".csv" or ".xlsx".
+      i See `elicitr::elic_cont_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = mechanism_1, mechanism = 1)
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `mechanism`:
+      x Argument `mechanism` must be <character> not <numeric>.
+      i See `elicitr::elic_cat_start()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = mechanism_1, mechanism = c("mechanism_1",
+        "mechanism_2"))
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Incorrect value for `mechanism`:
+      x Argument `mechanism` must have length 1 not 2.
+      i See `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = mechanism_1, mechanism = "mechanism_3")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `mechanisms`:
+      x "mechanism_3" not present in the <elic_cat> object.
+      i Available mechanisms are "mechanism_1" and "mechanism_2".
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = mechanism_1[, 1:4], mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Unexpected number of columns:
+      x The imported dataset has 4 columns but 5 are expected.
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Unexpected column type:
+      x The column "confidence" is not of type "numeric" or "integer" but of type "character".
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Unexpected column types:
+      x The columns "level" and "site" are not of type "character" but of type "factor".
+      i See Data format in `elicitr::elic_cat_add_data()`.
+

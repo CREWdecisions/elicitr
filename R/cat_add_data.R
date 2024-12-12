@@ -127,10 +127,102 @@ elic_cat_add_data <- function(x,
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
-  check_is_character(mechanisms, "mechanisms")
-  check_length(mechanisms, "mechanism", 1)
 
+  # Check if mechanism is a character string of length 1
+  check_is_character(mechanism, "mechanism")
+  check_length(mechanism, "mechanism", 1)
+  # Check if mechanism is available in the object
+  check_value_in_element(x,
+                         element = "mechanisms",
+                         value = mechanism)
+
+  # Read data
   data <- read_data(data_source,
                     sep = sep,
                     sheet = sheet)
+
+  # Check if data has the correct number of columns
+  check_columns(data, 5)
+  colnames(data) <- c("id", "level", "site", "confidence", "estimate")
+
+  # Check columns type
+  check_columns_type(data[1:3], "character")
+  check_columns_type(data[4:5], c("numeric", "integer"))
+
+  # Check if estimates for each expert and site sum to 1
+  check_sum_1(data)
+
+  # Anonymise names
+  data <- anonimise_names(data)
+
+  x[["data"]][[mechanism]] <- data
+
+  if (verbose) {
+    cli::cli_alert_success("Data added to Mechanism {.val {mechanism}} from \\
+                            {.val {src}}")
+  }
+
+  x
+}
+
+# Checkers----
+
+#' Check if value is in the list element.
+#'
+#' @param x [elic_cont] object.
+#' @param element character string with the name of the element to be checked.
+#' @param value character string with the value to be checked.
+#'
+#' @return An error if `value` is not among the available values of list
+#' element.
+#'
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_value_in_element <- function(x,
+                                   element,
+                                   value) {
+
+  if (element == "mechanisms") {
+    values <- names(x[["data"]])
+  } else {
+    values <- x[[element]]
+  }
+
+  if (!value %in% values) {
+
+    error <- "{.val {value}} not present in the {.cls {class(x)}} object."
+    info <- "Available {element} {cli::qty(values)} {?is/are} {.val {values}}."
+    cli::cli_abort(c("Invalid value for {.arg {element}}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
+check_sum_1 <- function(x) {
+
+  sums <- x |>
+    dplyr::group_by(id, site) |>
+    dplyr::summarise(sum = sum(estimate)) |>
+    dplyr::pull(sum)
+
+  total <- sum(sums != 1)
+
+  if (total > 0) {
+
+    idx <- which(sums != 1)
+    wrong_data <- x[idx, c(1, 3)]
+
+    error <- "Estimates of {cli::qty(total)} {?one/some} expert{?s} don't sum \\
+              to 1."
+    msg <- "Check {.arg id}: {.val {wrong_data[[1]]}} at \\
+            {.val {wrong_data[[2]]}}"
+    info <- cli::cli_ul(msg)
+
+    cli::cli_abort(c("Invalid value for {.arg estimate}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
 }

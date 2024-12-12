@@ -203,6 +203,75 @@ check_length <- function(x,
   }
 }
 
+#' Check columns
+#'
+#' Check whether the number of columns correspond to those expected.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param col_names character vector with the expected column names.
+#'
+#' @return An error if the number of columns is not as expected.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_columns <- function(x, y) {
+  # Check number of columns
+  if (ncol(x) != y) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
+              {.val {y}} are expected."
+    info <- "See Data format in {.fn elicitr::{fn}}."
+
+    cli::cli_abort(c("Unexpected number of columns:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check columns type
+#'
+#' Check if the columns are of the expected type.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param y character with the expected types (maximum 2 types).
+#'
+#' @return An error if the columns are not of the expected type.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_columns_type <- function(x, y) {
+
+  col_types <- sapply(x, class)
+  idx <- which(!col_types %in% y)
+
+  if (any(idx)) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+    cols <- colnames(x)[idx]
+
+    error <- "The {cli::qty(cols)} column{?s} {.val {cols}} {?is/are} not of \\
+              type {.val {y[[1]]}}"
+
+    if (length(y) > 1) {
+      error <- paste(error, "or {.val {y[[2]]}} but of type \\
+                             {.val {unique(col_types[idx])}}.")
+    } else {
+      error <- paste(error, "but of type {.val {unique(col_types[idx])}}.")
+    }
+
+    info <- "See Data format in {.fn elicitr::{fn}}."
+
+    cli::cli_abort(c("Unexpected column {cli::qty(cols)} type{?s}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+
+  }
+}
+
 # Helpers----
 
 #' Read data
@@ -331,4 +400,57 @@ split_short_codes <- function(x,
   }
 
   output
+}
+
+anonimise_names <- function(x) {
+
+  col_1 <- colnames(x)[[1]]
+
+  x |>
+    dplyr::rename("id" = dplyr::all_of(col_1)) |>
+    # Standardise names: remove capital letters, whitespaces, and punctuation
+    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
+    # Hash names
+    dplyr::mutate("id" = hash_names(.data[["id"]]))
+}
+
+#' Standardise names
+#'
+#' `stand_names()` converts strings to lower case, removes all whitespaces, and
+#' removes punctuation.
+#'
+#' @param x character vector with strings to be normalised.
+#'
+#' @return Character vector with normalised strings.
+#' @noRd
+#'
+#' @author Sergio Vignali
+stand_names <- function(x) {
+  tolower(x) |>
+    gsub(pattern = "(\\s|[[:punct:]])",
+         replacement = "",
+         x = _)
+}
+
+#' Hash names
+#'
+#' `hash_names()` converts names to short sha1 codes (7 characters), used to
+#' create anonymous ids.
+#'
+#' @param x character vector with names.
+#'
+#' @return a vector with encoded names
+#' @noRd
+#'
+#' @author Sergio Vignali
+hash_names <- function(x) {
+
+  to_hash <- Vectorize(digest::digest,
+                       USE.NAMES = FALSE)
+
+  to_hash(x,
+          algo = "sha1",
+          serialize = FALSE) |>
+    substr(start = 1,
+           stop = 7)
 }

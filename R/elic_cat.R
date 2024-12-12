@@ -56,8 +56,15 @@ print.elic_cat <- function(x, ...) {
   cli::cli_li("Level{?s}: {.val {x$levels}}")
   cli::cli_li("Site{?s}: {.val {x$sites}}")
   cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
-  cli::cli_li("Mechanisms{?s}: {.val {names(x$data)}}")
-  cli::cli_li("Data available for {.val {n_mec}} mechanism{?s}")
+  cli::cli_li("Mechanism{?s}: {.val {names(x$data)}}")
+
+  if (n_mec > 0) {
+    idx <- which(lengths(x[["data"]]) != 0)
+    mecs <- names(x[["data"]])[[idx]]
+    cli::cli_li("Data available for mechanism{?s} {.val {mecs}}")
+  } else {
+    cli::cli_li("Data available for {.val {0}} mechanisms")
+  }
 
   invisible(x)
 }
