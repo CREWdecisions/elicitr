@@ -14,7 +14,7 @@
 #' @param experts numeric, indicating the maximum number of experts
 #' participating in the elicitation process for one mechanism. See Experts for
 #' more.
-#' @param mechanisms character vector with the name of the mechanisms of impact
+#' @param mechanisms character vector with the names of the mechanisms of impact
 #' investigated.
 #' @inheritParams elic_cont_start
 #'
