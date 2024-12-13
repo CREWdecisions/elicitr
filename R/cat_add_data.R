@@ -197,6 +197,10 @@ elic_cat_add_data <- function(x,
   # levels
   check_column_format(data, col = "site")
 
+  # Check that each confidence value is repeated as many times as the number of
+  # experts
+  check_column_format(data, col = "confidence")
+
   # Anonymise names
   data <- anonimise_names(data)
 
@@ -312,26 +316,40 @@ check_names_levels_sites <- function(x, data, type) {
 #' @author Sergio Vignali
 check_column_format <- function(x, col) {
 
-  col_values <- unique(x[[col]])
-  diff_cols <- setdiff(c("id", "level", "site"), col)
-  col_1 <- unique(x[[diff_cols[[1]]]]) |>
-    length()
-  col_2 <- unique(x[[diff_cols[[2]]]]) |>
-    length()
+  if (col == "confidence") {
+    n_levels <- length(unique(x[["level"]]))
+    diff <- rle(x[[col]])[["lengths"]] %% n_levels
 
-  if (col == "level") {
-    expected_values <- rep(col_values, col_1 * col_2)
+    if (sum(diff) == 0) {
+      expected_values <- x[[col]]
+    } else {
+      # Create dummy wrong values
+      expected_values <- seq_len(nrow(x))
+    }
   } else {
-    expected_values <- rep(col_values, each = col_1 * col_2)
-  }
+    col_values <- unique(x[[col]])
+    diff_cols <- setdiff(c("id", "level", "site"), col)
+    col_1 <- unique(x[[diff_cols[[1]]]]) |>
+      length()
+    col_2 <- unique(x[[diff_cols[[2]]]]) |>
+      length()
 
+    if (col == "id") {
+      expected_values <- rep(col_values, each = col_1 * col_2)
+    } else if (col == "level") {
+      expected_values <- rep(col_values, col_1 * col_2)
+    } else {
+      expected_values <- rep(col_values, col_1, each = col_2)
+    }
+  }
 
   if (!identical(x[[col]], expected_values)) {
 
     what <- switch(col,
                    "id" = "expert names",
                    "level" = "levels",
-                   "site" = "sites")
+                   "site" = "sites",
+                   "confidence" = "confidence values",)
 
     error <- "The column containing the {what} is not formatted as \\
               expected."

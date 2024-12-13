@@ -167,3 +167,63 @@
       x The column containing the sites is not formatted as expected.
       i See Data format in `elicitr::elic_cat_add_data()`.
 
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the confidence values is not formatted as expected.
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `estimate`:
+      x Estimates of one expert and one site don't sum to 1.
+      * Check id "5ac97e0" for site "site_1": sum 1.91
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Invalid value for `estimate`:
+      x Estimates of one/some experts for one/some sites don't sum to 1.
+      * Check id "5ac97e0" for site "site_1": sum 1.91
+      * Check id "5ac97e0" for site "site_4": sum 1.94
+      * Check id "3d32ab9" for site "site_4": sum 1.96
+
+# Info
+
+    Code
+      out <- elic_cat_add_data(x, data_source = mechanism_1, mechanism = "mechanism_1")
+    Message
+      v Data added to Mechanism "mechanism_1" from "data.frame"
+
+---
+
+    Code
+      out <- elic_cat_add_data(x, data_source = files[[1]], mechanism = "mechanism_1")
+    Message
+      v Data added to Mechanism "mechanism_1" from "csv file"
+
+---
+
+    Code
+      out <- elic_cat_add_data(x, data_source = file, mechanism = "mechanism_1")
+    Message
+      v Data added to Mechanism "mechanism_1" from "xlsx file"
+
+---
+
+    Code
+      out <- elic_cat_add_data(x, data_source = gs, mechanism = "mechanism_1")
+    Message
+      v Data added to Mechanism "mechanism_1" from "Google Sheets"
+

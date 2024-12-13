@@ -253,6 +253,13 @@
     Message
       v Data added to "Round 1" from "xlsx file"
 
+---
+
+    Code
+      out <- elic_cont_add_data(x, data_source = gs, round = 1)
+    Message
+      v Data added to "Round 1" from "Google Sheets"
+
 # Output
 
     Code
@@ -266,11 +273,4 @@
       * Elicitation types: "1p", "3p", and "4p"
       * Number of experts: 6
       * Number of rounds: 2
-
----
-
-    Code
-      out <- elic_cont_add_data(x, data_source = gs, round = 1)
-    Message
-      v Data added to "Round 1" from "Google Sheets"
 

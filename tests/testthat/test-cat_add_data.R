@@ -134,19 +134,89 @@ test_that("Errors", {
                                     mechanism = "mechanism_1"),
                   error = TRUE)
 
-  # # When estimates don't sum to 1 for one expert and site
-  # y <- mechanism_1
-  # y[1, 5] <- 0.99
-  # expect_snapshot(elic_cat_add_data(x,
-  #                                   data_source = y,
-  #                                   mechanism = "mechanism_1"),
-  #                 error = TRUE)
-  #
-  # # When estimates don't sum to 1 for more experts and sites
-  # y[19, 5] <- 0.99
-  # y[120, 5] <- 0.99
-  # expect_snapshot(elic_cat_add_data(x,
-  #                                   data_source = y,
-  #                                   mechanism = "mechanism_1"),
-  #                 error = TRUE)
+  # When the column with the confidence values is malformed
+  y <- mechanism_1
+  y[1:5, 4] <- 1:5
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When estimates don't sum to 1 for one expert and site
+  y <- mechanism_1
+  y[1, 5] <- 0.99
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When estimates don't sum to 1 for more experts and sites
+  y[19, 5] <- 0.99
+  y[120, 5] <- 0.99
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+})
+
+test_that("Info", {
+  x <- elic_cat_start(levels = paste0("level_", 1:5),
+                      sites = paste0("site_", 1:4),
+                      experts = 6,
+                      mechanisms = c("mechanism_1", "mechanism_2"),
+                      verbose = FALSE)
+
+  # Success adding data.frame
+  expect_snapshot(out <- elic_cat_add_data(x,
+                                           data_source = mechanism_1,
+                                           mechanism = "mechanism_1"))
+  expect_identical(out[["data"]][["mechanism_1"]][, -1], mechanism_1[, -1])
+  hashed_id <- dplyr::pull(mechanism_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["mechanism_1"]], "id"), hashed_id)
+
+  # Success adding csv file
+  files <- list.files(path = system.file("extdata", package = "elicitr"),
+                      pattern = "mechanism_",
+                      full.names = TRUE)
+  expect_snapshot(out <- elic_cat_add_data(x,
+                                           data_source = files[[1]],
+                                           mechanism = "mechanism_1"))
+  hashed_id <- dplyr::pull(mechanism_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["mechanism_1"]], "id"), hashed_id)
+
+  # Success adding xlsx file
+  file <- list.files(path = system.file("extdata", package = "elicitr"),
+                     pattern = "mechanisms",
+                     full.names = TRUE)
+  expect_snapshot(out <- elic_cat_add_data(x,
+                                           data_source = file,
+                                           mechanism = "mechanism_1"))
+  hashed_id <- dplyr::pull(mechanism_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["mechanism_1"]], "id"), hashed_id)
+
+  # Data imported from Google Sheets
+  googlesheets4::gs4_deauth()
+  # Google Sheet used for testing
+  gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
+  x <- elic_cat_start(levels = paste0("level_", 1:5),
+                      sites = paste0("site_", 1:4),
+                      experts = 6,
+                      mechanisms = c("mechanism_1", "mechanism_2"),
+                      verbose = FALSE)
+  expect_snapshot(out <- elic_cat_add_data(x,
+                                           data_source = gs,
+                                           mechanism = "mechanism_1"))
+  # # Double entry has been removed
+  # expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
+  # # Commas have been replaced with periods and both columns are numeric
+  # expect_vector(out[["data"]][["round_1"]][["var1_best"]],
+  #               ptype = double(), size = 6)
+  # expect_vector(out[["data"]][["round_1"]][["var2_best"]],
+  #               ptype = double(), size = 6)
 })

@@ -291,6 +291,15 @@ clean_gs_data <- function(x) {
       dplyr::select(-1)
   }
 
+  cols <- 1
+
+  # This is to avoid errors if the function is called directly within a test
+  if (as.list(sys.call())[[2]][[1]] != "dplyr::mutate") {
+    if (as.list(sys.call(-2))[[1]] == "elic_cat_add_data") {
+      cols <- 1:3
+    }
+  }
+
   x |>
     # Columns with mixed integer and real numbers are imported as list
     dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
@@ -299,7 +308,7 @@ clean_gs_data <- function(x) {
     # If there is a mix of integer and doubles, or if there are different
     # decimal separators, or if someone omit the leading zero on a decimal
     # number, these columns are imported as character
-    dplyr::mutate(dplyr::across(!1, as.numeric))
+    dplyr::mutate(dplyr::across(!dplyr::all_of(cols), as.numeric))
 }
 
 

@@ -205,6 +205,11 @@ test_that("Info", {
   # Success adding data.frame
   expect_snapshot(out <- elic_cont_add_data(x, data_source = round_1,
                                             round = 1))
+  expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
+  hashed_id <- dplyr::pull(round_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
   # Success adding csv file
   files <- list.files(path = system.file("extdata", package = "elicitr"),
                       pattern = "round_",
@@ -225,6 +230,26 @@ test_that("Info", {
                ignore_attr = TRUE)
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
                    hash_names(stand_names(dplyr::pull(round_1, "name"))))
+
+  # Data imported from Google Sheets
+  googlesheets4::gs4_deauth()
+  # Google Sheet used for testing
+  gs <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
+  x <- elic_cont_start(var_names = c("var1", "var2"),
+                       var_types = "pp",
+                       elic_types = "11",
+                       experts = 6,
+                       verbose = FALSE)
+  expect_snapshot(out <- elic_cont_add_data(x,
+                                            data_source = gs,
+                                            round = 1))
+  # Double entry has been removed
+  expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
+  # Commas have been replaced with periods and both columns are numeric
+  expect_vector(out[["data"]][["round_1"]][["var1_best"]],
+                ptype = double(), size = 6)
+  expect_vector(out[["data"]][["round_1"]][["var2_best"]],
+                ptype = double(), size = 6)
 })
 
 test_that("Output", {
@@ -252,26 +277,6 @@ test_that("Output", {
                    z[["data"]][["round_2"]][["id"]])
   # Print object
   expect_snapshot(z)
-
-  # Data imported from Google Sheets
-  googlesheets4::gs4_deauth()
-  # Google Sheet used for testing
-  gs <- "1broW_vnD1qDbeXqWxcuijOs7386m2zXNM7yw9mh5RJg"
-  x <- elic_cont_start(var_names = c("var1", "var2"),
-                       var_types = "pp",
-                       elic_types = "11",
-                       experts = 6,
-                       verbose = FALSE)
-  expect_snapshot(out <- elic_cont_add_data(x,
-                                            data_source = gs,
-                                            round = 1))
-  # Double entry has been removed
-  expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
-  # Commas have been replaced with periods and both columns are numeric
-  expect_vector(out[["data"]][["round_1"]][["var1_best"]],
-                ptype = double(), size = 6)
-  expect_vector(out[["data"]][["round_1"]][["var2_best"]],
-                ptype = double(), size = 6)
 })
 
 # Test get_col_names()----
