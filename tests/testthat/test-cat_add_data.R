@@ -110,15 +110,29 @@ test_that("Errors", {
                                     mechanism = "mechanism_1"),
                   error = TRUE)
 
-  # # When the column with the names is malformed
-  # y <- mechanism_1[-1, ]
-  # y[1:4, 5] <- 0.25
-  # expect_snapshot(elic_cat_add_data(x,
-  #                                   data_source = y,
-  #                                   mechanism = "mechanism_1"),
-  #                 error = TRUE)
-  #
+  # When the column with the names is malformed
+  y <- mechanism_1[-1, ]
+  y[1:4, 5] <- 0.25
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
 
+  # When the column with the levels is malformed
+  y <- mechanism_1
+  y[1:5, 2] <- "level_1"
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
+
+  # When the column with the sites is malformed
+  y <- mechanism_1
+  y[1:5, 3] <- c(paste0("site_", 1:4), "site_1")
+  expect_snapshot(elic_cat_add_data(x,
+                                    data_source = y,
+                                    mechanism = "mechanism_1"),
+                  error = TRUE)
 
   # # When estimates don't sum to 1 for one expert and site
   # y <- mechanism_1

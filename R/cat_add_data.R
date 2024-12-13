@@ -184,13 +184,18 @@ elic_cat_add_data <- function(x,
   # Check that sites are those recorded in the object
   check_names_levels_sites(x, data, type = "sites")
 
+  # Then check that the data is formatted as expected
   # Check that each name is repeated as many times as the number of levels and
   # sites
-  # check_column_name(x, data)
+  check_column_format(data, col = "id")
 
   # Check that each level block is repeated as many times as the number of
-  #experts and sites
-  # check_column_level(x, data)
+  # experts and sites
+  check_column_format(data, col = "level")
+
+  # Check that each site is repeated as many times as the number of experts and
+  # levels
+  check_column_format(data, col = "site")
 
   # Anonymise names
   data <- anonimise_names(data)
@@ -295,65 +300,40 @@ check_names_levels_sites <- function(x, data, type) {
   }
 }
 
-#' Check column name
+#' Check column format
 #'
-#' First it checks if the unique names are <= the expected experts. Then it
-#' checks if the column containing the name is formatted as expected. The name
-#' should be repeated as many times as the number of levels and sites.
+#' Checks if the given column is formatted as expected.
 #'
-#' @param x [elic_cat] object.
-#' @param data data.frame with the data to be checked.
+#' @param x data.frame with the data to be checked.
 #'
-#' @return An error if the unique names are > than the expected experts or if
-#' the column containing the name is not formatted as expected.
+#' @return An error if the given column containing is malformed.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_column_name <- function(x, data) {
+check_column_format <- function(x, col) {
 
-  n_levels <- length(x[["levels"]])
-  n_sites <- length(x[["sites"]])
+  col_values <- unique(x[[col]])
+  diff_cols <- setdiff(c("id", "level", "site"), col)
+  col_1 <- unique(x[[diff_cols[[1]]]]) |>
+    length()
+  col_2 <- unique(x[[diff_cols[[2]]]]) |>
+    length()
 
-  expected_names <- rep(names, each = n_levels * n_sites)
-
-  if (!identical(data[["id"]], expected_names)) {
-
-    error <- "The column containing the expert name is not formatted as \\
-              expected."
-    info <- "See Data format in {.fn elicitr::elic_cat_add_data}."
-
-    cli::cli_abort(c("Malformatted dataset:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
+  if (col == "level") {
+    expected_values <- rep(col_values, col_1 * col_2)
+  } else {
+    expected_values <- rep(col_values, each = col_1 * col_2)
   }
-}
 
-#' Check column level
-#'
-#' First it checks if the unique names levels are those reordered in the
-#' object. Then checks if the column containing the levels is formatted as
-#' expected. Each level block should be repeated as many times as the number of
-#' experts and sites.
-#'
-#' @param x [elic_cat] object.
-#' @param data data.frame with the data to be checked.
-#'
-#' @return An error if the levels are not those recorded in the object or if the
-#' column containing the levels is not formatted as expected.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_column_level <- function(x, data) {
 
-  n_experts <- length(data[["level"]])
-  n_sites <- length(data[["site"]])
+  if (!identical(x[[col]], expected_values)) {
 
-  expected_names <- rep(names, n_levels * n_sites)
+    what <- switch(col,
+                   "id" = "expert names",
+                   "level" = "levels",
+                   "site" = "sites")
 
-  if (!identical(data[["id"]], expected_names)) {
-
-    error <- "The column containing the expert name is not formatted as \\
+    error <- "The column containing the {what} is not formatted as \\
               expected."
     info <- "See Data format in {.fn elicitr::elic_cat_add_data}."
 

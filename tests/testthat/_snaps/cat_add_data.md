@@ -137,3 +137,33 @@
       x The values "site_5" and "site_6" are not valid.
       i Check the metadata in the <elic_cat> object.
 
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the expert names is not formatted as expected.
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the levels is not formatted as expected.
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
+---
+
+    Code
+      elic_cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+    Condition
+      Error in `elic_cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the sites is not formatted as expected.
+      i See Data format in `elicitr::elic_cat_add_data()`.
+
