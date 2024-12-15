@@ -60,7 +60,7 @@ print.elic_cat <- function(x, ...) {
 
   if (n_mec > 0) {
     idx <- which(lengths(x[["data"]]) != 0)
-    mecs <- names(x[["data"]])[[idx]]
+    mecs <- names(x[["data"]])[idx]
     cli::cli_li("Data available for mechanism{?s} {.val {mecs}}")
   } else {
     cli::cli_li("Data available for {.val {0}} mechanisms")
