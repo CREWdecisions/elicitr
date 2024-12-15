@@ -1,5 +1,5 @@
 test_that("Errors", {
-  obj <- create_elicit_obj()
+  obj <- create_elic_cont_obj()
 
   # When x is not an elicit object
   expect_snapshot(elic_cont_get_data("abc", round = 1),
@@ -42,7 +42,7 @@ test_that("Errors", {
 })
 
 test_that("Output", {
-  obj <- create_elicit_obj()
+  obj <- create_elic_cont_obj()
   # Get all variables
   expect_identical(elic_cont_get_data(obj, round = 1),
                    obj[["data"]][["round_1"]])
@@ -84,7 +84,7 @@ test_that("Output", {
 })
 
 test_that("Warnings", {
-  obj <- create_elicit_obj()
+  obj <- create_elic_cont_obj()
 
   # Always the first optional arguments is used
   expect_snapshot(out <- elic_cont_get_data(obj, round = 1, var = "var1",

@@ -3,14 +3,13 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_add_data()` adds data to an `elic_cont` object from different
+#' `elic_cont_add_data()` adds data to an [elic_cont] object from different
 #' sources.
 #'
-#' @param x an object of class `elic_cont`.
+#' @param x an object of class [elic_cont].
 #' @param data_source either a [`data.frame`][base::data.frame] or
 #' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
-#' or anything accepted by the [read_sheet()][googlesheets4::read_sheet]
-#' function.
+#' or anything accepted by the [read_sheet][googlesheets4::read_sheet] function.
 #' @param round integer indicating if the data belongs to the first or second
 #' elicitation round.
 #' @param ... Unused arguments, included only for future extensions of the
@@ -22,15 +21,15 @@
 #' only when `data_source` is a path to a _xlsx_ file or when data are imported
 #' from _Google Sheets_.
 #' @param overwrite logical, whether to overwrite existing data already added to
-#' the `elic_cont` object.
+#' the [elic_cont] object.
 #' @param verbose logical, if `TRUE` prints informative messages.
 #'
-#' @section Data Format:
+#' @section Data format:
 #'
 #' Data are expected to have the name of the expert always as first column. The
 #' only exception is for data coming from _Google Sheet_ which can have an
 #' additional column with a timestamp. This column is automatically removed
-#' before the data are added to the `elic_cont` object (see "Data cleaning").
+#' before the data are added to the [elic_cont] object (see "Data cleaning").
 #' After the name there should be one or more blocks which follow the
 #' specifications below:
 #'
@@ -61,7 +60,7 @@
 #'
 #' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
 #' to build the column names is taken from the metadata available in the
-#' `elic_cont` object.
+#' [elic_cont] object.
 #'
 #' `var_conf`, given in percents, can be any number between 60 and 100. Any
 #' value under 50 would imply that the accuracy of the estimates is only due to
@@ -69,11 +68,11 @@
 #'
 #' @section Data cleaning:
 #'
-#' When data are added to the `elic_cont` object, first names are standardised
+#' When data are added to the [elic_cont] object, first names are standardised
 #' by converting capital letters to lower case, and by removing any whitespaces
 #' and punctuation. Then, data are anonymised by converting names to short sha1
 #' hashes. In this way, sensible information collected during the elicitation
-#' process never reaches the `elic_cont` object. For three and four points
+#' process never reaches the [elic_cont] object. For three and four points
 #' elicitation processes, the order of the values is checked for each expert. If
 #' it is not _min-max-best_, the values are swaped accordingly and a informative
 #' warn is raised.
@@ -89,7 +88,7 @@
 #' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
 #' first one (which contains the names) are forced to numeric.
 #'
-#' @return The provided object of class `elic_cont` updated with the data.
+#' @return The provided object of class [elic_cont] updated with the data.
 #' @export
 #'
 #' @family cont data helpers
@@ -97,7 +96,7 @@
 #' @author Sergio Vignali
 #'
 #' @examples
-#' # Create the elict object for an elicitation process that estimates 3
+#' # Create the elic_cont object for an elicitation process that estimates 3
 #' # variables, the first for a one point estimation of a positive integer, the
 #' # second for three points estimation of a negative real, and the last for a
 #' # four point estimation of a probability
@@ -152,54 +151,23 @@ elic_cont_add_data <- function(x,
                                overwrite = FALSE,
                                verbose = TRUE) {
 
-  check_elic_cont(x)
+  check_elic_obj(x, type = "cont")
   check_round(round)
 
-  if (inherits(data_source, "data.frame")) {
-
-    source <- "data.frame"
-
-    # Make sure is a tibble
-    data <- data_source |>
-      tibble::as_tibble()
-
-  } else if (inherits(data_source, "character")) {
-    # When `data_source` contains the file extension at the end of the string,
-    # it is assumed to be a file
-    ext <- tools::file_ext(data_source)
-
-    if (nzchar(ext)) {
-
-      data <- read_file(data_source,
-                        ext = ext,
-                        sheet = sheet,
-                        sep = sep)
-
-    } else {
-      # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
-      # error is handled by the read_sheet() function (this doesn't need to be
-      # tested).
-      source <- "Google Sheets"
-      data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
-        suppressMessages() |>
-        clean_gs_data()
-    }
-  }
-
-  col_1 <- colnames(data)[[1]]
-  # Anonymise names
-  data <- data |>
-    dplyr::rename("id" = dplyr::all_of(col_1)) |>
-    # Standardise names: remove capital letters, whitespaces, and punctuation
-    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
-    # Hash names
-    dplyr::mutate("id" = hash_names(.data[["id"]]))
+  # Read data
+  data <- read_data(data_source,
+                    sep = sep,
+                    sheet = sheet)
 
   # Prepare column names and set them
   col_names <- get_col_names(x[["var_names"]],
                              x[["elic_types"]])
-  check_columns(data, col_names)
+  # Check if data has the correct number of columns
+  check_columns(data, length(col_names))
   colnames(data) <- col_names
+
+  # Anonymise names
+  data <- anonimise_names(data)
 
   # If necessary, fix element order for each variable
   data <- fix_var_order(data,
@@ -234,62 +202,12 @@ elic_cont_add_data <- function(x,
 
   if (verbose) {
     cli::cli_alert_success("Data added to {.val {paste(\"Round\", round)}} \\
-                            from {.val {source}}")
+                            from {.val {src}}")
   }
 
   x
 }
 # Helpers----
-
-#' Read file
-#'
-#' `read_file()` reads data from a file and returns a tibble.
-#'
-#' @param data_source character string with the path to the file.
-#' @param ext character string with the file extension.
-#' @param sheet integer or character to select the sheet.
-#' @param sep character used as field separator.
-#'
-#' @return A tibble with the data or an error if the file doesn't exist or the
-#' extension is not supported.
-#' @noRd
-#'
-#' @author Sergio Vignali
-read_file <- function(data_source,
-                      ext,
-                      sheet,
-                      sep) {
-
-  # Check if file exists
-  if (!file.exists(data_source)) {
-    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
-                   call = rlang::caller_env())
-  }
-
-  # Load data
-  if (ext == "csv") {
-
-    assign("source", "csv file", envir = rlang::caller_env())
-    data <- utils::read.csv(data_source, sep = sep) |>
-      tibble::as_tibble()
-
-  } else if (ext == "xlsx") {
-
-    assign("source", "xlsx file", envir = rlang::caller_env())
-    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
-
-  } else {
-    error <- "The extension of the provided file is {.val .{ext}}, supported \\
-              are {.val .csv} or {.val .xlsx}."
-
-    cli::cli_abort(c("Unsupported file extension:",
-                     "x" = error,
-                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
-                   call = rlang::caller_env())
-  }
-
-  data
-}
 
 #' Get column names
 #'
@@ -341,90 +259,6 @@ get_labels <- function(n,
 
   return(raw_labels)
 }
-
-#' Standardise names
-#'
-#' `stand_names()` converts strings to lower case, removes all whitespaces, and
-#' removes punctuation.
-#'
-#' @param x character vector with strings to be normalised.
-#'
-#' @return Character vector with normalised strings.
-#' @noRd
-#'
-#' @author Sergio Vignali
-stand_names <- function(x) {
-  tolower(x) |>
-    gsub(pattern = "(\\s|[[:punct:]])",
-         replacement = "",
-         x = _)
-}
-
-#' Hash names
-#'
-#' `hash_names()` converts names to short sha1 codes (7 characters), used to
-#' create anonymous ids.
-#'
-#' @param x character vector with names.
-#'
-#' @return a vector with encoded names
-#' @noRd
-#'
-#' @author Sergio Vignali
-hash_names <- function(x) {
-
-  to_hash <- Vectorize(digest::digest,
-                       USE.NAMES = FALSE)
-
-  to_hash(x,
-          algo = "sha1",
-          serialize = FALSE) |>
-    substr(start = 1,
-           stop = 7)
-}
-
-#' Clean Google Sheets data
-#'
-#' `clean_gs_data()` performs some data cleaning for data coming from
-#' _Google Sheets_.
-#'
-#' @param x data imported form _Google Sheets_
-#'
-#' @details
-#' 1. Remove column with timestamp, if present
-#' 2. Converts columns with lists to character
-#' 3. Standardise decimal separators by replacing commas to periods
-#' 4. Forces all column but the first to be numeric
-#'
-#' @return The cleaned data
-#' @noRd
-#'
-#' @author Sergio Vignali
-clean_gs_data <- function(x) {
-
-  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x) # nolint
-  n_cols <- ncol(x)
-
-  if (inherits(x[[1]], "POSIXct")) {
-    col_2 <- colnames(x)[[2]]
-    x <- x |>
-      # Keep only last submission from each expert
-      dplyr::slice_tail(n = 1, by = dplyr::all_of(col_2)) |>
-      # Remove column with timestamp (it should be the first column)
-      dplyr::select(-1)
-  }
-
-  x |>
-    # Columns with mixed integer and real numbers are imported as list
-    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
-    # Some experts use a comma as decimal separator
-    dplyr::mutate(dplyr::across(dplyr::everything(), clean)) |>
-    # If there is a mix of integer and doubles, or if there are different
-    # decimal separators, or if someone omit the leading zero on a decimal
-    # number, these columns are imported as character
-    dplyr::mutate(dplyr::across(!1, as.numeric))
-}
-
 
 #' Fix variable order
 #'
@@ -534,7 +368,7 @@ add_nas_rows <- function(data, experts) {
 #'
 #' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
 #'
-#' @param x `elic_cont` object containing data from Round 1.
+#' @param x [elic_cont] object containing data from Round 1.
 #' @param data tibble containing data from Round 2.
 #'
 #' @return A list with two elemnts, one containing the omogenised data for Round
@@ -699,30 +533,6 @@ omogenise_datasets <- function(x, data) {
 }
 
 # Checkers----
-
-#' Check columns
-#'
-#' Check whether the number of columns correspond to those expected.
-#'
-#' @param x data.frame or tibble with the imported data.
-#' @param col_names character vector with the expected column names.
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_columns <- function(x,
-                          col_names) {
-  # Check number of columns
-  if (ncol(x) != length(col_names)) {
-    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
-              {.val {length(col_names)}} are expected."
-    info <- "See Data Format in {.fn elicitr::elic_cont_add_data}."
-    cli::cli_abort(c("Unexpected number of columns:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
-  }
-}
 
 #' Check round data
 #'

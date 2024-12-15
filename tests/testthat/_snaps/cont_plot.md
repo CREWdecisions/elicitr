@@ -4,8 +4,8 @@
       elic_cont_plot("abc", round = 1, var = "var1")
     Condition
       Error in `elic_cont_plot()`:
-      ! Argument `x` must be an object of class <elic_cont>:
-      x An object of class <character> is invalid.
+      ! Invalid value for `x`:
+      x Argument `x` must be an object of class <elic_cont> and not of class <character>.
       See `elicitr::elic_cont_plot()`.
 
 ---

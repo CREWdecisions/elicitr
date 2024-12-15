@@ -26,7 +26,7 @@ elic_cont_plot(
 )
 }
 \arguments{
-\item{x}{an object of class \code{elic_cont}.}
+\item{x}{an object of class \link{elic_cont}.}
 
 \item{round}{integer indicating if the data belongs to the first or second
 elicitation round.}

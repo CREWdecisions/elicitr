@@ -2,23 +2,29 @@
 
 #' Check elicit
 #'
-#' Check if `x` is an `elic_cont` object.
+#' Check if `x` is an [elic_cont] or an [elic_cat] object.
 #'
 #' @param x the object to be checked.
+#' @param type character, either _cont_ or _cat_.
 #'
-#' @return An error if `x` is not and `elic_cont` object.
+#' @return An error if `x` is not and [elic_cont]or an [elic_cat] object.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_elic_cont <- function(x) {
+check_elic_obj <- function(x,
+                           type) {
 
-  if (!inherits(x, "elic_cont")) {
+  cl <- paste0("elic_", type)
+
+  if (!inherits(x, cl)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
-    cli::cli_abort(c("Argument {.arg x} must be an object of class \\
-                      {.cls elic_cont}:",
-                     "x" = "An object of class {.cls {class(x)}} is invalid.",
+    error <- "Argument {.arg x} must be an object of class {.cls {cl}} and \\
+              not of class {.cls {class(x)}}."
+
+    cli::cli_abort(c("Invalid value for {.arg x}:",
+                     "x" = error,
                      "y" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
@@ -71,7 +77,7 @@ check_arg_length <- function(x,
     fn <- as.list(sys.call(-1))[[1]]
 
     sect <- switch(type,
-                   var = "Variable Types",
+                   var = "Variable types",
                    elic = "Elicitation types")
     short_codes <- paste(x, collapse = "")
     wrong_values <- paste0("c(", paste0('"', x, '"', collapse = ", "), ")")
@@ -118,7 +124,7 @@ check_arg_types <- function(x,
                  fixed = TRUE)
 
     sect <- switch(type,
-                   var = "Variable Types",
+                   var = "Variable types",
                    elic = "Elicitation types")
 
     fn <- as.list(sys.call(-1))[[1]]
@@ -169,7 +175,257 @@ check_experts_arg <- function(x) {
   }
 }
 
+#' Check length
+#'
+#' @param x The object to be checked.
+#' @param arg The name of the function argument.
+#' @param length The expected length of the object.
+#'
+#' @return An error if the length of `x` is not equal to `length`.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_length <- function(x,
+                         arg,
+                         length) {
+
+  if (length(x) != length) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg {arg}} must have length {.val {length}} not \\
+              {.val {length(x)}}."
+
+    cli::cli_abort(c("Incorrect value for {.arg {arg}}:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check columns
+#'
+#' Check whether the number of columns correspond to those expected.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param col_names character vector with the expected column names.
+#'
+#' @return An error if the number of columns is not as expected.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_columns <- function(x, y) {
+  # Check number of columns
+  if (ncol(x) != y) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
+              {.val {y}} are expected."
+    info <- "See Data format in {.fn elicitr::{fn}}."
+
+    cli::cli_abort(c("Unexpected number of columns:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check columns type
+#'
+#' Check if the columns are of the expected type.
+#'
+#' @param x data.frame or tibble with the imported data.
+#' @param y character with the expected types (maximum 2 types).
+#'
+#' @return An error if the columns are not of the expected type.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_columns_type <- function(x, y) {
+
+  col_types <- sapply(x, class)
+  idx <- which(!col_types %in% y)
+
+  if (any(idx)) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+    cols <- colnames(x)[idx]
+
+    error <- "The {cli::qty(cols)} column{?s} {.val {cols}} {?is/are} not of \\
+              type {.val {y[[1]]}}"
+
+    if (length(y) > 1) {
+      error <- paste(error, "or {.val {y[[2]]}} but of type \\
+                             {.val {unique(col_types[idx])}}.")
+    } else {
+      error <- paste(error, "but of type {.val {unique(col_types[idx])}}.")
+    }
+
+    info <- "See Data format in {.fn elicitr::{fn}}."
+
+    cli::cli_abort(c("Unexpected column {cli::qty(cols)} type{?s}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+
+  }
+}
+
 # Helpers----
+
+#' Read data
+#'
+#' `read_data()` reads data from a data frame, a file or a Google Sheets file
+#' and returns a tibble.
+#'
+#' @param data_source data frame, character string with the path to the file or
+#' Google Sheets file.
+#' @param sep character used as field separator.
+#' @param sheet integer or character to select the sheet.
+#'
+#' @return A tibble with the data.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_data <- function(data_source,
+                      sep,
+                      sheet) {
+
+  if (inherits(data_source, "data.frame")) {
+
+    assign("src", "data.frame", envir = rlang::caller_env())
+
+    # Make sure is a tibble
+    data <- data_source |>
+      tibble::as_tibble()
+
+  } else if (inherits(data_source, "character")) {
+    # When `data_source` contains the file extension at the end of the string,
+    # it is assumed to be a file
+    ext <- tools::file_ext(data_source)
+
+    if (nzchar(ext)) {
+
+      data <- read_file(data_source,
+                        ext = ext,
+                        sheet = sheet,
+                        sep = sep)
+
+    } else {
+      # Assume that `data_source` is a valid Google Sheets file. Otherwise, the
+      # error is handled by the read_sheet() function (this doesn't need to be
+      # tested).
+      assign("src", "Google Sheets", envir = rlang::caller_env())
+      data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
+        suppressMessages() |>
+        clean_gs_data()
+    }
+  }
+
+  data
+}
+
+#' Read file
+#'
+#' `read_file()` reads data from a file and returns a tibble.
+#'
+#' @param data_source character string with the path to the file.
+#' @param ext character string with the file extension.
+#' @param sheet integer or character to select the sheet.
+#' @param sep character used as field separator.
+#'
+#' @return A tibble with the data or an error if the file doesn't exist or the
+#' extension is not supported.
+#' @noRd
+#'
+#' @author Sergio Vignali
+read_file <- function(data_source,
+                      ext,
+                      sheet,
+                      sep) {
+
+  # Check if file exists
+  if (!file.exists(data_source)) {
+    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
+                   call = rlang::caller_env(n = 2))
+  }
+
+  # Load data
+  if (ext == "csv") {
+
+    assign("src", "csv file", envir = rlang::caller_env(n = 2))
+    data <- utils::read.csv(data_source, sep = sep) |>
+      tibble::as_tibble()
+
+  } else if (ext == "xlsx") {
+
+    assign("src", "xlsx file", envir = rlang::caller_env(n = 2))
+    data <- openxlsx::read.xlsx(data_source, sheet = sheet) |>
+      tibble::as_tibble()
+
+  } else {
+    error <- "The extension of the provided file is {.val .{ext}}, supported \\
+              are {.val .csv} or {.val .xlsx}."
+
+    cli::cli_abort(c("Unsupported file extension:",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
+                   call = rlang::caller_env(n = 2))
+  }
+
+  data
+}
+
+#' Clean Google Sheets data
+#'
+#' `clean_gs_data()` performs some data cleaning for data coming from
+#' _Google Sheets_.
+#'
+#' @param x data imported form _Google Sheets_
+#'
+#' @details
+#' 1. Remove column with timestamp, if present
+#' 2. Converts columns with lists to character
+#' 3. Standardise decimal separators by replacing commas to periods
+#' 4. Forces all column but the first to be numeric
+#'
+#' @return The cleaned data
+#' @noRd
+#'
+#' @author Sergio Vignali
+clean_gs_data <- function(x) {
+
+  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x) # nolint
+  n_cols <- ncol(x)
+
+  if (inherits(x[[1]], "POSIXct")) {
+    col_2 <- colnames(x)[[2]]
+    x <- x |>
+      # Keep only last submission from each expert
+      dplyr::slice_tail(n = 1, by = dplyr::all_of(col_2)) |>
+      # Remove column with timestamp (it should be the first column)
+      dplyr::select(-1)
+  }
+
+  cols <- 1
+
+  # This is to avoid errors if the function is called directly within a test
+  if (as.list(sys.call())[[2]][[1]] != "dplyr::mutate" &&
+        as.list(sys.call(-2))[[1]] == "elic_cat_add_data") {
+    cols <- 1:3
+  }
+
+  x |>
+    # Columns with mixed integer and real numbers are imported as list
+    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
+    # Some experts use a comma as decimal separator
+    dplyr::mutate(dplyr::across(dplyr::everything(), clean)) |>
+    # If there is a mix of integer and doubles, or if there are different
+    # decimal separators, or if someone omit the leading zero on a decimal
+    # number, these columns are imported as character
+    dplyr::mutate(dplyr::across(!dplyr::all_of(cols), as.numeric))
+}
 
 #' Split short codes
 #'
@@ -195,4 +451,57 @@ split_short_codes <- function(x,
   }
 
   output
+}
+
+anonimise_names <- function(x) {
+
+  col_1 <- colnames(x)[[1]]
+
+  x |>
+    dplyr::rename("id" = dplyr::all_of(col_1)) |>
+    # Standardise names: remove capital letters, whitespaces, and punctuation
+    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
+    # Hash names
+    dplyr::mutate("id" = hash_names(.data[["id"]]))
+}
+
+#' Standardise names
+#'
+#' `stand_names()` converts strings to lower case, removes all whitespaces, and
+#' removes punctuation.
+#'
+#' @param x character vector with strings to be normalised.
+#'
+#' @return Character vector with normalised strings.
+#' @noRd
+#'
+#' @author Sergio Vignali
+stand_names <- function(x) {
+  tolower(x) |>
+    gsub(pattern = "(\\s|[[:punct:]])",
+         replacement = "",
+         x = _)
+}
+
+#' Hash names
+#'
+#' `hash_names()` converts names to short sha1 codes (7 characters), used to
+#' create anonymous ids.
+#'
+#' @param x character vector with names.
+#'
+#' @return a vector with encoded names
+#' @noRd
+#'
+#' @author Sergio Vignali
+hash_names <- function(x) {
+
+  to_hash <- Vectorize(digest::digest,
+                       USE.NAMES = FALSE)
+
+  to_hash(x,
+          algo = "sha1",
+          serialize = FALSE) |>
+    substr(start = 1,
+           stop = 7)
 }

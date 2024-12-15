@@ -14,7 +14,7 @@ elic_cont_get_data(
 )
 }
 \arguments{
-\item{x}{an object of class \code{elic_cont}.}
+\item{x}{an object of class \link{elic_cont}.}
 
 \item{round}{integer indicating if the data belongs to the first or second
 elicitation round.}
@@ -28,7 +28,7 @@ for all variables. Use \code{all} for all variable types. See Elicitation Types
 for more.}
 
 \item{var_types}{character string with short codes indicating the variable
-type. See Variable Types for more.}
+type. See Variable types for more.}
 
 \item{elic_types}{character string with the short codes codes indicating the
 elicitation type. Use \code{all} for all elicitation types. See Elicitation Types
@@ -40,13 +40,13 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Get data from an \code{elic_cont} object.
+Get data from an \link{elic_cont} object.
 }
 \details{
 One one optional argument can be specified. If more than one is provided, the
 first of the following will be used: \code{var}, \code{var_types}, or \code{elic_types}.
 }
-\section{Variable Types}{
+\section{Variable types}{
 
 
 Variable types must be provided as a single string containing short codes,
