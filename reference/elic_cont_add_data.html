@@ -43,7 +43,7 @@ sources."><meta property="og:image" content="https://crewdecisions.github.io/eli
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
-<p><code>elic_cont_add_data()</code> adds data to an <code>elic_cont</code> object from different
+<p><code>elic_cont_add_data()</code> adds data to an <a href="elic_cont.html">elic_cont</a> object from different
 sources.</p>
     </div>
 
@@ -66,14 +66,13 @@ sources.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class <code>elic_cont</code>.</p></dd>
+<dd><p>an object of class <a href="elic_cont.html">elic_cont</a>.</p></dd>
 
 
 <dt id="arg-data-source">data_source<a class="anchor" aria-label="anchor" href="#arg-data-source"></a></dt>
 <dd><p>either a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> or
 <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code>, a string with the path to a <em>csv</em> or <em>xlsx</em> file,
-or anything accepted by the <a href="https://googlesheets4.tidyverse.org/reference/range_read.html" class="external-link">read_sheet()</a>
-function.</p></dd>
+or anything accepted by the <a href="https://googlesheets4.tidyverse.org/reference/range_read.html" class="external-link">read_sheet</a> function.</p></dd>
 
 
 <dt id="arg-round">round<a class="anchor" aria-label="anchor" href="#arg-round"></a></dt>
@@ -100,7 +99,7 @@ from <em>Google Sheets</em>.</p></dd>
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
 <dd><p>logical, whether to overwrite existing data already added to
-the <code>elic_cont</code> object.</p></dd>
+the <a href="elic_cont.html">elic_cont</a> object.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -109,17 +108,17 @@ the <code>elic_cont</code> object.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The provided object of class <code>elic_cont</code> updated with the data.</p>
+    <p>The provided object of class <a href="elic_cont.html">elic_cont</a> updated with the data.</p>
     </div>
     <div class="section level2">
-    <h2 id="data-format">Data Format<a class="anchor" aria-label="anchor" href="#data-format"></a></h2>
+    <h2 id="data-format">Data format<a class="anchor" aria-label="anchor" href="#data-format"></a></h2>
 
 
 
 <p>Data are expected to have the name of the expert always as first column. The
 only exception is for data coming from <em>Google Sheet</em> which can have an
 additional column with a timestamp. This column is automatically removed
-before the data are added to the <code>elic_cont</code> object (see "Data cleaning").
+before the data are added to the <a href="elic_cont.html">elic_cont</a> object (see "Data cleaning").
 After the name there should be one or more blocks which follow the
 specifications below:</p>
 <p><em>One point elicitation</em>:</p><ul><li><p><code>var_best</code>: best estimate for the variable</p></li>
@@ -137,7 +136,7 @@ will overwrite it according to the following convention:</p>
 <p><em>varname</em>_<em>suffix</em></p>
 <p>with <em>suffix</em> being one of <em>min</em>, <em>max</em>, <em>best</em>, or <em>conf</em>. The information
 to build the column names is taken from the metadata available in the
-<code>elic_cont</code> object.</p>
+<a href="elic_cont.html">elic_cont</a> object.</p>
 <p><code>var_conf</code>, given in percents, can be any number between 60 and 100. Any
 value under 50 would imply that the accuracy of the estimates is only due to
 chance).</p>
@@ -147,11 +146,11 @@ chance).</p>
 
 
 
-<p>When data are added to the <code>elic_cont</code> object, first names are standardised
+<p>When data are added to the <a href="elic_cont.html">elic_cont</a> object, first names are standardised
 by converting capital letters to lower case, and by removing any whitespaces
 and punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
-process never reaches the <code>elic_cont</code> object. For three and four points
+process never reaches the <a href="elic_cont.html">elic_cont</a> object. For three and four points
 elicitation processes, the order of the values is checked for each expert. If
 it is not <em>min-max-best</em>, the values are swaped accordingly and a informative
 warn is raised.</p>
@@ -179,7 +178,7 @@ first one (which contains the names) are forced to numeric.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elict object for an elicitation process that estimates 3</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cont object for an elicitation process that estimates 3</span></span></span>
 <span class="r-in"><span><span class="co"># variables, the first for a one point estimation of a positive integer, the</span></span></span>
 <span class="r-in"><span><span class="co"># second for three points estimation of a negative real, and the last for a</span></span></span>
 <span class="r-in"><span><span class="co"># four point estimation of a probability</span></span></span>
