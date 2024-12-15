@@ -13,10 +13,10 @@ create_elic_cat_obj <- function() {
   my_sites <- c("site_1", "site_2", "site_3", "site_4")
   my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
   elic_cat_start(levels = my_levels,
-                  sites = my_sites,
-                  experts = 6,
-                  mechanisms = my_mechanisms,
-                  verbose = FALSE) |>
+                 sites = my_sites,
+                 experts = 6,
+                 mechanisms = my_mechanisms,
+                 verbose = FALSE) |>
     elic_cat_add_data(data_source = mechanism_1,
                       mechanism = "mechanism_1",
                       verbose = FALSE) |>
