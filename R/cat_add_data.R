@@ -399,7 +399,7 @@ check_sum_1 <- function(x) {
   sums_vector <- sums |>
     dplyr::pull("sum")
 
-  total <- sum(sums_vector != 1)
+  total <- sum(sums_vector > 1 + 1.5e-8 | sums_vector < 1 - 1.5e-8)
 
   if (total > 0) {
 
