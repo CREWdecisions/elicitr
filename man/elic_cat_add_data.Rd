@@ -116,16 +116,18 @@ process never reaches the \link{elic_cat} object.
 # Create the elic_cat object for an elicitation process with three
 # mechanisms, four sites, five levels and a maximum of six experts per
 # mechanism
-x <- elic_cat_start(levels = c("levels_1", "levels_2", "levels_3",
-                               "levels_4", "levels_5"),
-                    sites = c("site_1", "site_2", "site_3", "site_4"),
+my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+x <- elic_cat_start(levels = my_levels,
+                    sites = my_sites,
                     experts = 6,
-                    mechanisms = c("mechanism_1", "mechanism_2",
-                                   "mechanism_3"))
+                    mechanisms = my_mechanisms)
 
 # Add data for the three mechanisms from a data.frame. Notice that the
 # three commands can be piped
-my_elicit <- elic_cat_add_data(x, data_source = mechanism_1,
+my_elicit <- elic_cat_add_data(x,
+                               data_source = mechanism_1,
                                mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
@@ -135,7 +137,8 @@ my_elicit
 files <- list.files(path = system.file("extdata", package = "elicitr"),
                     pattern = "mechanism_",
                     full.names = TRUE)
-my_elicit <- elic_cat_add_data(x, data_source = files[1],
+my_elicit <- elic_cat_add_data(x,
+                               data_source = files[1],
                                mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = files[3], mechanism = "mechanism_3")
@@ -146,19 +149,26 @@ file <- list.files(path = system.file("extdata", package = "elicitr"),
                    pattern = "mechanisms",
                    full.names = TRUE)
 # Using the sheet index
-my_elicit <- elic_cat_add_data(x, data_source = file,
-                               sheet = 1, mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = file, sheet = 2,
+my_elicit <- elic_cat_add_data(x,
+                               data_source = file,
+                               sheet = 1,
+                               mechanism = "mechanism_1") |>
+  elic_cat_add_data(data_source = file,
+                    sheet = 2,
                     mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = file, sheet = 3, mechanism = "mechanism_3")
+  elic_cat_add_data(data_source = file,
+                    sheet = 3,
+                    mechanism = "mechanism_3")
 my_elicit
 # Using the sheet name
 my_elicit <- elic_cat_add_data(x, data_source = file,
                                sheet = "Mechanism 1",
                                mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = file, sheet = "Mechanism 2",
+  elic_cat_add_data(data_source = file,
+                    sheet = "Mechanism 2",
                     mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = file, sheet = "Mechanism 3",
+  elic_cat_add_data(data_source = file,
+                    sheet = "Mechanism 3",
                     mechanism = "mechanism_3")
 my_elicit
 
@@ -167,19 +177,26 @@ my_elicit
 googlesheets4::gs4_deauth()
 gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
 # Using the sheet index
-my_elicit <- elic_cat_add_data(x, data_source = gs,
-                               sheet = 1, mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = gs, sheet = 2,
+my_elicit <- elic_cat_add_data(x,
+                               data_source = gs,
+                               sheet = 1,
+                               mechanism = "mechanism_1") |>
+  elic_cat_add_data(data_source = gs,
+                    sheet = 2,
                     mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = gs, sheet = 3, mechanism = "mechanism_3")
+  elic_cat_add_data(data_source = gs,
+                    sheet = 3,
+                    mechanism = "mechanism_3")
 my_elicit
 # Using the sheet name
 my_elicit <- elic_cat_add_data(x, data_source = gs,
                                sheet = "Mechanism 1",
                                mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = gs, sheet = "Mechanism 2",
+  elic_cat_add_data(data_source = gs,
+                    sheet = "Mechanism 2",
                     mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = gs, sheet = "Mechanism 3",
+  elic_cat_add_data(data_source = gs,
+                    sheet = "Mechanism 3",
                     mechanism = "mechanism_3")
 my_elicit
 \dontshow{\}) # examplesIf}
