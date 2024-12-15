@@ -35,13 +35,12 @@
 #'
 #' The name of the columns is not important, `elic_cat_add_data()` will
 #' overwrite them according to the following convention:
-#' * The first column will be renamed `name`, the second column `level`, the
-#' third column `site`, the fourth column `confidence`, and the fifth column
+#' * The first column will be renamed `id`, the second column `level`, the third
+#' column `site`, the fourth column `confidence`, and the fifth column
 #' `estimate`.
 #'
-#' Here is an example of how data correctly formatted should look like, for an
-#' elicitation with two experts, two levels of impact,two sites,  and one
-#' mechanism:
+#' Here is an example of data correctly formatted for an elicitation with two
+#' levels of impact and two sites (only one expert is shown):
 #'
 #' ```
 #' name       level       site      confidence      estimate

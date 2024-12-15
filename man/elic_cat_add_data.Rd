@@ -78,14 +78,13 @@ impact level.
 The name of the columns is not important, \code{elic_cat_add_data()} will
 overwrite them according to the following convention:
 \itemize{
-\item The first column will be renamed \code{name}, the second column \code{level}, the
-third column \code{site}, the fourth column \code{confidence}, and the fifth column
+\item The first column will be renamed \code{id}, the second column \code{level}, the third
+column \code{site}, the fourth column \code{confidence}, and the fifth column
 \code{estimate}.
 }
 
-Here is an example of how data correctly formatted should look like, for an
-elicitation with two experts, two levels of impact,two sites,  and one
-mechanism:
+Here is an example of data correctly formatted for an elicitation with two
+levels of impact and two sites (only one expert is shown):
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{name       level       site      confidence      estimate
 ---------------------------------------------------------
