@@ -349,7 +349,7 @@ check_column_format <- function(x, col) {
                    "id" = "expert names",
                    "level" = "levels",
                    "site" = "sites",
-                   "confidence" = "confidence values",)
+                   "confidence" = "confidence values")
 
     error <- "The column containing the {what} is not formatted as \\
               expected."
@@ -378,10 +378,10 @@ check_sum_1 <- function(x) {
     # Convert to facto to avoid unwanted reorder of the table rows
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
-    dplyr::group_by(id, site) |>
-    dplyr::summarise(sum = sum(estimate))
+    dplyr::group_by(.data[["id"]], .data[["site"]]) |>
+    dplyr::summarise(sum = sum(.data[["estimate"]]))
   sums_vector <- sums |>
-    dplyr::pull(sum)
+    dplyr::pull("sum")
 
   total <- sum(sums_vector != 1)
 

@@ -227,7 +227,7 @@ test_that("Info", {
                      full.names = TRUE)
   expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
   expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
-               ignore_attr = TRUE)
+               tolerance = testthat_tolerance())
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
                    hash_names(stand_names(dplyr::pull(round_1, "name"))))
 

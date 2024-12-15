@@ -183,6 +183,9 @@ test_that("Info", {
   expect_snapshot(out <- elic_cat_add_data(x,
                                            data_source = files[[1]],
                                            mechanism = "mechanism_1"))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["mechanism_1"]][, -1], mechanism_1[, -1],
+               tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(mechanism_1, "name") |>
     stand_names() |>
     hash_names()
@@ -195,6 +198,9 @@ test_that("Info", {
   expect_snapshot(out <- elic_cat_add_data(x,
                                            data_source = file,
                                            mechanism = "mechanism_1"))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["mechanism_1"]][, -1], mechanism_1[, -1],
+               tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(mechanism_1, "name") |>
     stand_names() |>
     hash_names()
@@ -212,11 +218,11 @@ test_that("Info", {
   expect_snapshot(out <- elic_cat_add_data(x,
                                            data_source = gs,
                                            mechanism = "mechanism_1"))
-  # # Double entry has been removed
-  # expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
-  # # Commas have been replaced with periods and both columns are numeric
-  # expect_vector(out[["data"]][["round_1"]][["var1_best"]],
-  #               ptype = double(), size = 6)
-  # expect_vector(out[["data"]][["round_1"]][["var2_best"]],
-  #               ptype = double(), size = 6)
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["mechanism_1"]][, -1], mechanism_1[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(mechanism_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["mechanism_1"]], "id"), hashed_id)
 })

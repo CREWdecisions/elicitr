@@ -361,7 +361,8 @@ read_file <- function(data_source,
   } else if (ext == "xlsx") {
 
     assign("src", "xlsx file", envir = rlang::caller_env(n = 2))
-    data <- openxlsx::read.xlsx(data_source, sheet = sheet)
+    data <- openxlsx::read.xlsx(data_source, sheet = sheet) |>
+      tibble::as_tibble()
 
   } else {
     error <- "The extension of the provided file is {.val .{ext}}, supported \\
@@ -374,6 +375,56 @@ read_file <- function(data_source,
   }
 
   data
+}
+
+#' Clean Google Sheets data
+#'
+#' `clean_gs_data()` performs some data cleaning for data coming from
+#' _Google Sheets_.
+#'
+#' @param x data imported form _Google Sheets_
+#'
+#' @details
+#' 1. Remove column with timestamp, if present
+#' 2. Converts columns with lists to character
+#' 3. Standardise decimal separators by replacing commas to periods
+#' 4. Forces all column but the first to be numeric
+#'
+#' @return The cleaned data
+#' @noRd
+#'
+#' @author Sergio Vignali
+clean_gs_data <- function(x) {
+
+  clean <- \(x) gsub(pattern = ",", replacement = "\\.", x = x) # nolint
+  n_cols <- ncol(x)
+
+  if (inherits(x[[1]], "POSIXct")) {
+    col_2 <- colnames(x)[[2]]
+    x <- x |>
+      # Keep only last submission from each expert
+      dplyr::slice_tail(n = 1, by = dplyr::all_of(col_2)) |>
+      # Remove column with timestamp (it should be the first column)
+      dplyr::select(-1)
+  }
+
+  cols <- 1
+
+  # This is to avoid errors if the function is called directly within a test
+  if (as.list(sys.call())[[2]][[1]] != "dplyr::mutate" &&
+      as.list(sys.call(-2))[[1]] == "elic_cat_add_data") {
+    cols <- 1:3
+  }
+
+  x |>
+    # Columns with mixed integer and real numbers are imported as list
+    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
+    # Some experts use a comma as decimal separator
+    dplyr::mutate(dplyr::across(dplyr::everything(), clean)) |>
+    # If there is a mix of integer and doubles, or if there are different
+    # decimal separators, or if someone omit the leading zero on a decimal
+    # number, these columns are imported as character
+    dplyr::mutate(dplyr::across(!dplyr::all_of(cols), as.numeric))
 }
 
 #' Split short codes
