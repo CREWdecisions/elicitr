@@ -53,7 +53,7 @@
       elic_cat_add_data(x, data_source = mechanism_1, mechanism = "mechanism_3")
     Condition
       Error in `elic_cat_add_data()`:
-      ! Invalid value for `mechanisms`:
+      ! Invalid value for `mechanism`:
       x "mechanism_3" not present in the <elic_cat> object.
       i Available mechanisms are "mechanism_1" and "mechanism_2".
 

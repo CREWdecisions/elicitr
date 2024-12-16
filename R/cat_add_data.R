@@ -174,7 +174,7 @@ elic_cat_add_data <- function(x,
   check_length(mechanism, "mechanism", 1)
   # Check if mechanism is available in the object
   check_value_in_element(x,
-                         element = "mechanisms",
+                         element = "mechanism",
                          value = mechanism)
 
   # Read data
@@ -235,38 +235,6 @@ elic_cat_add_data <- function(x,
 }
 
 # Checkers----
-
-#' Check if value is in the list element.
-#'
-#' @param x [elic_cont] object.
-#' @param element character string with the name of the element to be checked.
-#' @param value character string with the value to be checked.
-#'
-#' @return An error if `value` is not among the available values of list
-#' element.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_value_in_element <- function(x,
-                                   element,
-                                   value) {
-
-  if (element == "mechanisms") {
-    values <- names(x[["data"]])
-  } else {
-    values <- x[[element]]
-  }
-
-  if (!value %in% values) {
-
-    error <- "{.val {value}} not present in the {.cls {class(x)}} object."
-    info <- "Available {element} {cli::qty(values)} {?is/are} {.val {values}}."
-    cli::cli_abort(c("Invalid value for {.arg {element}}:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
-  }
-}
 
 check_names_levels_sites <- function(x, data, type) {
 

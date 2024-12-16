@@ -272,6 +272,46 @@ check_columns_type <- function(x, y) {
   }
 }
 
+#' Check if value is in the list element.
+#'
+#' @param x [elic_cont] object.
+#' @param element character string with the name of the element to be checked.
+#' @param value character with the value/s to be checked.
+#'
+#' @return An error if `value` is not among the available values of list
+#' element.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_value_in_element <- function(x,
+                                   element,
+                                   value) {
+
+  if (element == "mechanism") {
+    values <- names(x[["data"]])
+  } else {
+    values <- x[[element]]
+  }
+
+  info_element <- gsub("_", " ", element)
+
+  if (!grepl("s$", info_element)) {
+    info_element <- paste0(info_element, "s")
+  }
+
+  diff <- setdiff(value, values)
+
+  if (length(diff) > 0) {
+
+    error <- "{.val {diff}} not present in the {.cls {class(x)}} object."
+    info <- "Available {info_element}: {.val {values}}."
+    cli::cli_abort(c("Invalid value for {.arg {element}}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data

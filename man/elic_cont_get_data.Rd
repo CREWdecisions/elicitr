@@ -24,8 +24,7 @@ function.}
 
 \item{var}{character string with the name of the variable or character vector
 with more variable names that you want to extract from the data. Use \code{all}
-for all variables. Use \code{all} for all variable types. See Elicitation Types
-for more.}
+for all variables.}
 
 \item{var_types}{character string with short codes indicating the variable
 type. See Variable types for more.}

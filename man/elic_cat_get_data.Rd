@@ -4,7 +4,7 @@
 \alias{elic_cat_get_data}
 \title{#' Get data}
 \usage{
-elic_cat_get_data(x, mechanism, ..., sites = "all")
+elic_cat_get_data(x, mechanism, ..., site = "all")
 }
 \arguments{
 \item{x}{an object of class \link{elic_cat}.}
@@ -15,9 +15,9 @@ data belongs.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{sites}{character vector with the names of the sites from which the data
-will be extracted. If \code{sites = "all"}, the data from all sites will be
-extracted.}
+\item{site}{character string with the name of the site or character vector
+with more sitess that you want to extract from the data. Use \code{all} for all
+variables.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the extracted data.
@@ -25,7 +25,7 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Get data from an \link{elic_cont} object.
+Get data from an \link{elic_cat} object.
 }
 \seealso{
 Other cat data helpers: 

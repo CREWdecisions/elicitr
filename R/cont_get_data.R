@@ -8,8 +8,7 @@
 #' @inheritParams elic_cont_add_data
 #' @param var character string with the name of the variable or character vector
 #' with more variable names that you want to extract from the data. Use `all`
-#' for all variables. Use `all` for all variable types. See Elicitation Types
-#' for more.
+#' for all variables.
 #' @param var_types character string with short codes indicating the variable
 #' type. See Variable types for more.
 #' @param elic_types character string with the short codes codes indicating the
