@@ -55,7 +55,7 @@
       Error in `elic_cat_add_data()`:
       ! Invalid value for `mechanism`:
       x "mechanism_3" not present in the <elic_cat> object.
-      i Available mechanisms are "mechanism_1" and "mechanism_2".
+      i Available mechanisms: "mechanism_1" and "mechanism_2".
 
 ---
 

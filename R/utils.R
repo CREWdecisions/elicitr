@@ -293,9 +293,9 @@ check_value_in_element <- function(x,
     values <- x[[element]]
   }
 
-  info_element <- gsub("_", " ", element)
+  info_element <- gsub("_", " ", element, fixed = TRUE)
 
-  if (!grepl("s$", info_element)) {
+  if (!endsWith(info_element, "s")) {
     info_element <- paste0(info_element, "s")
   }
 
