@@ -85,8 +85,8 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Invalid value for `var_types`:
-      x Variable type "r" not present in the <elic_cont> object.
-      i Available variable types are "Z", "N", and "p"
+      x "r" not present in the <elic_cont> object.
+      i Available var types: "Z", "N", and "p".
 
 ---
 
@@ -95,8 +95,8 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Invalid value for `var_types`:
-      x Variable types "r" and "R" not present in the <elic_cont> object.
-      i Available variable types are "Z", "N", and "p"
+      x "r" and "R" not present in the <elic_cont> object.
+      i Available var types: "Z", "N", and "p".
 
 ---
 
@@ -105,8 +105,8 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Invalid value for `elic_types`:
-      x Elicitation type "3p" not present in the <elic_cont> object.
-      i Available elicitation types are "1p" and "4p"
+      x "3p" not present in the <elic_cont> object.
+      i Available elic types: "1p" and "4p".
 
 ---
 
@@ -115,8 +115,8 @@
     Condition
       Error in `elic_cont_get_data()`:
       ! Invalid value for `elic_types`:
-      x Elicitation types "3p" and "4p" not present in the <elic_cont> object.
-      i Available elicitation type is "1p"
+      x "3p" and "4p" not present in the <elic_cont> object.
+      i Available elic types: "1p".
 
 # Warnings
 

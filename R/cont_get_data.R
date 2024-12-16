@@ -86,7 +86,7 @@ elic_cont_get_data <- function(x,
     # Split and check variable types
     var_types <- split_short_codes(var_types)
     check_arg_types(var_types, type = "var")
-    check_type_in_obj(x, var_types, type = "var_types")
+    check_value_in_element(x, element = "var_types", value = var_types)
 
     idx <- match(var_types, x[["var_types"]])
     var <- x[["var_names"]][idx]
@@ -94,7 +94,7 @@ elic_cont_get_data <- function(x,
     # Split and check elicitation types
     elic_types <- split_short_codes(elic_types, add_p = TRUE)
     check_arg_types(elic_types, type = "elic")
-    check_type_in_obj(x, elic_types, type = "elic_types")
+    check_value_in_element(x, element = "elic_types", value = elic_types)
 
     idx <- match(elic_types, x[["elic_types"]])
     var <- x[["var_names"]][idx]
@@ -176,43 +176,4 @@ check_optional_args <- function(var, var_types, elic_types) {
   }
 
   arg
-}
-
-#' Check type in object
-#'
-#' Check that the given variable or elicitation type/s is/are available in the
-#' [elic_cont] object.
-#'
-#' @param obj an object of class [elic_cont].
-#' @param x character string with the value to be checked.
-#' @param type character string, either `var_types` or `elic_types`.
-#'
-#' @return An error if the variable or elicitation type/s is/are not present in
-#' the [elic_cont] object.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_type_in_obj <- function(obj,
-                              x,
-                              type) {
-  obj_types <- obj[[type]]
-  diff <- setdiff(x, obj_types)
-
-  if (length(diff) > 0) {
-
-    if (type == "var_types") {
-      error <- "Variable type{?s} {.val {diff}} not present in the \\
-                {.cls elic_cont} object."
-      info <- "Available variable type{?s} {?is/are} {.val {obj_types}}"
-    } else {
-      error <- "Elicitation type{?s} {.val {diff}} not present in the \\
-                {.cls elic_cont} object."
-      info <- "Available elicitation type{?s} {?is/are} {.val {obj_types}}"
-    }
-
-    cli::cli_abort(c("Invalid value for {.arg {type}}:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
-  }
 }
