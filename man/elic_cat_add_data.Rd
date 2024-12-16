@@ -202,6 +202,10 @@ my_elicit
 }
 \seealso{
 Other cat data helpers: 
+\code{\link{elic_cat_get_data}()},
 \code{\link{elic_cat_start}()}
+}
+\author{
+Sergio Vignali and Maude Vernet
 }
 \concept{cat data helpers}
