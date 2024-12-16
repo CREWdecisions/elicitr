@@ -12,7 +12,7 @@
 #' @family cat data helpers
 #'
 #' @author Sergio Vignali and Maude Vernet
-elic_cat_aggregate_data <- function(x,
+cat_aggregate_data <- function(x,
                                     method) {
 
   # Check if the object is of class elic_cat

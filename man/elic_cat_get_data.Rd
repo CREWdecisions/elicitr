@@ -56,8 +56,8 @@ elic_cat_get_data(my_elicit,
 }
 \seealso{
 Other cat data helpers: 
+\code{\link{cat_aggregate_data}()},
 \code{\link{elic_cat_add_data}()},
-\code{\link{elic_cat_aggregate_data}()},
 \code{\link{elic_cat_start}()}
 }
 \author{
