@@ -103,6 +103,7 @@ Biological Invasions, 26(8), 2707–2721.
 \seealso{
 Other cat data helpers: 
 \code{\link{elic_cat_add_data}()},
+\code{\link{elic_cat_aggregate_data}()},
 \code{\link{elic_cat_get_data}()}
 }
 \author{

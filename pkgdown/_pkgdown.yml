@@ -19,6 +19,7 @@ reference:
   - elic_cat_start
   - elic_cat_add_data
   - elic_cat_get_data
+  - elic_cat_aggregate_data
 
 - title: Classes
   desc: Description of the classes available in the package.

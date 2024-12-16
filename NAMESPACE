@@ -3,6 +3,7 @@
 S3method(print,elic_cat)
 S3method(print,elic_cont)
 export(elic_cat_add_data)
+export(elic_cat_aggregate_data)
 export(elic_cat_get_data)
 export(elic_cat_start)
 export(elic_cont_add_data)
