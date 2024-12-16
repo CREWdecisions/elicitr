@@ -4,19 +4,37 @@
 \alias{cat_aggregate_data}
 \title{Aggregate categorical data}
 \usage{
-cat_aggregate_data(x, method)
+cat_aggregate_data(x, method, ..., votes = 100)
 }
 \arguments{
-\item{x}{\link{elic_cat} object.}
+\item{x}{an object of class \link{elic_cat}.}
 
 \item{method}{character string with the name of the method to aggregate the
 data. The available methods are: \emph{basic} and \emph{bootstrap}.}
+
+\item{...}{Unused arguments, included only for future extensions of the
+function.}
+
+\item{votes}{numeric indicating the number of votes to consider used in the
+\emph{basic} aggregation method.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the aggregated data.
 }
 \description{
 Aggregate the data from a \code{\link{elic_cat}} object.
+}
+\section{Methods}{
+
+Add explanation for the methods.
+}
+
+\references{
+Vernet, M., Trask, A.E., Andrews, C.E., Ewen, J.E., Medina, S.,
+Moehrenschlager, A. & Canessa, S. (2024) Assessing invasion risks using
+EICAT‐based expert elicitation: application to a conservation translocation.
+Biological Invasions, 26(8), 2707–2721.
+\url{https://doi.org/10.1007/s10530-024-03341-2}
 }
 \seealso{
 Other cat data helpers: 

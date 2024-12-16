@@ -312,6 +312,39 @@ check_value_in_element <- function(x,
   }
 }
 
+#' Check method
+#'
+#' Check if the aggregation method is available for the data type.
+#'
+#' @param x [elic_cont] or [elic_cat] object.
+#' @param method character with the aggregation method.
+#'
+#' @return An error if the method is not available for the data type.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_method <- function(x, method) {
+
+  fn <- as.list(sys.call(-1))[[1]]
+
+
+  if (inherits(x, "elic_cat")) {
+    methods <- c("basc", "bootstrap")
+    data_type <- "categorical"
+  } else {
+    methods <- c("basic")
+    data_type <- "continuous"
+  }
+
+  if (!method %in% methods) {
+    cli::cli_abort(c("Invalid value for {.arg method}:",
+                     "x" = "The method {.val {method}} is not available for \\
+                            {data_type} data.",
+                     "i" = "See Methods in {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data
