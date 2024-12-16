@@ -5,6 +5,10 @@ test_that("Errors", {
   expect_snapshot(cat_aggregate_data("abc", method = "basic"),
                   error = TRUE)
 
+  # When method is given as character vector of length > 1
+  expect_snapshot(cat_aggregate_data(obj, method = c("basic", "bootstrap")),
+                  error = TRUE)
+
   # When method is not a available
   expect_snapshot(cat_aggregate_data(obj, method = "new_method"),
                   error = TRUE)

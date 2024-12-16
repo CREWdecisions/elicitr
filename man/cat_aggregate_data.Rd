@@ -4,19 +4,26 @@
 \alias{cat_aggregate_data}
 \title{Aggregate categorical data}
 \usage{
-cat_aggregate_data(x, method, ..., votes = 100)
+cat_aggregate_data(x, method, mechanism, ..., votes = 100, site = "all")
 }
 \arguments{
 \item{x}{an object of class \link{elic_cat}.}
 
 \item{method}{character string with the name of the method to aggregate the
-data. The available methods are: \emph{basic} and \emph{bootstrap}.}
+data. The available methods are: \emph{basic} and \emph{bootstrap}, see Methods below.}
+
+\item{mechanism}{character string that indicates the machanism to which the
+data belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{votes}{numeric indicating the number of votes to consider used in the
-\emph{basic} aggregation method.}
+\item{votes}{numeric indicating the number of votes to consider, used only in
+the \emph{basic} aggregation method.}
+
+\item{site}{character string with the name of the site or character vector
+with more sitess that you want to extract from the data. Use \code{all} for all
+variables.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the aggregated data.

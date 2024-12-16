@@ -332,7 +332,7 @@ check_method <- function(x, method) {
     methods <- c("basc", "bootstrap")
     data_type <- "categorical"
   } else {
-    methods <- c("basic")
+    methods <- "basic"
     data_type <- "continuous"
   }
 

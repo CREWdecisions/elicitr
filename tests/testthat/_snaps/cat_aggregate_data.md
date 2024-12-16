@@ -11,6 +11,16 @@
 ---
 
     Code
+      cat_aggregate_data(obj, method = c("basic", "bootstrap"))
+    Condition
+      Error in `cat_aggregate_data()`:
+      ! Incorrect value for `method`:
+      x Argument `method` must have length 1 not 2.
+      i See `elicitr::cat_aggregate_data()`.
+
+---
+
+    Code
       cat_aggregate_data(obj, method = "new_method")
     Condition
       Error in `cat_aggregate_data()`:
