@@ -70,6 +70,8 @@
 #'
 #' @family cat data helpers
 #'
+#' @author Sergio Vignali and Maude Vernet
+#'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three
 #' # mechanisms, four sites, five levels and a maximum of six experts per
