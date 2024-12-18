@@ -31,7 +31,7 @@
 #' to all votes for this level.
 #'
 #' @return An [`tibble`][tibble::tibble] with the sampled data. This object has
-#' the additional class `elic_cat_sample` used to implement the plotting method.
+#' the additional class `cat_sample` used to implement the plotting method.
 #' @export
 #'
 #' @family cat data helpers
@@ -105,7 +105,7 @@ cat_sample_data <- function(x,
   }
 
   # Prepend new class
-  class(out) <- c("elic_cat_sample", class(out))
+  class(out) <- c("cat_sample", class(out))
 
   out
 }
