@@ -317,7 +317,7 @@ my_elicitation_cat
 #### Functions under development
 
 - `cat_add_data()`
-- `elic_cat_get_data()`
+- `cat_get_data()`
 - `elic_cat_plot_data`
 
 ### Similar packages

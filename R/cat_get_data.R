@@ -33,20 +33,20 @@
 #'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 #'
 #' # Get all data from Mechanism 1
-#' elic_cat_get_data(my_elicit, mechanism = "mechanism_1")
+#' cat_get_data(my_elicit, mechanism = "mechanism_1")
 #'
 #' # Get data by site name----
 #' # Get data for site_1 from Mechanism 2
-#' elic_cat_get_data(my_elicit, mechanism = "mechanism_2", site = "site_1")
+#' cat_get_data(my_elicit, mechanism = "mechanism_2", site = "site_1")
 #'
 #' # Get data for site_1 and site_3 from Mechanism 3
-#' elic_cat_get_data(my_elicit,
-#'                   mechanism = "mechanism_3",
-#'                   site = c("site_1", "site_3"))
-elic_cat_get_data <- function(x,
-                              mechanism,
-                              ...,
-                              site = "all") {
+#' cat_get_data(my_elicit,
+#'              mechanism = "mechanism_3",
+#'              site = c("site_1", "site_3"))
+cat_get_data <- function(x,
+                         mechanism,
+                         ...,
+                         site = "all") {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")

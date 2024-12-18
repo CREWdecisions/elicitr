@@ -100,8 +100,8 @@ Biological Invasions, 26(8), 2707–2721.
 \seealso{
 Other cat data helpers: 
 \code{\link{cat_add_data}()},
-\code{\link{cat_start}()},
-\code{\link{elic_cat_get_data}()}
+\code{\link{cat_get_data}()},
+\code{\link{cat_start}()}
 }
 \author{
 Sergio Vignali and Maude Vernet

@@ -201,9 +201,9 @@ my_elicit
 }
 \seealso{
 Other cat data helpers: 
+\code{\link{cat_get_data}()},
 \code{\link{cat_sample_data}()},
-\code{\link{cat_start}()},
-\code{\link{elic_cat_get_data}()}
+\code{\link{cat_start}()}
 }
 \author{
 Sergio Vignali and Maude Vernet

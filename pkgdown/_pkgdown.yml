@@ -18,7 +18,7 @@ reference:
   contents:
   - cat_start
   - cat_add_data
-  - elic_cat_get_data
+  - cat_get_data
   - cat_sample_data
 
 - title: Classes

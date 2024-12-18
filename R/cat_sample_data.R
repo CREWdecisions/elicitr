@@ -6,7 +6,7 @@
 #' `cat_sample_data()` samples data based on expert estimates stored in the
 #' [`elic_cat`] object.
 #'
-#' @inheritParams elic_cat_get_data
+#' @inheritParams cat_get_data
 #' @param method character string with the name of the method to sample the
 #' data. The available methods are: _basic_ and _bootstrap_, see Methods below.
 #' @param n_votes numeric indicating the number of votes to consider, used only
@@ -87,7 +87,7 @@ cat_sample_data <- function(x,
   check_method(x, method)
 
   # Get data
-  data <- elic_cat_get_data(x, mechanism = mechanism, site = site)
+  data <- cat_get_data(x, mechanism = mechanism, site = site)
 
   experts <- unique(data[["id"]])
   levels <- unique(data[["level"]])
