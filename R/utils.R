@@ -526,6 +526,17 @@ split_short_codes <- function(x,
   output
 }
 
+#' Anonymise names
+#'
+#' Converts names to anonymous ids from the names of the experts.
+#'
+#' @param x [tibble][tibble::tibble] with the data collected during the
+#' elicitation process.
+#'
+#' @returns A [tibble][tibble::tibble] with names converted to anonymous ids.
+#' @noRd
+#'
+#' @author Sergio Vignali
 anonimise_names <- function(x) {
 
   col_1 <- colnames(x)[[1]]

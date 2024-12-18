@@ -238,6 +238,21 @@ elic_cat_add_data <- function(x,
 
 # Checkers----
 
+#' Check names and levels
+#'
+#' Checks if names and levels are as expected, i.e. if the number of unique
+#' names is less than or equal to the expected number of experts, and if the
+#' levels are those recorded in the object.
+#'
+#' @param x [elic_cat] object.
+#' @param data [tibble][tibble::tibble] with the data to be checked.
+#' @param type character string with the type of check to be performed.
+#'
+#' @returns An error if the number of unique names is greater than the  number
+#' of experts or if the levels are not those recorded in the object.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_names_levels_sites <- function(x, data, type) {
 
   error <- ""

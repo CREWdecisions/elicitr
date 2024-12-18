@@ -74,6 +74,22 @@ cat_sample_data <- function(x,
 
 # Methods----
 
+#' Basic sampling
+#'
+#' Sample data based on expert estimates without accounting for their
+#' confidence.
+#'
+#' @param x [`tibble`][tibble::tibble] with the expert estimates.
+#' @param n_votes numeric indicating the number of votes to consider for each
+#' expert.
+#' @param experts character vector with the expert IDs.
+#' @param levels character vector with the levels of the categorical variable.
+#' @param sites character vector with the site names.
+#'
+#' @returns A [`tibble`][tibble::tibble] with the sampled data.
+#' @noRd
+#'
+#' @author Sergio Vignali and Maude Vernet
 basic_sampling <- function(x, n_votes, experts, levels, sites) {
 
   # Prepare data frame for sampled probabilities
@@ -112,6 +128,21 @@ basic_sampling <- function(x, n_votes, experts, levels, sites) {
   sp
 }
 
+#' Bootstrap sampling
+#'
+#' Sample data based on expert estimates accounting for their confidence.
+#'
+#' @param x [`tibble`][tibble::tibble] with the expert estimates.
+#' @param n_votes numeric indicating the number of votes to consider for each
+#' expert.
+#' @param experts character vector with the expert IDs.
+#' @param levels character vector with the levels of the categorical variable.
+#' @param sites character vector with the site names.
+#'
+#' @returns A [`tibble`][tibble::tibble] with the sampled data.
+#' @noRd
+#'
+#' @author Sergio Vignali and Maude Vernet
 bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
 
   all_sites <- vector(mode = "list", length = length(sites))
@@ -164,6 +195,17 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
   out
 }
 
+#' Get estimates
+#'
+#' Get the estimates for a specific site.
+#'
+#' @param x [`tibble`][tibble::tibble] with the expert estimates.
+#' @param y character string with the site name.
+#'
+#' @returns A [`tibble`][tibble::tibble] with the estimates for the site.
+#' @noRd
+#'
+#' @author Sergio Vignali
 get_estimates <- function(x, y) {
 
   x |>
@@ -172,6 +214,18 @@ get_estimates <- function(x, y) {
     tidyr::pivot_wider(names_from = "level", values_from = "estimate")
 }
 
+#' Get confidence
+#'
+#' Get the confidence for a specific site.
+#'
+#' @param x [`tibble`][tibble::tibble] with the expert estimates.
+#' @param y character string with the site name.
+#' @param z numeric indicating the number of levels.
+#'
+#' @returns A numeric vector with the confidence values.
+#' @noRd
+#'
+#' @author Sergio Vignali
 get_conf <- function(x, y, z) {
 
   x |>
