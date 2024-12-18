@@ -79,10 +79,10 @@
 #' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 #' my_sites <- c("site_1", "site_2", "site_3", "site_4")
 #' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-#' x <- elic_cat_start(levels = my_levels,
-#'                     sites = my_sites,
-#'                     experts = 6,
-#'                     mechanisms = my_mechanisms)
+#' x <- cat_start(levels = my_levels,
+#'                sites = my_sites,
+#'                experts = 6,
+#'                mechanisms = my_mechanisms)
 #'
 #' # Add data for the three mechanisms from a data.frame. Notice that the
 #' # three commands can be piped

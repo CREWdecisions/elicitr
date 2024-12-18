@@ -1,5 +1,5 @@
 test_that("Errors", {
-  obj <- create_elic_cat_obj()
+  obj <- create_cat_obj()
 
   # When x is not an elic_cat object
   expect_snapshot(elic_cat_get_data("abc",
@@ -36,7 +36,7 @@ test_that("Errors", {
 })
 
 test_that("Output", {
-  obj <- create_elic_cat_obj()
+  obj <- create_cat_obj()
   # Get all variables
   expect_identical(elic_cat_get_data(obj, mechanism = "mechanism_1"),
                    obj[["data"]][["mechanism_1"]])

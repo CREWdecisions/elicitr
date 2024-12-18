@@ -1,5 +1,5 @@
 test_that("Errors", {
-  obj <- create_elic_cat_obj()
+  obj <- create_cat_obj()
 
   # When x is not an elic_cat object
   expect_snapshot(cat_sample_data("abc",
@@ -21,7 +21,7 @@ test_that("Errors", {
 })
 
 test_that("Info", {
-  obj <- create_elic_cat_obj()
+  obj <- create_cat_obj()
 
   # Basic method
   expect_snapshot(out <- cat_sample_data(obj,
@@ -42,7 +42,7 @@ test_that("Info", {
 })
 
 test_that("Output", {
-  obj <- create_elic_cat_obj()
+  obj <- create_cat_obj()
 
   # Modify one expert estimate to have 100% for level 1 in site 1
   obj[["data"]][["mechanism_1"]][1, 5] <- 1

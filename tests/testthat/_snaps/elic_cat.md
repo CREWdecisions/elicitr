@@ -22,7 +22,7 @@
 ---
 
     Code
-      create_elic_cat_obj()
+      create_cat_obj()
     Message
       
       -- Elicitation --

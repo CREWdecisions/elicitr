@@ -34,7 +34,7 @@
       Error in `elic_cat_add_data()`:
       ! Invalid value for `mechanism`:
       x Argument `mechanism` must be <character> not <numeric>.
-      i See `elicitr::elic_cat_start()`.
+      i See `elicitr::cat_start()`.
 
 ---
 

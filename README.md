@@ -282,9 +282,9 @@ mechanism_3
 #### Functions
 
 Just like continuous variables, any analysis of categorical variables
-starts by creating the `elic_cat` object with the function
-`elic_cat_start()` to store the metadata of the elicitation. To build
-this `elic_cat` object, four parameters must be specified:
+starts by creating the `elic_cat` object with the function `cat_start()`
+to store the metadata of the elicitation. To build this `elic_cat`
+object, four parameters must be specified:
 
 - `levels` the names of the levels of impact you used in your
   elicitation
@@ -294,11 +294,11 @@ this `elic_cat` object, four parameters must be specified:
 - `mechanisms` the names of the mechanisms of impact investigated
 
 ``` r
-my_elicitation_cat <- elic_cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
-                                     sites = c("site_1", "site_2", "site_3", "site_4"),
-                                     experts = 6,
-                                     mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
-                                     title = "Categorical elicitation example")
+my_elicitation_cat <- cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
+                                sites = c("site_1", "site_2", "site_3", "site_4"),
+                                experts = 6,
+                                mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
+                                title = "Categorical elicitation example")
 #> ✔ <elic_cat> object for "Categorical elicitation example" correctly initialised
 ```
 
@@ -310,7 +310,7 @@ my_elicitation_cat
 #> • Levels: "level_1", "level_2", "level_3", "level_4", and "level_5"
 #> • Sites: "site_1", "site_2", "site_3", and "site_4"
 #> • Number of experts: 6
-#> • Mechanismss: "mechanism_1", "mechanism_2", and "mechanism_3"
+#> • Mechanisms: "mechanism_1", "mechanism_2", and "mechanism_3"
 #> • Data available for 0 mechanisms
 ```
 

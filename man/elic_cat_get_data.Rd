@@ -34,10 +34,10 @@ Get data from an \link{elic_cat} object.
 my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
 my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-my_elicit <- elic_cat_start(levels = my_levels,
-                            sites = my_sites,
-                            experts = 6,
-                            mechanisms = my_mechanisms) |>
+my_elicit <- cat_start(levels = my_levels,
+                       sites = my_sites,
+                       experts = 6,
+                       mechanisms = my_mechanisms) |>
   elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
@@ -57,8 +57,8 @@ elic_cat_get_data(my_elicit,
 \seealso{
 Other cat data helpers: 
 \code{\link{cat_sample_data}()},
-\code{\link{elic_cat_add_data}()},
-\code{\link{elic_cat_start}()}
+\code{\link{cat_start}()},
+\code{\link{elic_cat_add_data}()}
 }
 \author{
 Sergio Vignali

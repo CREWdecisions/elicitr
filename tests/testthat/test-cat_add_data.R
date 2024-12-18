@@ -1,9 +1,9 @@
 test_that("Errors", {
-  x <- elic_cat_start(levels = paste0("level_", 1:5),
-                      sites = paste0("site_", 1:4),
-                      experts = 6,
-                      mechanisms = c("mechanism_1", "mechanism_2"),
-                      verbose = FALSE)
+  x <- cat_start(levels = paste0("level_", 1:5),
+                 sites = paste0("site_", 1:4),
+                 experts = 6,
+                 mechanisms = c("mechanism_1", "mechanism_2"),
+                 verbose = FALSE)
 
   # When x is not an elic_cat object
   expect_snapshot(elic_cat_add_data("abc",
@@ -160,11 +160,11 @@ test_that("Errors", {
 })
 
 test_that("Info", {
-  x <- elic_cat_start(levels = paste0("level_", 1:5),
-                      sites = paste0("site_", 1:4),
-                      experts = 6,
-                      mechanisms = c("mechanism_1", "mechanism_2"),
-                      verbose = FALSE)
+  x <- cat_start(levels = paste0("level_", 1:5),
+                 sites = paste0("site_", 1:4),
+                 experts = 6,
+                 mechanisms = c("mechanism_1", "mechanism_2"),
+                 verbose = FALSE)
 
   # Success adding data.frame
   expect_snapshot(out <- elic_cat_add_data(x,
@@ -210,11 +210,11 @@ test_that("Info", {
   googlesheets4::gs4_deauth()
   # Google Sheet used for testing
   gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
-  x <- elic_cat_start(levels = paste0("level_", 1:5),
-                      sites = paste0("site_", 1:4),
-                      experts = 6,
-                      mechanisms = c("mechanism_1", "mechanism_2"),
-                      verbose = FALSE)
+  x <- cat_start(levels = paste0("level_", 1:5),
+                 sites = paste0("site_", 1:4),
+                 experts = 6,
+                 mechanisms = c("mechanism_1", "mechanism_2"),
+                 verbose = FALSE)
   expect_snapshot(out <- elic_cat_add_data(x,
                                            data_source = gs,
                                            mechanism = "mechanism_1"))
