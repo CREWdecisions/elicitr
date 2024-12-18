@@ -11,7 +11,7 @@ test_that("Errors", {
                   error = TRUE)
   # When var is a character vector of length > 1
   expect_snapshot(cont_plot(obj, round = 1,
-                                 var = c("var1", "var5", "var7")),
+                            var = c("var1", "var5", "var7")),
                   error = TRUE)
   # Truth for 1p----
   # When truth is not a list
