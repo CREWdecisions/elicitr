@@ -63,7 +63,7 @@ function.}
 \item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
 theme.}
 
-\item{verbose}{logical, if \code{TRUE} prints informative messages.}
+\item{verbose}{logical, if \code{TRUE} it prints informative messages.}
 }
 \value{
 Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.

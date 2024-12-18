@@ -22,7 +22,7 @@
 #' from _Google Sheets_.
 #' @param overwrite logical, whether to overwrite existing data already added to
 #' the [elic_cont] object.
-#' @param verbose logical, if `TRUE` prints informative messages.
+#' @param verbose logical, if `TRUE` it prints informative messages.
 #'
 #' @section Data format:
 #'

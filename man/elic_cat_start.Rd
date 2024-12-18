@@ -33,7 +33,7 @@ function.}
 
 \item{title}{character, used to bind a name to the object.}
 
-\item{verbose}{logical, if \code{TRUE} prints informative messages.}
+\item{verbose}{logical, if \code{TRUE} it prints informative messages.}
 }
 \value{
 An object of class \link{elic_cat} binding metadata related to the

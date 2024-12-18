@@ -22,6 +22,7 @@ test_that("Errors", {
 
 test_that("Info", {
   obj <- create_elic_cat_obj()
+
   # Basic method
   expect_snapshot(out <- cat_sample_data(obj,
                                          method = "basic",
@@ -38,4 +39,36 @@ test_that("Info", {
   expect_s3_class(out, class = "elic_cat_sample")
   expect_identical(nrow(out),
                    as.integer(obj[["experts"]] * length(obj[["sites"]]) * 100))
+})
+
+test_that("Output", {
+  obj <- create_elic_cat_obj()
+
+  # Modify one expert estimate to have 100% for level 1 in site 1
+  obj[["data"]][["mechanism_1"]][1, 5] <- 1
+  obj[["data"]][["mechanism_1"]][2:5, 5] <- 0
+
+  # Basic method
+  out <- cat_sample_data(obj,
+                         method = "basic",
+                         mechanism = "mechanism_1",
+                         site = "site_1",
+                         verbose = FALSE)
+  expect_identical(dplyr::pull(out, "level_1")[1:5], rep(1, 5))
+  expect_identical(dplyr::pull(out, "level_2")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_3")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_4")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_5")[1:5], rep(0, 5))
+
+  # Bootstrap method
+  out <- cat_sample_data(obj,
+                         method = "bootstrap",
+                         mechanism = "mechanism_1",
+                         site = "site_1",
+                         verbose = FALSE)
+  expect_identical(dplyr::pull(out, "level_1")[1:5], rep(1, 5))
+  expect_identical(dplyr::pull(out, "level_2")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_3")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_4")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "level_5")[1:5], rep(0, 5))
 })

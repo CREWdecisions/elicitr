@@ -4,7 +4,15 @@
 \alias{cat_sample_data}
 \title{Sample categorical data}
 \usage{
-cat_sample_data(x, method, mechanism, ..., n_votes = 100, site = "all")
+cat_sample_data(
+  x,
+  method,
+  mechanism,
+  ...,
+  n_votes = 100,
+  site = "all",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{x}{an object of class \link{elic_cat}.}
@@ -24,6 +32,8 @@ in the \emph{basic} aggregation method.}
 \item{site}{character string with the name of the site or character vector
 with the sites that you want to extract from the data. Use \code{all} for all
 sites.}
+
+\item{verbose}{logical, if TRUE it prints informative messages.}
 }
 \value{
 An \code{\link[tibble:tibble]{tibble}} with the sampled data. This object has

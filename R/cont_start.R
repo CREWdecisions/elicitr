@@ -19,7 +19,7 @@
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #' @param title character, used to bind a name to the object.
-#' @param verbose logical, if `TRUE` prints informative messages.
+#' @param verbose logical, if `TRUE` it prints informative messages.
 #'
 #' @section Variable types:
 #'

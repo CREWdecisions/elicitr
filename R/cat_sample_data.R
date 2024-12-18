@@ -7,6 +7,7 @@
 #' data. The available methods are: _basic_ and _bootstrap_, see Methods below.
 #' @param n_votes numeric indicating the number of votes to consider, used only
 #' in the _basic_ aggregation method.
+#' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Methods:
 #' Two methods are implemented. These methods are explained in Vernet et al.
@@ -69,7 +70,8 @@ cat_sample_data <- function(x,
                             mechanism,
                             ...,
                             n_votes = 100,
-                            site = "all") {
+                            site = "all",
+                            verbose = TRUE) {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
@@ -93,8 +95,10 @@ cat_sample_data <- function(x,
     out <- bootstrap_sampling(data, n_votes, experts, levels, sites)
   }
 
-  cli::cli_alert_success("Data sampled successfully using {.val {method}} \\
+  if (verbose) {
+    cli::cli_alert_success("Data sampled successfully using {.val {method}} \\
                           method.")
+  }
 
   # Prepend new class
   class(out) <- c("elic_cat_sample", class(out))
