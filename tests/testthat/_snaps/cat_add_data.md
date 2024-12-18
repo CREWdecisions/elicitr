@@ -24,7 +24,7 @@
       Error in `cat_add_data()`:
       ! Unsupported file extension:
       x The extension of the provided file is ".txt", supported are ".csv" or ".xlsx".
-      i See `elicitr::elic_cont_add_data()`.
+      i See `elicitr::cat_add_data()`.
 
 ---
 

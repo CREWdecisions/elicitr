@@ -8,7 +8,7 @@
 #' @param x an object of class [elic_cat].
 #' @param mechanism character string that indicates the machanism to which the
 #' data belongs.
-#' @inheritParams elic_cont_add_data
+#' @inheritParams cont_add_data
 #'
 #' @section Data format:
 #'

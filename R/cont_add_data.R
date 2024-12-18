@@ -3,8 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cont_add_data()` adds data to an [elic_cont] object from different
-#' sources.
+#' `cont_add_data()` adds data to an [elic_cont] object from different sources.
 #'
 #' @param x an object of class [elic_cont].
 #' @param data_source either a [`data.frame`][base::data.frame] or
@@ -53,8 +52,8 @@
 #' The column with names is unique, the other columns are a block and can be
 #' repeated for each variable.
 #'
-#' Moreover, the name of the columns is not important, `elic_cont_add_data()`
-#' will overwrite it according to the following convention:
+#' Moreover, the name of the columns is not important, `cont_add_data()` will
+#' overwrite it according to the following convention:
 #'
 #' *varname*_*suffix*
 #'
@@ -77,16 +76,16 @@
 #' it is not _min-max-best_, the values are swaped accordingly and a informative
 #' warn is raised.
 #'
-#' If the data are imported from _Google Sheets_, `elic_cont_add_data()`
-#' performs additional data cleaning operations. This is relevant when data are
-#' collected with Google Forms because, for example, there could be multiple
-#' submission by the same expert or a different decimal separator could be used.
-#' When data are collected with Google Form, a column with the date and time is
-#' recorded. First, the function checks for multiple submissions and if present,
-#' only the last submission is retained. Second, the function removes the column
-#' with the timestamp. Then it checks for consistency of the decimal separator,
-#' i.e. commas _,_ are replaced with periods _._. Finally, all columns but the
-#' first one (which contains the names) are forced to numeric.
+#' If the data are imported from _Google Sheets_, `cont_add_data()` performs
+#' additional data cleaning operations. This is relevant when data are collected
+#' with Google Forms because, for example, there could be multiple submission by
+#' the same expert or a different decimal separator could be used. When data are
+#' collected with Google Form, a column with the date and time is recorded.
+#' First, the function checks for multiple submissions and if present, only the
+#' last submission is retained. Second, the function removes the column with the
+#' timestamp. Then it checks for consistency of the decimal separator, i.e.
+#' commas _,_ are replaced with periods _._. Finally, all columns but the first
+#' one (which contains the names) are forced to numeric.
 #'
 #' @return The provided object of class [elic_cont] updated with the data.
 #' @export
@@ -107,16 +106,16 @@
 #'
 #' # Add data for the first and second round from a data.frame. Notice that the
 #' # two commands can be piped
-#' my_elicit <- elic_cont_add_data(x, data_source = round_1, round = 1) |>
-#'   elic_cont_add_data(data_source = round_2, round = 2)
+#' my_elicit <- cont_add_data(x, data_source = round_1, round = 1) |>
+#'   cont_add_data(data_source = round_2, round = 2)
 #' my_elicit
 #'
 #' # Add data for the first and second round from a csv file
 #' files <- list.files(path = system.file("extdata", package = "elicitr"),
 #'                     pattern = "round_",
 #'                     full.names = TRUE)
-#' my_elicit <- elic_cont_add_data(x, data_source = files[1], round = 1) |>
-#'   elic_cont_add_data(data_source = files[2], round = 2)
+#' my_elicit <- cont_add_data(x, data_source = files[1], round = 1) |>
+#'   cont_add_data(data_source = files[2], round = 2)
 #' my_elicit
 #'
 #' # Add data for the first and second round from a xlsx file with two sheets
@@ -124,14 +123,13 @@
 #'                    pattern = "rounds",
 #'                    full.names = TRUE)
 #' # Using the sheet index
-#' my_elicit <- elic_cont_add_data(x, data_source = file,
-#'                                 sheet = 1, round = 1) |>
-#'   elic_cont_add_data(data_source = file, sheet = 2, round = 2)
+#' my_elicit <- cont_add_data(x, data_source = file, sheet = 1, round = 1) |>
+#'   cont_add_data(data_source = file, sheet = 2, round = 2)
 #' my_elicit
 #' # Using the sheet name
-#' my_elicit <- elic_cont_add_data(x, data_source = file,
+#' my_elicit <- cont_add_data(x, data_source = file,
 #'                            sheet = "Round 1", round = 1) |>
-#'   elic_cont_add_data(data_source = file, sheet = "Round 2", round = 2)
+#'   cont_add_data(data_source = file, sheet = "Round 2", round = 2)
 #' my_elicit
 #'
 #' @examplesIf interactive()
@@ -139,17 +137,17 @@
 #' googlesheets4::gs4_deauth()
 #' gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
 #' gs2 <- "1wImcfJYnC9a423jlxZiU_BFKXZpTZ7AIsZSxFtEsBQw"
-#' my_elicit <- elic_cont_add_data(x, data_source = gs1, round = 1) |>
-#'   elic_cont_add_data(data_source = gs2, round = 2)
+#' my_elicit <- cont_add_data(x, data_source = gs1, round = 1) |>
+#'   cont_add_data(data_source = gs2, round = 2)
 #' my_elicit
-elic_cont_add_data <- function(x,
-                               data_source,
-                               round,
-                               ...,
-                               sep = ",",
-                               sheet = 1,
-                               overwrite = FALSE,
-                               verbose = TRUE) {
+cont_add_data <- function(x,
+                          data_source,
+                          round,
+                          ...,
+                          sep = ",",
+                          sheet = 1,
+                          overwrite = FALSE,
+                          verbose = TRUE) {
 
   check_elic_obj(x, type = "cont")
   check_round(round)
@@ -304,7 +302,7 @@ fix_var_order <- function(x,
       warn <- "{.field {vars[i]}} of {.cls id} {.val {ids}} reordered \\
                 following the order {.val min-max-best}."
       info <- "Check raw data and if you want to update the dataset use
-               {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
 
       cli::cli_warn(c("!" = warn))
     }
@@ -441,7 +439,7 @@ omogenise_datasets <- function(x, data) {
                  been added to {.val Round 1} with {.val NA} values but \\
                  could be typo{?s} in the raw data."
         info <- "Check raw data and if you want to update the dataset in \\
-                 {.val Round 2} use {.fn elicitr::elic_cont_add_data} with \\
+                 {.val Round 2} use {.fn elicitr::cont_add_data} with \\
                  {.code overwrite = TRUE}."
         cli::cli_warn(c(warn, "i" = info))
 
@@ -453,8 +451,8 @@ omogenise_datasets <- function(x, data) {
         error <- "{.val Round 2} has {.val {n}} {.cls id} not present in \\
                   {.val Round 1} which has only {.val {r1_nas}} {.val NA} \\
                   row{?s}."
-        info <- "Check raw data and use {.fn elicitr::elic_cont_add_data} to \\
-                 add the dataset after manual corrections."
+        info <- "Check raw data and use {.fn elicitr::cont_add_data} to add \\
+                 the dataset after manual corrections."
         cli::cli_abort(c(text, "x" = error, "i" = info),
                        call = rlang::caller_env())
       }
@@ -510,7 +508,7 @@ omogenise_datasets <- function(x, data) {
                {.cls id} has been replaced."
 
       info <- "Check raw data and if you want to update the dataset in \\
-               {.val Round 2} use {.fn elicitr::elic_cont_add_data} with \\
+               {.val Round 2} use {.fn elicitr::cont_add_data} with \\
                {.code overwrite = TRUE}."
       cli::cli_warn(c("!" = warn,
                       "i" = info))
@@ -589,7 +587,7 @@ check_round_data <- function(data, experts, round) {
                but expects {.val {experts}} experts. {.val {NA}}s added to \\
                missing {.cls id}."
       info <- "Check raw data and if you want to update the dataset use \\
-               {.fn elicitr::elic_cont_add_data} with {.code overwrite = TRUE}."
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
       cli::cli_warn(c("!" = warn,
                       "i" = info))
     }

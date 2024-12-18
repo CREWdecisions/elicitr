@@ -3,9 +3,9 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' Get data from an [elic_cont] object.
+#' `cont_get_data()` gets data from an [elic_cont] object.
 #'
-#' @inheritParams elic_cont_add_data
+#' @inheritParams cont_add_data
 #' @param var character string with the name of the variable or character vector
 #' with more variable names that you want to extract from the data. Use `all`
 #' for all variables.
@@ -37,8 +37,8 @@
 #'                         var_types = "ZNp",
 #'                         elic_types = "134",
 #'                         experts = 6) |>
-#'   elic_cont_add_data(data_source = round_1, round = 1) |>
-#'   elic_cont_add_data(data_source = round_2, round = 2)
+#'   cont_add_data(data_source = round_1, round = 1) |>
+#'   cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Get all data from round 1
 #' elic_cont_get_data(my_elicit, round = 1)

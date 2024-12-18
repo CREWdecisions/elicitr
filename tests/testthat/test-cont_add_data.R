@@ -1,4 +1,3 @@
-# Test elic_cont_add_data()----
 test_that("Errors ", {
   x <- cont_start(var_names = c("var1", "var2", "var3"),
                   var_types = "ZNp",
@@ -10,61 +9,61 @@ test_that("Errors ", {
                             code = {writeLines("", "test.txt")}) # nolint
 
   # When the file doesn't exist
-  expect_snapshot(elic_cont_add_data(x,
-                                     data_source = "test.csv",
-                                     round = 1),
+  expect_snapshot(cont_add_data(x,
+                                data_source = "test.csv",
+                                round = 1),
                   error = TRUE)
   # When the file extension is not supported
-  expect_snapshot(elic_cont_add_data(x,
-                                     data_source = file,
-                                     round = 1),
+  expect_snapshot(cont_add_data(x,
+                                data_source = file,
+                                round = 1),
                   error = TRUE)
   # When data for round 2 are added before those for round 1
-  expect_snapshot(elic_cont_add_data(x, data_source = round_1, round = 2),
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = 2),
                   error = TRUE)
   # When trying to overwrite a dataset
-  y <- elic_cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
-  expect_snapshot(elic_cont_add_data(y, data_source = round_1, round = 1),
+  y <- cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
+  expect_snapshot(cont_add_data(y, data_source = round_1, round = 1),
                   error = TRUE)
   # When the number of columns is different from expected
-  expect_snapshot(elic_cont_add_data(x, data_source = round_1[, -1], round = 1),
+  expect_snapshot(cont_add_data(x, data_source = round_1[, -1], round = 1),
                   error = TRUE)
   # When there are less experts than number of rows in dataset for round 1
-  expect_snapshot(elic_cont_add_data(x, data_source = rbind(round_1, round_1),
-                                     round = 1, verbose = FALSE),
+  expect_snapshot(cont_add_data(x, data_source = rbind(round_1, round_1),
+                                round = 1, verbose = FALSE),
                   error = TRUE)
   # When there are less experts than number of rows in dataset for round 2
-  expect_snapshot(elic_cont_add_data(y, data_source = rbind(round_2, round_2),
-                                     round = 2, verbose = FALSE),
+  expect_snapshot(cont_add_data(y, data_source = rbind(round_2, round_2),
+                                round = 2, verbose = FALSE),
                   error = TRUE)
   # When x is not an elic_cont object
-  expect_snapshot(elic_cont_add_data("abc", data_source = round_1, round = 1),
+  expect_snapshot(cont_add_data("abc", data_source = round_1, round = 1),
                   error = TRUE)
   # When round is neither 1 nor 2
-  expect_snapshot(elic_cont_add_data(x, data_source = round_1, round = 3),
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = 3),
                   error = TRUE)
-  expect_snapshot(elic_cont_add_data(x, data_source = round_1, round = 0),
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = 0),
                   error = TRUE)
   # When >=2 id are present in Round 2 but not in Round 1 and there are not NAs
-  y <- elic_cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
+  y <- cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
   z[["name"]][[3]] <- "Jane Doe"
   z[["name"]][[4]] <- "John Smith"
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE),
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
                   error = TRUE)
   # When 1 id is present in Round 2 but not in Round 1 and there are NAs in
   # Round 2
   z <- round_2[1:4, ]
   z[["name"]][[3]] <- "Jane Doe"
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE),
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
                   error = TRUE)
   # When >=2 id are present in Round 2 but not in Round 1 and there are NAs in
   # Round 2
   z[["name"]][[4]] <- "John Smith"
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE),
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
                   error = TRUE)
   # Round 2 has several ids not present in Round 1 which has not enough NA rows
   z <- round_1[1:4, ]
@@ -72,16 +71,16 @@ test_that("Errors ", {
   z[["name"]][[2]] <- "John Doe"
   z[["name"]][[3]] <- "Joe Bloggs"
   z[["name"]][[4]] <- "John Smith"
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE),
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
                   error = TRUE)
 
   # When Round 1 has NAs and Round 2 has several ids not present in Round 1
-  y <- elic_cont_add_data(x, data_source = round_1[1:4, ],
-                          round = 1, verbose = FALSE) |>
+  y <- cont_add_data(x, data_source = round_1[1:4, ],
+                     round = 1, verbose = FALSE) |>
     suppressWarnings()
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE),
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE),
                   error = TRUE)
 })
 
@@ -92,8 +91,8 @@ test_that("Warnings", {
                   experts = 6,
                   verbose = FALSE)
   # When there are less entries in dataset than experts for Round 1
-  expect_snapshot(y <- elic_cont_add_data(x, data_source = round_1[1:4, ],
-                                          round = 1, verbose = FALSE))
+  expect_snapshot(y <- cont_add_data(x, data_source = round_1[1:4, ],
+                                     round = 1, verbose = FALSE))
   idx <- setdiff(seq_along(round_1[["name"]]),
                  seq_along(round_1[["name"]][1:4]))
   for (i in seq_along(idx)) {
@@ -101,19 +100,19 @@ test_that("Warnings", {
                      rep(NA_real_, (ncol(round_1) - 1)))
   }
   # When one id is present in Round 2 but not in Round 1 and there are not NAs
-  y <- elic_cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
+  y <- cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
   z[["name"]][[3]] <- "Jane Doe"
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE))
   expect_identical(out[["data"]][["round_1"]][["id"]],
                    out[["data"]][["round_2"]][["id"]])
   idx <- match(round_1[["name"]], round_2[["name"]])
   expect_identical(out[["data"]][["round_2"]][, -1], round_2[idx, -1])
   # When Round 2 has less entries than Round 1 but all its ids are in Round 1
   z <- round_2[1:4, ]
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = z,
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = z,
+                                       round = 2, verbose = FALSE))
   idx <- setdiff(seq_along(round_1[["name"]]),
                  match(z[["name"]], round_1[["name"]]))
   for (i in seq_along(idx)) {
@@ -123,11 +122,11 @@ test_that("Warnings", {
 
   # All id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
-  y <- elic_cont_add_data(x, data_source = round_1[1:3, ],
-                          round = 1, verbose = FALSE) |>
+  y <- cont_add_data(x, data_source = round_1[1:3, ],
+                     round = 1, verbose = FALSE) |>
     suppressWarnings()
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = round_2[1:5, ],
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = round_2[1:5, ],
+                                       round = 2, verbose = FALSE))
   out_round_1 <- out[["data"]][["round_1"]]
   out_round_2 <- out[["data"]][["round_2"]]
   expect_identical(as.numeric(out_round_2[nrow(out_round_2), -1]),
@@ -140,8 +139,8 @@ test_that("Warnings", {
 
   # Not all id in Round 1 are also in Round 2 and those not in Round 1 are NAs
   # Round 1 => 3 NA, Round 2 => 1 NA
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = round_2[1:4, ],
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = round_2[1:4, ],
+                                       round = 2, verbose = FALSE))
   out_round_1 <- out[["data"]][["round_1"]]
   out_round_2 <- out[["data"]][["round_2"]]
   expect_identical(as.numeric(out_round_2[nrow(out_round_2), ]),
@@ -160,8 +159,8 @@ test_that("Warnings", {
   z[1, 3:4] <- list(24, 20)
   z[3, 4:5] <- list(12, 15)
   z[6, 7:8] <- list(0.65, 0.85)
-  expect_snapshot(out <- elic_cont_add_data(x, data_source = z,
-                                            round = 1, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(x, data_source = z,
+                                       round = 1, verbose = FALSE))
   out_round_1 <- out[["data"]][["round_1"]]
   # Check that values have been reordered
   expect_false(is_not_min_max_best(as.numeric(out_round_1[1, 3:5])))
@@ -177,11 +176,11 @@ test_that("Info", {
                   verbose = FALSE)
   # All id in Round 1 are also in Round 2 and those not in Round 1 are <=NAs
   # Round 1 => 1 NA, Round 2 => 0 NA
-  y <- elic_cont_add_data(x, data_source = round_1[1:5, ],
-                          round = 1, verbose = FALSE) |>
+  y <- cont_add_data(x, data_source = round_1[1:5, ],
+                     round = 1, verbose = FALSE) |>
     suppressWarnings()
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = round_2,
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = round_2,
+                                       round = 2, verbose = FALSE))
   out_round_1 <- out[["data"]][["round_1"]]
   out_round_2 <- out[["data"]][["round_2"]]
   expect_identical(out_round_1[["id"]], out_round_2[["id"]])
@@ -189,11 +188,11 @@ test_that("Info", {
                    rep(NA_real_, (ncol(round_1) - 1)))
 
   # Round 1 => 3 NAs, Round 2 => 0 NA
-  y <- elic_cont_add_data(x, data_source = round_1[1:3, ],
-                          round = 1, verbose = FALSE) |>
+  y <- cont_add_data(x, data_source = round_1[1:3, ],
+                     round = 1, verbose = FALSE) |>
     suppressWarnings()
-  expect_snapshot(out <- elic_cont_add_data(y, data_source = round_2,
-                                            round = 2, verbose = FALSE))
+  expect_snapshot(out <- cont_add_data(y, data_source = round_2,
+                                       round = 2, verbose = FALSE))
   out_round_1 <- out[["data"]][["round_1"]]
   out_round_2 <- out[["data"]][["round_2"]]
   expect_identical(out_round_1[["id"]], out_round_2[["id"]])
@@ -203,8 +202,7 @@ test_that("Info", {
   }
 
   # Success adding data.frame
-  expect_snapshot(out <- elic_cont_add_data(x, data_source = round_1,
-                                            round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = round_1, round = 1))
   expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
   hashed_id <- dplyr::pull(round_1, "name") |>
     stand_names() |>
@@ -214,8 +212,7 @@ test_that("Info", {
   files <- list.files(path = system.file("extdata", package = "elicitr"),
                       pattern = "round_",
                       full.names = TRUE)
-  expect_snapshot(out <- elic_cont_add_data(x, data_source = files[[1]],
-                                            round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = files[[1]], round = 1))
   expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
   hashed_id <- dplyr::pull(round_1, "name") |>
     stand_names() |>
@@ -225,7 +222,7 @@ test_that("Info", {
   file <- list.files(path = system.file("extdata", package = "elicitr"),
                      pattern = "rounds",
                      full.names = TRUE)
-  expect_snapshot(out <- elic_cont_add_data(x, data_source = file, round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = file, round = 1))
   expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
                tolerance = testthat_tolerance())
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
@@ -240,9 +237,7 @@ test_that("Info", {
                   elic_types = "11",
                   experts = 6,
                   verbose = FALSE)
-  expect_snapshot(out <- elic_cont_add_data(x,
-                                            data_source = gs,
-                                            round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = gs, round = 1))
   # Double entry has been removed
   expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric
@@ -261,8 +256,8 @@ test_that("Output", {
                   verbose = FALSE)
   y <- round_1
   colnames(y) <- letters[1:9]
-  z <- elic_cont_add_data(x, data_source = y, round = 1, verbose = FALSE) |>
-    elic_cont_add_data(data_source = round_2, round = 2, verbose = FALSE)
+  z <- cont_add_data(x, data_source = y, round = 1, verbose = FALSE) |>
+    cont_add_data(data_source = round_2, round = 2, verbose = FALSE)
   cols <- c("id", "cat_best", "dog_min", "dog_max", "dog_best",
             "fish_min", "fish_max", "fish_best", "fish_conf")
   expect_identical(colnames(z[["data"]][["round_1"]]), cols)

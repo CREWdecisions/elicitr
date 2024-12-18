@@ -90,12 +90,12 @@ my_elicitation_cont <- cont_start(var = c("var1", "var2", "var3"),
 my_elicitation_cont
 ```
 
-Once the metadata has been added to the `elic_cont` object, the data of the first round of elicitation can be added with the function `elic_cont_add_data()`:
+Once the metadata has been added to the `elic_cont` object, the data of the first round of elicitation can be added with the function `cont_add_data()`:
 
 ```{r}
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_1,
-                                          round = 1)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_1,
+                                     round = 1)
 ```
 
 The information message confirms that the data for the first round has been added to the `elic_cont` object from a `data.frame`. Besides `data frames`, elicitr also allows users to add data from `.csv` or `.xlsx` files, and from Google Sheets.
@@ -103,9 +103,9 @@ The information message confirms that the data for the first round has been adde
 If you conducted a second round of elicitation, it can be added to the `elic_cont` object after the first round has been added:
 
 ```{r}
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_2,
-                                          round = 2)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_2,
+                                     round = 2)
 ```
 
 To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the `id` column. These are then used to match the expert’s answers in the two rounds.

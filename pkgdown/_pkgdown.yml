@@ -9,7 +9,7 @@ reference:
   desc: Functions for handling and plotting continuous variables.
   contents:
   - cont_start
-  - elic_cont_add_data
+  - cont_add_data
   - elic_cont_get_data
   - elic_cont_plot
 

@@ -4,8 +4,8 @@ create_cont_obj <- function() {
              elic_types = "134",
              experts = 6,
              verbose = FALSE) |>
-    elic_cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE) |>
-    elic_cont_add_data(data_source = round_2, round = 2, verbose = FALSE)
+    cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE) |>
+    cont_add_data(data_source = round_2, round = 2, verbose = FALSE)
 }
 
 create_cat_obj <- function() {

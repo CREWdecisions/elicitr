@@ -437,12 +437,15 @@ read_file <- function(data_source,
       tibble::as_tibble()
 
   } else {
+
+    fn <- as.list(sys.call(-2))[[1]]
+
     error <- "The extension of the provided file is {.val .{ext}}, supported \\
               are {.val .csv} or {.val .xlsx}."
 
     cli::cli_abort(c("Unsupported file extension:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
+                     "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env(n = 2))
   }
 

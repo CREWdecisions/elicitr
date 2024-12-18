@@ -39,7 +39,7 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Get data from an \link{elic_cont} object.
+\code{cont_get_data()} gets data from an \link{elic_cont} object.
 }
 \details{
 One one optional argument can be specified. If more than one is provided, the
@@ -93,8 +93,8 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  elic_cont_add_data(data_source = round_1, round = 1) |>
-  elic_cont_add_data(data_source = round_2, round = 2)
+  cont_add_data(data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_2, round = 2)
 
 # Get all data from round 1
 elic_cont_get_data(my_elicit, round = 1)
@@ -120,8 +120,8 @@ elic_cont_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
 Other cont data helpers: 
-\code{\link{cont_start}()},
-\code{\link{elic_cont_add_data}()}
+\code{\link{cont_add_data}()},
+\code{\link{cont_start}()}
 }
 \author{
 Sergio Vignali

@@ -144,12 +144,12 @@ my_elicitation_cont
 
 Once the metadata has been added to the `elic_cont` object, the data of
 the first round of elicitation can be added with the function
-`elic_cont_add_data()`:
+`cont_add_data()`:
 
 ``` r
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_1,
-                                          round = 1)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_1,
+                                     round = 1)
 #> ✔ Data added to "Round 1" from "data.frame"
 ```
 
@@ -162,9 +162,9 @@ If you conducted a second round of elicitation, it can be added to the
 `elic_cont` object after the first round has been added:
 
 ``` r
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_2,
-                                          round = 2)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_2,
+                                     round = 2)
 #> ✔ Data added to "Round 2" from "data.frame"
 ```
 
