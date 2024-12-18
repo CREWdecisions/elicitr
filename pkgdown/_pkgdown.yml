@@ -17,7 +17,7 @@ reference:
   desc: Functions for handling and plotting categorical data.
   contents:
   - cat_start
-  - elic_cat_add_data
+  - cat_add_data
   - elic_cat_get_data
   - cat_sample_data
 

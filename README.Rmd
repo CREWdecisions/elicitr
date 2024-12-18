@@ -173,7 +173,7 @@ my_elicitation_cat
 
 #### Functions under development
 
-* `elic_cat_add_data()`
+* `cat_add_data()`
 * `elic_cat_get_data()`
 * `elic_cat_plot_data`
 

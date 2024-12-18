@@ -75,9 +75,9 @@ my_elicit <- cat_start(levels = my_levels,
                        sites = my_sites,
                        experts = 6,
                        mechanisms = my_mechanisms) |>
-  elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+  cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
+  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 
 # Sample data from Mechanism 1 for all sites using the basic method
 samp <- cat_sample_data(my_elicit,
@@ -99,8 +99,8 @@ Biological Invasions, 26(8), 2707–2721.
 }
 \seealso{
 Other cat data helpers: 
+\code{\link{cat_add_data}()},
 \code{\link{cat_start}()},
-\code{\link{elic_cat_add_data}()},
 \code{\link{elic_cat_get_data}()}
 }
 \author{

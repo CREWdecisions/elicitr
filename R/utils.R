@@ -485,7 +485,7 @@ clean_gs_data <- function(x) {
 
   # This is to avoid errors if the function is called directly within a test
   if (as.list(sys.call())[[2]][[1]] != "dplyr::mutate" &&
-        as.list(sys.call(-2))[[1]] == "elic_cat_add_data") {
+        as.list(sys.call(-2))[[1]] == "cat_add_data") {
     cols <- 1:3
   }
 

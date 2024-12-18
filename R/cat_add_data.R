@@ -3,8 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cat_add_data()` adds data to an [elic_cat] object from different
-#' sources.
+#' `cat_add_data()` adds data to an [elic_cat] object from different sources.
 #'
 #' @param x an object of class [elic_cat].
 #' @param mechanism character string that indicates the machanism to which the
@@ -33,9 +32,10 @@
 #' * The final column should be the estimates of each expert for each site and
 #' impact level.
 #'
-#' The name of the columns is not important, `elic_cat_add_data()` will
-#' overwrite them according to the following convention:
-#' * The first column will be renamed `id`, the second column `level`, the third
+#' The name of the columns is not important, `cat_add_data()` will overwrite
+#' them according to the following convention:
+#'
+#' The first column will be renamed `id`, the second column `level`, the third
 #' column `site`, the fourth column `confidence`, and the fifth column
 #' `estimate`.
 #'
@@ -86,22 +86,22 @@
 #'
 #' # Add data for the three mechanisms from a data.frame. Notice that the
 #' # three commands can be piped
-#' my_elicit <- elic_cat_add_data(x,
-#'                                data_source = mechanism_1,
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x,
+#'                           data_source = mechanism_1,
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 #' my_elicit
 #'
 #' # Add data for the first and second round from a csv file
 #' files <- list.files(path = system.file("extdata", package = "elicitr"),
 #'                     pattern = "mechanism_",
 #'                     full.names = TRUE)
-#' my_elicit <- elic_cat_add_data(x,
-#'                                data_source = files[1],
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = files[3], mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x,
+#'                           data_source = files[1],
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = files[3], mechanism = "mechanism_3")
 #' my_elicit
 #'
 #' # Add data for the first and second round from a xlsx file with three sheets
@@ -109,27 +109,28 @@
 #'                    pattern = "mechanisms",
 #'                    full.names = TRUE)
 #' # Using the sheet index
-#' my_elicit <- elic_cat_add_data(x,
-#'                                data_source = file,
-#'                                sheet = 1,
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = file,
-#'                     sheet = 2,
-#'                     mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = file,
-#'                     sheet = 3,
-#'                     mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x,
+#'                           data_source = file,
+#'                           sheet = 1,
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = file,
+#'                sheet = 2,
+#'                mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = file,
+#'                sheet = 3,
+#'                mechanism = "mechanism_3")
 #' my_elicit
 #' # Using the sheet name
-#' my_elicit <- elic_cat_add_data(x, data_source = file,
-#'                                sheet = "Mechanism 1",
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = file,
-#'                     sheet = "Mechanism 2",
-#'                     mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = file,
-#'                     sheet = "Mechanism 3",
-#'                     mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x,
+#'                           data_source = file,
+#'                           sheet = "Mechanism 1",
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = file,
+#'                sheet = "Mechanism 2",
+#'                mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = file,
+#'                sheet = "Mechanism 3",
+#'                mechanism = "mechanism_3")
 #' my_elicit
 #'
 #' @examplesIf interactive()
@@ -137,36 +138,36 @@
 #' googlesheets4::gs4_deauth()
 #' gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
 #' # Using the sheet index
-#' my_elicit <- elic_cat_add_data(x,
-#'                                data_source = gs,
-#'                                sheet = 1,
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = gs,
-#'                     sheet = 2,
-#'                     mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = gs,
-#'                     sheet = 3,
-#'                     mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x,
+#'                           data_source = gs,
+#'                           sheet = 1,
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = gs,
+#'                sheet = 2,
+#'                mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = gs,
+#'                sheet = 3,
+#'                mechanism = "mechanism_3")
 #' my_elicit
 #' # Using the sheet name
-#' my_elicit <- elic_cat_add_data(x, data_source = gs,
-#'                                sheet = "Mechanism 1",
-#'                                mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = gs,
-#'                     sheet = "Mechanism 2",
-#'                     mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = gs,
-#'                     sheet = "Mechanism 3",
-#'                     mechanism = "mechanism_3")
+#' my_elicit <- cat_add_data(x, data_source = gs,
+#'                           sheet = "Mechanism 1",
+#'                           mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = gs,
+#'                sheet = "Mechanism 2",
+#'                mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = gs,
+#'                sheet = "Mechanism 3",
+#'                mechanism = "mechanism_3")
 #' my_elicit
-elic_cat_add_data <- function(x,
-                              data_source,
-                              mechanism,
-                              ...,
-                              sep = ",",
-                              sheet = 1,
-                              overwrite = FALSE,
-                              verbose = TRUE) {
+cat_add_data <- function(x,
+                         data_source,
+                         mechanism,
+                         ...,
+                         sep = ",",
+                         sheet = 1,
+                         overwrite = FALSE,
+                         verbose = TRUE) {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
@@ -354,7 +355,7 @@ check_column_format <- function(x, col) {
 
     error <- "The column containing the {what} is not formatted as \\
               expected."
-    info <- "See Data format in {.fn elicitr::elic_cat_add_data}."
+    info <- "See Data format in {.fn elicitr::cat_add_data}."
 
     cli::cli_abort(c("Malformatted dataset:",
                      "x" = error,

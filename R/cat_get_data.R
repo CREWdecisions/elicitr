@@ -5,7 +5,7 @@
 #'
 #' Get data from an [elic_cat] object.
 #'
-#' @inheritParams elic_cat_add_data
+#' @inheritParams cat_add_data
 #' @param site character string with the name of the site or character vector
 #' with the sites that you want to extract from the data. Use `all` for all
 #' sites.
@@ -28,9 +28,9 @@
 #'                        sites = my_sites,
 #'                        experts = 6,
 #'                        mechanisms = my_mechanisms) |>
-#'   elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-#'   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'   cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
+#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 #'
 #' # Get all data from Mechanism 1
 #' elic_cat_get_data(my_elicit, mechanism = "mechanism_1")

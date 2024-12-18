@@ -17,13 +17,13 @@ create_cat_obj <- function() {
             experts = 6,
             mechanisms = my_mechanisms,
             verbose = FALSE) |>
-    elic_cat_add_data(data_source = mechanism_1,
-                      mechanism = "mechanism_1",
-                      verbose = FALSE) |>
-    elic_cat_add_data(data_source = mechanism_2,
-                      mechanism = "mechanism_2",
-                      verbose = FALSE) |>
-    elic_cat_add_data(data_source = mechanism_3,
-                      mechanism = "mechanism_3",
-                      verbose = FALSE)
+    cat_add_data(data_source = mechanism_1,
+                 mechanism = "mechanism_1",
+                 verbose = FALSE) |>
+    cat_add_data(data_source = mechanism_2,
+                 mechanism = "mechanism_2",
+                 verbose = FALSE) |>
+    cat_add_data(data_source = mechanism_3,
+                 mechanism = "mechanism_3",
+                 verbose = FALSE)
 }
