@@ -329,7 +329,7 @@ check_method <- function(x, method) {
 
 
   if (inherits(x, "elic_cat")) {
-    methods <- c("basc", "bootstrap")
+    methods <- c("basic", "bootstrap")
     data_type <- "categorical"
   } else {
     methods <- "basic"

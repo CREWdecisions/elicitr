@@ -24,13 +24,16 @@ Imports:
     cli,
     digest,
     dplyr,
+    extraDistr,
     ggplot2,
     googlesheets4,
+    miceadds,
     openxlsx,
     rlang,
     stats,
     stringr,
     tibble,
+    tidyr,
     tools,
     utils
 Suggests:

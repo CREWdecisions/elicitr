@@ -7,8 +7,8 @@
 #'
 #' @inheritParams elic_cat_add_data
 #' @param site character string with the name of the site or character vector
-#' with more sitess that you want to extract from the data. Use `all` for all
-#' variables.
+#' with the sites that you want to extract from the data. Use `all` for all
+#' sites.
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
