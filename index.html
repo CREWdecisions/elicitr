@@ -95,7 +95,7 @@ Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-bas
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://crewdecisions.github.io/elicitr/">elicitr</a></span><span class="op">)</span></span></code></pre></div>
-<p>All the functions in the elicitr package start with the prefix <code>elic_</code>. After that, two prefixes are available: <code>elic_cont</code> and <code>elic_cat</code>. This design choice is intended to enhance functions discovery.<br><code>elic_cont</code> functions are used for the elicitation of continuous variables while <code>elic_cat</code> functions for the elicitation of categorical variables.</p>
+<p>All the functions in the elicitr package start with two prefixes: <code>cont</code> and <code>cat</code>. This design choice is intended to enhance functions discovery.<br><code>cont</code> functions are used for the elicitation of continuous variables while <code>cat</code> functions for the elicitation of categorical variables.</p>
 <div class="section level4">
 <h4 id="how-elicitr-works">How elicitr works<a class="anchor" aria-label="anchor" href="#how-elicitr-works"></a>
 </h4>
@@ -139,7 +139,7 @@ In total, there are five simulated datasets provided in the package. They are in
 <div class="section level4">
 <h4 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h4>
-<p>Any analysis of continuous variables starts by creating the <code>elic_cont</code> object with the function <code><a href="reference/elic_cont_start.html">elic_cont_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cont</code> object, four parameters must be specified:</p>
+<p>Any analysis of continuous variables starts by creating the <code>elic_cont</code> object with the function <code><a href="reference/cont_start.html">cont_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cont</code> object, four parameters must be specified:</p>
 <ul>
 <li>
 <code>var</code> the number of variables (i.e. the number of topics in your elicitation)</li>
@@ -151,11 +151,11 @@ In total, there are five simulated datasets provided in the package. They are in
 <code>experts</code> the number of experts that replied to the elicitation</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_start.html">elic_cont_start</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span>
-<span>                                       var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span>
-<span>                                       elic_types <span class="op">=</span> <span class="st">"134"</span>,</span>
-<span>                                       experts <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                                       title <span class="op">=</span> <span class="st">"Continuous elicitation example"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_start.html">cont_start</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span>
+<span>                                  var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span>
+<span>                                  elic_types <span class="op">=</span> <span class="st">"134"</span>,</span>
+<span>                                  experts <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                                  title <span class="op">=</span> <span class="st">"Continuous elicitation example"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ &lt;elic_cont&gt; object for "Continuous elicitation example" correctly initialised</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_elicitation_cont</span></span>
@@ -167,25 +167,25 @@ In total, there are five simulated datasets provided in the package. They are in
 <span><span class="co">#&gt; • Elicitation types: "1p", "3p", and "4p"</span></span>
 <span><span class="co">#&gt; • Number of experts: 6</span></span>
 <span><span class="co">#&gt; • Number of rounds: 0</span></span></code></pre></div>
-<p>Once the metadata has been added to the <code>elic_cont</code> object, the data of the first round of elicitation can be added with the function <code><a href="reference/elic_cont_add_data.html">elic_cont_add_data()</a></code>:</p>
+<p>Once the metadata has been added to the <code>elic_cont</code> object, the data of the first round of elicitation can be added with the function <code><a href="reference/cont_add_data.html">cont_add_data()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_add_data.html">elic_cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>                                          data_source <span class="op">=</span> <span class="va">round_1</span>,</span>
-<span>                                          round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
+<span>                                     data_source <span class="op">=</span> <span class="va">round_1</span>,</span>
+<span>                                     round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Data added to "Round 1" from "data.frame"</span></span></code></pre></div>
 <p>The information message confirms that the data for the first round has been added to the <code>elic_cont</code> object from a <code>data.frame</code>. Besides <code>data frames</code>, elicitr also allows users to add data from <code>.csv</code> or <code>.xlsx</code> files, and from Google Sheets.</p>
 <p>If you conducted a second round of elicitation, it can be added to the <code>elic_cont</code> object after the first round has been added:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cont_add_data.html">elic_cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>                                          data_source <span class="op">=</span> <span class="va">round_2</span>,</span>
-<span>                                          round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
+<span>                                     data_source <span class="op">=</span> <span class="va">round_2</span>,</span>
+<span>                                     round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Data added to "Round 2" from "data.frame"</span></span></code></pre></div>
 <p>To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the <code>id</code> column. These are then used to match the expert’s answers in the two rounds.</p>
-<p>The function <code><a href="reference/elic_cont_get_data.html">elic_cont_get_data()</a></code> retrieves data from an <code>elicit</code> object. It is possible to get the whole dataset of a given round, or extract only the data for a given variable, variable type, or elicitation type:</p>
+<p>The function <code><a href="reference/cont_get_data.html">cont_get_data()</a></code> retrieves data from an <code>elic_cont</code> object. It is possible to get the whole dataset of a given round, or extract only the data for a given variable, variable type, or elicitation type:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/elic_cont_get_data.html">elic_cont_get_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>                   round <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                   var <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cont_get_data.html">cont_get_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
+<span>              round <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>              var <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
 <span><span class="co">#&gt;   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
@@ -196,13 +196,13 @@ In total, there are five simulated datasets provided in the package. They are in
 <span><span class="co">#&gt; 5 3cc9c29        -5       13       18        16     0.38     0.88      0.68</span></span>
 <span><span class="co">#&gt; 6 3d32ab9         3       20       26        25     0.35     0.85      0.65</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
-<p>Finally, data can be plotted using the function <code><a href="reference/elic_cont_plot.html">elic_cont_plot()</a></code>. This function plots data belonging to a given round and for a given variable.</p>
+<p>Finally, data can be plotted using the function <code><a href="reference/cont_plot.html">cont_plot()</a></code>. This function plots data belonging to a given round and for a given variable.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/elic_cont_plot.html">elic_cont_plot</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>               round <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>               group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>               var <span class="op">=</span> <span class="st">"var3"</span>,</span>
-<span>               xlab <span class="op">=</span> <span class="st">"Variable 3"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cont_plot.html">cont_plot</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
+<span>          round <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>          group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          var <span class="op">=</span> <span class="st">"var3"</span>,</span>
+<span>          xlab <span class="op">=</span> <span class="st">"Variable 3"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Rescaled min and max</span></span></code></pre></div>
 <p><img src="reference/figures/README-cont_plot-1.png" width="100%"></p>
 <p>Variable 3 (the plotted variable) is the result of a four points elicitation, where minimum and maximum estimates, best guess, and expert confidence is provided. In the plot, the best guess is represented with a dot, and the range between minimum and maximum estimates is represented with a line. Expert estimates are represented in purple, while the group’s mean is represented in orange.</p>
@@ -268,7 +268,7 @@ In total, there are five simulated datasets provided in the package. They are in
 <div class="section level4">
 <h4 id="functions-1">Functions<a class="anchor" aria-label="anchor" href="#functions-1"></a>
 </h4>
-<p>Just like continuous variables, any analysis of categorical variables starts by creating the <code>elic_cat</code> object with the function <code><a href="reference/elic_cat_start.html">elic_cat_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cat</code> object, four parameters must be specified:</p>
+<p>Just like continuous variables, any analysis of categorical variables starts by creating the <code>elic_cat</code> object with the function <code><a href="reference/cat_start.html">cat_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cat</code> object, four parameters must be specified:</p>
 <ul>
 <li>
 <code>levels</code> the names of the levels of impact you used in your elicitation</li>
@@ -280,11 +280,11 @@ In total, there are five simulated datasets provided in the package. They are in
 <code>mechanisms</code> the names of the mechanisms of impact investigated</li>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/elic_cat_start.html">elic_cat_start</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level_1"</span>, <span class="st">"level_2"</span>, <span class="st">"level_3"</span>, <span class="st">"level_4"</span>, <span class="st">"level_5"</span><span class="op">)</span>,</span>
-<span>                                     sites <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_2"</span>, <span class="st">"site_3"</span>, <span class="st">"site_4"</span><span class="op">)</span>,</span>
-<span>                                     experts <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                                     mechanisms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>,<span class="st">"mechanism_2"</span>, <span class="st">"mechanism_3"</span><span class="op">)</span>,</span>
-<span>                                     title <span class="op">=</span> <span class="st">"Categorical elicitation example"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cat_start.html">cat_start</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level_1"</span>, <span class="st">"level_2"</span>, <span class="st">"level_3"</span>, <span class="st">"level_4"</span>, <span class="st">"level_5"</span><span class="op">)</span>,</span>
+<span>                                sites <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_2"</span>, <span class="st">"site_3"</span>, <span class="st">"site_4"</span><span class="op">)</span>,</span>
+<span>                                experts <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                                mechanisms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>,<span class="st">"mechanism_2"</span>, <span class="st">"mechanism_3"</span><span class="op">)</span>,</span>
+<span>                                title <span class="op">=</span> <span class="st">"Categorical elicitation example"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ &lt;elic_cat&gt; object for "Categorical elicitation example" correctly initialised</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_elicitation_cat</span></span>
@@ -294,15 +294,15 @@ In total, there are five simulated datasets provided in the package. They are in
 <span><span class="co">#&gt; • Levels: "level_1", "level_2", "level_3", "level_4", and "level_5"</span></span>
 <span><span class="co">#&gt; • Sites: "site_1", "site_2", "site_3", and "site_4"</span></span>
 <span><span class="co">#&gt; • Number of experts: 6</span></span>
-<span><span class="co">#&gt; • Mechanismss: "mechanism_1", "mechanism_2", and "mechanism_3"</span></span>
+<span><span class="co">#&gt; • Mechanisms: "mechanism_1", "mechanism_2", and "mechanism_3"</span></span>
 <span><span class="co">#&gt; • Data available for 0 mechanisms</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="functions-under-development">Functions under development<a class="anchor" aria-label="anchor" href="#functions-under-development"></a>
 </h4>
 <ul>
-<li><code><a href="reference/elic_cat_add_data.html">elic_cat_add_data()</a></code></li>
-<li><code><a href="reference/elic_cat_get_data.html">elic_cat_get_data()</a></code></li>
+<li><code><a href="reference/cat_add_data.html">cat_add_data()</a></code></li>
+<li><code><a href="reference/cat_get_data.html">cat_get_data()</a></code></li>
 <li><code>elic_cat_plot_data</code></li>
 </ul>
 </div>
