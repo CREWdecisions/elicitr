@@ -1,6 +1,10 @@
 #' Sample categorical data
 #'
-#' Sample data based on expert estimates stored in the [`elic_cat`] object.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `cat_sample_data()` samples data based on expert estimates stored in the
+#' [`elic_cat`] object.
 #'
 #' @inheritParams elic_cat_get_data
 #' @param method character string with the name of the method to sample the

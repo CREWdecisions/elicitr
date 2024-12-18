@@ -40,7 +40,10 @@ An \code{\link[tibble:tibble]{tibble}} with the sampled data. This object has
 the additional class \code{elic_cat_sample} used to implement the plotting method.
 }
 \description{
-Sample data based on expert estimates stored in the \code{\link{elic_cat}} object.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{cat_sample_data()} samples data based on expert estimates stored in the
+\code{\link{elic_cat}} object.
 }
 \section{Methods}{
 
