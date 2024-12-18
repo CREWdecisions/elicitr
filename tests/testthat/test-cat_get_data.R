@@ -22,13 +22,13 @@ test_that("Errors", {
                                     mechanism = "mechanism_4"),
                   error = TRUE)
 
-  # When site is available in the object
+  # When site is not available in the object
   expect_snapshot(elic_cat_get_data(obj,
                                     mechanism = "mechanism_1",
                                     site = "site_5"),
                   error = TRUE)
 
-  # When site is not among the available sites
+  # When site is not among the available sites in the object
   expect_snapshot(elic_cat_get_data(obj,
                                     mechanism = "mechanism_3",
                                     site = "site_4"),

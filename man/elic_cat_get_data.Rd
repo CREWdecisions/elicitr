@@ -16,8 +16,8 @@ data belongs.}
 function.}
 
 \item{site}{character string with the name of the site or character vector
-with more sitess that you want to extract from the data. Use \code{all} for all
-variables.}
+with the sites that you want to extract from the data. Use \code{all} for all
+sites.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the extracted data.
@@ -56,6 +56,7 @@ elic_cat_get_data(my_elicit,
 }
 \seealso{
 Other cat data helpers: 
+\code{\link{cat_sample_data}()},
 \code{\link{elic_cat_add_data}()},
 \code{\link{elic_cat_start}()}
 }

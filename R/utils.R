@@ -312,6 +312,39 @@ check_value_in_element <- function(x,
   }
 }
 
+#' Check method
+#'
+#' Check if the aggregation method is available for the data type.
+#'
+#' @param x [elic_cont] or [elic_cat] object.
+#' @param method character with the aggregation method.
+#'
+#' @return An error if the method is not available for the data type.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_method <- function(x, method) {
+
+  fn <- as.list(sys.call(-1))[[1]]
+
+
+  if (inherits(x, "elic_cat")) {
+    methods <- c("basic", "bootstrap")
+    data_type <- "categorical"
+  } else {
+    methods <- "basic"
+    data_type <- "continuous"
+  }
+
+  if (!method %in% methods) {
+    cli::cli_abort(c("Invalid value for {.arg method}:",
+                     "x" = "The method {.val {method}} is not available for \\
+                            {data_type} data.",
+                     "i" = "See Methods in {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data
@@ -493,6 +526,17 @@ split_short_codes <- function(x,
   output
 }
 
+#' Anonymise names
+#'
+#' Converts names to anonymous ids from the names of the experts.
+#'
+#' @param x [tibble][tibble::tibble] with the data collected during the
+#' elicitation process.
+#'
+#' @returns A [tibble][tibble::tibble] with names converted to anonymous ids.
+#' @noRd
+#'
+#' @author Sergio Vignali
 anonimise_names <- function(x) {
 
   col_1 <- colnames(x)[[1]]

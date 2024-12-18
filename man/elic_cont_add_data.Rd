@@ -39,7 +39,7 @@ from \emph{Google Sheets}.}
 \item{overwrite}{logical, whether to overwrite existing data already added to
 the \link{elic_cont} object.}
 
-\item{verbose}{logical, if \code{TRUE} prints informative messages.}
+\item{verbose}{logical, if \code{TRUE} it prints informative messages.}
 }
 \value{
 The provided object of class \link{elic_cont} updated with the data.
