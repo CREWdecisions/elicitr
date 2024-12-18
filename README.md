@@ -193,15 +193,15 @@ cont_get_data(my_elicitation_cont,
 #> # ℹ 1 more variable: var3_conf <int>
 ```
 
-Finally, data can be plotted using the function `elic_cont_plot()`. This
+Finally, data can be plotted using the function `cont_plot()`. This
 function plots data belonging to a given round and for a given variable.
 
 ``` r
-elic_cont_plot(my_elicitation_cont,
-               round = 2,
-               group = TRUE,
-               var = "var3",
-               xlab = "Variable 3")
+cont_plot(my_elicitation_cont,
+          round = 2,
+          group = TRUE,
+          var = "var3",
+          xlab = "Variable 3")
 #> ✔ Rescaled min and max
 ```
 

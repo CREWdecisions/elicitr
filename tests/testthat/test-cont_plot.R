@@ -1,70 +1,68 @@
 test_that("Errors", {
   obj <- create_cont_obj()
   # When x is not an elicit object
-  expect_snapshot(elic_cont_plot("abc", round = 1, var = "var1"),
+  expect_snapshot(cont_plot("abc", round = 1, var = "var1"),
                   error = TRUE)
   # When round is not 1 or 2
-  expect_snapshot(elic_cont_plot(obj, round = 3, var = "var1"),
+  expect_snapshot(cont_plot(obj, round = 3, var = "var1"),
                   error = TRUE)
   # When var is not a variable in the elicit object
-  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var5"),
+  expect_snapshot(cont_plot(obj, round = 1, var = "var5"),
                   error = TRUE)
   # When var is a character vector of length > 1
-  expect_snapshot(elic_cont_plot(obj, round = 1,
+  expect_snapshot(cont_plot(obj, round = 1,
                                  var = c("var1", "var5", "var7")),
                   error = TRUE)
   # Truth for 1p----
   # When truth is not a list
-  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1", truth = 0.8),
+  expect_snapshot(cont_plot(obj, round = 1, var = "var1", truth = 0.8),
                   error = TRUE)
   # When truth is a list with wrong elements
-  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1",
-                                 truth = list(min = 0.7, max = 0.9)),
+  expect_snapshot(cont_plot(obj, round = 1, var = "var1",
+                            truth = list(min = 0.7, max = 0.9)),
                   error = TRUE)
   # When truth is a list with the right amount of elements but wrong name
-  expect_snapshot(elic_cont_plot(obj, round = 1, var = "var1",
-                                 truth = list(beast = 0.8)),
+  expect_snapshot(cont_plot(obj, round = 1, var = "var1",
+                            truth = list(beast = 0.8)),
                   error = TRUE)
   # Truth for 3p----
   # When truth is a list with wrong elements
-  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var2",
-                                 truth = list(min = 0.7, max = 0.9)),
+  expect_snapshot(cont_plot(obj, round = 2, var = "var2",
+                            truth = list(min = 0.7, max = 0.9)),
                   error = TRUE)
   # When truth is a list with the right amount of elements but wrong names
-  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var2",
-                                 truth = list(min = 0.7, beast = 0.8,
-                                              max = 0.9)),
+  expect_snapshot(cont_plot(obj, round = 2, var = "var2",
+                            truth = list(min = 0.7, beast = 0.8, max = 0.9)),
                   error = TRUE)
   # Truth for 4p----
   # When truth is a list with wrong elements
-  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var3",
-                                 truth = list(min = 0.7, max = 0.9)),
+  expect_snapshot(cont_plot(obj, round = 2, var = "var3",
+                            truth = list(min = 0.7, max = 0.9)),
                   error = TRUE)
   # When truth is a list with the right amount of elements but wrong names
-  expect_snapshot(elic_cont_plot(obj, round = 2, var = "var3",
-                                 truth = list(min = 0.7, beast = 0.8,
-                                              max = 0.9, conf = 100)),
+  expect_snapshot(cont_plot(obj, round = 2, var = "var3",
+                            truth = list(min = 0.7, beast = 0.8,
+                                         max = 0.9, conf = 100)),
                   error = TRUE)
 })
 
 test_that("Warnings", {
   obj <- create_cont_obj()
   # When rescaled values are not within the limits
-  expect_snapshot(p <- elic_cont_plot(obj, round = 1, var = "var3",
-                                      verbose = FALSE))
+  expect_snapshot(p <- cont_plot(obj, round = 1, var = "var3", verbose = FALSE))
 })
 
 test_that("Info", {
   obj <- create_cont_obj()
   # When values are rescaled
-  expect_snapshot(p <- elic_cont_plot(obj, round = 2, var = "var3"))
+  expect_snapshot(p <- cont_plot(obj, round = 2, var = "var3"))
 })
 
 test_that("Output", {
   obj <- create_cont_obj()
   # 1p----
   # Plot for a variable with 1 point elicitation
-  p <- elic_cont_plot(obj, round = 2, var = "var1", verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var1", verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -78,8 +76,7 @@ test_that("Output", {
                    obj[["data"]][["round_2"]][["var1_best"]])
 
   # Plot for a variable with 1 point elicitation and group
-  p <- elic_cont_plot(obj, round = 2, var = "var1", group = TRUE,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var1", group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -94,8 +91,8 @@ test_that("Output", {
                         na.rm = TRUE))
 
   # Plot for a variable with 1 point elicitation and truth
-  p <- elic_cont_plot(obj, round = 2, var = "var1", truth = list(best = 0.8),
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var1", truth = list(best = 0.8),
+                 verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -108,8 +105,8 @@ test_that("Output", {
   expect_identical(p[["data"]][["best"]][[7]], 0.8)
 
   # Plot for a variable with 1 point elicitation, group and truth
-  p <- elic_cont_plot(obj, round = 2, var = "var1", group = TRUE,
-                      truth = list(best = 0.8), verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var1", group = TRUE,
+                 truth = list(best = 0.8), verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -126,7 +123,7 @@ test_that("Output", {
 
   # 3p----
   # Plot for a variable with 3 points elicitation
-  p <- elic_cont_plot(obj, round = 2, var = "var2", verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var2", verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -142,8 +139,7 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Plot for a variable with 3 points elicitation and group
-  p <- elic_cont_plot(obj, round = 2, var = "var2", group = TRUE,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var2", group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -164,9 +160,8 @@ test_that("Output", {
 
   # Plot for a variable with 3 points elicitation and truth
   truth_data <- list(min = 0.7, max = 0.9, best = 0.8)
-  p <- elic_cont_plot(obj, round = 2, var = "var2",
-                      truth = truth_data,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var2",
+                 truth = truth_data, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -186,9 +181,8 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Plot for a variable with 3 points elicitation, group and truth
-  p <- elic_cont_plot(obj, round = 2, var = "var2",
-                      truth = truth_data,
-                      group = TRUE, verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var2", truth = truth_data,
+                 group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -212,8 +206,7 @@ test_that("Output", {
 
   # 4p----
   # Plot for a variable with 4 points elicitation
-  p <- elic_cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3", scale_conf = 90, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -234,8 +227,8 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Plot for a variable with 4 points elicitation and group
-  p <- elic_cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
-                      group = TRUE, verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
+                 group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -258,9 +251,8 @@ test_that("Output", {
   # Plot for a variable with 4 points elicitation and truth
   truth_data <- list(min = 0.7, max = 0.9, best = 0.8, conf = 100)
   truth_data_rescaled <- rescale_data(truth_data, s = 90)
-  p <- elic_cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
-                      truth = truth_data,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
+                 truth = truth_data, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -281,10 +273,9 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Plot for a variable with 4 points elicitation, group and truth
-  p <- elic_cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
-                      truth = list(min = 0.7, max = 0.9,
-                                   best = 0.8, conf = 100),
-                      group = TRUE, verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3", scale_conf = 90,
+                 truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
+                 group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is.ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
@@ -308,39 +299,39 @@ test_that("Output", {
                    ignore_attr = TRUE)
 
   # Colours and shapes----
-  p <- elic_cont_plot(obj, round = 2, var = "var3",
-                      truth = list(min = 0.7, max = 0.9,
-                                   best = 0.8, conf = 100),
-                      group = TRUE,
-                      colour = "yellow",
-                      group_colour = "brown",
-                      truth_colour = "pink",
-                      point_size = 3,
-                      line_width = 2,
-                      title = "Test",
-                      xlab = "test",
-                      ylab = "Text",
-                      family = "serif",
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3",
+                 truth = list(min = 0.7, max = 0.9,
+                              best = 0.8, conf = 100),
+                 group = TRUE,
+                 colour = "yellow",
+                 group_colour = "brown",
+                 truth_colour = "pink",
+                 point_size = 3,
+                 line_width = 2,
+                 title = "Test",
+                 xlab = "test",
+                 ylab = "Text",
+                 family = "serif",
+                 verbose = FALSE)
 
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
-  p <- elic_cont_plot(obj,
-                      round = 2,
-                      var = "var3",
-                      truth = list(min = 0.7, max = 0.9,
-                                   best = 0.8, conf = 100),
-                      group = TRUE,
-                      colour = "yellow",
-                      group_colour = "brown",
-                      truth_colour = "pink",
-                      point_size = 3,
-                      line_width = 2,
-                      title = "Test",
-                      xlab = "test",
-                      ylab = "Text",
-                      family = "serif",
-                      verbose = FALSE)
+  p <- cont_plot(obj,
+                 round = 2,
+                 var = "var3",
+                 truth = list(min = 0.7, max = 0.9,
+                              best = 0.8, conf = 100),
+                 group = TRUE,
+                 colour = "yellow",
+                 group_colour = "brown",
+                 truth_colour = "pink",
+                 point_size = 3,
+                 line_width = 2,
+                 title = "Test",
+                 xlab = "test",
+                 ylab = "Text",
+                 family = "serif",
+                 verbose = FALSE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
   n <- obj[["experts"]]
   expect_identical(ld1[["colour"]][seq_len(n)], rep("yellow", n))
@@ -366,12 +357,9 @@ test_that("Output", {
   # Test theme
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
-  p <- elic_cont_plot(obj, round = 2, var = "var3",
-                      truth = list(min = 0.7, max = 0.9,
-                                   best = 0.8, conf = 100),
-                      group = TRUE,
-                      theme = test_theme,
-                      verbose = FALSE)
+  p <- cont_plot(obj, round = 2, var = "var3",
+                 truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
+                 group = TRUE, theme = test_theme, verbose = FALSE)
   expect_identical(p[["theme"]][["plot.title"]][["size"]], 14)
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
@@ -382,7 +370,7 @@ test_that("Rows with all NAs are removed", {
   obj <- create_cont_obj()
   obj[["data"]][["round_1"]][5:6, 2] <- NA
   obj[["data"]][["round_1"]][1:2, ] <- NA
-  p <- elic_cont_plot(obj, round = 1, var = "var1", verbose = FALSE)
+  p <- cont_plot(obj, round = 1, var = "var1", verbose = FALSE)
   expect_identical(nrow(p[["data"]]), 4L)
   expect_identical(dplyr::pull(p[["data"]][5:6, 2]), rep(NA_integer_, 2))
 

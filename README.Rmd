@@ -118,14 +118,14 @@ cont_get_data(my_elicitation_cont,
               var = "all")
 ```
 
-Finally, data can be plotted using the function `elic_cont_plot()`. This function plots data belonging to a given round and for a given variable.
+Finally, data can be plotted using the function `cont_plot()`. This function plots data belonging to a given round and for a given variable.
 
 ```{r cont_plot}
-elic_cont_plot(my_elicitation_cont,
-               round = 2,
-               group = TRUE,
-               var = "var3",
-               xlab = "Variable 3")
+cont_plot(my_elicitation_cont,
+          round = 2,
+          group = TRUE,
+          var = "var3",
+          xlab = "Variable 3")
 ```
 
 Variable 3 (the plotted variable) is the result of a four points elicitation, where minimum and maximum estimates, best guess, and expert confidence is provided. In the plot, the best guess is represented with a dot, and the range between minimum and maximum estimates is represented with a line. Expert estimates are represented in purple, while the group's mean is represented in orange.
