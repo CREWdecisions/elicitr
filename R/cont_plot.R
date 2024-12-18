@@ -117,7 +117,7 @@ elic_cont_plot <- function(x,
     theme <- elic_theme(family = family)
   }
 
-  data <- elic_cont_get_data(x, round = round, var = var) |>
+  data <- cont_get_data(x, round = round, var = var) |>
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))

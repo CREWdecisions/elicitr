@@ -172,15 +172,15 @@ To keep the anonymity of experts, their names are converted to short
 sha1 hashes and saved in the `id` column. These are then used to match
 the expert’s answers in the two rounds.
 
-The function `elic_cont_get_data()` retrieves data from an `elicit`
+The function `cont_get_data()` retrieves data from an `elic_cont`
 object. It is possible to get the whole dataset of a given round, or
 extract only the data for a given variable, variable type, or
 elicitation type:
 
 ``` r
-elic_cont_get_data(my_elicitation_cont,
-                   round = 1,
-                   var = "all")
+cont_get_data(my_elicitation_cont,
+              round = 1,
+              var = "all")
 #> # A tibble: 6 × 9
 #>   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best
 #>   <chr>       <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>

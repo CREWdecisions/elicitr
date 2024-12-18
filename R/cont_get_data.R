@@ -41,32 +41,32 @@
 #'   cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Get all data from round 1
-#' elic_cont_get_data(my_elicit, round = 1)
+#' cont_get_data(my_elicit, round = 1)
 #'
 #' # Get data by variable name----
 #' # Get data for var3 from round 2
-#' elic_cont_get_data(my_elicit, round = 2, var = "var3")
+#' cont_get_data(my_elicit, round = 2, var = "var3")
 #'
 #' # Get data for var1 and var2 from round 1
-#' elic_cont_get_data(my_elicit, round = 1, var = c("var1", "var2"))
+#' cont_get_data(my_elicit, round = 1, var = c("var1", "var2"))
 #'
 #' # Get data by variable type----
 #' # Get data for variables containing integer numbers
-#' elic_cont_get_data(my_elicit, round = 2, var_types = "Z")
+#' cont_get_data(my_elicit, round = 2, var_types = "Z")
 #' # Get data for variables containing positive integers and probabilities
-#' elic_cont_get_data(my_elicit, round = 2, var_types = "Np")
+#' cont_get_data(my_elicit, round = 2, var_types = "Np")
 #'
 #' # Get data by elicitation type----
 #' # Get data for three points estimates
-#' elic_cont_get_data(my_elicit, round = 2, elic_types = "3")
+#' cont_get_data(my_elicit, round = 2, elic_types = "3")
 #' # Get data for one and four points estimates
-#' elic_cont_get_data(my_elicit, round = 2, elic_types = "14")
-elic_cont_get_data <- function(x,
-                               round,
-                               ...,
-                               var = "all",
-                               var_types = "all",
-                               elic_types = "all") {
+#' cont_get_data(my_elicit, round = 2, elic_types = "14")
+cont_get_data <- function(x,
+                          round,
+                          ...,
+                          var = "all",
+                          var_types = "all",
+                          elic_types = "all") {
 
   check_elic_obj(x, type = "cont")
   check_round(round)
@@ -147,7 +147,7 @@ check_var <- function(x, var) {
 #' Check that only one optional argument is passed, if not, return the first one
 #' and rise a warning.
 #'
-#' @inheritParams elic_cont_get_data
+#' @inheritParams cont_get_data
 #'
 #' @return Character string with one of `var`, `var_types`, `elic_types`. Warns
 #' if more than one optional argument is provided.
@@ -170,7 +170,7 @@ check_optional_args <- function(var, var_types, elic_types) {
     text <- "Only one optional argument can be specified, used the first one \\
              provided: {.arg {arg}}"
     cli::cli_warn(c(text,
-                    "i" = "See Details in {.fn elicitr::elic_cont_get_data}."))
+                    "i" = "See Details in {.fn elicitr::cont_get_data}."))
   } else {
     arg <- args[idx]
   }
