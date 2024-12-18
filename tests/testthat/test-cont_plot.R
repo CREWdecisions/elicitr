@@ -1,5 +1,5 @@
 test_that("Errors", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   # When x is not an elicit object
   expect_snapshot(elic_cont_plot("abc", round = 1, var = "var1"),
                   error = TRUE)
@@ -48,20 +48,20 @@ test_that("Errors", {
 })
 
 test_that("Warnings", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   # When rescaled values are not within the limits
   expect_snapshot(p <- elic_cont_plot(obj, round = 1, var = "var3",
                                       verbose = FALSE))
 })
 
 test_that("Info", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   # When values are rescaled
   expect_snapshot(p <- elic_cont_plot(obj, round = 2, var = "var3"))
 })
 
 test_that("Output", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   # 1p----
   # Plot for a variable with 1 point elicitation
   p <- elic_cont_plot(obj, round = 2, var = "var1", verbose = FALSE)
@@ -379,7 +379,7 @@ test_that("Output", {
 })
 
 test_that("Rows with all NAs are removed", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   obj[["data"]][["round_1"]][5:6, 2] <- NA
   obj[["data"]][["round_1"]][1:2, ] <- NA
   p <- elic_cont_plot(obj, round = 1, var = "var1", verbose = FALSE)
@@ -389,7 +389,7 @@ test_that("Rows with all NAs are removed", {
 })
 
 test_that("get_type()", {
-  obj <- create_elic_cont_obj()
+  obj <- create_cont_obj()
   expect_identical(get_type(obj, "var1", "var"), "Z")
   expect_identical(get_type(obj, "var2", "var"), "N")
   expect_identical(get_type(obj, "var3", "var"), "p")

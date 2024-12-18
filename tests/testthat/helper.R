@@ -1,4 +1,4 @@
-create_elic_cont_obj <- function() {
+create_cont_obj <- function() {
   cont_start(var_names = c("var1", "var2", "var3"),
              var_types = "ZNp",
              elic_types = "134",
