@@ -17,12 +17,11 @@ n_sites <- length(sites)
 get_values <- function() {
   rand_data <- Surrogate::RandVec(a = 0, b = 1, s = 1,
                                   n = n_levels, m = n_experts * n_sites)[[1]] |>
-    round(2)
-
-  diff <- colSums(rand_data) - 1
-
-  # Correct last elements to sum up to 1
-  rand_data[n_levels, ] <- rand_data[n_levels, ] - diff
+    # The following function rounds preserving the sum of the values on each
+    # row, so data needs to be transposed twice, before and after the function
+    t() |>
+    miceadds::sumpreserving.rounding(digits = 2, preserve = TRUE) |>
+    t()
 
   rand_data |>
     as.vector()
