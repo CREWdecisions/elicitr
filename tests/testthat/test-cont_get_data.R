@@ -11,7 +11,7 @@ test_that("Errors", {
   expect_snapshot(cont_get_data(obj, round = 1, var = "var5"),
                   error = TRUE)
   expect_snapshot(cont_get_data(obj, round = 1,
-                                     var = c("var1", "var5", "var7")),
+                                var = c("var1", "var5", "var7")),
                   error = TRUE)
   # When length variable types > 1
   expect_snapshot(cont_get_data(obj, round = 1, var_types = c("Z", "N")),
@@ -88,14 +88,14 @@ test_that("Warnings", {
 
   # Always the first optional arguments is used
   expect_snapshot(out <- cont_get_data(obj, round = 1, var = "var1",
-                                            elic_types = "4"))
+                                       elic_types = "4"))
   expect_identical(out, obj[["data"]][["round_1"]][, 1:2])
 
   expect_snapshot(out <- cont_get_data(obj, round = 1, var = "var2",
-                                            var_types = "ZN"))
+                                       var_types = "ZN"))
   expect_identical(out, obj[["data"]][["round_1"]][, c(1, 3:5)])
 
   expect_snapshot(out <- cont_get_data(obj, round = 1, var_types = "Zp",
-                                            elic_types = "4"))
+                                       elic_types = "4"))
   expect_identical(out, obj[["data"]][["round_1"]][, c(1:2, 6:9)])
 })

@@ -46,8 +46,8 @@ pak::pak("CREWdecisions/elicitr")
 library(elicitr)
 ```
 
-All the functions in the elicitr package start with the prefix `elic_`. After that, two prefixes are available: `elic_cont` and `elic_cat`. This design choice is intended to enhance functions discovery.\
-`elic_cont` functions are used for the elicitation of continuous variables while `elic_cat` functions for the elicitation of categorical variables.
+All the functions in the elicitr package start with two prefixes: `cont` and `cat`. This design choice is intended to enhance functions discovery.\
+`cont` functions are used for the elicitation of continuous variables while `cat` functions for the elicitation of categorical variables.
 
 #### How elicitr works
 
