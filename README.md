@@ -108,9 +108,9 @@ round_2
 #### Functions
 
 Any analysis of continuous variables starts by creating the `elic_cont`
-object with the function `elic_cont_start()` to store the metadata of
-the elicitation. To build this `elic_cont` object, four parameters must
-be specified:
+object with the function `cont_start()` to store the metadata of the
+elicitation. To build this `elic_cont` object, four parameters must be
+specified:
 
 - `var` the number of variables (i.e. the number of topics in your
   elicitation)
@@ -122,11 +122,11 @@ be specified:
 - `experts` the number of experts that replied to the elicitation
 
 ``` r
-my_elicitation_cont <- elic_cont_start(var = c("var1", "var2", "var3"),
-                                       var_types = "ZNp",
-                                       elic_types = "134",
-                                       experts = 6,
-                                       title = "Continuous elicitation example")
+my_elicitation_cont <- cont_start(var = c("var1", "var2", "var3"),
+                                  var_types = "ZNp",
+                                  elic_types = "134",
+                                  experts = 6,
+                                  title = "Continuous elicitation example")
 #> ✔ <elic_cont> object for "Continuous elicitation example" correctly initialised
 ```
 

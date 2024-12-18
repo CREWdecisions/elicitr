@@ -16,13 +16,13 @@
 #' more.
 #' @param mechanisms character vector with the names of the mechanisms of impact
 #' investigated.
-#' @inheritParams elic_cont_start
+#' @inheritParams cont_start
 #'
 #' @section Levels:
 #'
 #' Levels are inherited between mechanisms. A minimum of two levels are needed.
 #' If only one level is investigated, please refer to the functions for the
-#' elicitation of continuous data (e.g. [elic_cont_start]).
+#' elicitation of continuous data (e.g. [cont_start]).
 #'
 #' @section Sites:
 #'

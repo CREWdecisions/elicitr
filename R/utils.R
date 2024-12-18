@@ -58,8 +58,7 @@ check_round <- function(x) {
 #' `check_arg_length()` throws an error if the length of the provided argument
 #' is greater than 1.
 #'
-#' @param x value passed to `elic_cont_start()` for the variable or elicitation
-#' type.
+#' @param x value passed to [cont_start] for the variable or elicitation type.
 #' @param type character, either _var_ for `var_types` or _elic_ for
 #' `elic_types`.
 #'

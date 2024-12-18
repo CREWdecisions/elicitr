@@ -126,10 +126,10 @@ first one (which contains the names) are forced to numeric.
 # variables, the first for a one point estimation of a positive integer, the
 # second for three points estimation of a negative real, and the last for a
 # four point estimation of a probability
-x <- elic_cont_start(var_names = c("var1", "var2", "var3"),
-                     var_types = "ZNp",
-                     elic_types = "134",
-                     experts = 6)
+x <- cont_start(var_names = c("var1", "var2", "var3"),
+                var_types = "ZNp",
+                elic_types = "134",
+                experts = 6)
 
 # Add data for the first and second round from a data.frame. Notice that the
 # two commands can be piped
@@ -172,8 +172,8 @@ my_elicit
 }
 \seealso{
 Other cont data helpers: 
-\code{\link{elic_cont_get_data}()},
-\code{\link{elic_cont_start}()}
+\code{\link{cont_start}()},
+\code{\link{elic_cont_get_data}()}
 }
 \author{
 Sergio Vignali
