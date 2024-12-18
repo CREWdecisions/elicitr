@@ -46,12 +46,11 @@ pak::pak("CREWdecisions/elicitr")
 library(elicitr)
 ```
 
-All the functions in the elicitr package start with the prefix `elic_`.
-After that, two prefixes are available: `elic_cont` and `elic_cat`. This
-design choice is intended to enhance functions discovery.  
-`elic_cont` functions are used for the elicitation of continuous
-variables while `elic_cat` functions for the elicitation of categorical
-variables.
+All the functions in the elicitr package start with two prefixes: `cont`
+and `cat`. This design choice is intended to enhance functions
+discovery.  
+`cont` functions are used for the elicitation of continuous variables
+while `cat` functions for the elicitation of categorical variables.
 
 #### How elicitr works
 
@@ -108,9 +107,9 @@ round_2
 #### Functions
 
 Any analysis of continuous variables starts by creating the `elic_cont`
-object with the function `elic_cont_start()` to store the metadata of
-the elicitation. To build this `elic_cont` object, four parameters must
-be specified:
+object with the function `cont_start()` to store the metadata of the
+elicitation. To build this `elic_cont` object, four parameters must be
+specified:
 
 - `var` the number of variables (i.e. the number of topics in your
   elicitation)
@@ -122,11 +121,11 @@ be specified:
 - `experts` the number of experts that replied to the elicitation
 
 ``` r
-my_elicitation_cont <- elic_cont_start(var = c("var1", "var2", "var3"),
-                                       var_types = "ZNp",
-                                       elic_types = "134",
-                                       experts = 6,
-                                       title = "Continuous elicitation example")
+my_elicitation_cont <- cont_start(var = c("var1", "var2", "var3"),
+                                  var_types = "ZNp",
+                                  elic_types = "134",
+                                  experts = 6,
+                                  title = "Continuous elicitation example")
 #> ✔ <elic_cont> object for "Continuous elicitation example" correctly initialised
 ```
 
@@ -144,12 +143,12 @@ my_elicitation_cont
 
 Once the metadata has been added to the `elic_cont` object, the data of
 the first round of elicitation can be added with the function
-`elic_cont_add_data()`:
+`cont_add_data()`:
 
 ``` r
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_1,
-                                          round = 1)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_1,
+                                     round = 1)
 #> ✔ Data added to "Round 1" from "data.frame"
 ```
 
@@ -162,9 +161,9 @@ If you conducted a second round of elicitation, it can be added to the
 `elic_cont` object after the first round has been added:
 
 ``` r
-my_elicitation_cont <- elic_cont_add_data(my_elicitation_cont,
-                                          data_source = round_2,
-                                          round = 2)
+my_elicitation_cont <- cont_add_data(my_elicitation_cont,
+                                     data_source = round_2,
+                                     round = 2)
 #> ✔ Data added to "Round 2" from "data.frame"
 ```
 
@@ -172,15 +171,15 @@ To keep the anonymity of experts, their names are converted to short
 sha1 hashes and saved in the `id` column. These are then used to match
 the expert’s answers in the two rounds.
 
-The function `elic_cont_get_data()` retrieves data from an `elicit`
+The function `cont_get_data()` retrieves data from an `elic_cont`
 object. It is possible to get the whole dataset of a given round, or
 extract only the data for a given variable, variable type, or
 elicitation type:
 
 ``` r
-elic_cont_get_data(my_elicitation_cont,
-                   round = 1,
-                   var = "all")
+cont_get_data(my_elicitation_cont,
+              round = 1,
+              var = "all")
 #> # A tibble: 6 × 9
 #>   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best
 #>   <chr>       <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
@@ -193,15 +192,15 @@ elic_cont_get_data(my_elicitation_cont,
 #> # ℹ 1 more variable: var3_conf <int>
 ```
 
-Finally, data can be plotted using the function `elic_cont_plot()`. This
+Finally, data can be plotted using the function `cont_plot()`. This
 function plots data belonging to a given round and for a given variable.
 
 ``` r
-elic_cont_plot(my_elicitation_cont,
-               round = 2,
-               group = TRUE,
-               var = "var3",
-               xlab = "Variable 3")
+cont_plot(my_elicitation_cont,
+          round = 2,
+          group = TRUE,
+          var = "var3",
+          xlab = "Variable 3")
 #> ✔ Rescaled min and max
 ```
 
@@ -282,9 +281,9 @@ mechanism_3
 #### Functions
 
 Just like continuous variables, any analysis of categorical variables
-starts by creating the `elic_cat` object with the function
-`elic_cat_start()` to store the metadata of the elicitation. To build
-this `elic_cat` object, four parameters must be specified:
+starts by creating the `elic_cat` object with the function `cat_start()`
+to store the metadata of the elicitation. To build this `elic_cat`
+object, four parameters must be specified:
 
 - `levels` the names of the levels of impact you used in your
   elicitation
@@ -294,11 +293,11 @@ this `elic_cat` object, four parameters must be specified:
 - `mechanisms` the names of the mechanisms of impact investigated
 
 ``` r
-my_elicitation_cat <- elic_cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
-                                     sites = c("site_1", "site_2", "site_3", "site_4"),
-                                     experts = 6,
-                                     mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
-                                     title = "Categorical elicitation example")
+my_elicitation_cat <- cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
+                                sites = c("site_1", "site_2", "site_3", "site_4"),
+                                experts = 6,
+                                mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
+                                title = "Categorical elicitation example")
 #> ✔ <elic_cat> object for "Categorical elicitation example" correctly initialised
 ```
 
@@ -310,14 +309,14 @@ my_elicitation_cat
 #> • Levels: "level_1", "level_2", "level_3", "level_4", and "level_5"
 #> • Sites: "site_1", "site_2", "site_3", and "site_4"
 #> • Number of experts: 6
-#> • Mechanismss: "mechanism_1", "mechanism_2", and "mechanism_3"
+#> • Mechanisms: "mechanism_1", "mechanism_2", and "mechanism_3"
 #> • Data available for 0 mechanisms
 ```
 
 #### Functions under development
 
-- `elic_cat_add_data()`
-- `elic_cat_get_data()`
+- `cat_add_data()`
+- `cat_get_data()`
 - `elic_cat_plot_data`
 
 ### Similar packages

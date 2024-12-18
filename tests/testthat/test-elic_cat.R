@@ -34,5 +34,5 @@ test_that("Print elicit object", {
                                mechanisms = c("mechanism_1", "mechanism_2"),
                                title = "Title"))
   # With data
-  expect_snapshot(create_elic_cat_obj())
+  expect_snapshot(create_cat_obj())
 })

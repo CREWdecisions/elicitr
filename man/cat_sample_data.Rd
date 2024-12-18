@@ -40,7 +40,10 @@ An \code{\link[tibble:tibble]{tibble}} with the sampled data. This object has
 the additional class \code{elic_cat_sample} used to implement the plotting method.
 }
 \description{
-Sample data based on expert estimates stored in the \code{\link{elic_cat}} object.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{cat_sample_data()} samples data based on expert estimates stored in the
+\code{\link{elic_cat}} object.
 }
 \section{Methods}{
 
@@ -68,13 +71,13 @@ to all votes for this level.
 my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
 my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-my_elicit <- elic_cat_start(levels = my_levels,
-                            sites = my_sites,
-                            experts = 6,
-                            mechanisms = my_mechanisms) |>
-  elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-  elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+my_elicit <- cat_start(levels = my_levels,
+                       sites = my_sites,
+                       experts = 6,
+                       mechanisms = my_mechanisms) |>
+  cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
+  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
 
 # Sample data from Mechanism 1 for all sites using the basic method
 samp <- cat_sample_data(my_elicit,
@@ -96,9 +99,9 @@ Biological Invasions, 26(8), 2707–2721.
 }
 \seealso{
 Other cat data helpers: 
-\code{\link{elic_cat_add_data}()},
-\code{\link{elic_cat_get_data}()},
-\code{\link{elic_cat_start}()}
+\code{\link{cat_add_data}()},
+\code{\link{cat_get_data}()},
+\code{\link{cat_start}()}
 }
 \author{
 Sergio Vignali and Maude Vernet

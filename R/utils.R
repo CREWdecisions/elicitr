@@ -58,8 +58,7 @@ check_round <- function(x) {
 #' `check_arg_length()` throws an error if the length of the provided argument
 #' is greater than 1.
 #'
-#' @param x value passed to `elic_cont_start()` for the variable or elicitation
-#' type.
+#' @param x value passed to [cont_start] for the variable or elicitation type.
 #' @param type character, either _var_ for `var_types` or _elic_ for
 #' `elic_types`.
 #'
@@ -438,12 +437,15 @@ read_file <- function(data_source,
       tibble::as_tibble()
 
   } else {
+
+    fn <- as.list(sys.call(-2))[[1]]
+
     error <- "The extension of the provided file is {.val .{ext}}, supported \\
               are {.val .csv} or {.val .xlsx}."
 
     cli::cli_abort(c("Unsupported file extension:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::elic_cont_add_data}."),
+                     "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env(n = 2))
   }
 
@@ -485,7 +487,7 @@ clean_gs_data <- function(x) {
 
   # This is to avoid errors if the function is called directly within a test
   if (as.list(sys.call())[[2]][[1]] != "dplyr::mutate" &&
-        as.list(sys.call(-2))[[1]] == "elic_cat_add_data") {
+        as.list(sys.call(-2))[[1]] == "cat_add_data") {
     cols <- 1:3
   }
 

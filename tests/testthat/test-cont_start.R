@@ -1,125 +1,125 @@
 test_that("Errors", {
   # check_arg_length()----
   # When length variable types > 1
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = c("p", "N"),
-                                  elic_types = "3",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = c("p", "N"),
+                             elic_types = "3",
+                             experts = 3),
                   error = TRUE)
   # When length elicitation types > 1
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "p",
-                                  elic_types = c("4", "3"),
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "p",
+                             elic_types = c("4", "3"),
+                             experts = 3),
                   error = TRUE)
   # check_arg_types()----
   # When 1 short code for var_types is not allowed
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "pqR",
-                                  elic_types = "1",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "pqR",
+                             elic_types = "1",
+                             experts = 3),
                   error = TRUE)
   # When 1 short code for var_types is not allowed and is repeated twice
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "apa",
-                                  elic_types = "1",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "apa",
+                             elic_types = "1",
+                             experts = 3),
                   error = TRUE)
   # When 2 short codes for var_types are not allowed
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "pqG",
-                                  elic_types = "1",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "pqG",
+                             elic_types = "1",
+                             experts = 3),
                   error = TRUE)
   # When one short code for elic_types is not allowed
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "p",
-                                  elic_types = "123",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "p",
+                             elic_types = "123",
+                             experts = 3),
                   error = TRUE)
   # When 1 short code for elic_types is not allowed and is repeated twice
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "p",
-                                  elic_types = "232",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "p",
+                             elic_types = "232",
+                             experts = 3),
                   error = TRUE)
   # When 2 short codes for elic_types are not allowed
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "p",
-                                  elic_types = "1237",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "p",
+                             elic_types = "1237",
+                             experts = 3),
                   error = TRUE)
   # check_arg_mism()----
   # When there are less variables than variable types
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "pR",
-                                  elic_types = "1",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "pR",
+                             elic_types = "1",
+                             experts = 3),
                   error = TRUE)
   # When there are less variables than estimate types
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "p",
-                                  elic_types = "13",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "p",
+                             elic_types = "13",
+                             experts = 3),
                   error = TRUE)
   # When there are less variables than variable types and estimate types
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "pR",
-                                  elic_types = "13",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "pR",
+                             elic_types = "13",
+                             experts = 3),
                   error = TRUE)
   # When there are more variables than variable types (elic_types is recycled)
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "pN",
-                                  elic_types = "1",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "pN",
+                             elic_types = "1",
+                             experts = 3),
                   error = TRUE)
   # When there are more variables than estimate types (var_types is recycled)
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "p",
-                                  elic_types = "13",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "p",
+                             elic_types = "13",
+                             experts = 3),
                   error = TRUE)
   # When there are more variables than variable types and estimate types
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "pN",
-                                  elic_types = "13",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "pN",
+                             elic_types = "13",
+                             experts = 3),
                   error = TRUE)
   # When variable names and types and estimate types are all not compatible
-  expect_snapshot(elic_cont_start(var_names = c("var1", "var2", "var3"),
-                                  var_types = "pN",
-                                  elic_types = "1344",
-                                  experts = 3),
+  expect_snapshot(cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "pN",
+                             elic_types = "1344",
+                             experts = 3),
                   error = TRUE)
   # check_experts_arg()----
   # When experts is provided as character
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "p",
-                                  elic_types = "1",
-                                  experts = "3"),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "p",
+                             elic_types = "1",
+                             experts = "3"),
                   error = TRUE)
   # When experts is provided as numeric vector
-  expect_snapshot(elic_cont_start(var_names = "var1",
-                                  var_types = "p",
-                                  elic_types = "1",
-                                  experts = 1:2),
+  expect_snapshot(cont_start(var_names = "var1",
+                             var_types = "p",
+                             elic_types = "1",
+                             experts = 1:2),
                   error = TRUE)
 })
 
 test_that("Info", {
-  expect_snapshot(x <- elic_cont_start(var_names = c("var1", "var2"),
-                                       var_types = "pR",
-                                       elic_types = "43",
-                                       experts = 3))
+  expect_snapshot(x <- cont_start(var_names = c("var1", "var2"),
+                                  var_types = "pR",
+                                  elic_types = "43",
+                                  experts = 3))
 })
 
 test_that("Output", {
-  expect_no_message(x <- elic_cont_start(var_names = c("var1", "var2"),
-                                         var_types = "pR",
-                                         elic_types = "43",
-                                         experts = 3,
-                                         verbose = FALSE))
+  expect_no_message(x <- cont_start(var_names = c("var1", "var2"),
+                                    var_types = "pR",
+                                    elic_types = "43",
+                                    experts = 3,
+                                    verbose = FALSE))
   expect_s3_class(x, class = "elic_cont", exact = TRUE)
   # Variable names are recorded in the object
   expect_identical(x[["var_names"]], c("var1", "var2"))

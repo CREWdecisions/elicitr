@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `elic_cat_start()` initialises an [elic_cat] object which stores important
+#' `cat_start()` initialises an [elic_cat] object which stores important
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
@@ -16,13 +16,13 @@
 #' more.
 #' @param mechanisms character vector with the names of the mechanisms of impact
 #' investigated.
-#' @inheritParams elic_cont_start
+#' @inheritParams cont_start
 #'
 #' @section Levels:
 #'
 #' Levels are inherited between mechanisms. A minimum of two levels are needed.
 #' If only one level is investigated, please refer to the functions for the
-#' elicitation of continuous data (e.g. [elic_cont_start]).
+#' elicitation of continuous data (e.g. [cont_start]).
 #'
 #' @section Sites:
 #'
@@ -59,26 +59,26 @@
 #' # Create the elic_cat object for an elicitation process over 2 mechanisms of
 #' # impact, 3 sites, 3 levels per sites, and a maximum number of experts per
 #' # mechanism of 8.
-#' my_elicit <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-#'                             sites = c("Site_1", "Site_2", "Site_3"),
-#'                             experts = 8,
-#'                             mechanisms = c("mechanism_1","mechanism_2"))
+#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#'                        sites = c("Site_1", "Site_2", "Site_3"),
+#'                        experts = 8,
+#'                        mechanisms = c("mechanism_1","mechanism_2"))
 #' my_elicit
 #'
 #' # A title can be added to bind a name to the object:
-#' my_elicit <- elic_cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-#'                             sites = c("Site_1", "Site_2", "Site_3"),
-#'                             experts = 8,
-#'                             mechanisms = c("mechanism_1","mechanism_2"),
-#'                             title = "My elicitation")
+#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#'                        sites = c("Site_1", "Site_2", "Site_3"),
+#'                        experts = 8,
+#'                        mechanisms = c("mechanism_1","mechanism_2"),
+#'                        title = "My elicitation")
 #' my_elicit
-elic_cat_start <- function(levels,
-                           sites,
-                           experts,
-                           mechanisms,
-                           ...,
-                           title = "Elicitation",
-                           verbose = TRUE) {
+cat_start <- function(levels,
+                      sites,
+                      experts,
+                      mechanisms,
+                      ...,
+                      title = "Elicitation",
+                      verbose = TRUE) {
 
   # Check that levels, sites, and mechanisms are character vectors
   check_is_character(levels, "levels")
@@ -120,7 +120,7 @@ check_is_character <- function(x, arg_name) {
               {.cls {class(x)}}."
     cli::cli_abort(c("Invalid value for {.arg {arg_name}}:",
                      "x" = error,
-                     "i" = "See {.fn elicitr::elic_cat_start}."),
+                     "i" = "See {.fn elicitr::cat_start}."),
                    call = rlang::caller_env())
   }
 }

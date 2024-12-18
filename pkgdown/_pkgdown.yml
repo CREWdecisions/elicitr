@@ -8,17 +8,17 @@ reference:
 - title: Elicitation of continuous variables
   desc: Functions for handling and plotting continuous variables.
   contents:
-  - elic_cont_start
-  - elic_cont_add_data
-  - elic_cont_get_data
-  - elic_cont_plot
+  - cont_start
+  - cont_add_data
+  - cont_get_data
+  - cont_plot
 
 - title: Elicitation of categorical data
   desc: Functions for handling and plotting categorical data.
   contents:
-  - elic_cat_start
-  - elic_cat_add_data
-  - elic_cat_get_data
+  - cat_start
+  - cat_add_data
+  - cat_get_data
   - cat_sample_data
 
 - title: Classes
