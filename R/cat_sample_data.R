@@ -25,7 +25,8 @@
 #' one estimate is provided, i.e. 100 % for one level, the method assigns 100 %
 #' to all votes for this level.
 #'
-#' @return A [`tibble`][tibble::tibble] with the sampled data.
+#' @return An [`tibble`][tibble::tibble] with the sampled data. This object has
+#' the additional class `elic_cat_sample` used to implement the plotting method.
 #' @export
 #'
 #' @family cat data helpers
@@ -37,6 +38,32 @@
 #' EICAT‐based expert elicitation: application to a conservation translocation.
 #' Biological Invasions, 26(8), 2707–2721.
 #' <https://doi.org/10.1007/s10530-024-03341-2>
+#'
+#' @examples
+#' # Create the elic_cat object for an elicitation process with three
+#' # mechanisms, four sites, five levels and a maximum of six experts per
+#' # mechanism
+#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
+#' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+#' my_elicit <- elic_cat_start(levels = my_levels,
+#'                             sites = my_sites,
+#'                             experts = 6,
+#'                             mechanisms = my_mechanisms) |>
+#'   elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
+#'   elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+#'   elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'
+#' # Sample data from Mechanism 1 for all sites using the basic method
+#' samp <- cat_sample_data(my_elicit,
+#'                         method = "basic",
+#'                         mechanism = "mechanism_1")
+#'
+#' # Sample data from Mechanism 2 for Site 1 and 3 using the bootstrap method
+#' samp <- cat_sample_data(my_elicit,
+#'                         method = "bootstrap",
+#'                         mechanism = "mechanism_2",
+#'                         site = c("site_1", "site_3"))
 cat_sample_data <- function(x,
                             method,
                             mechanism,
@@ -68,6 +95,9 @@ cat_sample_data <- function(x,
 
   cli::cli_alert_success("Data sampled successfully using {.val {method}} \\
                           method.")
+
+  # Prepend new class
+  class(out) <- c("elic_cat_sample", class(out))
 
   out
 }

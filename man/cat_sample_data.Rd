@@ -26,7 +26,8 @@ with the sites that you want to extract from the data. Use \code{all} for all
 sites.}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble}} with the sampled data.
+An \code{\link[tibble:tibble]{tibble}} with the sampled data. This object has
+the additional class \code{elic_cat_sample} used to implement the plotting method.
 }
 \description{
 Sample data based on expert estimates stored in the \code{\link{elic_cat}} object.
@@ -50,6 +51,32 @@ to all votes for this level.
 }
 }
 
+\examples{
+# Create the elic_cat object for an elicitation process with three
+# mechanisms, four sites, five levels and a maximum of six experts per
+# mechanism
+my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+my_elicit <- elic_cat_start(levels = my_levels,
+                            sites = my_sites,
+                            experts = 6,
+                            mechanisms = my_mechanisms) |>
+  elic_cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
+  elic_cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
+  elic_cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+
+# Sample data from Mechanism 1 for all sites using the basic method
+samp <- cat_sample_data(my_elicit,
+                        method = "basic",
+                        mechanism = "mechanism_1")
+
+# Sample data from Mechanism 2 for Site 1 and 3 using the bootstrap method
+samp <- cat_sample_data(my_elicit,
+                        method = "bootstrap",
+                        mechanism = "mechanism_2",
+                        site = c("site_1", "site_3"))
+}
 \references{
 Vernet, M., Trask, A.E., Andrews, C.E., Ewen, J.E., Medina, S.,
 Moehrenschlager, A. & Canessa, S. (2024) Assessing invasion risks using
