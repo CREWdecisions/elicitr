@@ -30,6 +30,7 @@ test_that("Info", {
                                          site = c("site_1", "site_2"),
                                          n_votes = 50))
   expect_s3_class(out, class = "cat_sample")
+  expect_identical(attr(out, "mechanism"), "mechanism_1")
   expect_identical(nrow(out), as.integer(obj[["experts"]] * 2 * 50))
 
   # Bootstrap method
@@ -37,6 +38,7 @@ test_that("Info", {
                                          method = "bootstrap",
                                          mechanism = "mechanism_1"))
   expect_s3_class(out, class = "cat_sample")
+  expect_identical(attr(out, "mechanism"), "mechanism_1")
   expect_identical(nrow(out),
                    as.integer(obj[["experts"]] * length(obj[["sites"]]) * 100))
 })

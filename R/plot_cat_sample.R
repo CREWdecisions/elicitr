@@ -82,7 +82,9 @@ plot.cat_sample <- function(x,
     # Avoid overwrite dplyr variable
     vals <- site
     x <- x |>
-      dplyr::filter(.data[["site"]] %in% vals)
+      dplyr::filter(.data[["site"]] %in% vals) |>
+      dplyr::mutate("site" = factor(.data[["site"]],
+                                     levels = vals))
   }
 
   if (is.null(title)) {
@@ -92,7 +94,9 @@ plot.cat_sample <- function(x,
   x <- x |>
     tidyr::pivot_longer(cols = -c("id", "site"),
                         names_to = "level",
-                        values_to = "prob")
+                        values_to = "prob") |>
+    dplyr::mutate("level" = factor(.data[["level"]],
+                                   levels = unique(.data[["level"]])))
 
   if (is.null(colours)) {
     colours <- scales::hue_pal()(length(unique(x[["level"]])))
@@ -105,8 +109,8 @@ plot.cat_sample <- function(x,
                 of levels."
       cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                        "x" = error,
-                       "i" = "Please provide a vector of colours of length \\
-                              {.val {n_level}}."))
+                       "i" = "Please provide a vector with {.val {n_level}} \\
+                              colours."))
     }
   }
 
