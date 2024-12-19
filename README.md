@@ -225,25 +225,25 @@ Three datasets that simulate the elicitation of categorical variables
 are included in elicitr:
 
 ``` r
-mechanism_1
+topic_1
 #> # A tibble: 120 × 5
 #>    name            level   site   confidence estimate
 #>    <chr>           <chr>   <chr>       <dbl>    <dbl>
 #>  1 Derek Maclellan level_1 site_1         15     0.08
 #>  2 Derek Maclellan level_2 site_1         15     0   
-#>  3 Derek Maclellan level_3 site_1         15     0.84
+#>  3 Derek Maclellan level_3 site_1         15     0.85
 #>  4 Derek Maclellan level_4 site_1         15     0.02
-#>  5 Derek Maclellan level_5 site_1         15     0.06
+#>  5 Derek Maclellan level_5 site_1         15     0.05
 #>  6 Derek Maclellan level_1 site_2         35     0.02
 #>  7 Derek Maclellan level_2 site_2         35     0.11
-#>  8 Derek Maclellan level_3 site_2         35     0.19
+#>  8 Derek Maclellan level_3 site_2         35     0.18
 #>  9 Derek Maclellan level_4 site_2         35     0.02
-#> 10 Derek Maclellan level_5 site_2         35     0.66
+#> 10 Derek Maclellan level_5 site_2         35     0.67
 #> # ℹ 110 more rows
 ```
 
 ``` r
-mechanism_2
+topic_2
 #> # A tibble: 100 × 5
 #>    name              level   site   confidence estimate
 #>    <chr>             <chr>   <chr>       <dbl>    <dbl>
@@ -253,15 +253,15 @@ mechanism_2
 #>  4 Christopher Felix level_4 site_1        100     0.59
 #>  5 Christopher Felix level_5 site_1        100     0   
 #>  6 Christopher Felix level_1 site_2         20     0.09
-#>  7 Christopher Felix level_2 site_2         20     0.04
+#>  7 Christopher Felix level_2 site_2         20     0.05
 #>  8 Christopher Felix level_3 site_2         20     0.33
-#>  9 Christopher Felix level_4 site_2         20     0.23
-#> 10 Christopher Felix level_5 site_2         20     0.31
+#>  9 Christopher Felix level_4 site_2         20     0.24
+#> 10 Christopher Felix level_5 site_2         20     0.29
 #> # ℹ 90 more rows
 ```
 
 ``` r
-mechanism_3
+topic_3
 #> # A tibble: 90 × 5
 #>    name            level   site   confidence estimate
 #>    <chr>           <chr>   <chr>       <dbl>    <dbl>
@@ -273,8 +273,8 @@ mechanism_3
 #>  6 Derek Maclellan level_1 site_2         50     0.11
 #>  7 Derek Maclellan level_2 site_2         50     0.09
 #>  8 Derek Maclellan level_3 site_2         50     0.17
-#>  9 Derek Maclellan level_4 site_2         50     0.1 
-#> 10 Derek Maclellan level_5 site_2         50     0.53
+#>  9 Derek Maclellan level_4 site_2         50     0.09
+#> 10 Derek Maclellan level_5 site_2         50     0.54
 #> # ℹ 80 more rows
 ```
 
@@ -289,14 +289,14 @@ object, four parameters must be specified:
   elicitation
 - `sites` the names of all sites investigated
 - `experts` the maximum number of experts participating in the
-  elicitation process for one mechanism
-- `mechanisms` the names of the mechanisms of impact investigated
+  elicitation process for one topic
+- `topics` the names of the topics investigated
 
 ``` r
 my_elicitation_cat <- cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
                                 sites = c("site_1", "site_2", "site_3", "site_4"),
                                 experts = 6,
-                                mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
+                                topics = c("topic_1","topic_2", "topic_3"),
                                 title = "Categorical elicitation example")
 #> ✔ <elic_cat> object for "Categorical elicitation example" correctly initialised
 ```
@@ -309,8 +309,8 @@ my_elicitation_cat
 #> • Levels: "level_1", "level_2", "level_3", "level_4", and "level_5"
 #> • Sites: "site_1", "site_2", "site_3", and "site_4"
 #> • Number of experts: 6
-#> • Mechanisms: "mechanism_1", "mechanism_2", and "mechanism_3"
-#> • Data available for 0 mechanisms
+#> • Topics: "topic_1", "topic_2", and "topic_3"
+#> • Data available for 0 topics
 ```
 
 #### Functions under development

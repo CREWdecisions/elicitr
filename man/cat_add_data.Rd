@@ -7,7 +7,7 @@
 cat_add_data(
   x,
   data_source,
-  mechanism,
+  topic,
   ...,
   sep = ",",
   sheet = 1,
@@ -22,8 +22,8 @@ cat_add_data(
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
 or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
 
-\item{mechanism}{character string that indicates the machanism to which the
-data belongs.}
+\item{topic}{character string that indicates the machanism to which the data
+belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -52,7 +52,7 @@ The provided object of class \link{elic_cat} updated with the data.
 \section{Data format}{
 
 
-For each mechanism, data are expected to have five columns, built as follows:
+For each topic, data are expected to have five columns, built as follows:
 \itemize{
 \item The first column of the data should hold the names of the experts. The name
 of each expert should be repeated as many times as many times as the number
@@ -110,64 +110,63 @@ process never reaches the \link{elic_cat} object.
 }
 
 \examples{
-# Create the elic_cat object for an elicitation process with three
-# mechanisms, four sites, five levels and a maximum of six experts per
-# mechanism
+# Create the elic_cat object for an elicitation process with three topics,
+# four sites, five levels and a maximum of six experts per topic
 my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
-my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+my_topics <- c("topic_1", "topic_2", "topic_3")
 x <- cat_start(levels = my_levels,
                sites = my_sites,
                experts = 6,
-               mechanisms = my_mechanisms)
+               topics = my_topics)
 
-# Add data for the three mechanisms from a data.frame. Notice that the
-# three commands can be piped
+# Add data for the three topics from a data.frame. Notice that the three
+# commands can be piped
 my_elicit <- cat_add_data(x,
-                          data_source = mechanism_1,
-                          mechanism = "mechanism_1") |>
-  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+                          data_source = topic_1,
+                          topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
 my_elicit
 
 # Add data for the first and second round from a csv file
 files <- list.files(path = system.file("extdata", package = "elicitr"),
-                    pattern = "mechanism_",
+                    pattern = "topic_",
                     full.names = TRUE)
 my_elicit <- cat_add_data(x,
                           data_source = files[1],
-                          mechanism = "mechanism_1") |>
-  cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
-  cat_add_data(data_source = files[3], mechanism = "mechanism_3")
+                          topic = "topic_1") |>
+  cat_add_data(data_source = files[2], topic = "topic_2") |>
+  cat_add_data(data_source = files[3], topic = "topic_3")
 my_elicit
 
 # Add data for the first and second round from a xlsx file with three sheets
 file <- list.files(path = system.file("extdata", package = "elicitr"),
-                   pattern = "mechanisms",
+                   pattern = "topics",
                    full.names = TRUE)
 # Using the sheet index
 my_elicit <- cat_add_data(x,
                           data_source = file,
                           sheet = 1,
-                          mechanism = "mechanism_1") |>
+                          topic = "topic_1") |>
   cat_add_data(data_source = file,
                sheet = 2,
-               mechanism = "mechanism_2") |>
+               topic = "topic_2") |>
   cat_add_data(data_source = file,
                sheet = 3,
-               mechanism = "mechanism_3")
+               topic = "topic_3")
 my_elicit
 # Using the sheet name
 my_elicit <- cat_add_data(x,
                           data_source = file,
-                          sheet = "Mechanism 1",
-                          mechanism = "mechanism_1") |>
+                          sheet = "Topic 1",
+                          topic = "topic_1") |>
   cat_add_data(data_source = file,
-               sheet = "Mechanism 2",
-               mechanism = "mechanism_2") |>
+               sheet = "Topic 2",
+               topic = "topic_2") |>
   cat_add_data(data_source = file,
-               sheet = "Mechanism 3",
-               mechanism = "mechanism_3")
+               sheet = "Topic 3",
+               topic = "topic_3")
 my_elicit
 
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -178,24 +177,24 @@ gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
 my_elicit <- cat_add_data(x,
                           data_source = gs,
                           sheet = 1,
-                          mechanism = "mechanism_1") |>
+                          topic = "topic_1") |>
   cat_add_data(data_source = gs,
                sheet = 2,
-               mechanism = "mechanism_2") |>
+               topic = "topic_2") |>
   cat_add_data(data_source = gs,
                sheet = 3,
-               mechanism = "mechanism_3")
+               topic = "topic_3")
 my_elicit
 # Using the sheet name
 my_elicit <- cat_add_data(x, data_source = gs,
-                          sheet = "Mechanism 1",
-                          mechanism = "mechanism_1") |>
+                          sheet = "Topic 1",
+                          topic = "topic_1") |>
   cat_add_data(data_source = gs,
-               sheet = "Mechanism 2",
-               mechanism = "mechanism_2") |>
+               sheet = "Topic 2",
+               topic = "topic_2") |>
   cat_add_data(data_source = gs,
-               sheet = "Mechanism 3",
-               mechanism = "mechanism_3")
+               sheet = "Topic 3",
+               topic = "topic_3")
 my_elicit
 \dontshow{\}) # examplesIf}
 }

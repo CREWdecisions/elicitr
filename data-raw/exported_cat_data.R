@@ -27,81 +27,81 @@ get_values <- function() {
     as.vector()
 }
 
-mechanism_1 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
+topic_1 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
+                      level = rep(levels, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_levels),
+                                 times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_sites,
+                                              replace = TRUE),
+                                       each = n_levels),
+                      estimate = get_values()) |>
   tibble::as_tibble()
 
-mechanism_2 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
+topic_2 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
+                      level = rep(levels, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_levels),
+                                 times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_sites,
+                                              replace = TRUE),
+                                       each = n_levels),
+                      estimate = get_values()) |>
   dplyr::filter(name != random_names[[1]]) |>
   tibble::as_tibble()
 
-mechanism_3 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
+topic_3 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
+                      level = rep(levels, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_levels),
+                                 times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_sites,
+                                              replace = TRUE),
+                                       each = n_levels),
+                      estimate = get_values()) |>
   dplyr::filter(site != sites[[4]]) |>
   tibble::as_tibble()
 
-usethis::use_data(mechanism_1, mechanism_2, mechanism_3,
+usethis::use_data(topic_1, topic_2, topic_3,
                   internal = FALSE,
                   overwrite = TRUE,
                   version = 3)
 
 # Save datasets into extdata folder
 # 3 csv files, one for each dataset
-write.csv(mechanism_1,
-          file = file.path("inst", "extdata", "mechanism_1.csv"),
+write.csv(topic_1,
+          file = file.path("inst", "extdata", "topic_1.csv"),
           row.names = FALSE)
-write.csv(mechanism_2,
-          file = file.path("inst", "extdata", "mechanism_2.csv"),
+write.csv(topic_2,
+          file = file.path("inst", "extdata", "topic_2.csv"),
           row.names = FALSE)
-write.csv(mechanism_3,
-          file = file.path("inst", "extdata", "mechanism_3.csv"),
+write.csv(topic_3,
+          file = file.path("inst", "extdata", "topic_3.csv"),
           row.names = FALSE)
 
 # 1 xlsx file with two sheets
-openxlsx::write.xlsx(list("Mechanism 1" = mechanism_1,
-                          "Mechanism 2" = mechanism_2,
-                          "Mechanism 3" = mechanism_3),
-                     file = file.path("inst", "extdata", "mechanisms.xlsx"),
+openxlsx::write.xlsx(list("Topic 1" = topic_1,
+                          "Topic 2" = topic_2,
+                          "Topic 3" = topic_3),
+                     file = file.path("inst", "extdata", "topics.xlsx"),
                      overwrite = TRUE)
 
 # Save dataset in Google Sheets
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
 # just use the code strings.
-# gs <- googlesheets4::gs4_create("mechanisms",
-#                                 sheets = c("Mechanism 1",
-#                                            "Mechanism 2",
-#                                            "Mechanism 3"))
+# gs <- googlesheets4::gs4_create("topics",
+#                                 sheets = c("Topic 1",
+#                                            "Topic 2",
+#                                            "Topic 3"))
 gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
-googlesheets4::sheet_write(mechanism_1,
+googlesheets4::sheet_write(topic_1,
                            ss = gs,
                            sheet = 1)
-googlesheets4::sheet_write(mechanism_2,
+googlesheets4::sheet_write(topic_2,
                            ss = gs,
                            sheet = 2)
-googlesheets4::sheet_write(mechanism_3,
+googlesheets4::sheet_write(topic_3,
                            ss = gs,
                            sheet = 3)
 

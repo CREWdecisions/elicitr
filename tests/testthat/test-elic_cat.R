@@ -2,7 +2,7 @@ test_that("elic_cat object", {
   x <- new_elic_cat(levels = c("level_1", "level_2"),
                     sites = c("site_1", "site_2", "site_3"),
                     experts = 8,
-                    mechanisms = c("mechanism_1", "mechanism_2"),
+                    topics = c("topic_1", "topic_2"),
                     title = "Title")
   expect_s3_class(x, class = "elic_cat", exact = TRUE)
   # Levels are recorded in the object as character vector
@@ -16,9 +16,9 @@ test_that("elic_cat object", {
   # Data is present and empty with default element names
   expect_type(x[["data"]], "list")
   expect_length(x[["data"]], 2)
-  expect_null(x[["data"]][["mechanism_1"]])
-  expect_null(x[["data"]][["mechanism_2"]])
-  expect_named(x[["data"]], c("mechanism_1", "mechanism_2"))
+  expect_null(x[["data"]][["topic_1"]])
+  expect_null(x[["data"]][["topic_2"]])
+  expect_named(x[["data"]], c("topic_1", "topic_2"))
   # Title attribute is created
   expect_false(is.null(attr(x, "title")))
   expect_identical(attr(x, "title"), "Title")
@@ -31,7 +31,7 @@ test_that("Print elicit object", {
   expect_snapshot(new_elic_cat(levels = c("level_1", "level_2"),
                                sites = c("site_1", "site_2", "site_3"),
                                experts = 8,
-                               mechanisms = c("mechanism_1", "mechanism_2"),
+                               topics = c("topic_1", "topic_2"),
                                title = "Title"))
   # With data
   expect_snapshot(create_cat_obj())

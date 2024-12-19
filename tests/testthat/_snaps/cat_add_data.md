@@ -1,7 +1,7 @@
 # Errors
 
     Code
-      cat_add_data("abc", data_source = mechanism_1, mechanism = "mechanism_1")
+      cat_add_data("abc", data_source = topic_1, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `x`:
@@ -11,7 +11,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = "test.csv", mechanism = "mechanism_1")
+      cat_add_data(x, data_source = "test.csv", topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       x File 'test.csv' doesn't exist!
@@ -19,7 +19,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = file, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = file, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Unsupported file extension:
@@ -29,38 +29,37 @@
 ---
 
     Code
-      cat_add_data(x, data_source = mechanism_1, mechanism = 1)
+      cat_add_data(x, data_source = topic_1, topic = 1)
     Condition
       Error in `cat_add_data()`:
-      ! Invalid value for `mechanism`:
-      x Argument `mechanism` must be <character> not <numeric>.
+      ! Invalid value for `topic`:
+      x Argument `topic` must be <character> not <numeric>.
       i See `elicitr::cat_start()`.
 
 ---
 
     Code
-      cat_add_data(x, data_source = mechanism_1, mechanism = c("mechanism_1",
-        "mechanism_2"))
+      cat_add_data(x, data_source = topic_1, topic = c("topic_1", "topic_2"))
     Condition
       Error in `cat_add_data()`:
-      ! Incorrect value for `mechanism`:
-      x Argument `mechanism` must have length 1 not 2.
+      ! Incorrect value for `topic`:
+      x Argument `topic` must have length 1 not 2.
       i See `elicitr::cat_add_data()`.
 
 ---
 
     Code
-      cat_add_data(x, data_source = mechanism_1, mechanism = "mechanism_3")
+      cat_add_data(x, data_source = topic_1, topic = "topic_3")
     Condition
       Error in `cat_add_data()`:
-      ! Invalid value for `mechanism`:
-      x "mechanism_3" not present in the <elic_cat> object.
-      i Available mechanisms: "mechanism_1" and "mechanism_2".
+      ! Invalid value for `topic`:
+      x "topic_3" not present in the <elic_cat> object.
+      i Available topics: "topic_1" and "topic_2".
 
 ---
 
     Code
-      cat_add_data(x, data_source = mechanism_1[, 1:4], mechanism = "mechanism_1")
+      cat_add_data(x, data_source = topic_1[, 1:4], topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Unexpected number of columns:
@@ -70,7 +69,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column type:
@@ -80,7 +79,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column types:
@@ -90,7 +89,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! The number of unique names is greater than the expected number of experts:
@@ -100,7 +99,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! The column with the name of the levels contains unexpected values:
@@ -110,7 +109,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! The column with the name of the levels contains unexpected values:
@@ -120,7 +119,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! The column with the name of the sites contains unexpected values:
@@ -130,7 +129,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! The column with the name of the sites contains unexpected values:
@@ -140,7 +139,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
@@ -150,7 +149,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
@@ -160,7 +159,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
@@ -170,7 +169,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
@@ -180,7 +179,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
@@ -190,7 +189,7 @@
 ---
 
     Code
-      cat_add_data(x, data_source = y, mechanism = "mechanism_1")
+      cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
@@ -202,28 +201,28 @@
 # Info
 
     Code
-      out <- cat_add_data(x, data_source = mechanism_1, mechanism = "mechanism_1")
+      out <- cat_add_data(x, data_source = topic_1, topic = "topic_1")
     Message
-      v Data added to Mechanism "mechanism_1" from "data.frame"
+      v Data added to Topic "topic_1" from "data.frame"
 
 ---
 
     Code
-      out <- cat_add_data(x, data_source = files[[1]], mechanism = "mechanism_1")
+      out <- cat_add_data(x, data_source = files[[1]], topic = "topic_1")
     Message
-      v Data added to Mechanism "mechanism_1" from "csv file"
+      v Data added to Topic "topic_1" from "csv file"
 
 ---
 
     Code
-      out <- cat_add_data(x, data_source = file, mechanism = "mechanism_1")
+      out <- cat_add_data(x, data_source = file, topic = "topic_1")
     Message
-      v Data added to Mechanism "mechanism_1" from "xlsx file"
+      v Data added to Topic "topic_1" from "xlsx file"
 
 ---
 
     Code
-      out <- cat_add_data(x, data_source = gs, mechanism = "mechanism_1")
+      out <- cat_add_data(x, data_source = gs, topic = "topic_1")
     Message
-      v Data added to Mechanism "mechanism_1" from "Google Sheets"
+      v Data added to Topic "topic_1" from "Google Sheets"
 

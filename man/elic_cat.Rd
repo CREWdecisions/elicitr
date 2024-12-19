@@ -15,12 +15,10 @@ There are 6 elements in the \code{elic_cat} object:
 \item \code{levels}: character vector with the names of the levels of impact.
 \item \code{sites}: character vector with the names of the sites investigated.
 \item \code{experts}: numeric, indicating the maximum number of experts participating
-in the elicitation process for one mechanism.
-\item \code{mechanisms}: character vector with the names of the mechanisms of impact
-investigated.
+in the elicitation process for one topic.
+\item \code{topics}: character vector with the names of the topics investigated.
 \item \code{data}: list with the data collected during the elicitation process. The
-list has multiple elements, corresponding to the mechanisms of impact
-investigated.
+list has multiple elements, corresponding to the topics investigated.
 }
 
 Moreover, the object has a \code{title} attribute that binds a name to the object.

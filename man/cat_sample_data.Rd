@@ -7,7 +7,7 @@
 cat_sample_data(
   x,
   method,
-  mechanism,
+  topic,
   ...,
   n_votes = 100,
   site = "all",
@@ -20,8 +20,8 @@ cat_sample_data(
 \item{method}{character string with the name of the method to sample the
 data. The available methods are: \emph{basic} and \emph{bootstrap}, see Methods below.}
 
-\item{mechanism}{character string that indicates the machanism to which the
-data belongs.}
+\item{topic}{character string that indicates the machanism to which the data
+belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -65,29 +65,28 @@ to all votes for this level.
 }
 
 \examples{
-# Create the elic_cat object for an elicitation process with three
-# mechanisms, four sites, five levels and a maximum of six experts per
-# mechanism
+# Create the elic_cat object for an elicitation process with three topics,
+# four sites, five levels and a maximum of six experts per topic
 my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
-my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+my_topics <- c("topic_1", "topic_2", "topic_3")
 my_elicit <- cat_start(levels = my_levels,
                        sites = my_sites,
                        experts = 6,
-                       mechanisms = my_mechanisms) |>
-  cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+                       topics = my_topics) |>
+  cat_add_data(data_source = topic_1, topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Mechanism 1 for all sites using the basic method
+# Sample data from Topic 1 for all sites using the basic method
 samp <- cat_sample_data(my_elicit,
                         method = "basic",
-                        mechanism = "mechanism_1")
+                        topic = "topic_1")
 
-# Sample data from Mechanism 2 for Site 1 and 3 using the bootstrap method
+# Sample data from Topic 2 for Site 1 and 3 using the bootstrap method
 samp <- cat_sample_data(my_elicit,
                         method = "bootstrap",
-                        mechanism = "mechanism_2",
+                        topic = "topic_2",
                         site = c("site_1", "site_3"))
 }
 \references{

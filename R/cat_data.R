@@ -1,15 +1,14 @@
 #' Elicitation data for categorical variables
 #'
-#' Simulated data for three mechanisms of impact investigated in an elicitation
-#' process.
+#' Simulated data for three topics investigated in an elicitation process.
 #'
 #' @format A data frame with:
 #' \describe{
 #'   \item{expert}{Name of the experts (randomly generated).}
 #'   \item{level}{The name of the levels. There are 5 different levels per
 #'         site.}
-#'   \item{site}{The name of the sites. Mechanism 1 and 2 have 4 sites, while
-#'         mechanism 3 has 3 sites.}
+#'   \item{site}{The name of the sites. Topic 1 and 2 have 4 sites, while
+#'         topic 3 has 3 sites.}
 #'   \item{confidence}{The confidence of the experts given in percentages.
 #'         One confidence level is given for each site.}
 #'   \item{estimate}{Expert estimates given in probabilities.}
@@ -18,14 +17,14 @@
 #' @name cat_data
 NULL
 
-#' Elicitation data for mechanism 1
+#' Elicitation data for topic 1
 #' @rdname cat_data
-"mechanism_1"
+"topic_1"
 
-#' Elicitation data for mechanism 2
+#' Elicitation data for topic 2
 #' @rdname cat_data
-"mechanism_2"
+"topic_2"
 
-#' Elicitation data for mechanism 3
+#' Elicitation data for topic 3
 #' @rdname cat_data
-"mechanism_3"
+"topic_3"

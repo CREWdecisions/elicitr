@@ -3,9 +3,9 @@
 \docType{data}
 \name{cat_data}
 \alias{cat_data}
-\alias{mechanism_1}
-\alias{mechanism_2}
-\alias{mechanism_3}
+\alias{topic_1}
+\alias{topic_2}
+\alias{topic_3}
 \title{Elicitation data for categorical variables}
 \format{
 A data frame with:
@@ -13,8 +13,8 @@ A data frame with:
 \item{expert}{Name of the experts (randomly generated).}
 \item{level}{The name of the levels. There are 5 different levels per
 site.}
-\item{site}{The name of the sites. Mechanism 1 and 2 have 4 sites, while
-mechanism 3 has 3 sites.}
+\item{site}{The name of the sites. Topic 1 and 2 have 4 sites, while
+topic 3 has 3 sites.}
 \item{confidence}{The confidence of the experts given in percentages.
 One confidence level is given for each site.}
 \item{estimate}{Expert estimates given in probabilities.}
@@ -30,14 +30,13 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 Randomly generated numbers and names.
 }
 \usage{
-mechanism_1
+topic_1
 
-mechanism_2
+topic_2
 
-mechanism_3
+topic_3
 }
 \description{
-Simulated data for three mechanisms of impact investigated in an elicitation
-process.
+Simulated data for three topics investigated in an elicitation process.
 }
 \keyword{datasets}

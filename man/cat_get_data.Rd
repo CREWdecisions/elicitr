@@ -4,13 +4,13 @@
 \alias{cat_get_data}
 \title{#' Get data}
 \usage{
-cat_get_data(x, mechanism, ..., site = "all")
+cat_get_data(x, topic, ..., site = "all")
 }
 \arguments{
 \item{x}{an object of class \link{elic_cat}.}
 
-\item{mechanism}{character string that indicates the machanism to which the
-data belongs.}
+\item{topic}{character string that indicates the machanism to which the data
+belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -28,30 +28,29 @@ A \code{\link[tibble:tibble]{tibble}} with the extracted data.
 Get data from an \link{elic_cat} object.
 }
 \examples{
-# Create the elic_cat object for an elicitation process with three
-# mechanisms, four sites, five levels and a maximum of six experts per
-# mechanism
+# Create the elic_cat object for an elicitation process with three topics,
+# four sites, five levels and a maximum of six experts per topic
 my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
-my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
+my_topics <- c("topic_1", "topic_2", "topic_3")
 my_elicit <- cat_start(levels = my_levels,
                        sites = my_sites,
                        experts = 6,
-                       mechanisms = my_mechanisms) |>
-  cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+                       topics = my_topics) |>
+  cat_add_data(data_source = topic_1, topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Get all data from Mechanism 1
-cat_get_data(my_elicit, mechanism = "mechanism_1")
+# Get all data from Topic 1
+cat_get_data(my_elicit, topic = "topic_1")
 
 # Get data by site name----
-# Get data for site_1 from Mechanism 2
-cat_get_data(my_elicit, mechanism = "mechanism_2", site = "site_1")
+# Get data for site_1 from Topic 2
+cat_get_data(my_elicit, topic = "topic_2", site = "site_1")
 
-# Get data for site_1 and site_3 from Mechanism 3
+# Get data for site_1 and site_3 from Topic 3
 cat_get_data(my_elicit,
-             mechanism = "mechanism_3",
+             topic = "topic_3",
              site = c("site_1", "site_3"))
 }
 \seealso{
