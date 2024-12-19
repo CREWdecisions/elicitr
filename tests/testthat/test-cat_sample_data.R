@@ -54,13 +54,14 @@ test_that("Output", {
   out <- cat_sample_data(obj,
                          method = "basic",
                          topic = "topic_1",
-                         option = "option_1",
                          verbose = FALSE)
   expect_identical(dplyr::pull(out, "category_1")[1:5], rep(1, 5))
   expect_identical(dplyr::pull(out, "category_2")[1:5], rep(0, 5))
   expect_identical(dplyr::pull(out, "category_3")[1:5], rep(0, 5))
   expect_identical(dplyr::pull(out, "category_4")[1:5], rep(0, 5))
   expect_identical(dplyr::pull(out, "category_5")[1:5], rep(0, 5))
+  expect_identical(nrow(out), 2400L)
+  expect_identical(as.vector(table(out[["id"]])), rep(400L, 6))
 
   # Bootstrap method
   out <- cat_sample_data(obj,
@@ -73,4 +74,12 @@ test_that("Output", {
   expect_identical(dplyr::pull(out, "category_3")[1:5], rep(0, 5))
   expect_identical(dplyr::pull(out, "category_4")[1:5], rep(0, 5))
   expect_identical(dplyr::pull(out, "category_5")[1:5], rep(0, 5))
+  expect_identical(nrow(out), 600L)
+  conf <- get_conf(obj[["data"]][["topic_1"]], "option_1", 5)
+  experts <- unique(obj[["data"]][["topic_1"]][["id"]])
+  n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
+    as.vector()
+  n_samp_expected <- get_boostrap_n_sample(experts, 100, conf) |>
+    as.integer()
+  expect_identical(n_samp_actual, n_samp_expected)
 })

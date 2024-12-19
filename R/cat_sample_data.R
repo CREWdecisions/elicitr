@@ -89,15 +89,7 @@ cat_sample_data <- function(x,
   # Get data
   data <- cat_get_data(x, topic = topic, option = option)
 
-  experts <- unique(data[["id"]])
-  categories <- unique(data[["category"]])
-  options <- unique(data[["option"]])
-
-  if (method == "basic") {
-    out <- basic_sampling(data, n_votes, experts, categories, options)
-  } else {
-    out <- bootstrap_sampling(data, n_votes, experts, categories, options)
-  }
+  out <- do_sampling(data, method, n_votes)
 
   if (verbose) {
     cli::cli_alert_success("Data sampled successfully using {.val {method}} \\
@@ -115,78 +107,25 @@ cat_sample_data <- function(x,
 
 # Methods----
 
-#' Basic sampling
+#' Do sampling
 #'
-#' Sample data based on expert estimates without accounting for their
-#' confidence.
+#' Sample data based on expert estimates.
 #'
 #' @param x [`tibble`][tibble::tibble] with the expert estimates.
+#' @param method character string with the name of the method to sample the
+#' data, either _basic_ or _bootstrap_.
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
-#' @param experts character vector with the expert IDs.
-#' @param categories character vector with the categories of the categorical
-#' variable.
-#' @param options character vector with the option names.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-basic_sampling <- function(x, n_votes, experts, categories, options) {
+do_sampling <- function(x, method, n_votes) {
 
-  # Prepare data frame for sampled probabilities
-  sp <- matrix(0,
-               nrow = length(experts) * n_votes * length(options),
-               ncol = length(categories) + 2,
-               dimnames = list(NULL, c("id", "option", categories))) |>
-    tibble::as_tibble() |>
-    dplyr::mutate("id" = rep(experts, each = n_votes, times = length(options)),
-                  "option" = rep(options, each = n_votes * length(experts)))
-
-  for (s in options) {
-    estimates <- get_estimates(x, s)
-
-    for (e in seq_along(experts)) {
-
-      expert_est <- estimates[e, -1]
-
-      # Strictly positive estimates
-      idx <- which(expert_est > 0)
-
-      if (length(idx) == 1) {
-        # If there is only one positive estimate, this is assumed to be 1 since
-        # the sum of probabilities must be 1. In this case, assign 100% to all
-        # votes for this category.
-        samp <- 1
-      } else {
-        samp <- extraDistr::rdirichlet(n = n_votes,
-                                       alpha = expert_est[idx])
-      }
-
-      sp[sp[["option"]] == s & sp[["id"]] == experts[e], idx + 2] <- samp
-    }
-  }
-
-  sp
-}
-
-#' Bootstrap sampling
-#'
-#' Sample data based on expert estimates accounting for their confidence.
-#'
-#' @param x [`tibble`][tibble::tibble] with the expert estimates.
-#' @param n_votes numeric indicating the number of votes to consider for each
-#' expert.
-#' @param experts character vector with the expert IDs.
-#' @param categories character vector with the categories of the categorical
-#' variable.
-#' @param options character vector with the option names.
-#'
-#' @returns A [`tibble`][tibble::tibble] with the sampled data.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-bootstrap_sampling <- function(x, n_votes, experts, categories, options) {
+  experts <- unique(x[["id"]])
+  categories <- unique(x[["category"]])
+  options <- unique(x[["option"]])
 
   all_options <- vector(mode = "list", length = length(options))
   all_sp <- vector(mode = "list", length = length(experts))
@@ -196,15 +135,18 @@ bootstrap_sampling <- function(x, n_votes, experts, categories, options) {
     estimates <- get_estimates(x, s)
     conf <- get_conf(x, s, length(categories))
 
-    # Determine weight of each expert proportional to their expressed confidence
-    w <- (length(experts) * n_votes * conf / sum(conf)) |>
-      miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+    # Determine n sample of each expert
+    if (method == "basic") {
+      n_samp <- rep(n_votes, length(experts))
+    } else {
+      n_samp <- get_boostrap_n_sample(experts, n_votes, conf)
+    }
 
     for (e in seq_along(experts)) {
 
       # Prepare data frame for sampled probabilities
       sp <- matrix(0,
-                   nrow = w[[e]],
+                   nrow = n_samp[[e]],
                    ncol = length(categories) + 2,
                    dimnames = list(NULL, c("id", "option", categories))) |>
         tibble::as_tibble() |>
@@ -221,7 +163,7 @@ bootstrap_sampling <- function(x, n_votes, experts, categories, options) {
         # votes for this category.
         samp <- 1
       } else {
-        samp <- extraDistr::rdirichlet(n = w[[e]],
+        samp <- extraDistr::rdirichlet(n = n_samp[[e]],
                                        alpha = expert_est[idx])
       }
 
@@ -275,4 +217,22 @@ get_conf <- function(x, y, z) {
     dplyr::filter(dplyr::row_number() %% z == 1,
                   .data[["option"]] == y) |>
     dplyr::pull("confidence")
+}
+
+#' Get bootstrap number of samples
+#'
+#' @param experts character vector with the expert ids.
+#' @param n_votes numeric indicating the number of votes to consider for each
+#' expert.
+#' @param conf numeric vector with the confidence values.
+#'
+#' @returns A vector with the number of samples to take for each expert.
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_boostrap_n_sample <- function(experts, n_votes, conf) {
+
+  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
+    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  n_samp
 }

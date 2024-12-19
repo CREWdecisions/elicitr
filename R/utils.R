@@ -344,6 +344,17 @@ check_method <- function(x, method) {
   }
 }
 
+#' Check option
+#'
+#' Check if the option is available in the sampled data.
+#'
+#' @param x [tibble][tibble::tibble] with the sampled data.
+#' @param option character string with the option to be checked.
+#'
+#' @returns An error if the option is not available in the sampled data.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_option <- function(x, option) {
 
   available_options <- unique(x[["option"]])
