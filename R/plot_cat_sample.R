@@ -64,7 +64,7 @@ plot.cat_sample <- function(x,
                             family = "sans",
                             theme = NULL) {
 
-  if (sum(site != "all") > 0) {
+  if (any(site != "all")) {
 
     # Check if site is not among the available sites in the data
     available_sites <- unique(x[["site"]])
@@ -123,7 +123,7 @@ plot.cat_sample <- function(x,
                          alpha = 0.8,
                          scale = "width",
                          linewidth = 0.2,
-                         draw_quantiles = c(0.25,0.75),
+                         draw_quantiles = c(0.25, 0.75),
                          key_glyph = "dotplot") +
     ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["level"]],
                                                  y = .data[["prob"]]),
@@ -136,7 +136,8 @@ plot.cat_sample <- function(x,
     ggplot2::facet_wrap("site") +
     ggplot2::scale_fill_manual(values = colours) +
     ggplot2::scale_y_continuous(limits = c(0, 1),
-                                expand = ggplot2::expansion(mult = c(0, .04))) +
+                                expand = ggplot2::expansion(mult = c(0,
+                                                                     0.04))) +
     theme
 
   p
@@ -153,14 +154,14 @@ plot.cat_sample <- function(x,
 #'
 #' @author Sergio Vignali and Maude Vernet
 cat_sample_theme <- function() {
-    ggplot2::theme(axis.text.x = ggplot2::element_blank(),
-                   axis.ticks = ggplot2::element_blank(),
-                   axis.title.x = ggplot2::element_blank(),
-                   panel.grid.major.x = ggplot2::element_blank(),
-                   panel.grid.major.y = ggplot2::element_line(colour = "black",
-                                                              linetype = 8,
-                                                              linewidth = 0.1),
-                   legend.position = "bottom",
-                   legend.key.size = ggplot2::unit(1.5, "line"),
-                   legend.title = ggplot2::element_blank())
+  ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                 axis.ticks = ggplot2::element_blank(),
+                 axis.title.x = ggplot2::element_blank(),
+                 panel.grid.major.x = ggplot2::element_blank(),
+                 panel.grid.major.y = ggplot2::element_line(colour = "black",
+                                                            linetype = 8,
+                                                            linewidth = 0.1),
+                 legend.position = "bottom",
+                 legend.key.size = ggplot2::unit(1.5, "line"),
+                 legend.title = ggplot2::element_blank())
 }
