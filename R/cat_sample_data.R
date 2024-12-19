@@ -107,6 +107,9 @@ cat_sample_data <- function(x,
   # Prepend new class
   class(out) <- c("cat_sample", class(out))
 
+  # Add attribute with the name of the mechanism
+  attr(out, "mechanism") <- mechanism
+
   out
 }
 

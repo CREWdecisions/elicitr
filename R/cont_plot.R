@@ -114,7 +114,8 @@ cont_plot <- function(x,
   check_var_in_obj(x, var)
 
   if (is.null(theme)) {
-    theme <- elic_theme(family = family)
+    theme <- elic_theme(family = family) +
+      cont_theme()
   }
 
   data <- cont_get_data(x, round = round, var = var) |>
@@ -429,36 +430,19 @@ check_truth <- function(x, elic_type) {
 
 # Plot theme----
 
-
-#' Elic theme
+#'Theme
 #'
-#' Custom theme for elicitation plots.
+#' Custom theme for continuous data.
 #'
 #' @return A [`theme`][`ggplot2::theme`] function.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-elic_theme <- function(family = "sans") {
-  ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "none",
-                   plot.title = ggplot2::element_text(size = 16,
-                                                      face = "bold",
-                                                      hjust = 0.5,
-                                                      family = family),
-                   panel.grid.major.x = ggplot2::element_line(colour = "black",
-                                                              linetype = 8,
-                                                              linewidth = 0.1),
-                   panel.grid.major.y = ggplot2::element_blank(),
-                   panel.grid.minor = ggplot2::element_blank(),
-                   axis.title.y = ggplot2::element_text(size = 16,
-                                                        color = "black",
-                                                        family = family),
-                   axis.title.x = ggplot2::element_text(vjust = -1.2,
-                                                        size = 16,
-                                                        color = "black",
-                                                        family = family),
-                   axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
-                   axis.text = ggplot2::element_text(size = 14,
-                                                     family = family),
-                   plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
+cont_theme <- function() {
+  ggplot2::theme(panel.grid.major.x = ggplot2::element_line(colour = "black",
+                                                            linetype = 8,
+                                                            linewidth = 0.1),
+                 panel.grid.major.y = ggplot2::element_blank(),
+                 axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
+                 legend.position = "none")
 }

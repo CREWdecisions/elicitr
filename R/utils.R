@@ -591,3 +591,32 @@ hash_names <- function(x) {
     substr(start = 1,
            stop = 7)
 }
+
+# Theme----
+
+#' Elic theme
+#'
+#' Custom theme for elicitation plots.
+#'
+#' @return A [`theme`][`ggplot2::theme`] function.
+#' @noRd
+#'
+#' @author Sergio Vignali and Maude Vernet
+elic_theme <- function(family = "sans") {
+  ggplot2::theme_bw() +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 16,
+                                                      face = "bold",
+                                                      hjust = 0.5,
+                                                      family = family),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   axis.title.y = ggplot2::element_text(size = 16,
+                                                        color = "black",
+                                                        family = family),
+                   axis.title.x = ggplot2::element_text(vjust = -1.2,
+                                                        size = 16,
+                                                        color = "black",
+                                                        family = family),
+                   axis.text = ggplot2::element_text(size = 14,
+                                                     family = family),
+                   plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
+}
