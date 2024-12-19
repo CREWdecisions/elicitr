@@ -76,7 +76,7 @@ cat_get_data <- function(x,
       error <- "{cli::qty(diff)} Site{?s} {.val {diff}} not available in \\
                 mechanism {.val {mechanism}}."
       info <- "Available site{?s}: {.val {available_sites}}."
-      cli::cli_abort(c("Invalid value for {.arg {site}}:",
+      cli::cli_abort(c("Invalid value for argument {.arg site}:",
                        "x" = error,
                        "i" = info))
     }

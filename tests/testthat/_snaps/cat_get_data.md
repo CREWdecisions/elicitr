@@ -54,7 +54,7 @@
       cat_get_data(obj, mechanism = "mechanism_3", site = "site_4")
     Condition
       Error in `cat_get_data()`:
-      ! Invalid value for `site_4`:
+      ! Invalid value for argument `site`:
       x Site "site_4" not available in mechanism "mechanism_3".
       i Available sites: "site_1", "site_2", and "site_3".
 
