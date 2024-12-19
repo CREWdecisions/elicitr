@@ -47,7 +47,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  site <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  option <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">"Probabolity"</span>,</span>
 <span>  colours <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -70,10 +70,10 @@
 function.</p></dd>
 
 
-<dt id="arg-site">site<a class="anchor" aria-label="anchor" href="#arg-site"></a></dt>
-<dd><p>character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use <code>all</code> for all
-sites.</p></dd>
+<dt id="arg-option">option<a class="anchor" aria-label="anchor" href="#arg-option"></a></dt>
+<dd><p>character string with the name of the option or character
+vector with the options that you want to extract from the data. Use <code>all</code> for
+all options.</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
@@ -113,40 +113,40 @@ theme.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process with three</span></span></span>
-<span class="r-in"><span><span class="co"># mechanisms, four sites, five levels and a maximum of six experts per</span></span></span>
-<span class="r-in"><span><span class="co"># mechanism</span></span></span>
-<span class="r-in"><span><span class="va">my_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level_1"</span>, <span class="st">"level_2"</span>, <span class="st">"level_3"</span>, <span class="st">"level_4"</span>, <span class="st">"level_5"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_2"</span>, <span class="st">"site_3"</span>, <span class="st">"site_4"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_mechanisms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>, <span class="st">"mechanism_2"</span>, <span class="st">"mechanism_3"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu"><a href="cat_start.html">cat_start</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="va">my_levels</span>,</span></span>
-<span class="r-in"><span>                       sites <span class="op">=</span> <span class="va">my_sites</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process with three topics,</span></span></span>
+<span class="r-in"><span><span class="co"># four options, five categories and a maximum of six experts per topic</span></span></span>
+<span class="r-in"><span><span class="va">my_categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category_1"</span>, <span class="st">"category_2"</span>, <span class="st">"category_3"</span>,</span></span>
+<span class="r-in"><span>                   <span class="st">"category_4"</span>, <span class="st">"category_5"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span>, <span class="st">"option_4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_topics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>, <span class="st">"topic_2"</span>, <span class="st">"topic_3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu"><a href="cat_start.html">cat_start</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">my_categories</span>,</span></span>
+<span class="r-in"><span>                       options <span class="op">=</span> <span class="va">my_options</span>,</span></span>
 <span class="r-in"><span>                       experts <span class="op">=</span> <span class="fl">6</span>,</span></span>
-<span class="r-in"><span>                       mechanisms <span class="op">=</span> <span class="va">my_mechanisms</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_1</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_2</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_3</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                       topics <span class="op">=</span> <span class="va">my_topics</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_1</span>, topic <span class="op">=</span> <span class="st">"topic_1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_2</span>, topic <span class="op">=</span> <span class="st">"topic_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_3</span>, topic <span class="op">=</span> <span class="st">"topic_3"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">&lt;elic_cat&gt;</span> object for <span style="color: #0000BB;">"Elicitation"</span> correctly initialised</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_1"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_2"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_3"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_1"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_2"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_3"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Sample data from Mechanism 1 for all sites using the basic method</span></span></span>
+<span class="r-in"><span><span class="co"># Sample data from Topic 1 for all options using the basic method</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu"><a href="cat_sample_data.html">cat_sample_data</a></span><span class="op">(</span><span class="va">my_elicit</span>,</span></span>
 <span class="r-in"><span>                        method <span class="op">=</span> <span class="st">"basic"</span>,</span></span>
-<span class="r-in"><span>                        mechanism <span class="op">=</span> <span class="st">"mechanism_1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                        topic <span class="op">=</span> <span class="st">"topic_1"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data sampled successfully using <span style="color: #0000BB;">"basic"</span> method.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot the sampled data for all sites</span></span></span>
+<span class="r-in"><span><span class="co"># Plot the sampled data for all options</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.cat_sample-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot the sampled data for site 1</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, site <span class="op">=</span> <span class="st">"site_1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Plot the sampled data for option 1</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, option <span class="op">=</span> <span class="st">"option_1"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.cat_sample-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot the sampled data for site 1 and 3</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, site <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_3"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Plot the sampled data for option 1 and 3</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, option <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_3"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.cat_sample-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Provide custom colours</span></span></span>

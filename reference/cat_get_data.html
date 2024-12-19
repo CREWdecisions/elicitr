@@ -46,7 +46,7 @@ Get data from an elic_cat object."><meta property="og:image" content="https://cr
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">x</span>, <span class="va">mechanism</span>, <span class="va">...</span>, site <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">x</span>, <span class="va">topic</span>, <span class="va">...</span>, option <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,9 +57,9 @@ Get data from an elic_cat object."><meta property="og:image" content="https://cr
 <dd><p>an object of class <a href="elic_cat.html">elic_cat</a>.</p></dd>
 
 
-<dt id="arg-mechanism">mechanism<a class="anchor" aria-label="anchor" href="#arg-mechanism"></a></dt>
-<dd><p>character string that indicates the machanism to which the
-data belongs.</p></dd>
+<dt id="arg-topic">topic<a class="anchor" aria-label="anchor" href="#arg-topic"></a></dt>
+<dd><p>character string that indicates the machanism to which the data
+belongs.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -67,10 +67,10 @@ data belongs.</p></dd>
 function.</p></dd>
 
 
-<dt id="arg-site">site<a class="anchor" aria-label="anchor" href="#arg-site"></a></dt>
-<dd><p>character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use <code>all</code> for all
-sites.</p></dd>
+<dt id="arg-option">option<a class="anchor" aria-label="anchor" href="#arg-option"></a></dt>
+<dd><p>character string with the name of the option or character
+vector with the options that you want to extract from the data. Use <code>all</code> for
+all options.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -91,76 +91,76 @@ sites.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process with three</span></span></span>
-<span class="r-in"><span><span class="co"># mechanisms, four sites, five levels and a maximum of six experts per</span></span></span>
-<span class="r-in"><span><span class="co"># mechanism</span></span></span>
-<span class="r-in"><span><span class="va">my_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level_1"</span>, <span class="st">"level_2"</span>, <span class="st">"level_3"</span>, <span class="st">"level_4"</span>, <span class="st">"level_5"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_2"</span>, <span class="st">"site_3"</span>, <span class="st">"site_4"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_mechanisms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>, <span class="st">"mechanism_2"</span>, <span class="st">"mechanism_3"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu"><a href="cat_start.html">cat_start</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="va">my_levels</span>,</span></span>
-<span class="r-in"><span>                       sites <span class="op">=</span> <span class="va">my_sites</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process with three topics,</span></span></span>
+<span class="r-in"><span><span class="co"># four options, five categories and a maximum of six experts per topic</span></span></span>
+<span class="r-in"><span><span class="va">my_categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category_1"</span>, <span class="st">"category_2"</span>, <span class="st">"category_3"</span>,</span></span>
+<span class="r-in"><span>                   <span class="st">"category_4"</span>, <span class="st">"category_5"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span>, <span class="st">"option_4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_topics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>, <span class="st">"topic_2"</span>, <span class="st">"topic_3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu"><a href="cat_start.html">cat_start</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">my_categories</span>,</span></span>
+<span class="r-in"><span>                       options <span class="op">=</span> <span class="va">my_options</span>,</span></span>
 <span class="r-in"><span>                       experts <span class="op">=</span> <span class="fl">6</span>,</span></span>
-<span class="r-in"><span>                       mechanisms <span class="op">=</span> <span class="va">my_mechanisms</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_1</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_2</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">mechanism_3</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                       topics <span class="op">=</span> <span class="va">my_topics</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_1</span>, topic <span class="op">=</span> <span class="st">"topic_1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_2</span>, topic <span class="op">=</span> <span class="st">"topic_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cat_add_data.html">cat_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">topic_3</span>, topic <span class="op">=</span> <span class="st">"topic_3"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">&lt;elic_cat&gt;</span> object for <span style="color: #0000BB;">"Elicitation"</span> correctly initialised</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_1"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_2"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Mechanism <span style="color: #0000BB;">"mechanism_3"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_1"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_2"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to Topic <span style="color: #0000BB;">"topic_3"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Get all data from Mechanism 1</span></span></span>
-<span class="r-in"><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">my_elicit</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Get all data from Topic 1</span></span></span>
+<span class="r-in"><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">my_elicit</span>, topic <span class="op">=</span> <span class="st">"topic_1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 120 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id      level   site   confidence estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 level_1 site_1         15     0.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 level_2 site_1         15     0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 level_3 site_1         15     0.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 level_4 site_1         15     0.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 level_5 site_1         15     0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 level_1 site_2         35     0.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 level_2 site_2         35     0.11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 level_3 site_2         35     0.18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5ac97e0 level_4 site_2         35     0.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 level_5 site_2         35     0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id      category   option   confidence estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 category_1 option_1         15     0.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 category_2 option_1         15     0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 category_3 option_1         15     0.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 category_4 option_1         15     0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 category_5 option_1         15     0.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 category_1 option_2         35     0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 category_2 option_2         35     0.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 category_3 option_2         35     0.18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5ac97e0 category_4 option_2         35     0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 category_5 option_2         35     0.67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 110 more rows</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Get data by site name----</span></span></span>
-<span class="r-in"><span><span class="co"># Get data for site_1 from Mechanism 2</span></span></span>
-<span class="r-in"><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">my_elicit</span>, mechanism <span class="op">=</span> <span class="st">"mechanism_2"</span>, site <span class="op">=</span> <span class="st">"site_1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Get data by option name----</span></span></span>
+<span class="r-in"><span><span class="co"># Get data for option_1 from Topic 2</span></span></span>
+<span class="r-in"><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">my_elicit</span>, topic <span class="op">=</span> <span class="st">"topic_2"</span>, option <span class="op">=</span> <span class="st">"option_1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id      level   site   confidence estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> e51202e level_1 site_1        100     0.09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> e51202e level_2 site_1        100     0.21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> e51202e level_3 site_1        100     0.11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> e51202e level_4 site_1        100     0.59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> e51202e level_5 site_1        100     0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> e78cbf4 level_1 site_1         75     0.31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> e78cbf4 level_2 site_1         75     0.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> e78cbf4 level_3 site_1         75     0.09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> e78cbf4 level_4 site_1         75     0.17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> e78cbf4 level_5 site_1         75     0.16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id      category   option   confidence estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> e51202e category_1 option_1        100     0.09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> e51202e category_2 option_1        100     0.21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> e51202e category_3 option_1        100     0.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> e51202e category_4 option_1        100     0.59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> e51202e category_5 option_1        100     0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> e78cbf4 category_1 option_1         75     0.31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> e78cbf4 category_2 option_1         75     0.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> e78cbf4 category_3 option_1         75     0.09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> e78cbf4 category_4 option_1         75     0.17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> e78cbf4 category_5 option_1         75     0.16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more rows</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Get data for site_1 and site_3 from Mechanism 3</span></span></span>
+<span class="r-in"><span><span class="co"># Get data for option_1 and option_3 from Topic 3</span></span></span>
 <span class="r-in"><span><span class="fu">cat_get_data</span><span class="op">(</span><span class="va">my_elicit</span>,</span></span>
-<span class="r-in"><span>             mechanism <span class="op">=</span> <span class="st">"mechanism_3"</span>,</span></span>
-<span class="r-in"><span>             site <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_3"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>             topic <span class="op">=</span> <span class="st">"topic_3"</span>,</span></span>
+<span class="r-in"><span>             option <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_3"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 60 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id      level   site   confidence estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 level_1 site_1         80     0.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 level_2 site_1         80     0.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 level_3 site_1         80     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 level_4 site_1         80     0.87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 level_5 site_1         80     0.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 level_1 site_3         15     0.59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 level_2 site_3         15     0.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 level_3 site_3         15     0.11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5ac97e0 level_4 site_3         15     0   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 level_5 site_3         15     0.22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id      category   option   confidence estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 category_1 option_1         80     0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 category_2 option_1         80     0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 category_3 option_1         80     0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 category_4 option_1         80     0.87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 category_5 option_1         80     0.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 category_1 option_3         15     0.59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 category_2 option_3         15     0.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 category_3 option_3         15     0.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5ac97e0 category_4 option_3         15     0   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 category_5 option_3         15     0.22</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 50 more rows</span></span>
 </code></pre></div>
     </div>

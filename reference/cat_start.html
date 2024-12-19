@@ -53,10 +53,10 @@ data.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cat_start</span><span class="op">(</span></span>
-<span>  <span class="va">levels</span>,</span>
-<span>  <span class="va">sites</span>,</span>
+<span>  <span class="va">categories</span>,</span>
+<span>  <span class="va">options</span>,</span>
 <span>  <span class="va">experts</span>,</span>
-<span>  <span class="va">mechanisms</span>,</span>
+<span>  <span class="va">topics</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Elicitation"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -67,25 +67,23 @@ data.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-levels">levels<a class="anchor" aria-label="anchor" href="#arg-levels"></a></dt>
-<dd><p>character vector with the names of the levels of impact. See
-Levels for more.</p></dd>
+<dl><dt id="arg-categories">categories<a class="anchor" aria-label="anchor" href="#arg-categories"></a></dt>
+<dd><p>character vector with the names of the categories. See
+Categories for more.</p></dd>
 
 
-<dt id="arg-sites">sites<a class="anchor" aria-label="anchor" href="#arg-sites"></a></dt>
-<dd><p>character vector with the names of all sites investigated. See
-Sites for more.</p></dd>
+<dt id="arg-options">options<a class="anchor" aria-label="anchor" href="#arg-options"></a></dt>
+<dd><p>character vector with the names of all options investigated.
+See Options for more.</p></dd>
 
 
 <dt id="arg-experts">experts<a class="anchor" aria-label="anchor" href="#arg-experts"></a></dt>
 <dd><p>numeric, indicating the maximum number of experts
-participating in the elicitation process for one mechanism. See Experts for
-more.</p></dd>
+participating in the elicitation process for one topic. See Experts for more.</p></dd>
 
 
-<dt id="arg-mechanisms">mechanisms<a class="anchor" aria-label="anchor" href="#arg-mechanisms"></a></dt>
-<dd><p>character vector with the names of the mechanisms of impact
-investigated.</p></dd>
+<dt id="arg-topics">topics<a class="anchor" aria-label="anchor" href="#arg-topics"></a></dt>
+<dd><p>character vector with the names of the topics.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -108,22 +106,22 @@ elicitation process. These metadata are used by other functions to validate
 the correctness of the provided data.</p>
     </div>
     <div class="section level2">
-    <h2 id="levels">Levels<a class="anchor" aria-label="anchor" href="#levels"></a></h2>
+    <h2 id="categories">Categories<a class="anchor" aria-label="anchor" href="#categories"></a></h2>
 
 
 
-<p>Levels are inherited between mechanisms. A minimum of two levels are needed.
-If only one level is investigated, please refer to the functions for the
-elicitation of continuous data (e.g. <a href="cont_start.html">cont_start</a>).</p>
+<p>Categories are inherited between topics. A minimum of two categories are
+needed. If only one category is investigated, please refer to the functions
+for the elicitation of continuous data (e.g. <a href="cont_start.html">cont_start</a>).</p>
     </div>
     <div class="section level2">
-    <h2 id="sites">Sites<a class="anchor" aria-label="anchor" href="#sites"></a></h2>
+    <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a></h2>
 
 
 
-<p>The site parameter is a character vector containing the names of all the
-sites investigated in the elicitation. However, not all sites have to be
-investigated in every mechanism of impact.</p>
+<p>The option parameter is a character vector containing the names of all the
+options investigated in the elicitation. However, not all options have to be
+investigated in every topic.</p>
     </div>
     <div class="section level2">
     <h2 id="experts">Experts<a class="anchor" aria-label="anchor" href="#experts"></a></h2>
@@ -131,8 +129,8 @@ investigated in every mechanism of impact.</p>
 
 
 <p>The expert parameter is a number indicating the maximum number of experts
-taking part in the elicitation of one of the investigated mechanisms of
-impact. The number and IDs of experts can differ between the mechanisms.</p>
+taking part in the elicitation of one of the investigated topics. The number
+and IDs of experts can differ between the topics.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -160,40 +158,41 @@ Biological Invasions, 26(8), 2707–2721.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process over 2 mechanisms of</span></span></span>
-<span class="r-in"><span><span class="co"># impact, 3 sites, 3 levels per sites, and a maximum number of experts per</span></span></span>
-<span class="r-in"><span><span class="co"># mechanism of 8.</span></span></span>
-<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu">cat_start</span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Level_1"</span>, <span class="st">"Level_2"</span>, <span class="st">"Level_3"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                       sites <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site_1"</span>, <span class="st">"Site_2"</span>, <span class="st">"Site_3"</span><span class="op">)</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cat object for an elicitation process over 2 topics, 3</span></span></span>
+<span class="r-in"><span><span class="co"># options, 3 categories per options, and a maximum number of 8 experts per</span></span></span>
+<span class="r-in"><span><span class="co"># topic</span></span></span>
+<span class="r-in"><span><span class="va">my_categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category_1"</span>, <span class="st">"category_2"</span>, <span class="st">"category_3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu">cat_start</span><span class="op">(</span>categories <span class="op">=</span> <span class="va">my_categories</span>,</span></span>
+<span class="r-in"><span>                       options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       experts <span class="op">=</span> <span class="fl">8</span>,</span></span>
-<span class="r-in"><span>                       mechanisms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>,<span class="st">"mechanism_2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                       topics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>,<span class="st">"topic_2"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">&lt;elic_cat&gt;</span> object for <span style="color: #0000BB;">"Elicitation"</span> correctly initialised</span>
 <span class="r-in"><span><span class="va">my_elicit</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Elicitation</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Levels: <span style="color: #0000BB;">"Level_1"</span>, <span style="color: #0000BB;">"Level_2"</span>, and <span style="color: #0000BB;">"Level_3"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Sites: <span style="color: #0000BB;">"Site_1"</span>, <span style="color: #0000BB;">"Site_2"</span>, and <span style="color: #0000BB;">"Site_3"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Categories: <span style="color: #0000BB;">"category_1"</span>, <span style="color: #0000BB;">"category_2"</span>, and <span style="color: #0000BB;">"category_3"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Options: <span style="color: #0000BB;">"option_1"</span>, <span style="color: #0000BB;">"option_2"</span>, and <span style="color: #0000BB;">"option_3"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • Number of experts: <span style="color: #0000BB;">8</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Mechanisms: <span style="color: #0000BB;">"mechanism_1"</span> and <span style="color: #0000BB;">"mechanism_2"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Data available for <span style="color: #0000BB;">0</span> mechanisms</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Topics: <span style="color: #0000BB;">"topic_1"</span> and <span style="color: #0000BB;">"topic_2"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Data available for <span style="color: #0000BB;">0</span> topics</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A title can be added to bind a name to the object:</span></span></span>
-<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu">cat_start</span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Level_1"</span>, <span class="st">"Level_2"</span>, <span class="st">"Level_3"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                       sites <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site_1"</span>, <span class="st">"Site_2"</span>, <span class="st">"Site_3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu">cat_start</span><span class="op">(</span>categories <span class="op">=</span> <span class="va">my_categories</span>,</span></span>
+<span class="r-in"><span>                       options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       experts <span class="op">=</span> <span class="fl">8</span>,</span></span>
-<span class="r-in"><span>                       mechanisms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>,<span class="st">"mechanism_2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                       topics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>,<span class="st">"topic_2"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       title <span class="op">=</span> <span class="st">"My elicitation"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">&lt;elic_cat&gt;</span> object for <span style="color: #0000BB;">"My elicitation"</span> correctly initialised</span>
 <span class="r-in"><span><span class="va">my_elicit</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">My elicitation</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Levels: <span style="color: #0000BB;">"Level_1"</span>, <span style="color: #0000BB;">"Level_2"</span>, and <span style="color: #0000BB;">"Level_3"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Sites: <span style="color: #0000BB;">"Site_1"</span>, <span style="color: #0000BB;">"Site_2"</span>, and <span style="color: #0000BB;">"Site_3"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Categories: <span style="color: #0000BB;">"category_1"</span>, <span style="color: #0000BB;">"category_2"</span>, and <span style="color: #0000BB;">"category_3"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Options: <span style="color: #0000BB;">"option_1"</span>, <span style="color: #0000BB;">"option_2"</span>, and <span style="color: #0000BB;">"option_3"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • Number of experts: <span style="color: #0000BB;">8</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Mechanisms: <span style="color: #0000BB;">"mechanism_1"</span> and <span style="color: #0000BB;">"mechanism_2"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • Data available for <span style="color: #0000BB;">0</span> mechanisms</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Topics: <span style="color: #0000BB;">"topic_1"</span> and <span style="color: #0000BB;">"topic_2"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Data available for <span style="color: #0000BB;">0</span> topics</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

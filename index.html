@@ -217,52 +217,52 @@ In total, there are five simulated datasets provided in the package. They are in
 </h4>
 <p>Three datasets that simulate the elicitation of categorical variables are included in elicitr:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mechanism_1</span></span>
+<code class="sourceCode R"><span><span class="va">topic_1</span></span>
 <span><span class="co">#&gt; # A tibble: 120 × 5</span></span>
-<span><span class="co">#&gt;    name            level   site   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Derek Maclellan level_1 site_1         15     0.08</span></span>
-<span><span class="co">#&gt;  2 Derek Maclellan level_2 site_1         15     0   </span></span>
-<span><span class="co">#&gt;  3 Derek Maclellan level_3 site_1         15     0.84</span></span>
-<span><span class="co">#&gt;  4 Derek Maclellan level_4 site_1         15     0.02</span></span>
-<span><span class="co">#&gt;  5 Derek Maclellan level_5 site_1         15     0.06</span></span>
-<span><span class="co">#&gt;  6 Derek Maclellan level_1 site_2         35     0.02</span></span>
-<span><span class="co">#&gt;  7 Derek Maclellan level_2 site_2         35     0.11</span></span>
-<span><span class="co">#&gt;  8 Derek Maclellan level_3 site_2         35     0.19</span></span>
-<span><span class="co">#&gt;  9 Derek Maclellan level_4 site_2         35     0.02</span></span>
-<span><span class="co">#&gt; 10 Derek Maclellan level_5 site_2         35     0.66</span></span>
+<span><span class="co">#&gt;    name            category   option   confidence estimate</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Derek Maclellan category_1 option_1         15     0.08</span></span>
+<span><span class="co">#&gt;  2 Derek Maclellan category_2 option_1         15     0   </span></span>
+<span><span class="co">#&gt;  3 Derek Maclellan category_3 option_1         15     0.85</span></span>
+<span><span class="co">#&gt;  4 Derek Maclellan category_4 option_1         15     0.02</span></span>
+<span><span class="co">#&gt;  5 Derek Maclellan category_5 option_1         15     0.05</span></span>
+<span><span class="co">#&gt;  6 Derek Maclellan category_1 option_2         35     0.02</span></span>
+<span><span class="co">#&gt;  7 Derek Maclellan category_2 option_2         35     0.11</span></span>
+<span><span class="co">#&gt;  8 Derek Maclellan category_3 option_2         35     0.18</span></span>
+<span><span class="co">#&gt;  9 Derek Maclellan category_4 option_2         35     0.02</span></span>
+<span><span class="co">#&gt; 10 Derek Maclellan category_5 option_2         35     0.67</span></span>
 <span><span class="co">#&gt; # ℹ 110 more rows</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mechanism_2</span></span>
+<code class="sourceCode R"><span><span class="va">topic_2</span></span>
 <span><span class="co">#&gt; # A tibble: 100 × 5</span></span>
-<span><span class="co">#&gt;    name              level   site   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Christopher Felix level_1 site_1        100     0.09</span></span>
-<span><span class="co">#&gt;  2 Christopher Felix level_2 site_1        100     0.21</span></span>
-<span><span class="co">#&gt;  3 Christopher Felix level_3 site_1        100     0.11</span></span>
-<span><span class="co">#&gt;  4 Christopher Felix level_4 site_1        100     0.59</span></span>
-<span><span class="co">#&gt;  5 Christopher Felix level_5 site_1        100     0   </span></span>
-<span><span class="co">#&gt;  6 Christopher Felix level_1 site_2         20     0.09</span></span>
-<span><span class="co">#&gt;  7 Christopher Felix level_2 site_2         20     0.04</span></span>
-<span><span class="co">#&gt;  8 Christopher Felix level_3 site_2         20     0.33</span></span>
-<span><span class="co">#&gt;  9 Christopher Felix level_4 site_2         20     0.23</span></span>
-<span><span class="co">#&gt; 10 Christopher Felix level_5 site_2         20     0.31</span></span>
+<span><span class="co">#&gt;    name              category   option   confidence estimate</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Christopher Felix category_1 option_1        100     0.09</span></span>
+<span><span class="co">#&gt;  2 Christopher Felix category_2 option_1        100     0.21</span></span>
+<span><span class="co">#&gt;  3 Christopher Felix category_3 option_1        100     0.11</span></span>
+<span><span class="co">#&gt;  4 Christopher Felix category_4 option_1        100     0.59</span></span>
+<span><span class="co">#&gt;  5 Christopher Felix category_5 option_1        100     0   </span></span>
+<span><span class="co">#&gt;  6 Christopher Felix category_1 option_2         20     0.09</span></span>
+<span><span class="co">#&gt;  7 Christopher Felix category_2 option_2         20     0.05</span></span>
+<span><span class="co">#&gt;  8 Christopher Felix category_3 option_2         20     0.33</span></span>
+<span><span class="co">#&gt;  9 Christopher Felix category_4 option_2         20     0.24</span></span>
+<span><span class="co">#&gt; 10 Christopher Felix category_5 option_2         20     0.29</span></span>
 <span><span class="co">#&gt; # ℹ 90 more rows</span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mechanism_3</span></span>
+<code class="sourceCode R"><span><span class="va">topic_3</span></span>
 <span><span class="co">#&gt; # A tibble: 90 × 5</span></span>
-<span><span class="co">#&gt;    name            level   site   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Derek Maclellan level_1 site_1         80     0.02</span></span>
-<span><span class="co">#&gt;  2 Derek Maclellan level_2 site_1         80     0.02</span></span>
-<span><span class="co">#&gt;  3 Derek Maclellan level_3 site_1         80     0.01</span></span>
-<span><span class="co">#&gt;  4 Derek Maclellan level_4 site_1         80     0.87</span></span>
-<span><span class="co">#&gt;  5 Derek Maclellan level_5 site_1         80     0.08</span></span>
-<span><span class="co">#&gt;  6 Derek Maclellan level_1 site_2         50     0.11</span></span>
-<span><span class="co">#&gt;  7 Derek Maclellan level_2 site_2         50     0.09</span></span>
-<span><span class="co">#&gt;  8 Derek Maclellan level_3 site_2         50     0.17</span></span>
-<span><span class="co">#&gt;  9 Derek Maclellan level_4 site_2         50     0.1 </span></span>
-<span><span class="co">#&gt; 10 Derek Maclellan level_5 site_2         50     0.53</span></span>
+<span><span class="co">#&gt;    name            category   option   confidence estimate</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Derek Maclellan category_1 option_1         80     0.02</span></span>
+<span><span class="co">#&gt;  2 Derek Maclellan category_2 option_1         80     0.02</span></span>
+<span><span class="co">#&gt;  3 Derek Maclellan category_3 option_1         80     0.01</span></span>
+<span><span class="co">#&gt;  4 Derek Maclellan category_4 option_1         80     0.87</span></span>
+<span><span class="co">#&gt;  5 Derek Maclellan category_5 option_1         80     0.08</span></span>
+<span><span class="co">#&gt;  6 Derek Maclellan category_1 option_2         50     0.11</span></span>
+<span><span class="co">#&gt;  7 Derek Maclellan category_2 option_2         50     0.09</span></span>
+<span><span class="co">#&gt;  8 Derek Maclellan category_3 option_2         50     0.17</span></span>
+<span><span class="co">#&gt;  9 Derek Maclellan category_4 option_2         50     0.09</span></span>
+<span><span class="co">#&gt; 10 Derek Maclellan category_5 option_2         50     0.54</span></span>
 <span><span class="co">#&gt; # ℹ 80 more rows</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -271,19 +271,19 @@ In total, there are five simulated datasets provided in the package. They are in
 <p>Just like continuous variables, any analysis of categorical variables starts by creating the <code>elic_cat</code> object with the function <code><a href="reference/cat_start.html">cat_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cat</code> object, four parameters must be specified:</p>
 <ul>
 <li>
-<code>levels</code> the names of the levels of impact you used in your elicitation</li>
+<code>categories</code> the names of the categories you used in your elicitation</li>
 <li>
-<code>sites</code> the names of all sites investigated</li>
+<code>options</code> the names of all options investigated</li>
 <li>
-<code>experts</code> the maximum number of experts participating in the elicitation process for one mechanism</li>
+<code>experts</code> the maximum number of experts participating in the elicitation process for one topic</li>
 <li>
-<code>mechanisms</code> the names of the mechanisms of impact investigated</li>
+<code>topics</code> the names of the topics investigated</li>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cat_start.html">cat_start</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"level_1"</span>, <span class="st">"level_2"</span>, <span class="st">"level_3"</span>, <span class="st">"level_4"</span>, <span class="st">"level_5"</span><span class="op">)</span>,</span>
-<span>                                sites <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_1"</span>, <span class="st">"site_2"</span>, <span class="st">"site_3"</span>, <span class="st">"site_4"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cat_start.html">cat_start</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category_1"</span>, <span class="st">"category_2"</span>, <span class="st">"category_3"</span>, <span class="st">"category_4"</span>, <span class="st">"category_5"</span><span class="op">)</span>,</span>
+<span>                                options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span>, <span class="st">"option_4"</span><span class="op">)</span>,</span>
 <span>                                experts <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                                mechanisms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mechanism_1"</span>,<span class="st">"mechanism_2"</span>, <span class="st">"mechanism_3"</span><span class="op">)</span>,</span>
+<span>                                topics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>,<span class="st">"topic_2"</span>, <span class="st">"topic_3"</span><span class="op">)</span>,</span>
 <span>                                title <span class="op">=</span> <span class="st">"Categorical elicitation example"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ &lt;elic_cat&gt; object for "Categorical elicitation example" correctly initialised</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -291,11 +291,12 @@ In total, there are five simulated datasets provided in the package. They are in
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Categorical elicitation example ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; • Levels: "level_1", "level_2", "level_3", "level_4", and "level_5"</span></span>
-<span><span class="co">#&gt; • Sites: "site_1", "site_2", "site_3", and "site_4"</span></span>
+<span><span class="co">#&gt; • Categories: "category_1", "category_2", "category_3", "category_4", and</span></span>
+<span><span class="co">#&gt; "category_5"</span></span>
+<span><span class="co">#&gt; • Options: "option_1", "option_2", "option_3", and "option_4"</span></span>
 <span><span class="co">#&gt; • Number of experts: 6</span></span>
-<span><span class="co">#&gt; • Mechanisms: "mechanism_1", "mechanism_2", and "mechanism_3"</span></span>
-<span><span class="co">#&gt; • Data available for 0 mechanisms</span></span></code></pre></div>
+<span><span class="co">#&gt; • Topics: "topic_1", "topic_2", and "topic_3"</span></span>
+<span><span class="co">#&gt; • Data available for 0 topics</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="functions-under-development">Functions under development<a class="anchor" aria-label="anchor" href="#functions-under-development"></a>
