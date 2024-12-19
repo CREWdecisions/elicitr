@@ -21,6 +21,7 @@ reference:
   - cat_get_data
   - cat_sample_data
   - plot.cat_sample
+  - summary.cat_sample
 
 - title: Classes
   desc: Description of the classes available in the package.

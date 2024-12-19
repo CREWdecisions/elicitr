@@ -3,6 +3,7 @@
 S3method(plot,cat_sample)
 S3method(print,elic_cat)
 S3method(print,elic_cont)
+S3method(summary,cat_sample)
 export(cat_add_data)
 export(cat_get_data)
 export(cat_sample_data)
