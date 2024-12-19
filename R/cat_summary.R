@@ -9,6 +9,8 @@
 #' @param x an object of class `cat_sample` created by the function
 #' [cat_sample_data].
 #' @param option character string with the name of the option.
+#' @param ... Unused arguments, included only for future extensions of the
+#' function.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the summary statistics.
 #' @export
@@ -35,7 +37,7 @@
 #'
 #' # Summarise the sampled data
 #' summary(samp, option = "option_1")
-summary.cat_sample <- function(x, option) {
+summary.cat_sample <- function(x, option, ...) {
 
   # Avoid overwriting dplyr variable
   opt <- option
