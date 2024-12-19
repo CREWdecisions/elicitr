@@ -155,13 +155,13 @@ topic_3
 Just like continuous variables, any analysis of categorical variables starts by creating the `elic_cat` object with the function `cat_start()` to store the metadata of the elicitation. To build this `elic_cat` object, four parameters must be specified: 
 
 * `categories` the names of the categories you used in your elicitation
-* `sites` the names of all sites investigated
+* `options` the names of all options investigated
 * `experts` the maximum number of experts participating in the elicitation process for one topic
 * `topics` the names of the topics investigated
 
 ```{r}
 my_elicitation_cat <- cat_start(categories = c("category_1", "category_2", "category_3", "category_4", "category_5"),
-                                sites = c("site_1", "site_2", "site_3", "site_4"),
+                                options = c("option_1", "option_2", "option_3", "option_4"),
                                 experts = 6,
                                 topics = c("topic_1","topic_2", "topic_3"),
                                 title = "Categorical elicitation example")

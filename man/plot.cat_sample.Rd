@@ -7,7 +7,7 @@
 \method{plot}{cat_sample}(
   x,
   ...,
-  site = "all",
+  option = "all",
   title = NULL,
   ylab = "Probabolity",
   colours = NULL,
@@ -22,9 +22,9 @@
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{site}{character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use \code{all} for all
-sites.}
+\item{option}{character string with the name of the option or character
+vector with the options that you want to extract from the data. Use \code{all} for
+all options.}
 
 \item{title}{character string with the title of the plot. If \code{NULL}, the
 title will be the topic name.}
@@ -49,32 +49,32 @@ If a \code{theme} is provided, the \code{family} argument is ignored.
 }
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five categories and a maximum of six experts per topic
+# four options, five categories and a maximum of six experts per topic
 my_categories <- c("category_1", "category_2", "category_3",
                    "category_4", "category_5")
-my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
 my_elicit <- cat_start(categories = my_categories,
-                       sites = my_sites,
+                       options = my_options,
                        experts = 6,
                        topics = my_topics) |>
   cat_add_data(data_source = topic_1, topic = "topic_1") |>
   cat_add_data(data_source = topic_2, topic = "topic_2") |>
   cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Topic 1 for all sites using the basic method
+# Sample data from Topic 1 for all options using the basic method
 samp <- cat_sample_data(my_elicit,
                         method = "basic",
                         topic = "topic_1")
 
-# Plot the sampled data for all sites
+# Plot the sampled data for all options
 plot(samp)
 
-# Plot the sampled data for site 1
-plot(samp, site = "site_1")
+# Plot the sampled data for option 1
+plot(samp, option = "option_1")
 
-# Plot the sampled data for site 1 and 3
-plot(samp, site = c("site_1", "site_3"))
+# Plot the sampled data for option 1 and 3
+plot(samp, option = c("option_1", "option_3"))
 
 # Provide custom colours
 plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",

@@ -83,7 +83,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column types:
-      x The columns "category" and "site" are not of type "character" but of type "factor".
+      x The columns "category" and "option" are not of type "character" but of type "factor".
       i See Data format in `elicitr::cat_add_data()`.
 
 ---
@@ -122,8 +122,8 @@
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
-      ! The column with the name of the sites contains unexpected values:
-      x The value "site_5" is not valid.
+      ! The column with the name of the options contains unexpected values:
+      x The value "option_5" is not valid.
       i Check the metadata in the <elic_cat> object.
 
 ---
@@ -132,8 +132,8 @@
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
-      ! The column with the name of the sites contains unexpected values:
-      x The values "site_5" and "site_6" are not valid.
+      ! The column with the name of the options contains unexpected values:
+      x The values "option_5" and "option_6" are not valid.
       i Check the metadata in the <elic_cat> object.
 
 ---
@@ -163,7 +163,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
-      x The column containing the sites is not formatted as expected.
+      x The column containing the options is not formatted as expected.
       i See Data format in `elicitr::cat_add_data()`.
 
 ---
@@ -183,8 +183,8 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one expert and one site don't sum to 1.
-      * Check id "5ac97e0" for site "site_1": sum 1.91
+      x Estimates of one expert and one option don't sum to 1.
+      * Check id "5ac97e0" for option "option_1": sum 1.91
 
 ---
 
@@ -193,10 +193,10 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one/some experts for one/some sites don't sum to 1.
-      * Check id "5ac97e0" for site "site_1": sum 1.91
-      * Check id "5ac97e0" for site "site_4": sum 1.94
-      * Check id "3d32ab9" for site "site_4": sum 1.97
+      x Estimates of one/some experts for one/some options don't sum to 1.
+      * Check id "5ac97e0" for option "option_1": sum 1.91
+      * Check id "5ac97e0" for option "option_4": sum 1.94
+      * Check id "3d32ab9" for option "option_4": sum 1.97
 
 # Info
 

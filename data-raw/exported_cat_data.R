@@ -11,14 +11,14 @@ categories <- c("category_1", "category_2", "category_3",
                 "category_4", "category_5")
 n_categories <- length(categories)
 
-sites <- c("site_1", "site_2", "site_3", "site_4")
-n_sites <- length(sites)
+options <- c("option_1", "option_2", "option_3", "option_4")
+n_options <- length(options)
 
 # Generate random values for each category that sum up to 100
 get_values <- function() {
   rand_data <- Surrogate::RandVec(a = 0, b = 1, s = 1,
                                   n = n_categories,
-                                  m = n_experts * n_sites)[[1]] |>
+                                  m = n_experts * n_options)[[1]] |>
     # The following function rounds preserving the sum of the values on each
     # row, so data needs to be transposed twice, before and after the function
     t() |>
@@ -29,39 +29,39 @@ get_values <- function() {
     as.vector()
 }
 
-topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
-                      category = rep(categories, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_categories),
-                                 times = n_experts),
+topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
-                                              size = n_experts * n_sites,
+                                              size = n_experts * n_options,
                                               replace = TRUE),
                                        each = n_categories),
                       estimate = get_values()) |>
   tibble::as_tibble()
 
-topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
-                      category = rep(categories, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_categories),
-                                 times = n_experts),
+topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
-                                              size = n_experts * n_sites,
+                                              size = n_experts * n_options,
                                               replace = TRUE),
                                        each = n_categories),
                       estimate = get_values()) |>
   dplyr::filter(name != random_names[[1]]) |>
   tibble::as_tibble()
 
-topic_3 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
-                      category = rep(categories, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_categories),
-                                 times = n_experts),
+topic_3 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
-                                              size = n_experts * n_sites,
+                                              size = n_experts * n_options,
                                               replace = TRUE),
                                        each = n_categories),
                       estimate = get_values()) |>
-  dplyr::filter(site != sites[[4]]) |>
+  dplyr::filter(option != options[[4]]) |>
   tibble::as_tibble()
 
 usethis::use_data(topic_1, topic_2, topic_3,

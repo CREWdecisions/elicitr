@@ -227,54 +227,54 @@ are included in elicitr:
 ``` r
 topic_1
 #> # A tibble: 120 × 5
-#>    name            category   site   confidence estimate
-#>    <chr>           <chr>      <chr>       <dbl>    <dbl>
-#>  1 Derek Maclellan category_1 site_1         15     0.08
-#>  2 Derek Maclellan category_2 site_1         15     0   
-#>  3 Derek Maclellan category_3 site_1         15     0.85
-#>  4 Derek Maclellan category_4 site_1         15     0.02
-#>  5 Derek Maclellan category_5 site_1         15     0.05
-#>  6 Derek Maclellan category_1 site_2         35     0.02
-#>  7 Derek Maclellan category_2 site_2         35     0.11
-#>  8 Derek Maclellan category_3 site_2         35     0.18
-#>  9 Derek Maclellan category_4 site_2         35     0.02
-#> 10 Derek Maclellan category_5 site_2         35     0.67
+#>    name            category   option   confidence estimate
+#>    <chr>           <chr>      <chr>         <dbl>    <dbl>
+#>  1 Derek Maclellan category_1 option_1         15     0.08
+#>  2 Derek Maclellan category_2 option_1         15     0   
+#>  3 Derek Maclellan category_3 option_1         15     0.85
+#>  4 Derek Maclellan category_4 option_1         15     0.02
+#>  5 Derek Maclellan category_5 option_1         15     0.05
+#>  6 Derek Maclellan category_1 option_2         35     0.02
+#>  7 Derek Maclellan category_2 option_2         35     0.11
+#>  8 Derek Maclellan category_3 option_2         35     0.18
+#>  9 Derek Maclellan category_4 option_2         35     0.02
+#> 10 Derek Maclellan category_5 option_2         35     0.67
 #> # ℹ 110 more rows
 ```
 
 ``` r
 topic_2
 #> # A tibble: 100 × 5
-#>    name              category   site   confidence estimate
-#>    <chr>             <chr>      <chr>       <dbl>    <dbl>
-#>  1 Christopher Felix category_1 site_1        100     0.09
-#>  2 Christopher Felix category_2 site_1        100     0.21
-#>  3 Christopher Felix category_3 site_1        100     0.11
-#>  4 Christopher Felix category_4 site_1        100     0.59
-#>  5 Christopher Felix category_5 site_1        100     0   
-#>  6 Christopher Felix category_1 site_2         20     0.09
-#>  7 Christopher Felix category_2 site_2         20     0.05
-#>  8 Christopher Felix category_3 site_2         20     0.33
-#>  9 Christopher Felix category_4 site_2         20     0.24
-#> 10 Christopher Felix category_5 site_2         20     0.29
+#>    name              category   option   confidence estimate
+#>    <chr>             <chr>      <chr>         <dbl>    <dbl>
+#>  1 Christopher Felix category_1 option_1        100     0.09
+#>  2 Christopher Felix category_2 option_1        100     0.21
+#>  3 Christopher Felix category_3 option_1        100     0.11
+#>  4 Christopher Felix category_4 option_1        100     0.59
+#>  5 Christopher Felix category_5 option_1        100     0   
+#>  6 Christopher Felix category_1 option_2         20     0.09
+#>  7 Christopher Felix category_2 option_2         20     0.05
+#>  8 Christopher Felix category_3 option_2         20     0.33
+#>  9 Christopher Felix category_4 option_2         20     0.24
+#> 10 Christopher Felix category_5 option_2         20     0.29
 #> # ℹ 90 more rows
 ```
 
 ``` r
 topic_3
 #> # A tibble: 90 × 5
-#>    name            category   site   confidence estimate
-#>    <chr>           <chr>      <chr>       <dbl>    <dbl>
-#>  1 Derek Maclellan category_1 site_1         80     0.02
-#>  2 Derek Maclellan category_2 site_1         80     0.02
-#>  3 Derek Maclellan category_3 site_1         80     0.01
-#>  4 Derek Maclellan category_4 site_1         80     0.87
-#>  5 Derek Maclellan category_5 site_1         80     0.08
-#>  6 Derek Maclellan category_1 site_2         50     0.11
-#>  7 Derek Maclellan category_2 site_2         50     0.09
-#>  8 Derek Maclellan category_3 site_2         50     0.17
-#>  9 Derek Maclellan category_4 site_2         50     0.09
-#> 10 Derek Maclellan category_5 site_2         50     0.54
+#>    name            category   option   confidence estimate
+#>    <chr>           <chr>      <chr>         <dbl>    <dbl>
+#>  1 Derek Maclellan category_1 option_1         80     0.02
+#>  2 Derek Maclellan category_2 option_1         80     0.02
+#>  3 Derek Maclellan category_3 option_1         80     0.01
+#>  4 Derek Maclellan category_4 option_1         80     0.87
+#>  5 Derek Maclellan category_5 option_1         80     0.08
+#>  6 Derek Maclellan category_1 option_2         50     0.11
+#>  7 Derek Maclellan category_2 option_2         50     0.09
+#>  8 Derek Maclellan category_3 option_2         50     0.17
+#>  9 Derek Maclellan category_4 option_2         50     0.09
+#> 10 Derek Maclellan category_5 option_2         50     0.54
 #> # ℹ 80 more rows
 ```
 
@@ -286,14 +286,14 @@ to store the metadata of the elicitation. To build this `elic_cat`
 object, four parameters must be specified:
 
 - `categories` the names of the categories you used in your elicitation
-- `sites` the names of all sites investigated
+- `options` the names of all options investigated
 - `experts` the maximum number of experts participating in the
   elicitation process for one topic
 - `topics` the names of the topics investigated
 
 ``` r
 my_elicitation_cat <- cat_start(categories = c("category_1", "category_2", "category_3", "category_4", "category_5"),
-                                sites = c("site_1", "site_2", "site_3", "site_4"),
+                                options = c("option_1", "option_2", "option_3", "option_4"),
                                 experts = 6,
                                 topics = c("topic_1","topic_2", "topic_3"),
                                 title = "Categorical elicitation example")
@@ -307,7 +307,7 @@ my_elicitation_cat
 #> 
 #> • Categories: "category_1", "category_2", "category_3", "category_4", and
 #> "category_5"
-#> • Sites: "site_1", "site_2", "site_3", and "site_4"
+#> • Options: "option_1", "option_2", "option_3", and "option_4"
 #> • Number of experts: 6
 #> • Topics: "topic_1", "topic_2", and "topic_3"
 #> • Data available for 0 topics

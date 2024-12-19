@@ -56,20 +56,20 @@ For each topic, data are expected to have five columns, built as follows:
 \itemize{
 \item The first column of the data should hold the names of the experts. The name
 of each expert should be repeated as many times as the number of categories
-and sites. (i.e. each expert should appear \eqn{number\ of\ categories
-\cdot number\ of\ sites} times).
+and options. (i.e. each expert should appear \eqn{number\ of\ categories
+\cdot number\ of\ options} times).
 \item The second column should be the names of the categories considered in the
 elicitation. Each block of categories should be repeated as many times as the
-number of sites considered.
-\item The third column should hold the names of the sites considered in the
-study. The name of each site should be repeated as many times as the number
+number of options considered.
+\item The third column should hold the names of the options considered in the
+study. The name of each option should be repeated as many times as the number
 of categories considered.
 \item The fourth column should be the experts confidence in their own estimates
 (given in percent). Experts should estimate how confident they are in their
-estimates for each block of categories and for each site. Therefore, expert
+estimates for each block of categories and for each option. Therefore, expert
 confidence estimates should be repeated as many times as the number of
 categories of impact considered.
-\item The final column should be the estimates of each expert for each site and
+\item The final column should be the estimates of each expert for each option and
 category.
 }
 
@@ -77,24 +77,24 @@ The name of the columns is not important, \code{cat_add_data()} will overwrite
 them according to the following convention:
 
 The first column will be renamed \code{id}, the second column \code{category}, the
-third column \code{site}, the fourth column \code{confidence}, and the fifth column
+third column \code{option}, the fourth column \code{confidence}, and the fifth column
 \code{estimate}.
 
-Here is an example of data correctly formatted for an elicitation with two
-categories and two sites (only one expert is shown):
+Here is an example of data correctly formatted for an elicitation with five
+categories and two options (only one expert is shown):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{name         category       site      confidence      estimate
---------------------------------------------------------------
-expert 1     category 1     site 1            15          0.08
-expert 1     category 2     site 1            15             0
-expert 1     category 3     site 1            15          0.84
-expert 1     category 4     site 1            15          0.02
-expert 1     category 5     site 1            15          0.06
-expert 1     category 1     site 2            35          0.02
-expert 1     category 2     site 2            35          0.11
-expert 1     category 3     site 2            35          0.19
-expert 1     category 4     site 2            35          0.02
-expert 1     category 5     site 2            35          0.66
+\if{html}{\out{<div class="sourceCode">}}\preformatted{name         category       option      confidence      estimate
+----------------------------------------------------------------
+expert 1     category 1     option 1            15          0.08
+expert 1     category 2     option 1            15          0
+expert 1     category 3     option 1            15          0.84
+expert 1     category 4     option 1            15          0.02
+expert 1     category 5     option 1            15          0.06
+expert 1     category 1     option 2            35          0.02
+expert 1     category 2     option 2            35          0.11
+expert 1     category 3     option 2            35          0.19
+expert 1     category 4     option 2            35          0.02
+expert 1     category 5     option 2            35          0.66
 }\if{html}{\out{</div>}}
 }
 
@@ -110,13 +110,13 @@ process never reaches the \link{elic_cat} object.
 
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five categories and a maximum of six experts per topic
+# four options, five categories and a maximum of six experts per topic
 my_categories <- c("category_1", "category_2", "category_3",
                    "category_4", "category_5")
-my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
 x <- cat_start(categories = my_categories,
-               sites = my_sites,
+               options = my_options,
                experts = 6,
                topics = my_topics)
 

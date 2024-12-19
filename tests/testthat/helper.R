@@ -11,10 +11,10 @@ create_cont_obj <- function() {
 create_cat_obj <- function() {
   my_categories <- c("category_1", "category_2", "category_3",
                      "category_4", "category_5")
-  my_sites <- c("site_1", "site_2", "site_3", "site_4")
+  my_options <- c("option_1", "option_2", "option_3", "option_4")
   my_topics <- c("topic_1", "topic_2", "topic_3")
   cat_start(categories = my_categories,
-            sites = my_sites,
+            options = my_options,
             experts = 6,
             topics = my_topics,
             verbose = FALSE) |>

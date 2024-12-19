@@ -10,7 +10,7 @@ cat_sample_data(
   topic,
   ...,
   n_votes = 100,
-  site = "all",
+  option = "all",
   verbose = TRUE
 )
 }
@@ -29,9 +29,9 @@ function.}
 \item{n_votes}{numeric indicating the number of votes to consider, used only
 in the \emph{basic} aggregation method.}
 
-\item{site}{character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use \code{all} for all
-sites.}
+\item{option}{character string with the name of the option or character
+vector with the options that you want to extract from the data. Use \code{all} for
+all options.}
 
 \item{verbose}{logical, if TRUE it prints informative messages.}
 }
@@ -66,29 +66,29 @@ one estimate is provided, i.e. 100 \% for one category, the method assigns 100
 
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five categories and a maximum of six experts per topic
+# four options, five categories and a maximum of six experts per topic
 my_categories <- c("category_1", "category_2", "category_3",
                    "category_4", "category_5")
-my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
 my_elicit <- cat_start(categories = my_categories,
-                       sites = my_sites,
+                       options = my_options,
                        experts = 6,
                        topics = my_topics) |>
   cat_add_data(data_source = topic_1, topic = "topic_1") |>
   cat_add_data(data_source = topic_2, topic = "topic_2") |>
   cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Topic 1 for all sites using the basic method
+# Sample data from Topic 1 for all options using the basic method
 samp <- cat_sample_data(my_elicit,
                         method = "basic",
                         topic = "topic_1")
 
-# Sample data from Topic 2 for Site 1 and 3 using the bootstrap method
+# Sample data from Topic 2 for option 1 and 3 using the bootstrap method
 samp <- cat_sample_data(my_elicit,
                         method = "bootstrap",
                         topic = "topic_2",
-                        site = c("site_1", "site_3"))
+                        option = c("option_1", "option_3"))
 }
 \references{
 Vernet, M., Trask, A.E., Andrews, C.E., Ewen, J.E., Medina, S.,

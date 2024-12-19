@@ -1,6 +1,6 @@
 test_that("elic_cat object", {
   x <- new_elic_cat(categories = c("category_1", "category_2"),
-                    sites = c("site_1", "site_2", "site_3"),
+                    options = c("option_1", "option_2", "option_3"),
                     experts = 8,
                     topics = c("topic_1", "topic_2"),
                     title = "Title")
@@ -8,9 +8,9 @@ test_that("elic_cat object", {
   # categories are recorded in the object as character vector
   expect_vector(x[["categories"]], ptype = "character", size = 2)
   expect_identical(x[["categories"]], c("category_1", "category_2"))
-  # Sites are recorded in the object as character vector
-  expect_vector(x[["sites"]], ptype = "character", size = 3)
-  expect_identical(x[["sites"]], c("site_1", "site_2", "site_3"))
+  # options are recorded in the object as character vector
+  expect_vector(x[["options"]], ptype = "character", size = 3)
+  expect_identical(x[["options"]], c("option_1", "option_2", "option_3"))
   # Number of experts are recorded in the object
   expect_identical(x[["experts"]], 8)
   # Data is present and empty with default element names
@@ -29,7 +29,7 @@ test_that("elic_cat object", {
 test_that("Print elicit object", {
   # Without data
   expect_snapshot(new_elic_cat(categories = c("category_1", "category_2"),
-                               sites = c("site_1", "site_2", "site_3"),
+                               options = c("option_1", "option_2", "option_3"),
                                experts = 8,
                                topics = c("topic_1", "topic_2"),
                                title = "Title"))

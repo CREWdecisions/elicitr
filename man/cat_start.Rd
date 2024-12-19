@@ -6,7 +6,7 @@
 \usage{
 cat_start(
   categories,
-  sites,
+  options,
   experts,
   topics,
   ...,
@@ -18,8 +18,8 @@ cat_start(
 \item{categories}{character vector with the names of the categories. See
 Categories for more.}
 
-\item{sites}{character vector with the names of all sites investigated. See
-Sites for more.}
+\item{options}{character vector with the names of all options investigated.
+See Options for more.}
 
 \item{experts}{numeric, indicating the maximum number of experts
 participating in the elicitation process for one topic. See Experts for more.}
@@ -53,11 +53,11 @@ needed. If only one category is investigated, please refer to the functions
 for the elicitation of continuous data (e.g. \link{cont_start}).
 }
 
-\section{Sites}{
+\section{Options}{
 
 
-The site parameter is a character vector containing the names of all the
-sites investigated in the elicitation. However, not all sites have to be
+The option parameter is a character vector containing the names of all the
+options investigated in the elicitation. However, not all options have to be
 investigated in every topic.
 }
 
@@ -71,18 +71,18 @@ and IDs of experts can differ between the topics.
 
 \examples{
 # Create the elic_cat object for an elicitation process over 2 topics, 3
-# sites, 3 categories per sites, and a maximum number of experts per topic of
-# 8
+# options, 3 categories per options, and a maximum number of 8 experts per
+# topic
 my_categories <- c("category_1", "category_2", "category_3")
 my_elicit <- cat_start(categories = my_categories,
-                       sites = c("Site_1", "Site_2", "Site_3"),
+                       options = c("option_1", "option_2", "option_3"),
                        experts = 8,
                        topics = c("topic_1","topic_2"))
 my_elicit
 
 # A title can be added to bind a name to the object:
 my_elicit <- cat_start(categories = my_categories,
-                       sites = c("Site_1", "Site_2", "Site_3"),
+                       options = c("option_1", "option_2", "option_3"),
                        experts = 8,
                        topics = c("topic_1","topic_2"),
                        title = "My elicitation")

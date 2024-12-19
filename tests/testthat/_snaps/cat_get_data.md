@@ -41,20 +41,20 @@
 ---
 
     Code
-      cat_get_data(obj, topic = "topic_1", site = "site_5")
+      cat_get_data(obj, topic = "topic_1", option = "option_5")
     Condition
       Error in `cat_get_data()`:
-      ! Invalid value for `sites`:
-      x "site_5" not present in the <elic_cat> object.
-      i Available sites: "site_1", "site_2", "site_3", and "site_4".
+      ! Invalid value for `options`:
+      x "option_5" not present in the <elic_cat> object.
+      i Available options: "option_1", "option_2", "option_3", and "option_4".
 
 ---
 
     Code
-      cat_get_data(obj, topic = "topic_3", site = "site_4")
+      cat_get_data(obj, topic = "topic_3", option = "option_4")
     Condition
       Error in `cat_get_data()`:
-      ! Invalid value for argument `site`:
-      x Site "site_4" not available in topic "topic_3".
-      i Available sites: "site_1", "site_2", and "site_3".
+      ! Invalid value for argument `option`:
+      x Option "option_4" not available in topic "topic_3".
+      i Available options: "option_1", "option_2", and "option_3".
 

@@ -4,7 +4,7 @@
 \alias{cat_get_data}
 \title{#' Get data}
 \usage{
-cat_get_data(x, topic, ..., site = "all")
+cat_get_data(x, topic, ..., option = "all")
 }
 \arguments{
 \item{x}{an object of class \link{elic_cat}.}
@@ -15,9 +15,9 @@ belongs.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{site}{character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use \code{all} for all
-sites.}
+\item{option}{character string with the name of the option or character
+vector with the options that you want to extract from the data. Use \code{all} for
+all options.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble}} with the extracted data.
@@ -29,13 +29,13 @@ Get data from an \link{elic_cat} object.
 }
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five categories and a maximum of six experts per topic
+# four options, five categories and a maximum of six experts per topic
 my_categories <- c("category_1", "category_2", "category_3",
                    "category_4", "category_5")
-my_sites <- c("site_1", "site_2", "site_3", "site_4")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
 my_elicit <- cat_start(categories = my_categories,
-                       sites = my_sites,
+                       options = my_options,
                        experts = 6,
                        topics = my_topics) |>
   cat_add_data(data_source = topic_1, topic = "topic_1") |>
@@ -45,14 +45,14 @@ my_elicit <- cat_start(categories = my_categories,
 # Get all data from Topic 1
 cat_get_data(my_elicit, topic = "topic_1")
 
-# Get data by site name----
-# Get data for site_1 from Topic 2
-cat_get_data(my_elicit, topic = "topic_2", site = "site_1")
+# Get data by option name----
+# Get data for option_1 from Topic 2
+cat_get_data(my_elicit, topic = "topic_2", option = "option_1")
 
-# Get data for site_1 and site_3 from Topic 3
+# Get data for option_1 and option_3 from Topic 3
 cat_get_data(my_elicit,
              topic = "topic_3",
-             site = c("site_1", "site_3"))
+             option = c("option_1", "option_3"))
 }
 \seealso{
 Other cat data helpers: 

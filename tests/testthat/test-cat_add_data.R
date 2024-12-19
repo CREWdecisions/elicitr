@@ -1,6 +1,6 @@
 test_that("Errors", {
   x <- cat_start(categories = paste0("category_", 1:5),
-                 sites = paste0("site_", 1:4),
+                 options = paste0("option_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),
                  verbose = FALSE)
@@ -92,18 +92,18 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When one site is not on the metadata
+  # When one option is not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "site_5"
+  y[1:5, 3] <- "option_5"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When two sites are not on the metadata
+  # When two options are not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "site_5"
-  y[6:10, 3] <- "site_6"
+  y[1:5, 3] <- "option_5"
+  y[6:10, 3] <- "option_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -125,9 +125,9 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When the column with the sites is malformed
+  # When the column with the options is malformed
   y <- topic_1
-  y[1:5, 3] <- c(paste0("site_", 1:4), "site_1")
+  y[1:5, 3] <- c(paste0("option_", 1:4), "option_1")
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -141,7 +141,7 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for one expert and site
+  # When estimates don't sum to 1 for one expert and option
   y <- topic_1
   y[1, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
@@ -149,7 +149,7 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for more experts and sites
+  # When estimates don't sum to 1 for more experts and options
   y[19, 5] <- 0.99
   y[120, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
@@ -160,7 +160,7 @@ test_that("Errors", {
 
 test_that("Info", {
   x <- cat_start(categories = paste0("category_", 1:5),
-                 sites = paste0("site_", 1:4),
+                 options = paste0("option_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),
                  verbose = FALSE)
@@ -210,7 +210,7 @@ test_that("Info", {
   # Google Sheet used for testing
   gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
   x <- cat_start(categories = paste0("category_", 1:5),
-                 sites = paste0("site_", 1:4),
+                 options = paste0("option_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),
                  verbose = FALSE)

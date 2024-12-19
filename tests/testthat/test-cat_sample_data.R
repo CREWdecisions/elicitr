@@ -27,7 +27,7 @@ test_that("Info", {
   expect_snapshot(out <- cat_sample_data(obj,
                                          method = "basic",
                                          topic = "topic_1",
-                                         site = c("site_1", "site_2"),
+                                         option = c("option_1", "option_2"),
                                          n_votes = 50))
   expect_s3_class(out, class = "cat_sample")
   expect_identical(attr(out, "topic"), "topic_1")
@@ -39,14 +39,14 @@ test_that("Info", {
                                          topic = "topic_1"))
   expect_s3_class(out, class = "cat_sample")
   expect_identical(attr(out, "topic"), "topic_1")
-  expect_identical(nrow(out),
-                   as.integer(obj[["experts"]] * length(obj[["sites"]]) * 100))
+  res <- as.integer(obj[["experts"]] * length(obj[["options"]]) * 100)
+  expect_identical(nrow(out), res)
 })
 
 test_that("Output", {
   obj <- create_cat_obj()
 
-  # Modify one expert estimate to have 100% for category 1 in site 1
+  # Modify one expert estimate to have 100% for category 1 in option 1
   obj[["data"]][["topic_1"]][1, 5] <- 1
   obj[["data"]][["topic_1"]][2:5, 5] <- 0
 
@@ -54,7 +54,7 @@ test_that("Output", {
   out <- cat_sample_data(obj,
                          method = "basic",
                          topic = "topic_1",
-                         site = "site_1",
+                         option = "option_1",
                          verbose = FALSE)
   expect_identical(dplyr::pull(out, "category_1")[1:5], rep(1, 5))
   expect_identical(dplyr::pull(out, "category_2")[1:5], rep(0, 5))
@@ -66,7 +66,7 @@ test_that("Output", {
   out <- cat_sample_data(obj,
                          method = "bootstrap",
                          topic = "topic_1",
-                         site = "site_1",
+                         option = "option_1",
                          verbose = FALSE)
   expect_identical(dplyr::pull(out, "category_1")[1:5], rep(1, 5))
   expect_identical(dplyr::pull(out, "category_2")[1:5], rep(0, 5))

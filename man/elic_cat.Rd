@@ -13,7 +13,7 @@ store the data collected during the elicitation process and their metadata.
 There are 6 elements in the \code{elic_cat} object:
 \itemize{
 \item \code{categories}: character vector with the names of the categories.
-\item \code{sites}: character vector with the names of the sites investigated.
+\item \code{options}: character vector with the names of the options investigated.
 \item \code{experts}: numeric, indicating the maximum number of experts participating
 in the elicitation process for one topic.
 \item \code{topics}: character vector with the names of the topics investigated.

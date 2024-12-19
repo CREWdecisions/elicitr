@@ -31,8 +31,8 @@
 # Info
 
     Code
-      out <- cat_sample_data(obj, method = "basic", topic = "topic_1", site = c(
-        "site_1", "site_2"), n_votes = 50)
+      out <- cat_sample_data(obj, method = "basic", topic = "topic_1", option = c(
+        "option_1", "option_2"), n_votes = 50)
     Message
       v Data sampled successfully using "basic" method.
 

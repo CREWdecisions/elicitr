@@ -4,47 +4,49 @@ test_that("Errors", {
 
   # When categories is not a character vector
   expect_snapshot(cat_start(categories = 1:3,
-                            sites = c("site_1", "site_2", "site_3"),
+                            options = c("option_1", "option_2", "option_3"),
                             experts = 8,
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
-  # When sites is not a character vector
+  # When options is not a character vector
   expect_snapshot(cat_start(categories = cats,
-                            sites = 1:3,
+                            options = 1:3,
                             experts = 8,
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
   # When topics is not a character vector
   expect_snapshot(cat_start(categories = cats,
-                            sites = c("site_1", "site_2", "site_3"),
+                            options = c("option_1", "option_2", "option_3"),
                             experts = 8,
                             topics = 1:3),
                   error = TRUE)
   # When experts is not numeric
   expect_snapshot(cat_start(categories = cats,
-                            sites = c("site_1", "site_2", "site_3"),
+                            options = c("option_1", "option_2", "option_3"),
                             experts = "8",
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
   # When experts is a numeric vector
   expect_snapshot(cat_start(categories = cats,
-                            sites = c("site_1", "site_2", "site_3"),
+                            options = c("option_1", "option_2", "option_3"),
                             experts = 1:3,
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
 })
 
 test_that("Info", {
+  opt <- c("option_1", "option_2", "option_3")
   expect_snapshot(x <- cat_start(categories = c("category_1", "category_2"),
-                                 sites = c("site_1", "site_2", "site_3"),
+                                 options = opt,
                                  experts = 8,
                                  topics = c("topic_1", "topic_2")))
 })
 
 test_that("Output", {
   # The argument verbose is used
+  opt <- c("option_1", "option_2", "option_3")
   expect_no_message(x <- cat_start(categories = c("category_1", "category_2"),
-                                   sites = c("site_1", "site_2", "site_3"),
+                                   options = opt,
                                    experts = 8,
                                    topics = c("topic_1", "topic_2"),
                                    verbose = FALSE))
@@ -52,9 +54,9 @@ test_that("Output", {
   # categories are recorded in the object
   expect_identical(x[["categories"]], c("category_1", "category_2"))
   expect_type(x[["categories"]], "character")
-  # Sites are recorded in the object
-  expect_identical(x[["sites"]], c("site_1", "site_2", "site_3"))
-  expect_type(x[["sites"]], "character")
+  # options are recorded in the object
+  expect_identical(x[["options"]], c("option_1", "option_2", "option_3"))
+  expect_type(x[["options"]], "character")
   # Number of experts are recorded in the object
   expect_identical(x[["experts"]], 8)
   # Data is present and empty

@@ -8,7 +8,7 @@
 #' There are 6 elements in the `elic_cat` object:
 #'
 #' * `categories`: character vector with the names of the categories.
-#' * `sites`: character vector with the names of the sites investigated.
+#' * `options`: character vector with the names of the options investigated.
 #' * `experts`: numeric, indicating the maximum number of experts participating
 #' in the elicitation process for one topic.
 #' * `topics`: character vector with the names of the topics investigated.
@@ -22,7 +22,7 @@ NULL
 
 # Constructor for the `elic_cat` object
 new_elic_cat <- function(categories,
-                         sites,
+                         options,
                          experts,
                          topics,
                          title,
@@ -34,7 +34,7 @@ new_elic_cat <- function(categories,
   }
 
   obj <- list(categories = categories,
-              sites = sites,
+              options = options,
               experts = experts,
               data = data)
 
@@ -52,7 +52,7 @@ print.elic_cat <- function(x, ...) {
 
   cli::cli_h2(title)
   cli::cli_li("Categor{?y/ies}: {.val {x$categories}}")
-  cli::cli_li("Site{?s}: {.val {x$sites}}")
+  cli::cli_li("Option{?s}: {.val {x$options}}")
   cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
   cli::cli_li("Topic{?s}: {.val {names(x$data)}}")
 

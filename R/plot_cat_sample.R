@@ -22,32 +22,32 @@
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
-#' # four sites, five categories and a maximum of six experts per topic
+#' # four options, five categories and a maximum of six experts per topic
 #' my_categories <- c("category_1", "category_2", "category_3",
 #'                    "category_4", "category_5")
-#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
 #' my_topics <- c("topic_1", "topic_2", "topic_3")
 #' my_elicit <- cat_start(categories = my_categories,
-#'                        sites = my_sites,
+#'                        options = my_options,
 #'                        experts = 6,
 #'                        topics = my_topics) |>
 #'   cat_add_data(data_source = topic_1, topic = "topic_1") |>
 #'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
 #'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Topic 1 for all sites using the basic method
+#' # Sample data from Topic 1 for all options using the basic method
 #' samp <- cat_sample_data(my_elicit,
 #'                         method = "basic",
 #'                         topic = "topic_1")
 #'
-#' # Plot the sampled data for all sites
+#' # Plot the sampled data for all options
 #' plot(samp)
 #'
-#' # Plot the sampled data for site 1
-#' plot(samp, site = "site_1")
+#' # Plot the sampled data for option 1
+#' plot(samp, option = "option_1")
 #'
-#' # Plot the sampled data for site 1 and 3
-#' plot(samp, site = c("site_1", "site_3"))
+#' # Plot the sampled data for option 1 and 3
+#' plot(samp, option = c("option_1", "option_3"))
 #'
 #' # Provide custom colours
 #' plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
@@ -57,33 +57,33 @@
 #' plot(samp, theme = ggplot2::theme_minimal())
 plot.cat_sample <- function(x,
                             ...,
-                            site = "all",
+                            option = "all",
                             title = NULL,
                             ylab = "Probabolity",
                             colours = NULL,
                             family = "sans",
                             theme = NULL) {
 
-  if (any(site != "all")) {
+  if (any(option != "all")) {
 
-    # Check if site is not among the available sites in the data
-    available_sites <- unique(x[["site"]])
-    diff <- setdiff(site, available_sites)
+    # Check if option is not among the available options in the data
+    available_options <- unique(x[["option"]])
+    diff <- setdiff(option, available_options)
 
     if (length(diff) > 0) {
-      error <- "{cli::qty(diff)} Site{?s} {.val {diff}} not available in \\
+      error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
                the sampled data."
-      info <- "Available site{?s}: {.val {available_sites}}."
-      cli::cli_abort(c("Invalid value for argument {.arg site}:",
+      info <- "Available option{?s}: {.val {available_options}}."
+      cli::cli_abort(c("Invalid value for argument {.arg option}:",
                        "x" = error,
                        "i" = info))
     }
 
     # Avoid overwrite dplyr variable
-    vals <- site
+    vals <- option
     x <- x |>
-      dplyr::filter(.data[["site"]] %in% vals) |>
-      dplyr::mutate("site" = factor(.data[["site"]], levels = vals))
+      dplyr::filter(.data[["option"]] %in% vals) |>
+      dplyr::mutate("option" = factor(.data[["option"]], levels = vals))
   }
 
   if (is.null(title)) {
@@ -91,7 +91,7 @@ plot.cat_sample <- function(x,
   }
 
   x <- x |>
-    tidyr::pivot_longer(cols = -c("id", "site"),
+    tidyr::pivot_longer(cols = -c("id", "option"),
                         names_to = "category",
                         values_to = "prob") |>
     dplyr::mutate("category" = factor(.data[["category"]],
@@ -136,7 +136,7 @@ plot.cat_sample <- function(x,
                           size = 0.8) +
     ggplot2::labs(title = title,
                   y = ylab) +
-    ggplot2::facet_wrap("site") +
+    ggplot2::facet_wrap("option") +
     ggplot2::scale_fill_manual(values = colours) +
     ggplot2::scale_y_continuous(limits = c(0, 1),
                                 expand = ggplot2::expansion(mult = c(0,

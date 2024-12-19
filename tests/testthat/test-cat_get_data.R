@@ -18,12 +18,12 @@ test_that("Errors", {
   expect_snapshot(cat_get_data(obj, topic = "topic_4"),
                   error = TRUE)
 
-  # When site is not available in the object
-  expect_snapshot(cat_get_data(obj, topic = "topic_1", site = "site_5"),
+  # When option is not available in the object
+  expect_snapshot(cat_get_data(obj, topic = "topic_1", option = "option_5"),
                   error = TRUE)
 
-  # When site is not among the available sites in the object
-  expect_snapshot(cat_get_data(obj, topic = "topic_3", site = "site_4"),
+  # When option is not among the available options in the object
+  expect_snapshot(cat_get_data(obj, topic = "topic_3", option = "option_4"),
                   error = TRUE)
 })
 
@@ -37,17 +37,17 @@ test_that("Output", {
   expect_identical(cat_get_data(obj, topic = "topic_3"),
                    obj[["data"]][["topic_3"]])
 
-  # Get only 1 site
+  # Get only 1 option
   data <- obj[["data"]][["topic_1"]]
   expect_identical(cat_get_data(obj,
                                 topic = "topic_1",
-                                site = "site_1"),
-                   data[data[["site"]] == "site_1", ])
+                                option = "option_1"),
+                   data[data[["option"]] == "option_1", ])
 
-  # Get multiple sites
+  # Get multiple options
   data <- obj[["data"]][["topic_1"]]
   expect_identical(cat_get_data(obj,
                                 topic = "topic_1",
-                                site = c("site_1", "site_3")),
-                   data[data[["site"]] %in% c("site_1", "site_3"), ])
+                                option = c("option_1", "option_3")),
+                   data[data[["option"]] %in% c("option_1", "option_3"), ])
 })
