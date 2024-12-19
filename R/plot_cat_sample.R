@@ -1,6 +1,9 @@
 #' Plot categorical samples
 #'
-#' The function aggregates and plots the categorical samples as violin plot.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `plot()` aggregates and plots the categorical samples as violin plot.
 #'
 #' @param x an object of class `cat_sample` created by the function
 #' [cat_sample_data].
