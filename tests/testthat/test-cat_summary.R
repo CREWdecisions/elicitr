@@ -1,3 +1,13 @@
+test_that("Errors", {
+  obj <- create_cat_obj()
+  samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",
+                          verbose = FALSE)
+
+  # When option is not available in the object
+  expect_snapshot(summary(samp, option = "option_7"),
+                  error = TRUE)
+})
+
 test_that("Output", {
   obj <- create_cat_obj()
   samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",

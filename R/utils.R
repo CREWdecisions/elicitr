@@ -344,6 +344,22 @@ check_method <- function(x, method) {
   }
 }
 
+check_option <- function(x, option) {
+
+  available_options <- unique(x[["option"]])
+  diff <- setdiff(option, available_options)
+
+  if (length(diff) > 0) {
+    error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
+               the sampled data."
+    info <- "Available option{?s}: {.val {available_options}}."
+    cli::cli_abort(c("Invalid value for argument {.arg option}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data

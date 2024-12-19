@@ -41,6 +41,9 @@ summary.cat_sample <- function(object,
                                option,
                                ...) {
 
+  # Check if option is available
+  check_option(object, option)
+
   # Avoid overwriting dplyr variable
   opt <- option
 
