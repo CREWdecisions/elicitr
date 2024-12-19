@@ -4,10 +4,10 @@
 \alias{summary.cat_sample}
 \title{Summarise categorical sample}
 \usage{
-\method{summary}{cat_sample}(x, option, ...)
+\method{summary}{cat_sample}(object, option, ...)
 }
 \arguments{
-\item{x}{an object of class \code{cat_sample} created by the function
+\item{object}{an object of class \code{cat_sample} created by the function
 \link{cat_sample_data}.}
 
 \item{option}{character string with the name of the option.}

@@ -6,7 +6,7 @@
 #' `summary()` summarises the sampled data and provides the minimum, first
 #' quartile, median, mean, third quartile, and maximum values for each category.
 #'
-#' @param x an object of class `cat_sample` created by the function
+#' @param object an object of class `cat_sample` created by the function
 #' [cat_sample_data].
 #' @param option character string with the name of the option.
 #' @param ... Unused arguments, included only for future extensions of the
@@ -37,16 +37,18 @@
 #'
 #' # Summarise the sampled data
 #' summary(samp, option = "option_1")
-summary.cat_sample <- function(x, option, ...) {
+summary.cat_sample <- function(object,
+                               option,
+                               ...) {
 
   # Avoid overwriting dplyr variable
   opt <- option
 
-  x <- x |>
+  object <- object |>
     dplyr::filter(.data[["option"]] == opt) |>
     dplyr::select(-c("id", "option"))
 
-  out <- matrix(NA, nrow = ncol(x), ncol = 6)
+  out <- matrix(NA, nrow = ncol(object), ncol = 6)
 
   out[, 1] <- sapply(x, min)
   out[, 2] <- sapply(x, stats::quantile, probs = 0.25)
