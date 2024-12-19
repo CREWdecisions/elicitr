@@ -83,8 +83,7 @@ plot.cat_sample <- function(x,
     vals <- site
     x <- x |>
       dplyr::filter(.data[["site"]] %in% vals) |>
-      dplyr::mutate("site" = factor(.data[["site"]],
-                                     levels = vals))
+      dplyr::mutate("site" = factor(.data[["site"]], levels = vals))
   }
 
   if (is.null(title)) {
