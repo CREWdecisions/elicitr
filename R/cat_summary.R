@@ -50,16 +50,16 @@ summary.cat_sample <- function(object,
 
   out <- matrix(NA, nrow = ncol(object), ncol = 6)
 
-  out[, 1] <- sapply(x, min)
-  out[, 2] <- sapply(x, stats::quantile, probs = 0.25)
-  out[, 3] <- sapply(x, median)
-  out[, 4] <- sapply(x, mean)
-  out[, 5] <- sapply(x, stats::quantile, probs = 0.75)
-  out[, 6] <- sapply(x, max)
+  out[, 1] <- sapply(object, min)
+  out[, 2] <- sapply(object, stats::quantile, probs = 0.25)
+  out[, 3] <- sapply(object, median)
+  out[, 4] <- sapply(object, mean)
+  out[, 5] <- sapply(object, stats::quantile, probs = 0.75)
+  out[, 6] <- sapply(object, max)
 
   colnames(out) <- c("Min", "Q1", "Median", "Mean", "Q3", "Max")
 
   out |>
     tibble::as_tibble() |>
-    dplyr::mutate("Category" = colnames(x), .before = 1)
+    dplyr::mutate("Category" = colnames(object), .before = 1)
 }
