@@ -1,3 +1,8 @@
+# List with column labels
+var_labels <- list("1p" = "best",
+                   "3p" = c("min", "max", "best"),
+                   "4p" = c("min", "max", "best", "conf"))
+
 #' Add data
 #'
 #' @description

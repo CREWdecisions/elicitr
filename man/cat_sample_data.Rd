@@ -37,7 +37,7 @@ sites.}
 }
 \value{
 An \code{\link[tibble:tibble]{tibble}} with the sampled data. This object has
-the additional class \code{elic_cat_sample} used to implement the plotting method.
+the additional class \code{cat_sample} used to implement the plotting method.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

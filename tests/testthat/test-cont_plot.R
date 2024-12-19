@@ -298,24 +298,7 @@ test_that("Output", {
                    truth_data_rescaled,
                    ignore_attr = TRUE)
 
-  # Colours and shapes----
-  p <- cont_plot(obj, round = 2, var = "var3",
-                 truth = list(min = 0.7, max = 0.9,
-                              best = 0.8, conf = 100),
-                 group = TRUE,
-                 colour = "yellow",
-                 group_colour = "brown",
-                 truth_colour = "pink",
-                 point_size = 3,
-                 line_width = 2,
-                 title = "Test",
-                 xlab = "test",
-                 ylab = "Text",
-                 family = "serif",
-                 verbose = FALSE)
-
-  test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
-                                                                  hjust = 1))
+  # Colours and and other plot elements----
   p <- cont_plot(obj,
                  round = 2,
                  var = "var3",
