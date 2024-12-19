@@ -7,16 +7,18 @@ random_names <- randomNames::randomNames(n_experts,
                                          name.sep = " ")
 
 
-levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-n_levels <- length(levels)
+categories <- c("category_1", "category_2", "category_3",
+                "category_4", "category_5")
+n_categories <- length(categories)
 
 sites <- c("site_1", "site_2", "site_3", "site_4")
 n_sites <- length(sites)
 
-# Generate random values for each level that sum up to 100
+# Generate random values for each category that sum up to 100
 get_values <- function() {
   rand_data <- Surrogate::RandVec(a = 0, b = 1, s = 1,
-                                  n = n_levels, m = n_experts * n_sites)[[1]] |>
+                                  n = n_categories,
+                                  m = n_experts * n_sites)[[1]] |>
     # The following function rounds preserving the sum of the values on each
     # row, so data needs to be transposed twice, before and after the function
     t() |>
@@ -27,37 +29,37 @@ get_values <- function() {
     as.vector()
 }
 
-topic_1 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                      level = rep(levels, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_levels),
+topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
+                      category = rep(categories, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_categories),
                                  times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_sites,
                                               replace = TRUE),
-                                       each = n_levels),
+                                       each = n_categories),
                       estimate = get_values()) |>
   tibble::as_tibble()
 
-topic_2 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                      level = rep(levels, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_levels),
+topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
+                      category = rep(categories, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_categories),
                                  times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_sites,
                                               replace = TRUE),
-                                       each = n_levels),
+                                       each = n_categories),
                       estimate = get_values()) |>
   dplyr::filter(name != random_names[[1]]) |>
   tibble::as_tibble()
 
-topic_3 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                      level = rep(levels, times = n_experts * n_sites),
-                      site = rep(rep(sites, each = n_levels),
+topic_3 <- data.frame(name = rep(random_names, each = n_categories * n_sites),
+                      category = rep(categories, times = n_experts * n_sites),
+                      site = rep(rep(sites, each = n_categories),
                                  times = n_experts),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_sites,
                                               replace = TRUE),
-                                       each = n_levels),
+                                       each = n_categories),
                       estimate = get_values()) |>
   dplyr::filter(site != sites[[4]]) |>
   tibble::as_tibble()

@@ -15,6 +15,6 @@
     Condition
       Error in `plot()`:
       ! Invalid value for argument `colours`:
-      x The number of colours provided does not match the number of levels.
+      x The number of colours provided does not match the number of categories.
       i Please provide a vector with 5 colours.
 

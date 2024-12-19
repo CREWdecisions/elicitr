@@ -14,47 +14,46 @@
 #'
 #' For each topic, data are expected to have five columns, built as follows:
 #' * The first column of the data should hold the names of the experts. The name
-#' of each expert should be repeated as many times as many times as the number
-#' of impact levels and sites.
-#' (i.e. each expert should appear \eqn{number\ of\ levels
+#' of each expert should be repeated as many times as the number of categories
+#' and sites. (i.e. each expert should appear \eqn{number\ of\ categories
 #' \cdot number\ of\ sites} times).
-#' * The second column should be the names of the levels of impact considered in
-#' the elicitation. Each block of levels of impact should be repeated as many
-#' times as the number of sites investigated/considered.
+#' * The second column should be the names of the categories considered in the
+#' elicitation. Each block of categories should be repeated as many times as the
+#' number of sites considered.
 #' * The third column should hold the names of the sites considered in the
 #' study. The name of each site should be repeated as many times as the number
-#' of levels of impact considered.
+#' of categories considered.
 #' * The fourth column should be the experts confidence in their own estimates
 #' (given in percent). Experts should estimate how confident they are in their
-#' estimates for each block of levels of impact and for each site. Therefore,
-#' expert confidence estimates should be repeated as many times as the number of
-#' levels of impact considered.
+#' estimates for each block of categories and for each site. Therefore, expert
+#' confidence estimates should be repeated as many times as the number of
+#' categories of impact considered.
 #' * The final column should be the estimates of each expert for each site and
-#' impact level.
+#' category.
 #'
 #' The name of the columns is not important, `cat_add_data()` will overwrite
 #' them according to the following convention:
 #'
-#' The first column will be renamed `id`, the second column `level`, the third
-#' column `site`, the fourth column `confidence`, and the fifth column
+#' The first column will be renamed `id`, the second column `category`, the
+#' third column `site`, the fourth column `confidence`, and the fifth column
 #' `estimate`.
 #'
 #' Here is an example of data correctly formatted for an elicitation with two
-#' levels of impact and two sites (only one expert is shown):
+#' categories and two sites (only one expert is shown):
 #'
 #' ```
-#' name       level       site      confidence      estimate
-#' ---------------------------------------------------------
-#' expert 1   level 1     site 1            15          0.08
-#' expert 1   level 2     site 1            15             0
-#' expert 1   level 3     site 1            15          0.84
-#' expert 1   level 4     site 1            15          0.02
-#' expert 1   level 5     site 1            15          0.06
-#' expert 1   level 1     site 2            35          0.02
-#' expert 1   level 2     site 2            35          0.11
-#' expert 1   level 3     site 2            35          0.19
-#' expert 1   level 4     site 2            35          0.02
-#' expert 1   level 5     site 2            35          0.66
+#' name         category       site      confidence      estimate
+#' --------------------------------------------------------------
+#' expert 1     category 1     site 1            15          0.08
+#' expert 1     category 2     site 1            15             0
+#' expert 1     category 3     site 1            15          0.84
+#' expert 1     category 4     site 1            15          0.02
+#' expert 1     category 5     site 1            15          0.06
+#' expert 1     category 1     site 2            35          0.02
+#' expert 1     category 2     site 2            35          0.11
+#' expert 1     category 3     site 2            35          0.19
+#' expert 1     category 4     site 2            35          0.02
+#' expert 1     category 5     site 2            35          0.66
 #' ```
 #'
 #' @section Data cleaning:
@@ -74,11 +73,12 @@
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
-#' # four sites, five levels and a maximum of six experts per topic
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+#' # four sites, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
 #' my_sites <- c("site_1", "site_2", "site_3", "site_4")
 #' my_topics <- c("topic_1", "topic_2", "topic_3")
-#' x <- cat_start(levels = my_levels,
+#' x <- cat_start(categories = my_categories,
 #'                sites = my_sites,
 #'                experts = 6,
 #'                topics = my_topics)
@@ -186,33 +186,33 @@ cat_add_data <- function(x,
 
   # Check if data has the correct number of columns
   check_columns(data, 5)
-  colnames(data) <- c("id", "level", "site", "confidence", "estimate")
+  colnames(data) <- c("id", "category", "site", "confidence", "estimate")
 
   # Check columns type
   check_columns_type(data[1:3], "character")
   check_columns_type(data[4:5], c("numeric", "integer"))
 
-  # First check that names, levels and sites are as expected
+  # First check that names, categories and sites are as expected
   # Check that unique names are <= expected experts
-  check_names_levels_sites(x, data, type = "name")
+  check_names_categories_sites(x, data, type = "name")
 
-  # Check that levels are those recorded in the object
-  check_names_levels_sites(x, data, type = "levels")
+  # Check that categories are those recorded in the object
+  check_names_categories_sites(x, data, type = "categories")
 
   # Check that sites are those recorded in the object
-  check_names_levels_sites(x, data, type = "sites")
+  check_names_categories_sites(x, data, type = "sites")
 
   # Then check that the data is formatted as expected
-  # Check that each name is repeated as many times as the number of levels and
-  # sites
+  # Check that each name is repeated as many times as the number of categories
+  # and sites
   check_column_format(data, col = "id")
 
-  # Check that each level block is repeated as many times as the number of
+  # Check that each category block is repeated as many times as the number of
   # experts and sites
-  check_column_format(data, col = "level")
+  check_column_format(data, col = "category")
 
   # Check that each site is repeated as many times as the number of experts and
-  # levels
+  # categories
   check_column_format(data, col = "site")
 
   # Check that each confidence value is repeated as many times as the number of
@@ -238,22 +238,22 @@ cat_add_data <- function(x,
 
 # Checkers----
 
-#' Check names and levels
+#' Check names and categories
 #'
-#' Checks if names and levels are as expected, i.e. if the number of unique
+#' Checks if names and categories are as expected, i.e. if the number of unique
 #' names is less than or equal to the expected number of experts, and if the
-#' levels are those recorded in the object.
+#' categories are those recorded in the object.
 #'
 #' @param x [elic_cat] object.
 #' @param data [tibble][tibble::tibble] with the data to be checked.
 #' @param type character string with the type of check to be performed.
 #'
 #' @returns An error if the number of unique names is greater than the  number
-#' of experts or if the levels are not those recorded in the object.
+#' of experts or if the categories are not those recorded in the object.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_names_levels_sites <- function(x, data, type) {
+check_names_categories_sites <- function(x, data, type) {
 
   error <- ""
 
@@ -269,14 +269,14 @@ check_names_levels_sites <- function(x, data, type) {
                 be no more than {.val {n}}."
     }
 
-  } else if (type == "levels") {
+  } else if (type == "categories") {
 
-    levels <- unique(data[["level"]])
-    diff <- setdiff(levels, x[["levels"]])
+    categories <- unique(data[["category"]])
+    diff <- setdiff(categories, x[["categories"]])
 
     if (length(diff) > 0) {
 
-      text <- "The column with the name of the levels contains unexpected \\
+      text <- "The column with the name of the categories contains unexpected \\
                values:"
       error <- "The value{?s} {.val {diff}} {?is/are} not valid."
     }
@@ -318,8 +318,8 @@ check_names_levels_sites <- function(x, data, type) {
 check_column_format <- function(x, col) {
 
   if (col == "confidence") {
-    n_levels <- length(unique(x[["level"]]))
-    diff <- rle(x[[col]])[["lengths"]] %% n_levels
+    n_categories <- length(unique(x[["category"]]))
+    diff <- rle(x[[col]])[["lengths"]] %% n_categories
 
     if (sum(diff) == 0) {
       expected_values <- x[[col]]
@@ -329,7 +329,7 @@ check_column_format <- function(x, col) {
     }
   } else {
     col_values <- unique(x[[col]])
-    diff_cols <- setdiff(c("id", "level", "site"), col)
+    diff_cols <- setdiff(c("id", "category", "site"), col)
     col_1 <- unique(x[[diff_cols[[1]]]]) |>
       length()
     col_2 <- unique(x[[diff_cols[[2]]]]) |>
@@ -337,7 +337,7 @@ check_column_format <- function(x, col) {
 
     if (col == "id") {
       expected_values <- rep(col_values, each = col_1 * col_2)
-    } else if (col == "level") {
+    } else if (col == "category") {
       expected_values <- rep(col_values, col_1 * col_2)
     } else {
       expected_values <- rep(col_values, col_1, each = col_2)
@@ -348,7 +348,7 @@ check_column_format <- function(x, col) {
 
     what <- switch(col,
                    "id" = "expert names",
-                   "level" = "levels",
+                   "category" = "categories",
                    "site" = "sites",
                    "confidence" = "confidence values")
 

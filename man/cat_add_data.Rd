@@ -55,47 +55,46 @@ The provided object of class \link{elic_cat} updated with the data.
 For each topic, data are expected to have five columns, built as follows:
 \itemize{
 \item The first column of the data should hold the names of the experts. The name
-of each expert should be repeated as many times as many times as the number
-of impact levels and sites.
-(i.e. each expert should appear \eqn{number\ of\ levels
+of each expert should be repeated as many times as the number of categories
+and sites. (i.e. each expert should appear \eqn{number\ of\ categories
 \cdot number\ of\ sites} times).
-\item The second column should be the names of the levels of impact considered in
-the elicitation. Each block of levels of impact should be repeated as many
-times as the number of sites investigated/considered.
+\item The second column should be the names of the categories considered in the
+elicitation. Each block of categories should be repeated as many times as the
+number of sites considered.
 \item The third column should hold the names of the sites considered in the
 study. The name of each site should be repeated as many times as the number
-of levels of impact considered.
+of categories considered.
 \item The fourth column should be the experts confidence in their own estimates
 (given in percent). Experts should estimate how confident they are in their
-estimates for each block of levels of impact and for each site. Therefore,
-expert confidence estimates should be repeated as many times as the number of
-levels of impact considered.
+estimates for each block of categories and for each site. Therefore, expert
+confidence estimates should be repeated as many times as the number of
+categories of impact considered.
 \item The final column should be the estimates of each expert for each site and
-impact level.
+category.
 }
 
 The name of the columns is not important, \code{cat_add_data()} will overwrite
 them according to the following convention:
 
-The first column will be renamed \code{id}, the second column \code{level}, the third
-column \code{site}, the fourth column \code{confidence}, and the fifth column
+The first column will be renamed \code{id}, the second column \code{category}, the
+third column \code{site}, the fourth column \code{confidence}, and the fifth column
 \code{estimate}.
 
 Here is an example of data correctly formatted for an elicitation with two
-levels of impact and two sites (only one expert is shown):
+categories and two sites (only one expert is shown):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{name       level       site      confidence      estimate
----------------------------------------------------------
-expert 1   level 1     site 1            15          0.08
-expert 1   level 2     site 1            15             0
-expert 1   level 3     site 1            15          0.84
-expert 1   level 4     site 1            15          0.02
-expert 1   level 5     site 1            15          0.06
-expert 1   level 1     site 2            35          0.02
-expert 1   level 2     site 2            35          0.11
-expert 1   level 3     site 2            35          0.19
-expert 1   level 4     site 2            35          0.02
-expert 1   level 5     site 2            35          0.66
+\if{html}{\out{<div class="sourceCode">}}\preformatted{name         category       site      confidence      estimate
+--------------------------------------------------------------
+expert 1     category 1     site 1            15          0.08
+expert 1     category 2     site 1            15             0
+expert 1     category 3     site 1            15          0.84
+expert 1     category 4     site 1            15          0.02
+expert 1     category 5     site 1            15          0.06
+expert 1     category 1     site 2            35          0.02
+expert 1     category 2     site 2            35          0.11
+expert 1     category 3     site 2            35          0.19
+expert 1     category 4     site 2            35          0.02
+expert 1     category 5     site 2            35          0.66
 }\if{html}{\out{</div>}}
 }
 
@@ -111,11 +110,12 @@ process never reaches the \link{elic_cat} object.
 
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five levels and a maximum of six experts per topic
-my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+# four sites, five categories and a maximum of six experts per topic
+my_categories <- c("category_1", "category_2", "category_3",
+                   "category_4", "category_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
-x <- cat_start(levels = my_levels,
+x <- cat_start(categories = my_categories,
                sites = my_sites,
                experts = 6,
                topics = my_topics)

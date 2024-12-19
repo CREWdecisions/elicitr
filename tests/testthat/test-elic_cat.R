@@ -1,13 +1,13 @@
 test_that("elic_cat object", {
-  x <- new_elic_cat(levels = c("level_1", "level_2"),
+  x <- new_elic_cat(categories = c("category_1", "category_2"),
                     sites = c("site_1", "site_2", "site_3"),
                     experts = 8,
                     topics = c("topic_1", "topic_2"),
                     title = "Title")
   expect_s3_class(x, class = "elic_cat", exact = TRUE)
-  # Levels are recorded in the object as character vector
-  expect_vector(x[["levels"]], ptype = "character", size = 2)
-  expect_identical(x[["levels"]], c("level_1", "level_2"))
+  # categories are recorded in the object as character vector
+  expect_vector(x[["categories"]], ptype = "character", size = 2)
+  expect_identical(x[["categories"]], c("category_1", "category_2"))
   # Sites are recorded in the object as character vector
   expect_vector(x[["sites"]], ptype = "character", size = 3)
   expect_identical(x[["sites"]], c("site_1", "site_2", "site_3"))
@@ -28,7 +28,7 @@ test_that("elic_cat object", {
 
 test_that("Print elicit object", {
   # Without data
-  expect_snapshot(new_elic_cat(levels = c("level_1", "level_2"),
+  expect_snapshot(new_elic_cat(categories = c("category_1", "category_2"),
                                sites = c("site_1", "site_2", "site_3"),
                                experts = 8,
                                topics = c("topic_1", "topic_2"),

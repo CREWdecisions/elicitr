@@ -46,7 +46,7 @@ test_that("Info", {
 test_that("Output", {
   obj <- create_cat_obj()
 
-  # Modify one expert estimate to have 100% for level 1 in site 1
+  # Modify one expert estimate to have 100% for category 1 in site 1
   obj[["data"]][["topic_1"]][1, 5] <- 1
   obj[["data"]][["topic_1"]][2:5, 5] <- 0
 
@@ -56,11 +56,11 @@ test_that("Output", {
                          topic = "topic_1",
                          site = "site_1",
                          verbose = FALSE)
-  expect_identical(dplyr::pull(out, "level_1")[1:5], rep(1, 5))
-  expect_identical(dplyr::pull(out, "level_2")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_3")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_4")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_5")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_1")[1:5], rep(1, 5))
+  expect_identical(dplyr::pull(out, "category_2")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_3")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_4")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_5")[1:5], rep(0, 5))
 
   # Bootstrap method
   out <- cat_sample_data(obj,
@@ -68,9 +68,9 @@ test_that("Output", {
                          topic = "topic_1",
                          site = "site_1",
                          verbose = FALSE)
-  expect_identical(dplyr::pull(out, "level_1")[1:5], rep(1, 5))
-  expect_identical(dplyr::pull(out, "level_2")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_3")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_4")[1:5], rep(0, 5))
-  expect_identical(dplyr::pull(out, "level_5")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_1")[1:5], rep(1, 5))
+  expect_identical(dplyr::pull(out, "category_2")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_3")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_4")[1:5], rep(0, 5))
+  expect_identical(dplyr::pull(out, "category_5")[1:5], rep(0, 5))
 })

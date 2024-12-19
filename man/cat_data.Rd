@@ -11,12 +11,12 @@
 A data frame with:
 \describe{
 \item{expert}{Name of the experts (randomly generated).}
-\item{level}{The name of the levels. There are 5 different levels per
-site.}
+\item{category}{The name of the categories. There are 5 different
+categories per site.}
 \item{site}{The name of the sites. Topic 1 and 2 have 4 sites, while
 topic 3 has 3 sites.}
 \item{confidence}{The confidence of the experts given in percentages.
-One confidence level is given for each site.}
+One confidence value is given for each site.}
 \item{estimate}{Expert estimates given in probabilities.}
 }
 

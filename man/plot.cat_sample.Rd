@@ -49,11 +49,12 @@ If a \code{theme} is provided, the \code{family} argument is ignored.
 }
 \examples{
 # Create the elic_cat object for an elicitation process with three topics,
-# four sites, five levels and a maximum of six experts per topic
-my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+# four sites, five categories and a maximum of six experts per topic
+my_categories <- c("category_1", "category_2", "category_3",
+                   "category_4", "category_5")
 my_sites <- c("site_1", "site_2", "site_3", "site_4")
 my_topics <- c("topic_1", "topic_2", "topic_3")
-my_elicit <- cat_start(levels = my_levels,
+my_elicit <- cat_start(categories = my_categories,
                        sites = my_sites,
                        experts = 6,
                        topics = my_topics) |>

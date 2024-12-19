@@ -20,15 +20,15 @@
 #' * _basic_: This method samples data based on the expert estimates without
 #' accounting for their confidence. Values are sampled from a Dirichlet
 #' distribution using the expert estimates as parameters. When only one estimate
-#' is provided, i.e. 100 % for one level, the method assigns 100 % to all votes
-#' for this level.
+#' is provided, i.e. 100 % for one category, the method assigns 100 % to all
+#' votes for this category.
 #'
 #' * _bootstrap_: This method samples data based on the expert estimates
 #' accounting for their confidence. The confidence is used to weight the
 #' number of votes assigned to each expert. The method samples data from a
 #' Dirichlet distribution using the expert estimates as parameters. When only
-#' one estimate is provided, i.e. 100 % for one level, the method assigns 100 %
-#' to all votes for this level.
+#' one estimate is provided, i.e. 100 % for one category, the method assigns 100
+#' % to all votes for this category.
 #'
 #' @return An [`tibble`][tibble::tibble] with the sampled data. This object has
 #' the additional class `cat_sample` used to implement the plotting method.
@@ -46,11 +46,12 @@
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
-#' # four sites, five levels and a maximum of six experts per topic
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+#' # four sites, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
 #' my_sites <- c("site_1", "site_2", "site_3", "site_4")
 #' my_topics <- c("topic_1", "topic_2", "topic_3")
-#' my_elicit <- cat_start(levels = my_levels,
+#' my_elicit <- cat_start(categories = my_categories,
 #'                        sites = my_sites,
 #'                        experts = 6,
 #'                        topics = my_topics) |>
@@ -89,13 +90,13 @@ cat_sample_data <- function(x,
   data <- cat_get_data(x, topic = topic, site = site)
 
   experts <- unique(data[["id"]])
-  levels <- unique(data[["level"]])
+  categories <- unique(data[["category"]])
   sites <- unique(data[["site"]])
 
   if (method == "basic") {
-    out <- basic_sampling(data, n_votes, experts, levels, sites)
+    out <- basic_sampling(data, n_votes, experts, categories, sites)
   } else {
-    out <- bootstrap_sampling(data, n_votes, experts, levels, sites)
+    out <- bootstrap_sampling(data, n_votes, experts, categories, sites)
   }
 
   if (verbose) {
@@ -123,20 +124,21 @@ cat_sample_data <- function(x,
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
 #' @param experts character vector with the expert IDs.
-#' @param levels character vector with the levels of the categorical variable.
+#' @param categories character vector with the categories of the categorical
+#' variable.
 #' @param sites character vector with the site names.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-basic_sampling <- function(x, n_votes, experts, levels, sites) {
+basic_sampling <- function(x, n_votes, experts, categories, sites) {
 
   # Prepare data frame for sampled probabilities
   sp <- matrix(0,
                nrow = length(experts) * n_votes * length(sites),
-               ncol = length(levels) + 2,
-               dimnames = list(NULL, c("id", "site", levels))) |>
+               ncol = length(categories) + 2,
+               dimnames = list(NULL, c("id", "site", categories))) |>
     tibble::as_tibble() |>
     dplyr::mutate("id" = rep(experts, each = n_votes, times = length(sites)),
                   "site" = rep(sites, each = n_votes * length(experts)))
@@ -154,7 +156,7 @@ basic_sampling <- function(x, n_votes, experts, levels, sites) {
       if (length(idx) == 1) {
         # If there is only one positive estimate, this is assumed to be 1 since
         # the sum of probabilities must be 1. In this case, assign 100% to all
-        # votes for this level.
+        # votes for this category.
         samp <- 1
       } else {
         samp <- extraDistr::rdirichlet(n = n_votes,
@@ -176,14 +178,15 @@ basic_sampling <- function(x, n_votes, experts, levels, sites) {
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
 #' @param experts character vector with the expert IDs.
-#' @param levels character vector with the levels of the categorical variable.
+#' @param categories character vector with the categories of the categorical
+#' variable.
 #' @param sites character vector with the site names.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
+bootstrap_sampling <- function(x, n_votes, experts, categories, sites) {
 
   all_sites <- vector(mode = "list", length = length(sites))
   all_sp <- vector(mode = "list", length = length(experts))
@@ -191,7 +194,7 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
   for (s in sites) {
 
     estimates <- get_estimates(x, s)
-    conf <- get_conf(x, s, length(levels))
+    conf <- get_conf(x, s, length(categories))
 
     # Determine weight of each expert proportional to their expressed confidence
     w <- (length(experts) * n_votes * conf / sum(conf)) |>
@@ -202,8 +205,8 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
       # Prepare data frame for sampled probabilities
       sp <- matrix(0,
                    nrow = w[[e]],
-                   ncol = length(levels) + 2,
-                   dimnames = list(NULL, c("id", "site", levels))) |>
+                   ncol = length(categories) + 2,
+                   dimnames = list(NULL, c("id", "site", categories))) |>
         tibble::as_tibble() |>
         dplyr::mutate("site" = s, "id" = experts[e])
 
@@ -215,7 +218,7 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
       if (length(idx) == 1) {
         # If there is only one positive estimate, this is assumed to be 1 since
         # the sum of probabilities must be 1. In this case, assign 100% to all
-        # votes for this level.
+        # votes for this category.
         samp <- 1
       } else {
         samp <- extraDistr::rdirichlet(n = w[[e]],
@@ -251,7 +254,7 @@ get_estimates <- function(x, y) {
   x |>
     dplyr::filter(.data[["site"]] == y) |>
     dplyr::select(!dplyr::all_of(c("confidence", "site"))) |>
-    tidyr::pivot_wider(names_from = "level", values_from = "estimate")
+    tidyr::pivot_wider(names_from = "category", values_from = "estimate")
 }
 
 #' Get confidence
@@ -260,7 +263,7 @@ get_estimates <- function(x, y) {
 #'
 #' @param x [`tibble`][tibble::tibble] with the expert estimates.
 #' @param y character string with the site name.
-#' @param z numeric indicating the number of levels.
+#' @param z numeric indicating the number of categories.
 #'
 #' @returns A numeric vector with the confidence values.
 #' @noRd

@@ -22,11 +22,12 @@
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
-#' # four sites, five levels and a maximum of six experts per topic
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+#' # four sites, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
 #' my_sites <- c("site_1", "site_2", "site_3", "site_4")
 #' my_topics <- c("topic_1", "topic_2", "topic_3")
-#' my_elicit <- cat_start(levels = my_levels,
+#' my_elicit <- cat_start(categories = my_categories,
 #'                        sites = my_sites,
 #'                        experts = 6,
 #'                        topics = my_topics) |>
@@ -91,23 +92,23 @@ plot.cat_sample <- function(x,
 
   x <- x |>
     tidyr::pivot_longer(cols = -c("id", "site"),
-                        names_to = "level",
+                        names_to = "category",
                         values_to = "prob") |>
-    dplyr::mutate("level" = factor(.data[["level"]],
-                                   levels = unique(.data[["level"]])))
+    dplyr::mutate("category" = factor(.data[["category"]],
+                                      levels = unique(.data[["category"]])))
 
   if (is.null(colours)) {
-    colours <- scales::hue_pal()(length(unique(x[["level"]])))
+    colours <- scales::hue_pal()(length(unique(x[["category"]])))
   } else {
 
-    n_level <- length(unique(x[["level"]]))
-    if (length(colours) != n_level) {
+    n_cat <- length(unique(x[["category"]]))
+    if (length(colours) != n_cat) {
 
       error <- "The number of colours provided does not match the number \\
-                of levels."
+                of categories."
       cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                        "x" = error,
-                       "i" = "Please provide a vector with {.val {n_level}} \\
+                       "i" = "Please provide a vector with {.val {n_cat}} \\
                               colours."))
     }
   }
@@ -118,16 +119,16 @@ plot.cat_sample <- function(x,
   }
 
   p <- ggplot2::ggplot(x) +
-    ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["level"]],
+    ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
                                                 y = .data[["prob"]],
-                                                fill = .data[["level"]]),
+                                                fill = .data[["category"]]),
                          color = "black",
                          alpha = 0.8,
                          scale = "width",
                          linewidth = 0.2,
                          draw_quantiles = c(0.25, 0.75),
                          key_glyph = "dotplot") +
-    ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["level"]],
+    ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["category"]],
                                                  y = .data[["prob"]]),
                           fun = mean,
                           geom = "point",

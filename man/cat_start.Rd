@@ -5,7 +5,7 @@
 \title{Start elicitation}
 \usage{
 cat_start(
-  levels,
+  categories,
   sites,
   experts,
   topics,
@@ -15,8 +15,8 @@ cat_start(
 )
 }
 \arguments{
-\item{levels}{character vector with the names of the levels of impact. See
-Levels for more.}
+\item{categories}{character vector with the names of the categories. See
+Categories for more.}
 
 \item{sites}{character vector with the names of all sites investigated. See
 Sites for more.}
@@ -45,12 +45,12 @@ the correctness of the provided data.
 metadata for the data collected during the elicitation process of categorical
 data.
 }
-\section{Levels}{
+\section{Categories}{
 
 
-Levels are inherited between topics. A minimum of two levels are needed. If
-only one level is investigated, please refer to the functions for the
-elicitation of continuous data (e.g. \link{cont_start}).
+Categories are inherited between topics. A minimum of two categories are
+needed. If only one category is investigated, please refer to the functions
+for the elicitation of continuous data (e.g. \link{cont_start}).
 }
 
 \section{Sites}{
@@ -71,15 +71,17 @@ and IDs of experts can differ between the topics.
 
 \examples{
 # Create the elic_cat object for an elicitation process over 2 topics, 3
-# sites, 3 levels per sites, and a maximum number of experts per topic of 8
-my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+# sites, 3 categories per sites, and a maximum number of experts per topic of
+# 8
+my_categories <- c("category_1", "category_2", "category_3")
+my_elicit <- cat_start(categories = my_categories,
                        sites = c("Site_1", "Site_2", "Site_3"),
                        experts = 8,
                        topics = c("topic_1","topic_2"))
 my_elicit
 
 # A title can be added to bind a name to the object:
-my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+my_elicit <- cat_start(categories = my_categories,
                        sites = c("Site_1", "Site_2", "Site_3"),
                        experts = 8,
                        topics = c("topic_1","topic_2"),

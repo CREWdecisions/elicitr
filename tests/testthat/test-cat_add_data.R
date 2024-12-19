@@ -1,5 +1,5 @@
 test_that("Errors", {
-  x <- cat_start(levels = paste0("level_", 1:5),
+  x <- cat_start(categories = paste0("category_", 1:5),
                  sites = paste0("site_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),
@@ -75,18 +75,18 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When one level is not on the metadata
+  # When one category is not on the metadata
   y <- topic_1
-  y[1, 2] <- "level_6"
+  y[1, 2] <- "category_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When two levels are not on the metadata
+  # When two categories are not on the metadata
   y <- topic_1
-  y[1, 2] <- "level_6"
-  y[2, 2] <- "level_7"
+  y[1, 2] <- "category_6"
+  y[2, 2] <- "category_7"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -117,9 +117,9 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When the column with the levels is malformed
+  # When the column with the categories is malformed
   y <- topic_1
-  y[1:5, 2] <- "level_1"
+  y[1:5, 2] <- "category_1"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -159,7 +159,7 @@ test_that("Errors", {
 })
 
 test_that("Info", {
-  x <- cat_start(levels = paste0("level_", 1:5),
+  x <- cat_start(categories = paste0("category_", 1:5),
                  sites = paste0("site_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),
@@ -209,7 +209,7 @@ test_that("Info", {
   googlesheets4::gs4_deauth()
   # Google Sheet used for testing
   gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
-  x <- cat_start(levels = paste0("level_", 1:5),
+  x <- cat_start(categories = paste0("category_", 1:5),
                  sites = paste0("site_", 1:4),
                  experts = 6,
                  topics = c("topic_1", "topic_2"),

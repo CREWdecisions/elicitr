@@ -9,10 +9,11 @@ create_cont_obj <- function() {
 }
 
 create_cat_obj <- function() {
-  my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
+  my_categories <- c("category_1", "category_2", "category_3",
+                     "category_4", "category_5")
   my_sites <- c("site_1", "site_2", "site_3", "site_4")
   my_topics <- c("topic_1", "topic_2", "topic_3")
-  cat_start(levels = my_levels,
+  cat_start(categories = my_categories,
             sites = my_sites,
             experts = 6,
             topics = my_topics,

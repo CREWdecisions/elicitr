@@ -83,7 +83,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column types:
-      x The columns "level" and "site" are not of type "character" but of type "factor".
+      x The columns "category" and "site" are not of type "character" but of type "factor".
       i See Data format in `elicitr::cat_add_data()`.
 
 ---
@@ -102,8 +102,8 @@
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
-      ! The column with the name of the levels contains unexpected values:
-      x The value "level_6" is not valid.
+      ! The column with the name of the categories contains unexpected values:
+      x The value "category_6" is not valid.
       i Check the metadata in the <elic_cat> object.
 
 ---
@@ -112,8 +112,8 @@
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `cat_add_data()`:
-      ! The column with the name of the levels contains unexpected values:
-      x The values "level_6" and "level_7" are not valid.
+      ! The column with the name of the categories contains unexpected values:
+      x The values "category_6" and "category_7" are not valid.
       i Check the metadata in the <elic_cat> object.
 
 ---
@@ -153,7 +153,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Malformatted dataset:
-      x The column containing the levels is not formatted as expected.
+      x The column containing the categories is not formatted as expected.
       i See Data format in `elicitr::cat_add_data()`.
 
 ---

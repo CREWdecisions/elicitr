@@ -1,30 +1,33 @@
 test_that("Errors", {
-  # When levels is not a character vector
-  expect_snapshot(cat_start(levels = 1:3,
+
+  cats <- c("category_1", "category_2", "category_3")
+
+  # When categories is not a character vector
+  expect_snapshot(cat_start(categories = 1:3,
                             sites = c("site_1", "site_2", "site_3"),
                             experts = 8,
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
   # When sites is not a character vector
-  expect_snapshot(cat_start(levels = c("level_1", "level_2", "level_3"),
+  expect_snapshot(cat_start(categories = cats,
                             sites = 1:3,
                             experts = 8,
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
   # When topics is not a character vector
-  expect_snapshot(cat_start(levels = c("level_1", "level_2", "level_3"),
+  expect_snapshot(cat_start(categories = cats,
                             sites = c("site_1", "site_2", "site_3"),
                             experts = 8,
                             topics = 1:3),
                   error = TRUE)
   # When experts is not numeric
-  expect_snapshot(cat_start(levels = c("level_1", "level_2", "level_3"),
+  expect_snapshot(cat_start(categories = cats,
                             sites = c("site_1", "site_2", "site_3"),
                             experts = "8",
                             topics = c("topic_1", "topic_2")),
                   error = TRUE)
   # When experts is a numeric vector
-  expect_snapshot(cat_start(levels = c("level_1", "level_2", "level_3"),
+  expect_snapshot(cat_start(categories = cats,
                             sites = c("site_1", "site_2", "site_3"),
                             experts = 1:3,
                             topics = c("topic_1", "topic_2")),
@@ -32,7 +35,7 @@ test_that("Errors", {
 })
 
 test_that("Info", {
-  expect_snapshot(x <- cat_start(levels = c("level_1", "level_2"),
+  expect_snapshot(x <- cat_start(categories = c("category_1", "category_2"),
                                  sites = c("site_1", "site_2", "site_3"),
                                  experts = 8,
                                  topics = c("topic_1", "topic_2")))
@@ -40,15 +43,15 @@ test_that("Info", {
 
 test_that("Output", {
   # The argument verbose is used
-  expect_no_message(x <- cat_start(levels = c("level_1", "level_2"),
+  expect_no_message(x <- cat_start(categories = c("category_1", "category_2"),
                                    sites = c("site_1", "site_2", "site_3"),
                                    experts = 8,
                                    topics = c("topic_1", "topic_2"),
                                    verbose = FALSE))
   expect_s3_class(x, class = "elic_cat", exact = TRUE)
-  # Levels are recorded in the object
-  expect_identical(x[["levels"]], c("level_1", "level_2"))
-  expect_type(x[["levels"]], "character")
+  # categories are recorded in the object
+  expect_identical(x[["categories"]], c("category_1", "category_2"))
+  expect_type(x[["categories"]], "character")
   # Sites are recorded in the object
   expect_identical(x[["sites"]], c("site_1", "site_2", "site_3"))
   expect_type(x[["sites"]], "character")

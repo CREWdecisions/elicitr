@@ -7,8 +7,8 @@
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
-#' @param levels character vector with the names of the levels of impact. See
-#' Levels for more.
+#' @param categories character vector with the names of the categories. See
+#' Categories for more.
 #' @param sites character vector with the names of all sites investigated. See
 #' Sites for more.
 #' @param experts numeric, indicating the maximum number of experts
@@ -16,11 +16,11 @@
 #' @param topics character vector with the names of the topics.
 #' @inheritParams cont_start
 #'
-#' @section Levels:
+#' @section Categories:
 #'
-#' Levels are inherited between topics. A minimum of two levels are needed. If
-#' only one level is investigated, please refer to the functions for the
-#' elicitation of continuous data (e.g. [cont_start]).
+#' Categories are inherited between topics. A minimum of two categories are
+#' needed. If only one category is investigated, please refer to the functions
+#' for the elicitation of continuous data (e.g. [cont_start]).
 #'
 #' @section Sites:
 #'
@@ -55,21 +55,23 @@
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process over 2 topics, 3
-#' # sites, 3 levels per sites, and a maximum number of experts per topic of 8
-#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#' # sites, 3 categories per sites, and a maximum number of experts per topic of
+#' # 8
+#' my_categories <- c("category_1", "category_2", "category_3")
+#' my_elicit <- cat_start(categories = my_categories,
 #'                        sites = c("Site_1", "Site_2", "Site_3"),
 #'                        experts = 8,
 #'                        topics = c("topic_1","topic_2"))
 #' my_elicit
 #'
 #' # A title can be added to bind a name to the object:
-#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
+#' my_elicit <- cat_start(categories = my_categories,
 #'                        sites = c("Site_1", "Site_2", "Site_3"),
 #'                        experts = 8,
 #'                        topics = c("topic_1","topic_2"),
 #'                        title = "My elicitation")
 #' my_elicit
-cat_start <- function(levels,
+cat_start <- function(categories,
                       sites,
                       experts,
                       topics,
@@ -77,15 +79,15 @@ cat_start <- function(levels,
                       title = "Elicitation",
                       verbose = TRUE) {
 
-  # Check that levels, sites, and topics are character vectors
-  check_is_character(levels, "levels")
+  # Check that categories, sites, and topics are character vectors
+  check_is_character(categories, "categories")
   check_is_character(sites, "sites")
   check_is_character(topics, "topics")
 
   # Check that the argument `experts` is a number
   check_experts_arg(experts)
 
-  obj <- new_elic_cat(levels = levels,
+  obj <- new_elic_cat(categories = categories,
                       sites = sites,
                       experts = experts,
                       topics = topics,
