@@ -1,6 +1,9 @@
 #' Plot categorical samples
 #'
-#' The function aggregates and plots the categorical samples as violin plot.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `plot()` aggregates and plots the categorical samples as violin plot.
 #'
 #' @param x an object of class `cat_sample` created by the function
 #' [cat_sample_data].
@@ -66,18 +69,8 @@ plot.cat_sample <- function(x,
 
   if (any(option != "all")) {
 
-    # Check if option is not among the available options in the data
-    available_options <- unique(x[["option"]])
-    diff <- setdiff(option, available_options)
-
-    if (length(diff) > 0) {
-      error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
-               the sampled data."
-      info <- "Available option{?s}: {.val {available_options}}."
-      cli::cli_abort(c("Invalid value for argument {.arg option}:",
-                       "x" = error,
-                       "i" = info))
-    }
+    # Check if option is available
+    check_option(x, option)
 
     # Avoid overwrite dplyr variable
     vals <- option

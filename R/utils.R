@@ -344,6 +344,33 @@ check_method <- function(x, method) {
   }
 }
 
+#' Check option
+#'
+#' Check if the option is available in the sampled data.
+#'
+#' @param x [tibble][tibble::tibble] with the sampled data.
+#' @param option character string with the option to be checked.
+#'
+#' @returns An error if the option is not available in the sampled data.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_option <- function(x, option) {
+
+  available_options <- unique(x[["option"]])
+  diff <- setdiff(option, available_options)
+
+  if (length(diff) > 0) {
+    error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
+               the sampled data."
+    info <- "Available option{?s}: {.val {available_options}}."
+    cli::cli_abort(c("Invalid value for argument {.arg option}:",
+                     "x" = error,
+                     "i" = info),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data
