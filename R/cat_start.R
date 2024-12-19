@@ -7,34 +7,32 @@
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
-#' @param levels character vector with the names of the levels of impact. See
-#' Levels for more.
-#' @param sites character vector with the names of all sites investigated. See
-#' Sites for more.
+#' @param categories character vector with the names of the categories. See
+#' Categories for more.
+#' @param options character vector with the names of all options investigated.
+#' See Options for more.
 #' @param experts numeric, indicating the maximum number of experts
-#' participating in the elicitation process for one mechanism. See Experts for
-#' more.
-#' @param mechanisms character vector with the names of the mechanisms of impact
-#' investigated.
+#' participating in the elicitation process for one topic. See Experts for more.
+#' @param topics character vector with the names of the topics.
 #' @inheritParams cont_start
 #'
-#' @section Levels:
+#' @section Categories:
 #'
-#' Levels are inherited between mechanisms. A minimum of two levels are needed.
-#' If only one level is investigated, please refer to the functions for the
-#' elicitation of continuous data (e.g. [cont_start]).
+#' Categories are inherited between topics. A minimum of two categories are
+#' needed. If only one category is investigated, please refer to the functions
+#' for the elicitation of continuous data (e.g. [cont_start]).
 #'
-#' @section Sites:
+#' @section Options:
 #'
-#' The site parameter is a character vector containing the names of all the
-#' sites investigated in the elicitation. However, not all sites have to be
-#' investigated in every mechanism of impact.
+#' The option parameter is a character vector containing the names of all the
+#' options investigated in the elicitation. However, not all options have to be
+#' investigated in every topic.
 #'
 #' @section Experts:
 #'
 #' The expert parameter is a number indicating the maximum number of experts
-#' taking part in the elicitation of one of the investigated mechanisms of
-#' impact. The number and IDs of experts can differ between the mechanisms.
+#' taking part in the elicitation of one of the investigated topics. The number
+#' and IDs of experts can differ between the topics.
 #'
 #' @return An object of class [elic_cat] binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
@@ -56,42 +54,43 @@
 #' <https://doi.org/10.1007/s10530-024-03341-2>
 #'
 #' @examples
-#' # Create the elic_cat object for an elicitation process over 2 mechanisms of
-#' # impact, 3 sites, 3 levels per sites, and a maximum number of experts per
-#' # mechanism of 8.
-#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-#'                        sites = c("Site_1", "Site_2", "Site_3"),
+#' # Create the elic_cat object for an elicitation process over 2 topics, 3
+#' # options, 3 categories per options, and a maximum number of 8 experts per
+#' # topic
+#' my_categories <- c("category_1", "category_2", "category_3")
+#' my_elicit <- cat_start(categories = my_categories,
+#'                        options = c("option_1", "option_2", "option_3"),
 #'                        experts = 8,
-#'                        mechanisms = c("mechanism_1","mechanism_2"))
+#'                        topics = c("topic_1","topic_2"))
 #' my_elicit
 #'
 #' # A title can be added to bind a name to the object:
-#' my_elicit <- cat_start(levels = c("Level_1", "Level_2", "Level_3"),
-#'                        sites = c("Site_1", "Site_2", "Site_3"),
+#' my_elicit <- cat_start(categories = my_categories,
+#'                        options = c("option_1", "option_2", "option_3"),
 #'                        experts = 8,
-#'                        mechanisms = c("mechanism_1","mechanism_2"),
+#'                        topics = c("topic_1","topic_2"),
 #'                        title = "My elicitation")
 #' my_elicit
-cat_start <- function(levels,
-                      sites,
+cat_start <- function(categories,
+                      options,
                       experts,
-                      mechanisms,
+                      topics,
                       ...,
                       title = "Elicitation",
                       verbose = TRUE) {
 
-  # Check that levels, sites, and mechanisms are character vectors
-  check_is_character(levels, "levels")
-  check_is_character(sites, "sites")
-  check_is_character(mechanisms, "mechanisms")
+  # Check that categories, options, and topics are character vectors
+  check_is_character(categories, "categories")
+  check_is_character(options, "options")
+  check_is_character(topics, "topics")
 
   # Check that the argument `experts` is a number
   check_experts_arg(experts)
 
-  obj <- new_elic_cat(levels = levels,
-                      sites = sites,
+  obj <- new_elic_cat(categories = categories,
+                      options = options,
                       experts = experts,
-                      mechanisms = mechanisms,
+                      topics = topics,
                       title)
 
   if (verbose) {

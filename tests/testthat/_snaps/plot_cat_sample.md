@@ -1,12 +1,12 @@
 # Errors
 
     Code
-      plot(samp, site = "site_7")
+      plot(samp, option = "option_7")
     Condition
       Error in `plot()`:
-      ! Invalid value for argument `site`:
-      x Site "site_7" not available in the sampled data.
-      i Available sites: "site_1", "site_2", "site_3", and "site_4".
+      ! Invalid value for argument `option`:
+      x Option "option_7" not available in the sampled data.
+      i Available options: "option_1", "option_2", "option_3", and "option_4".
 
 ---
 
@@ -15,6 +15,6 @@
     Condition
       Error in `plot()`:
       ! Invalid value for argument `colours`:
-      x The number of colours provided does not match the number of levels.
+      x The number of colours provided does not match the number of categories.
       i Please provide a vector with 5 colours.
 

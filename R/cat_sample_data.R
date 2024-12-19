@@ -20,15 +20,15 @@
 #' * _basic_: This method samples data based on the expert estimates without
 #' accounting for their confidence. Values are sampled from a Dirichlet
 #' distribution using the expert estimates as parameters. When only one estimate
-#' is provided, i.e. 100 % for one level, the method assigns 100 % to all votes
-#' for this level.
+#' is provided, i.e. 100 % for one category, the method assigns 100 % to all
+#' votes for this category.
 #'
 #' * _bootstrap_: This method samples data based on the expert estimates
 #' accounting for their confidence. The confidence is used to weight the
 #' number of votes assigned to each expert. The method samples data from a
 #' Dirichlet distribution using the expert estimates as parameters. When only
-#' one estimate is provided, i.e. 100 % for one level, the method assigns 100 %
-#' to all votes for this level.
+#' one estimate is provided, i.e. 100 % for one category, the method assigns 100
+#' % to all votes for this category.
 #'
 #' @return An [`tibble`][tibble::tibble] with the sampled data. This object has
 #' the additional class `cat_sample` used to implement the plotting method.
@@ -45,36 +45,36 @@
 #' <https://doi.org/10.1007/s10530-024-03341-2>
 #'
 #' @examples
-#' # Create the elic_cat object for an elicitation process with three
-#' # mechanisms, four sites, five levels and a maximum of six experts per
-#' # mechanism
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
-#' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-#' my_elicit <- cat_start(levels = my_levels,
-#'                        sites = my_sites,
+#' # Create the elic_cat object for an elicitation process with three topics,
+#' # four options, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
+#' my_elicit <- cat_start(categories = my_categories,
+#'                        options = my_options,
 #'                        experts = 6,
-#'                        mechanisms = my_mechanisms) |>
-#'   cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'                        topics = my_topics) |>
+#'   cat_add_data(data_source = topic_1, topic = "topic_1") |>
+#'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
+#'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Mechanism 1 for all sites using the basic method
+#' # Sample data from Topic 1 for all options using the basic method
 #' samp <- cat_sample_data(my_elicit,
 #'                         method = "basic",
-#'                         mechanism = "mechanism_1")
+#'                         topic = "topic_1")
 #'
-#' # Sample data from Mechanism 2 for Site 1 and 3 using the bootstrap method
+#' # Sample data from Topic 2 for option 1 and 3 using the bootstrap method
 #' samp <- cat_sample_data(my_elicit,
 #'                         method = "bootstrap",
-#'                         mechanism = "mechanism_2",
-#'                         site = c("site_1", "site_3"))
+#'                         topic = "topic_2",
+#'                         option = c("option_1", "option_3"))
 cat_sample_data <- function(x,
                             method,
-                            mechanism,
+                            topic,
                             ...,
                             n_votes = 100,
-                            site = "all",
+                            option = "all",
                             verbose = TRUE) {
 
   # Check if the object is of class elic_cat
@@ -87,16 +87,16 @@ cat_sample_data <- function(x,
   check_method(x, method)
 
   # Get data
-  data <- cat_get_data(x, mechanism = mechanism, site = site)
+  data <- cat_get_data(x, topic = topic, option = option)
 
   experts <- unique(data[["id"]])
-  levels <- unique(data[["level"]])
-  sites <- unique(data[["site"]])
+  categories <- unique(data[["category"]])
+  options <- unique(data[["option"]])
 
   if (method == "basic") {
-    out <- basic_sampling(data, n_votes, experts, levels, sites)
+    out <- basic_sampling(data, n_votes, experts, categories, options)
   } else {
-    out <- bootstrap_sampling(data, n_votes, experts, levels, sites)
+    out <- bootstrap_sampling(data, n_votes, experts, categories, options)
   }
 
   if (verbose) {
@@ -107,8 +107,8 @@ cat_sample_data <- function(x,
   # Prepend new class
   class(out) <- c("cat_sample", class(out))
 
-  # Add attribute with the name of the mechanism
-  attr(out, "mechanism") <- mechanism
+  # Add attribute with the name of the topic
+  attr(out, "topic") <- topic
 
   out
 }
@@ -124,25 +124,26 @@ cat_sample_data <- function(x,
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
 #' @param experts character vector with the expert IDs.
-#' @param levels character vector with the levels of the categorical variable.
-#' @param sites character vector with the site names.
+#' @param categories character vector with the categories of the categorical
+#' variable.
+#' @param options character vector with the option names.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-basic_sampling <- function(x, n_votes, experts, levels, sites) {
+basic_sampling <- function(x, n_votes, experts, categories, options) {
 
   # Prepare data frame for sampled probabilities
   sp <- matrix(0,
-               nrow = length(experts) * n_votes * length(sites),
-               ncol = length(levels) + 2,
-               dimnames = list(NULL, c("id", "site", levels))) |>
+               nrow = length(experts) * n_votes * length(options),
+               ncol = length(categories) + 2,
+               dimnames = list(NULL, c("id", "option", categories))) |>
     tibble::as_tibble() |>
-    dplyr::mutate("id" = rep(experts, each = n_votes, times = length(sites)),
-                  "site" = rep(sites, each = n_votes * length(experts)))
+    dplyr::mutate("id" = rep(experts, each = n_votes, times = length(options)),
+                  "option" = rep(options, each = n_votes * length(experts)))
 
-  for (s in sites) {
+  for (s in options) {
     estimates <- get_estimates(x, s)
 
     for (e in seq_along(experts)) {
@@ -155,14 +156,14 @@ basic_sampling <- function(x, n_votes, experts, levels, sites) {
       if (length(idx) == 1) {
         # If there is only one positive estimate, this is assumed to be 1 since
         # the sum of probabilities must be 1. In this case, assign 100% to all
-        # votes for this level.
+        # votes for this category.
         samp <- 1
       } else {
         samp <- extraDistr::rdirichlet(n = n_votes,
                                        alpha = expert_est[idx])
       }
 
-      sp[sp[["site"]] == s & sp[["id"]] == experts[e], idx + 2] <- samp
+      sp[sp[["option"]] == s & sp[["id"]] == experts[e], idx + 2] <- samp
     }
   }
 
@@ -177,22 +178,23 @@ basic_sampling <- function(x, n_votes, experts, levels, sites) {
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
 #' @param experts character vector with the expert IDs.
-#' @param levels character vector with the levels of the categorical variable.
-#' @param sites character vector with the site names.
+#' @param categories character vector with the categories of the categorical
+#' variable.
+#' @param options character vector with the option names.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
+bootstrap_sampling <- function(x, n_votes, experts, categories, options) {
 
-  all_sites <- vector(mode = "list", length = length(sites))
+  all_options <- vector(mode = "list", length = length(options))
   all_sp <- vector(mode = "list", length = length(experts))
 
-  for (s in sites) {
+  for (s in options) {
 
     estimates <- get_estimates(x, s)
-    conf <- get_conf(x, s, length(levels))
+    conf <- get_conf(x, s, length(categories))
 
     # Determine weight of each expert proportional to their expressed confidence
     w <- (length(experts) * n_votes * conf / sum(conf)) |>
@@ -203,10 +205,10 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
       # Prepare data frame for sampled probabilities
       sp <- matrix(0,
                    nrow = w[[e]],
-                   ncol = length(levels) + 2,
-                   dimnames = list(NULL, c("id", "site", levels))) |>
+                   ncol = length(categories) + 2,
+                   dimnames = list(NULL, c("id", "option", categories))) |>
         tibble::as_tibble() |>
-        dplyr::mutate("site" = s, "id" = experts[e])
+        dplyr::mutate("option" = s, "id" = experts[e])
 
       expert_est <- estimates[e, -1]
 
@@ -216,7 +218,7 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
       if (length(idx) == 1) {
         # If there is only one positive estimate, this is assumed to be 1 since
         # the sum of probabilities must be 1. In this case, assign 100% to all
-        # votes for this level.
+        # votes for this category.
         samp <- 1
       } else {
         samp <- extraDistr::rdirichlet(n = w[[e]],
@@ -227,10 +229,10 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
       all_sp[[e]] <- sp
     }
 
-    all_sites[[s]] <- do.call(rbind, all_sp)
+    all_options[[s]] <- do.call(rbind, all_sp)
   }
 
-  out <- do.call(rbind, all_sites) |>
+  out <- do.call(rbind, all_options) |>
     tibble::remove_rownames()
 
   out
@@ -238,30 +240,30 @@ bootstrap_sampling <- function(x, n_votes, experts, levels, sites) {
 
 #' Get estimates
 #'
-#' Get the estimates for a specific site.
+#' Get the estimates for a specific option.
 #'
 #' @param x [`tibble`][tibble::tibble] with the expert estimates.
-#' @param y character string with the site name.
+#' @param y character string with the option name.
 #'
-#' @returns A [`tibble`][tibble::tibble] with the estimates for the site.
+#' @returns A [`tibble`][tibble::tibble] with the estimates for the option.
 #' @noRd
 #'
 #' @author Sergio Vignali
 get_estimates <- function(x, y) {
 
   x |>
-    dplyr::filter(.data[["site"]] == y) |>
-    dplyr::select(!dplyr::all_of(c("confidence", "site"))) |>
-    tidyr::pivot_wider(names_from = "level", values_from = "estimate")
+    dplyr::filter(.data[["option"]] == y) |>
+    dplyr::select(!dplyr::all_of(c("confidence", "option"))) |>
+    tidyr::pivot_wider(names_from = "category", values_from = "estimate")
 }
 
 #' Get confidence
 #'
-#' Get the confidence for a specific site.
+#' Get the confidence for a specific option.
 #'
 #' @param x [`tibble`][tibble::tibble] with the expert estimates.
-#' @param y character string with the site name.
-#' @param z numeric indicating the number of levels.
+#' @param y character string with the option name.
+#' @param z numeric indicating the number of categories.
 #'
 #' @returns A numeric vector with the confidence values.
 #' @noRd
@@ -271,6 +273,6 @@ get_conf <- function(x, y, z) {
 
   x |>
     dplyr::filter(dplyr::row_number() %% z == 1,
-                  .data[["site"]] == y) |>
+                  .data[["option"]] == y) |>
     dplyr::pull("confidence")
 }

@@ -9,21 +9,22 @@ create_cont_obj <- function() {
 }
 
 create_cat_obj <- function() {
-  my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-  my_sites <- c("site_1", "site_2", "site_3", "site_4")
-  my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-  cat_start(levels = my_levels,
-            sites = my_sites,
+  my_categories <- c("category_1", "category_2", "category_3",
+                     "category_4", "category_5")
+  my_options <- c("option_1", "option_2", "option_3", "option_4")
+  my_topics <- c("topic_1", "topic_2", "topic_3")
+  cat_start(categories = my_categories,
+            options = my_options,
             experts = 6,
-            mechanisms = my_mechanisms,
+            topics = my_topics,
             verbose = FALSE) |>
-    cat_add_data(data_source = mechanism_1,
-                 mechanism = "mechanism_1",
+    cat_add_data(data_source = topic_1,
+                 topic = "topic_1",
                  verbose = FALSE) |>
-    cat_add_data(data_source = mechanism_2,
-                 mechanism = "mechanism_2",
+    cat_add_data(data_source = topic_2,
+                 topic = "topic_2",
                  verbose = FALSE) |>
-    cat_add_data(data_source = mechanism_3,
-                 mechanism = "mechanism_3",
+    cat_add_data(data_source = topic_3,
+                 topic = "topic_3",
                  verbose = FALSE)
 }

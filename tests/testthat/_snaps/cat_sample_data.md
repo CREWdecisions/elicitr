@@ -1,7 +1,7 @@
 # Errors
 
     Code
-      cat_sample_data("abc", method = "basic", mechanism = "mechanism_1")
+      cat_sample_data("abc", method = "basic", topic = "topic_1")
     Condition
       Error in `cat_sample_data()`:
       ! Invalid value for `x`:
@@ -11,7 +11,7 @@
 ---
 
     Code
-      cat_sample_data(obj, method = c("basic", "bootstrap"), mechanism = "mechanism_1")
+      cat_sample_data(obj, method = c("basic", "bootstrap"), topic = "topic_1")
     Condition
       Error in `cat_sample_data()`:
       ! Incorrect value for `method`:
@@ -21,7 +21,7 @@
 ---
 
     Code
-      cat_sample_data(obj, method = "new_method", mechanism = "mechanism_1")
+      cat_sample_data(obj, method = "new_method", topic = "topic_1")
     Condition
       Error in `cat_sample_data()`:
       ! Invalid value for `method`:
@@ -31,15 +31,15 @@
 # Info
 
     Code
-      out <- cat_sample_data(obj, method = "basic", mechanism = "mechanism_1", site = c(
-        "site_1", "site_2"), n_votes = 50)
+      out <- cat_sample_data(obj, method = "basic", topic = "topic_1", option = c(
+        "option_1", "option_2"), n_votes = 50)
     Message
       v Data sampled successfully using "basic" method.
 
 ---
 
     Code
-      out <- cat_sample_data(obj, method = "bootstrap", mechanism = "mechanism_1")
+      out <- cat_sample_data(obj, method = "bootstrap", topic = "topic_1")
     Message
       v Data sampled successfully using "bootstrap" method.
 

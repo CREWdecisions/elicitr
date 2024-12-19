@@ -139,31 +139,31 @@ The message printed when the function is ran informs users that the minimum and 
 Three datasets that simulate the elicitation of categorical variables are included in elicitr:
 
 ```{r}
-mechanism_1
+topic_1
 ```
 
 ```{r}
-mechanism_2
+topic_2
 ```
 
 ```{r}
-mechanism_3
+topic_3
 ```
 
 #### Functions
 
 Just like continuous variables, any analysis of categorical variables starts by creating the `elic_cat` object with the function `cat_start()` to store the metadata of the elicitation. To build this `elic_cat` object, four parameters must be specified: 
 
-* `levels` the names of the levels of impact you used in your elicitation
-* `sites` the names of all sites investigated
-* `experts` the maximum number of experts participating in the elicitation process for one mechanism
-* `mechanisms` the names of the mechanisms of impact investigated
+* `categories` the names of the categories you used in your elicitation
+* `options` the names of all options investigated
+* `experts` the maximum number of experts participating in the elicitation process for one topic
+* `topics` the names of the topics investigated
 
 ```{r}
-my_elicitation_cat <- cat_start(levels = c("level_1", "level_2", "level_3", "level_4", "level_5"),
-                                sites = c("site_1", "site_2", "site_3", "site_4"),
+my_elicitation_cat <- cat_start(categories = c("category_1", "category_2", "category_3", "category_4", "category_5"),
+                                options = c("option_1", "option_2", "option_3", "option_4"),
                                 experts = 6,
-                                mechanisms = c("mechanism_1","mechanism_2", "mechanism_3"),
+                                topics = c("topic_1","topic_2", "topic_3"),
                                 title = "Categorical elicitation example")
 ```
 

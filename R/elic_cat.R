@@ -7,15 +7,13 @@
 #'
 #' There are 6 elements in the `elic_cat` object:
 #'
-#' * `levels`: character vector with the names of the levels of impact.
-#' * `sites`: character vector with the names of the sites investigated.
+#' * `categories`: character vector with the names of the categories.
+#' * `options`: character vector with the names of the options investigated.
 #' * `experts`: numeric, indicating the maximum number of experts participating
-#' in the elicitation process for one mechanism.
-#' * `mechanisms`: character vector with the names of the mechanisms of impact
-#' investigated.
+#' in the elicitation process for one topic.
+#' * `topics`: character vector with the names of the topics investigated.
 #' * `data`: list with the data collected during the elicitation process. The
-#' list has multiple elements, corresponding to the mechanisms of impact
-#' investigated.
+#' list has multiple elements, corresponding to the topics investigated.
 #'
 #' Moreover, the object has a `title` attribute that binds a name to the object.
 #'
@@ -23,20 +21,20 @@
 NULL
 
 # Constructor for the `elic_cat` object
-new_elic_cat <- function(levels,
-                         sites,
+new_elic_cat <- function(categories,
+                         options,
                          experts,
-                         mechanisms,
+                         topics,
                          title,
                          data = NULL) {
 
   if (is.null(data)) {
-    data <- vector(mode = "list", length = length(mechanisms)) |>
-      stats::setNames(mechanisms)
+    data <- vector(mode = "list", length = length(topics)) |>
+      stats::setNames(topics)
   }
 
-  obj <- list(levels = levels,
-              sites = sites,
+  obj <- list(categories = categories,
+              options = options,
               experts = experts,
               data = data)
 
@@ -48,22 +46,22 @@ new_elic_cat <- function(levels,
 #' @export
 print.elic_cat <- function(x, ...) {
 
-  n_mec <- sum(lengths(x[["data"]]) != 0)
+  n_topic <- sum(lengths(x[["data"]]) != 0)
 
   title <- attr(x, "title")
 
   cli::cli_h2(title)
-  cli::cli_li("Level{?s}: {.val {x$levels}}")
-  cli::cli_li("Site{?s}: {.val {x$sites}}")
+  cli::cli_li("Categor{?y/ies}: {.val {x$categories}}")
+  cli::cli_li("Option{?s}: {.val {x$options}}")
   cli::cli_li("Number of expert{?s}: {.val {x$experts}}")
-  cli::cli_li("Mechanism{?s}: {.val {names(x$data)}}")
+  cli::cli_li("Topic{?s}: {.val {names(x$data)}}")
 
-  if (n_mec > 0) {
+  if (n_topic > 0) {
     idx <- which(lengths(x[["data"]]) != 0)
-    mecs <- names(x[["data"]])[idx]
-    cli::cli_li("Data available for mechanism{?s} {.val {mecs}}")
+    topics <- names(x[["data"]])[idx]
+    cli::cli_li("Data available for topic{?s} {.val {topics}}")
   } else {
-    cli::cli_li("Data available for {.val {0}} mechanisms")
+    cli::cli_li("Data available for {.val {0}} topics")
   }
 
   invisible(x)

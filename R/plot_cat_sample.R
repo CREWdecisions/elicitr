@@ -21,33 +21,33 @@
 #' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
-#' # Create the elic_cat object for an elicitation process with three
-#' # mechanisms, four sites, five levels and a maximum of six experts per
-#' # mechanism
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
-#' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-#' my_elicit <- cat_start(levels = my_levels,
-#'                        sites = my_sites,
+#' # Create the elic_cat object for an elicitation process with three topics,
+#' # four options, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
+#' my_elicit <- cat_start(categories = my_categories,
+#'                        options = my_options,
 #'                        experts = 6,
-#'                        mechanisms = my_mechanisms) |>
-#'   cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'                        topics = my_topics) |>
+#'   cat_add_data(data_source = topic_1, topic = "topic_1") |>
+#'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
+#'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Mechanism 1 for all sites using the basic method
+#' # Sample data from Topic 1 for all options using the basic method
 #' samp <- cat_sample_data(my_elicit,
 #'                         method = "basic",
-#'                         mechanism = "mechanism_1")
+#'                         topic = "topic_1")
 #'
-#' # Plot the sampled data for all sites
+#' # Plot the sampled data for all options
 #' plot(samp)
 #'
-#' # Plot the sampled data for site 1
-#' plot(samp, site = "site_1")
+#' # Plot the sampled data for option 1
+#' plot(samp, option = "option_1")
 #'
-#' # Plot the sampled data for site 1 and 3
-#' plot(samp, site = c("site_1", "site_3"))
+#' # Plot the sampled data for option 1 and 3
+#' plot(samp, option = c("option_1", "option_3"))
 #'
 #' # Provide custom colours
 #' plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
@@ -57,58 +57,58 @@
 #' plot(samp, theme = ggplot2::theme_minimal())
 plot.cat_sample <- function(x,
                             ...,
-                            site = "all",
+                            option = "all",
                             title = NULL,
                             ylab = "Probabolity",
                             colours = NULL,
                             family = "sans",
                             theme = NULL) {
 
-  if (any(site != "all")) {
+  if (any(option != "all")) {
 
-    # Check if site is not among the available sites in the data
-    available_sites <- unique(x[["site"]])
-    diff <- setdiff(site, available_sites)
+    # Check if option is not among the available options in the data
+    available_options <- unique(x[["option"]])
+    diff <- setdiff(option, available_options)
 
     if (length(diff) > 0) {
-      error <- "{cli::qty(diff)} Site{?s} {.val {diff}} not available in \\
+      error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
                the sampled data."
-      info <- "Available site{?s}: {.val {available_sites}}."
-      cli::cli_abort(c("Invalid value for argument {.arg site}:",
+      info <- "Available option{?s}: {.val {available_options}}."
+      cli::cli_abort(c("Invalid value for argument {.arg option}:",
                        "x" = error,
                        "i" = info))
     }
 
     # Avoid overwrite dplyr variable
-    vals <- site
+    vals <- option
     x <- x |>
-      dplyr::filter(.data[["site"]] %in% vals) |>
-      dplyr::mutate("site" = factor(.data[["site"]], levels = vals))
+      dplyr::filter(.data[["option"]] %in% vals) |>
+      dplyr::mutate("option" = factor(.data[["option"]], levels = vals))
   }
 
   if (is.null(title)) {
-    title <- attr(x, "mechanism")
+    title <- attr(x, "topic")
   }
 
   x <- x |>
-    tidyr::pivot_longer(cols = -c("id", "site"),
-                        names_to = "level",
+    tidyr::pivot_longer(cols = -c("id", "option"),
+                        names_to = "category",
                         values_to = "prob") |>
-    dplyr::mutate("level" = factor(.data[["level"]],
-                                   levels = unique(.data[["level"]])))
+    dplyr::mutate("category" = factor(.data[["category"]],
+                                      levels = unique(.data[["category"]])))
 
   if (is.null(colours)) {
-    colours <- scales::hue_pal()(length(unique(x[["level"]])))
+    colours <- scales::hue_pal()(length(unique(x[["category"]])))
   } else {
 
-    n_level <- length(unique(x[["level"]]))
-    if (length(colours) != n_level) {
+    n_cat <- length(unique(x[["category"]]))
+    if (length(colours) != n_cat) {
 
       error <- "The number of colours provided does not match the number \\
-                of levels."
+                of categories."
       cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                        "x" = error,
-                       "i" = "Please provide a vector with {.val {n_level}} \\
+                       "i" = "Please provide a vector with {.val {n_cat}} \\
                               colours."))
     }
   }
@@ -119,16 +119,16 @@ plot.cat_sample <- function(x,
   }
 
   p <- ggplot2::ggplot(x) +
-    ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["level"]],
+    ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
                                                 y = .data[["prob"]],
-                                                fill = .data[["level"]]),
+                                                fill = .data[["category"]]),
                          color = "black",
                          alpha = 0.8,
                          scale = "width",
                          linewidth = 0.2,
                          draw_quantiles = c(0.25, 0.75),
                          key_glyph = "dotplot") +
-    ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["level"]],
+    ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["category"]],
                                                  y = .data[["prob"]]),
                           fun = mean,
                           geom = "point",
@@ -136,7 +136,7 @@ plot.cat_sample <- function(x,
                           size = 0.8) +
     ggplot2::labs(title = title,
                   y = ylab) +
-    ggplot2::facet_wrap("site") +
+    ggplot2::facet_wrap("option") +
     ggplot2::scale_fill_manual(values = colours) +
     ggplot2::scale_y_continuous(limits = c(0, 1),
                                 expand = ggplot2::expansion(mult = c(0,

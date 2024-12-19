@@ -7,10 +7,10 @@
 cat_sample_data(
   x,
   method,
-  mechanism,
+  topic,
   ...,
   n_votes = 100,
-  site = "all",
+  option = "all",
   verbose = TRUE
 )
 }
@@ -20,8 +20,8 @@ cat_sample_data(
 \item{method}{character string with the name of the method to sample the
 data. The available methods are: \emph{basic} and \emph{bootstrap}, see Methods below.}
 
-\item{mechanism}{character string that indicates the machanism to which the
-data belongs.}
+\item{topic}{character string that indicates the machanism to which the data
+belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -29,9 +29,9 @@ function.}
 \item{n_votes}{numeric indicating the number of votes to consider, used only
 in the \emph{basic} aggregation method.}
 
-\item{site}{character string with the name of the site or character vector
-with the sites that you want to extract from the data. Use \code{all} for all
-sites.}
+\item{option}{character string with the name of the option or character
+vector with the options that you want to extract from the data. Use \code{all} for
+all options.}
 
 \item{verbose}{logical, if TRUE it prints informative messages.}
 }
@@ -53,42 +53,42 @@ Two methods are implemented. These methods are explained in Vernet et al.
 \item \emph{basic}: This method samples data based on the expert estimates without
 accounting for their confidence. Values are sampled from a Dirichlet
 distribution using the expert estimates as parameters. When only one estimate
-is provided, i.e. 100 \% for one level, the method assigns 100 \% to all votes
-for this level.
+is provided, i.e. 100 \% for one category, the method assigns 100 \% to all
+votes for this category.
 \item \emph{bootstrap}: This method samples data based on the expert estimates
 accounting for their confidence. The confidence is used to weight the
 number of votes assigned to each expert. The method samples data from a
 Dirichlet distribution using the expert estimates as parameters. When only
-one estimate is provided, i.e. 100 \% for one level, the method assigns 100 \%
-to all votes for this level.
+one estimate is provided, i.e. 100 \% for one category, the method assigns 100
+\% to all votes for this category.
 }
 }
 
 \examples{
-# Create the elic_cat object for an elicitation process with three
-# mechanisms, four sites, five levels and a maximum of six experts per
-# mechanism
-my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-my_sites <- c("site_1", "site_2", "site_3", "site_4")
-my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-my_elicit <- cat_start(levels = my_levels,
-                       sites = my_sites,
+# Create the elic_cat object for an elicitation process with three topics,
+# four options, five categories and a maximum of six experts per topic
+my_categories <- c("category_1", "category_2", "category_3",
+                   "category_4", "category_5")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
+my_topics <- c("topic_1", "topic_2", "topic_3")
+my_elicit <- cat_start(categories = my_categories,
+                       options = my_options,
                        experts = 6,
-                       mechanisms = my_mechanisms) |>
-  cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-  cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-  cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+                       topics = my_topics) |>
+  cat_add_data(data_source = topic_1, topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Mechanism 1 for all sites using the basic method
+# Sample data from Topic 1 for all options using the basic method
 samp <- cat_sample_data(my_elicit,
                         method = "basic",
-                        mechanism = "mechanism_1")
+                        topic = "topic_1")
 
-# Sample data from Mechanism 2 for Site 1 and 3 using the bootstrap method
+# Sample data from Topic 2 for option 1 and 3 using the bootstrap method
 samp <- cat_sample_data(my_elicit,
                         method = "bootstrap",
-                        mechanism = "mechanism_2",
-                        site = c("site_1", "site_3"))
+                        topic = "topic_2",
+                        option = c("option_1", "option_3"))
 }
 \references{
 Vernet, M., Trask, A.E., Andrews, C.E., Ewen, J.E., Medina, S.,

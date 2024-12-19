@@ -7,16 +7,18 @@ random_names <- randomNames::randomNames(n_experts,
                                          name.sep = " ")
 
 
-levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-n_levels <- length(levels)
+categories <- c("category_1", "category_2", "category_3",
+                "category_4", "category_5")
+n_categories <- length(categories)
 
-sites <- c("site_1", "site_2", "site_3", "site_4")
-n_sites <- length(sites)
+options <- c("option_1", "option_2", "option_3", "option_4")
+n_options <- length(options)
 
-# Generate random values for each level that sum up to 100
+# Generate random values for each category that sum up to 100
 get_values <- function() {
   rand_data <- Surrogate::RandVec(a = 0, b = 1, s = 1,
-                                  n = n_levels, m = n_experts * n_sites)[[1]] |>
+                                  n = n_categories,
+                                  m = n_experts * n_options)[[1]] |>
     # The following function rounds preserving the sum of the values on each
     # row, so data needs to be transposed twice, before and after the function
     t() |>
@@ -27,81 +29,81 @@ get_values <- function() {
     as.vector()
 }
 
-mechanism_1 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
+topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_options,
+                                              replace = TRUE),
+                                       each = n_categories),
+                      estimate = get_values()) |>
   tibble::as_tibble()
 
-mechanism_2 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
+topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_options,
+                                              replace = TRUE),
+                                       each = n_categories),
+                      estimate = get_values()) |>
   dplyr::filter(name != random_names[[1]]) |>
   tibble::as_tibble()
 
-mechanism_3 <- data.frame(name = rep(random_names, each = n_levels * n_sites),
-                          level = rep(levels, times = n_experts * n_sites),
-                          site = rep(rep(sites, each = n_levels),
-                                     times = n_experts),
-                          confidence = rep(sample(seq(0, 100, by = 5),
-                                                  size = n_experts * n_sites,
-                                                  replace = TRUE),
-                                           each = n_levels),
-                          estimate = get_values()) |>
-  dplyr::filter(site != sites[[4]]) |>
+topic_3 <- data.frame(name = rep(random_names, each = n_categories * n_options),
+                      category = rep(categories, times = n_experts * n_options),
+                      option = rep(rep(options, each = n_categories),
+                                   times = n_experts),
+                      confidence = rep(sample(seq(0, 100, by = 5),
+                                              size = n_experts * n_options,
+                                              replace = TRUE),
+                                       each = n_categories),
+                      estimate = get_values()) |>
+  dplyr::filter(option != options[[4]]) |>
   tibble::as_tibble()
 
-usethis::use_data(mechanism_1, mechanism_2, mechanism_3,
+usethis::use_data(topic_1, topic_2, topic_3,
                   internal = FALSE,
                   overwrite = TRUE,
                   version = 3)
 
 # Save datasets into extdata folder
 # 3 csv files, one for each dataset
-write.csv(mechanism_1,
-          file = file.path("inst", "extdata", "mechanism_1.csv"),
+write.csv(topic_1,
+          file = file.path("inst", "extdata", "topic_1.csv"),
           row.names = FALSE)
-write.csv(mechanism_2,
-          file = file.path("inst", "extdata", "mechanism_2.csv"),
+write.csv(topic_2,
+          file = file.path("inst", "extdata", "topic_2.csv"),
           row.names = FALSE)
-write.csv(mechanism_3,
-          file = file.path("inst", "extdata", "mechanism_3.csv"),
+write.csv(topic_3,
+          file = file.path("inst", "extdata", "topic_3.csv"),
           row.names = FALSE)
 
 # 1 xlsx file with two sheets
-openxlsx::write.xlsx(list("Mechanism 1" = mechanism_1,
-                          "Mechanism 2" = mechanism_2,
-                          "Mechanism 3" = mechanism_3),
-                     file = file.path("inst", "extdata", "mechanisms.xlsx"),
+openxlsx::write.xlsx(list("Topic 1" = topic_1,
+                          "Topic 2" = topic_2,
+                          "Topic 3" = topic_3),
+                     file = file.path("inst", "extdata", "topics.xlsx"),
                      overwrite = TRUE)
 
 # Save dataset in Google Sheets
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
 # just use the code strings.
-# gs <- googlesheets4::gs4_create("mechanisms",
-#                                 sheets = c("Mechanism 1",
-#                                            "Mechanism 2",
-#                                            "Mechanism 3"))
+# gs <- googlesheets4::gs4_create("topics",
+#                                 sheets = c("Topic 1",
+#                                            "Topic 2",
+#                                            "Topic 3"))
 gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
-googlesheets4::sheet_write(mechanism_1,
+googlesheets4::sheet_write(topic_1,
                            ss = gs,
                            sheet = 1)
-googlesheets4::sheet_write(mechanism_2,
+googlesheets4::sheet_write(topic_2,
                            ss = gs,
                            sheet = 2)
-googlesheets4::sheet_write(mechanism_3,
+googlesheets4::sheet_write(topic_3,
                            ss = gs,
                            sheet = 3)
 

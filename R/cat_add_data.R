@@ -6,55 +6,54 @@
 #' `cat_add_data()` adds data to an [elic_cat] object from different sources.
 #'
 #' @param x an object of class [elic_cat].
-#' @param mechanism character string that indicates the machanism to which the
-#' data belongs.
+#' @param topic character string that indicates the machanism to which the data
+#' belongs.
 #' @inheritParams cont_add_data
 #'
 #' @section Data format:
 #'
-#' For each mechanism, data are expected to have five columns, built as follows:
+#' For each topic, data are expected to have five columns, built as follows:
 #' * The first column of the data should hold the names of the experts. The name
-#' of each expert should be repeated as many times as many times as the number
-#' of impact levels and sites.
-#' (i.e. each expert should appear \eqn{number\ of\ levels
-#' \cdot number\ of\ sites} times).
-#' * The second column should be the names of the levels of impact considered in
-#' the elicitation. Each block of levels of impact should be repeated as many
-#' times as the number of sites investigated/considered.
-#' * The third column should hold the names of the sites considered in the
-#' study. The name of each site should be repeated as many times as the number
-#' of levels of impact considered.
+#' of each expert should be repeated as many times as the number of categories
+#' and options. (i.e. each expert should appear \eqn{number\ of\ categories
+#' \cdot number\ of\ options} times).
+#' * The second column should be the names of the categories considered in the
+#' elicitation. Each block of categories should be repeated as many times as the
+#' number of options considered.
+#' * The third column should hold the names of the options considered in the
+#' study. The name of each option should be repeated as many times as the number
+#' of categories considered.
 #' * The fourth column should be the experts confidence in their own estimates
 #' (given in percent). Experts should estimate how confident they are in their
-#' estimates for each block of levels of impact and for each site. Therefore,
-#' expert confidence estimates should be repeated as many times as the number of
-#' levels of impact considered.
-#' * The final column should be the estimates of each expert for each site and
-#' impact level.
+#' estimates for each block of categories and for each option. Therefore, expert
+#' confidence estimates should be repeated as many times as the number of
+#' categories of impact considered.
+#' * The final column should be the estimates of each expert for each option and
+#' category.
 #'
 #' The name of the columns is not important, `cat_add_data()` will overwrite
 #' them according to the following convention:
 #'
-#' The first column will be renamed `id`, the second column `level`, the third
-#' column `site`, the fourth column `confidence`, and the fifth column
+#' The first column will be renamed `id`, the second column `category`, the
+#' third column `option`, the fourth column `confidence`, and the fifth column
 #' `estimate`.
 #'
-#' Here is an example of data correctly formatted for an elicitation with two
-#' levels of impact and two sites (only one expert is shown):
+#' Here is an example of data correctly formatted for an elicitation with five
+#' categories and two options (only one expert is shown):
 #'
 #' ```
-#' name       level       site      confidence      estimate
-#' ---------------------------------------------------------
-#' expert 1   level 1     site 1            15          0.08
-#' expert 1   level 2     site 1            15             0
-#' expert 1   level 3     site 1            15          0.84
-#' expert 1   level 4     site 1            15          0.02
-#' expert 1   level 5     site 1            15          0.06
-#' expert 1   level 1     site 2            35          0.02
-#' expert 1   level 2     site 2            35          0.11
-#' expert 1   level 3     site 2            35          0.19
-#' expert 1   level 4     site 2            35          0.02
-#' expert 1   level 5     site 2            35          0.66
+#' name         category       option      confidence      estimate
+#' ----------------------------------------------------------------
+#' expert 1     category 1     option 1            15          0.08
+#' expert 1     category 2     option 1            15          0
+#' expert 1     category 3     option 1            15          0.84
+#' expert 1     category 4     option 1            15          0.02
+#' expert 1     category 5     option 1            15          0.06
+#' expert 1     category 1     option 2            35          0.02
+#' expert 1     category 2     option 2            35          0.11
+#' expert 1     category 3     option 2            35          0.19
+#' expert 1     category 4     option 2            35          0.02
+#' expert 1     category 5     option 2            35          0.66
 #' ```
 #'
 #' @section Data cleaning:
@@ -73,64 +72,64 @@
 #' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
-#' # Create the elic_cat object for an elicitation process with three
-#' # mechanisms, four sites, five levels and a maximum of six experts per
-#' # mechanism
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
-#' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-#' x <- cat_start(levels = my_levels,
-#'                sites = my_sites,
+#' # Create the elic_cat object for an elicitation process with three topics,
+#' # four options, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
+#' x <- cat_start(categories = my_categories,
+#'                options = my_options,
 #'                experts = 6,
-#'                mechanisms = my_mechanisms)
+#'                topics = my_topics)
 #'
-#' # Add data for the three mechanisms from a data.frame. Notice that the
-#' # three commands can be piped
+#' # Add data for the three topics from a data.frame. Notice that the three
+#' # commands can be piped
 #' my_elicit <- cat_add_data(x,
-#'                           data_source = mechanism_1,
-#'                           mechanism = "mechanism_1") |>
-#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'                           data_source = topic_1,
+#'                           topic = "topic_1") |>
+#'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
+#'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #' my_elicit
 #'
 #' # Add data for the first and second round from a csv file
 #' files <- list.files(path = system.file("extdata", package = "elicitr"),
-#'                     pattern = "mechanism_",
+#'                     pattern = "topic_",
 #'                     full.names = TRUE)
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = files[1],
-#'                           mechanism = "mechanism_1") |>
-#'   cat_add_data(data_source = files[2], mechanism = "mechanism_2") |>
-#'   cat_add_data(data_source = files[3], mechanism = "mechanism_3")
+#'                           topic = "topic_1") |>
+#'   cat_add_data(data_source = files[2], topic = "topic_2") |>
+#'   cat_add_data(data_source = files[3], topic = "topic_3")
 #' my_elicit
 #'
 #' # Add data for the first and second round from a xlsx file with three sheets
 #' file <- list.files(path = system.file("extdata", package = "elicitr"),
-#'                    pattern = "mechanisms",
+#'                    pattern = "topics",
 #'                    full.names = TRUE)
 #' # Using the sheet index
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = file,
 #'                           sheet = 1,
-#'                           mechanism = "mechanism_1") |>
+#'                           topic = "topic_1") |>
 #'   cat_add_data(data_source = file,
 #'                sheet = 2,
-#'                mechanism = "mechanism_2") |>
+#'                topic = "topic_2") |>
 #'   cat_add_data(data_source = file,
 #'                sheet = 3,
-#'                mechanism = "mechanism_3")
+#'                topic = "topic_3")
 #' my_elicit
 #' # Using the sheet name
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = file,
-#'                           sheet = "Mechanism 1",
-#'                           mechanism = "mechanism_1") |>
+#'                           sheet = "Topic 1",
+#'                           topic = "topic_1") |>
 #'   cat_add_data(data_source = file,
-#'                sheet = "Mechanism 2",
-#'                mechanism = "mechanism_2") |>
+#'                sheet = "Topic 2",
+#'                topic = "topic_2") |>
 #'   cat_add_data(data_source = file,
-#'                sheet = "Mechanism 3",
-#'                mechanism = "mechanism_3")
+#'                sheet = "Topic 3",
+#'                topic = "topic_3")
 #' my_elicit
 #'
 #' @examplesIf interactive()
@@ -141,28 +140,28 @@
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = gs,
 #'                           sheet = 1,
-#'                           mechanism = "mechanism_1") |>
+#'                           topic = "topic_1") |>
 #'   cat_add_data(data_source = gs,
 #'                sheet = 2,
-#'                mechanism = "mechanism_2") |>
+#'                topic = "topic_2") |>
 #'   cat_add_data(data_source = gs,
 #'                sheet = 3,
-#'                mechanism = "mechanism_3")
+#'                topic = "topic_3")
 #' my_elicit
 #' # Using the sheet name
 #' my_elicit <- cat_add_data(x, data_source = gs,
-#'                           sheet = "Mechanism 1",
-#'                           mechanism = "mechanism_1") |>
+#'                           sheet = "Topic 1",
+#'                           topic = "topic_1") |>
 #'   cat_add_data(data_source = gs,
-#'                sheet = "Mechanism 2",
-#'                mechanism = "mechanism_2") |>
+#'                sheet = "Topic 2",
+#'                topic = "topic_2") |>
 #'   cat_add_data(data_source = gs,
-#'                sheet = "Mechanism 3",
-#'                mechanism = "mechanism_3")
+#'                sheet = "Topic 3",
+#'                topic = "topic_3")
 #' my_elicit
 cat_add_data <- function(x,
                          data_source,
-                         mechanism,
+                         topic,
                          ...,
                          sep = ",",
                          sheet = 1,
@@ -172,13 +171,13 @@ cat_add_data <- function(x,
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
 
-  # Check if mechanism is a character string of length 1
-  check_is_character(mechanism, "mechanism")
-  check_length(mechanism, "mechanism", 1)
-  # Check if mechanism is available in the object
+  # Check if topic is a character string of length 1
+  check_is_character(topic, "topic")
+  check_length(topic, "topic", 1)
+  # Check if topic is available in the object
   check_value_in_element(x,
-                         element = "mechanism",
-                         value = mechanism)
+                         element = "topic",
+                         value = topic)
 
   # Read data
   data <- read_data(data_source,
@@ -187,34 +186,34 @@ cat_add_data <- function(x,
 
   # Check if data has the correct number of columns
   check_columns(data, 5)
-  colnames(data) <- c("id", "level", "site", "confidence", "estimate")
+  colnames(data) <- c("id", "category", "option", "confidence", "estimate")
 
   # Check columns type
   check_columns_type(data[1:3], "character")
   check_columns_type(data[4:5], c("numeric", "integer"))
 
-  # First check that names, levels and sites are as expected
+  # First check that names, categories and options are as expected
   # Check that unique names are <= expected experts
-  check_names_levels_sites(x, data, type = "name")
+  check_names_categories_options(x, data, type = "name")
 
-  # Check that levels are those recorded in the object
-  check_names_levels_sites(x, data, type = "levels")
+  # Check that categories are those recorded in the object
+  check_names_categories_options(x, data, type = "categories")
 
-  # Check that sites are those recorded in the object
-  check_names_levels_sites(x, data, type = "sites")
+  # Check that options are those recorded in the object
+  check_names_categories_options(x, data, type = "options")
 
   # Then check that the data is formatted as expected
-  # Check that each name is repeated as many times as the number of levels and
-  # sites
+  # Check that each name is repeated as many times as the number of categories
+  # and options
   check_column_format(data, col = "id")
 
-  # Check that each level block is repeated as many times as the number of
-  # experts and sites
-  check_column_format(data, col = "level")
+  # Check that each category block is repeated as many times as the number of
+  # experts and options
+  check_column_format(data, col = "category")
 
-  # Check that each site is repeated as many times as the number of experts and
-  # levels
-  check_column_format(data, col = "site")
+  # Check that each option is repeated as many times as the number of experts
+  # and categories
+  check_column_format(data, col = "option")
 
   # Check that each confidence value is repeated as many times as the number of
   # experts
@@ -223,14 +222,14 @@ cat_add_data <- function(x,
   # Anonymise names
   data <- anonimise_names(data)
 
-  # Check if estimates for each expert and site sum to 1. This is done after
+  # Check if estimates for each expert and option sum to 1. This is done after
   # anonymising the names to avoid exposing the names in the error message.
   check_sum_1(data)
 
-  x[["data"]][[mechanism]] <- data
+  x[["data"]][[topic]] <- data
 
   if (verbose) {
-    cli::cli_alert_success("Data added to Mechanism {.val {mechanism}} from \\
+    cli::cli_alert_success("Data added to Topic {.val {topic}} from \\
                             {.val {src}}")
   }
 
@@ -239,22 +238,22 @@ cat_add_data <- function(x,
 
 # Checkers----
 
-#' Check names and levels
+#' Check names and categories
 #'
-#' Checks if names and levels are as expected, i.e. if the number of unique
+#' Checks if names and categories are as expected, i.e. if the number of unique
 #' names is less than or equal to the expected number of experts, and if the
-#' levels are those recorded in the object.
+#' categories are those recorded in the object.
 #'
 #' @param x [elic_cat] object.
 #' @param data [tibble][tibble::tibble] with the data to be checked.
 #' @param type character string with the type of check to be performed.
 #'
-#' @returns An error if the number of unique names is greater than the  number
-#' of experts or if the levels are not those recorded in the object.
+#' @returns An error if the number of unique names is greater than the number
+#' of experts or if the categories are not those recorded in the object.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_names_levels_sites <- function(x, data, type) {
+check_names_categories_options <- function(x, data, type) {
 
   error <- ""
 
@@ -270,26 +269,26 @@ check_names_levels_sites <- function(x, data, type) {
                 be no more than {.val {n}}."
     }
 
-  } else if (type == "levels") {
+  } else if (type == "categories") {
 
-    levels <- unique(data[["level"]])
-    diff <- setdiff(levels, x[["levels"]])
+    categories <- unique(data[["category"]])
+    diff <- setdiff(categories, x[["categories"]])
 
     if (length(diff) > 0) {
 
-      text <- "The column with the name of the levels contains unexpected \\
+      text <- "The column with the name of the categories contains unexpected \\
                values:"
       error <- "The value{?s} {.val {diff}} {?is/are} not valid."
     }
 
-  } else if (type == "sites") {
+  } else if (type == "options") {
 
-    sites <- unique(data[["site"]])
-    diff <- setdiff(sites, x[["sites"]])
+    options <- unique(data[["option"]])
+    diff <- setdiff(options, x[["options"]])
 
     if (length(diff) > 0) {
 
-      text <- "The column with the name of the sites contains unexpected \\
+      text <- "The column with the name of the options contains unexpected \\
                values:"
       error <- "The value{?s} {.val {diff}} {?is/are} not valid."
     }
@@ -319,8 +318,8 @@ check_names_levels_sites <- function(x, data, type) {
 check_column_format <- function(x, col) {
 
   if (col == "confidence") {
-    n_levels <- length(unique(x[["level"]]))
-    diff <- rle(x[[col]])[["lengths"]] %% n_levels
+    n_categories <- length(unique(x[["category"]]))
+    diff <- rle(x[[col]])[["lengths"]] %% n_categories
 
     if (sum(diff) == 0) {
       expected_values <- x[[col]]
@@ -330,7 +329,7 @@ check_column_format <- function(x, col) {
     }
   } else {
     col_values <- unique(x[[col]])
-    diff_cols <- setdiff(c("id", "level", "site"), col)
+    diff_cols <- setdiff(c("id", "category", "option"), col)
     col_1 <- unique(x[[diff_cols[[1]]]]) |>
       length()
     col_2 <- unique(x[[diff_cols[[2]]]]) |>
@@ -338,7 +337,7 @@ check_column_format <- function(x, col) {
 
     if (col == "id") {
       expected_values <- rep(col_values, each = col_1 * col_2)
-    } else if (col == "level") {
+    } else if (col == "category") {
       expected_values <- rep(col_values, col_1 * col_2)
     } else {
       expected_values <- rep(col_values, col_1, each = col_2)
@@ -349,8 +348,8 @@ check_column_format <- function(x, col) {
 
     what <- switch(col,
                    "id" = "expert names",
-                   "level" = "levels",
-                   "site" = "sites",
+                   "category" = "categories",
+                   "option" = "options",
                    "confidence" = "confidence values")
 
     error <- "The column containing the {what} is not formatted as \\
@@ -366,11 +365,11 @@ check_column_format <- function(x, col) {
 
 #' Check estimates
 #'
-#' Check if estimates for each expert and site sum to 1.
+#' Check if estimates for each expert and option sum to 1.
 #'
 #' @param x data.frame with the data to be checked.
 #'
-#' @return An error if estimates for each expert and site don't sum to 1.
+#' @return An error if estimates for each expert and option don't sum to 1.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -380,7 +379,7 @@ check_sum_1 <- function(x) {
     # Convert to facto to avoid unwanted reorder of the table rows
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
-    dplyr::group_by(.data[["id"]], .data[["site"]]) |>
+    dplyr::group_by(.data[["id"]], .data[["option"]]) |>
     dplyr::summarise(sum = sum(.data[["estimate"]]))
   sums_vector <- sums |>
     dplyr::pull("sum")
@@ -393,15 +392,15 @@ check_sum_1 <- function(x) {
     wrong_data <- sums[idx, ]
 
     if (total == 1) {
-      error <- "Estimates of one expert and one site don't sum to 1."
+      error <- "Estimates of one expert and one option don't sum to 1."
     } else {
-      error <- "Estimates of one/some experts for one/some sites don't sum \\
+      error <- "Estimates of one/some experts for one/some options don't sum \\
                 to 1."
     }
 
     msg <- paste0("{cli::symbol$bullet} Check {.field id} {.val ",
                   wrong_data[[1]],
-                  "} for {.field site} {.val ",
+                  "} for {.field option} {.val ",
                   wrong_data[[2]], "}: sum {.val {",
                   wrong_data[[3]], "}}")
 

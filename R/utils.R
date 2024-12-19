@@ -286,7 +286,7 @@ check_value_in_element <- function(x,
                                    element,
                                    value) {
 
-  if (element == "mechanism") {
+  if (element == "topic") {
     values <- names(x[["data"]])
   } else {
     values <- x[[element]]

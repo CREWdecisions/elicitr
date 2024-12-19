@@ -6,9 +6,9 @@
 #' Get data from an [elic_cat] object.
 #'
 #' @inheritParams cat_add_data
-#' @param site character string with the name of the site or character vector
-#' with the sites that you want to extract from the data. Use `all` for all
-#' sites.
+#' @param option character string with the name of the option or character
+#' vector with the options that you want to extract from the data. Use `all` for
+#' all options.
 #'
 #' @return A [`tibble`][tibble::tibble] with the extracted data.
 #' @export
@@ -18,72 +18,72 @@
 #' @author Sergio Vignali
 #'
 #' @examples
-#' # Create the elic_cat object for an elicitation process with three
-#' # mechanisms, four sites, five levels and a maximum of six experts per
-#' # mechanism
-#' my_levels <- c("level_1", "level_2", "level_3", "level_4", "level_5")
-#' my_sites <- c("site_1", "site_2", "site_3", "site_4")
-#' my_mechanisms <- c("mechanism_1", "mechanism_2", "mechanism_3")
-#' my_elicit <- cat_start(levels = my_levels,
-#'                        sites = my_sites,
+#' # Create the elic_cat object for an elicitation process with three topics,
+#' # four options, five categories and a maximum of six experts per topic
+#' my_categories <- c("category_1", "category_2", "category_3",
+#'                    "category_4", "category_5")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
+#' my_elicit <- cat_start(categories = my_categories,
+#'                        options = my_options,
 #'                        experts = 6,
-#'                        mechanisms = my_mechanisms) |>
-#'   cat_add_data(data_source = mechanism_1, mechanism = "mechanism_1") |>
-#'   cat_add_data(data_source = mechanism_2, mechanism = "mechanism_2") |>
-#'   cat_add_data(data_source = mechanism_3, mechanism = "mechanism_3")
+#'                        topics = my_topics) |>
+#'   cat_add_data(data_source = topic_1, topic = "topic_1") |>
+#'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
+#'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Get all data from Mechanism 1
-#' cat_get_data(my_elicit, mechanism = "mechanism_1")
+#' # Get all data from Topic 1
+#' cat_get_data(my_elicit, topic = "topic_1")
 #'
-#' # Get data by site name----
-#' # Get data for site_1 from Mechanism 2
-#' cat_get_data(my_elicit, mechanism = "mechanism_2", site = "site_1")
+#' # Get data by option name----
+#' # Get data for option_1 from Topic 2
+#' cat_get_data(my_elicit, topic = "topic_2", option = "option_1")
 #'
-#' # Get data for site_1 and site_3 from Mechanism 3
+#' # Get data for option_1 and option_3 from Topic 3
 #' cat_get_data(my_elicit,
-#'              mechanism = "mechanism_3",
-#'              site = c("site_1", "site_3"))
+#'              topic = "topic_3",
+#'              option = c("option_1", "option_3"))
 cat_get_data <- function(x,
-                         mechanism,
+                         topic,
                          ...,
-                         site = "all") {
+                         option = "all") {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
 
-  # Check if mechanism is a character string of length 1
-  check_is_character(mechanism, "mechanism")
-  check_length(mechanism, "mechanism", 1)
+  # Check if topic is a character string of length 1
+  check_is_character(topic, "topic")
+  check_length(topic, "topic", 1)
 
-  # Check if mechanism is available in the object
+  # Check if topic is available in the object
   check_value_in_element(x,
-                         element = "mechanism",
-                         value = mechanism)
+                         element = "topic",
+                         value = topic)
 
-  if (length(site) == 1 && site == "all") {
-    out <- x[["data"]][[mechanism]]
+  if (length(option) == 1 && option == "all") {
+    out <- x[["data"]][[topic]]
   } else {
-    # Check if site is available in the object
+    # Check if option is available in the object
     check_value_in_element(x,
-                           element = "sites",
-                           value = site)
+                           element = "options",
+                           value = option)
 
-    # Check if site is not among the available sites in the data
-    available_sites <- unique(x[["data"]][[mechanism]][["site"]])
-    diff <- setdiff(site, available_sites)
+    # Check if option is not among the available options in the data
+    available_options <- unique(x[["data"]][[topic]][["option"]])
+    diff <- setdiff(option, available_options)
 
     if (length(diff) > 0) {
-      error <- "{cli::qty(diff)} Site{?s} {.val {diff}} not available in \\
-                mechanism {.val {mechanism}}."
-      info <- "Available site{?s}: {.val {available_sites}}."
-      cli::cli_abort(c("Invalid value for argument {.arg site}:",
+      error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
+                topic {.val {topic}}."
+      info <- "Available option{?s}: {.val {available_options}}."
+      cli::cli_abort(c("Invalid value for argument {.arg option}:",
                        "x" = error,
                        "i" = info))
     }
     # Avoid overwrite dplyr variable
-    vals <- site
-    out <- x[["data"]][[mechanism]] |>
-      dplyr::filter(.data[["site"]] %in% vals)
+    vals <- option
+    out <- x[["data"]][[topic]] |>
+      dplyr::filter(.data[["option"]] %in% vals)
 
   }
 
