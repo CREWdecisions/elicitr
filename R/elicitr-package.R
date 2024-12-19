@@ -53,6 +53,7 @@
 #' @importFrom scales hue_pal
 #' @importFrom stats median
 #' @importFrom stats na.omit
+#' @importFrom stats quantile
 #' @importFrom stats setNames
 #' @importFrom stringr str_split_1
 #' @importFrom tibble as_tibble

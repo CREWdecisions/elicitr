@@ -47,10 +47,10 @@ summary.cat_sample <- function(x, option) {
   out <- matrix(NA, nrow = ncol(x), ncol = 6)
 
   out[, 1] <- sapply(x, min)
-  out[, 2] <- sapply(x, \(x) quantile(x, probs = 0.25))
+  out[, 2] <- sapply(x, stats::quantile, probs = 0.25)
   out[, 3] <- sapply(x, median)
   out[, 4] <- sapply(x, mean)
-  out[, 5] <- sapply(x, \(x) quantile(x, probs = 0.75))
+  out[, 5] <- sapply(x, stats::quantile, probs = 0.75)
   out[, 6] <- sapply(x, max)
 
   colnames(out) <- c("Min", "Q1", "Median", "Mean", "Q3", "Max")
