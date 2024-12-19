@@ -30,6 +30,7 @@ Imports:
     miceadds,
     openxlsx,
     rlang,
+    scales,
     stats,
     stringr,
     tibble,
