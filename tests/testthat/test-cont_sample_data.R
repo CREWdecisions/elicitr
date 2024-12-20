@@ -11,6 +11,10 @@ test_that("Errors", {
   expect_snapshot(cont_sample_data(obj, round = 3),
                   error = TRUE)
 
+  # When method is not among the available methods
+  expect_snapshot(cont_sample_data(obj, round = 1, method = "method_3"),
+                  error = TRUE)
+
   # When one var is not among the available variables
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var4"),
                   error = TRUE)

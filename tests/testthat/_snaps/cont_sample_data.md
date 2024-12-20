@@ -31,6 +31,16 @@
 ---
 
     Code
+      cont_sample_data(obj, round = 1, method = "method_3")
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `method`:
+      x The method "method_3" is not available for continuous data.
+      i See Methods in `elicitr::cont_sample_data()`.
+
+---
+
+    Code
       cont_sample_data(obj, round = 1, var = "var4")
     Condition
       Error in `cont_sample_data()`:

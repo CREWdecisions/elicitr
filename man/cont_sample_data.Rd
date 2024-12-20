@@ -8,6 +8,7 @@ cont_sample_data(
   x,
   round,
   ...,
+  method = "basic",
   var = "all",
   n_votes = 1000,
   weights = 1,
@@ -22,6 +23,9 @@ elicitation round.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
+
+\item{method}{character string with the name of the method to sample the
+data, only the \emph{basic} is implemented, see Method below.}
 
 \item{var}{character string with the name of the variable or character vector
 with more variable names that you want to extract from the data. Use \code{all}
