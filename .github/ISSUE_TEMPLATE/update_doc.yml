@@ -1,0 +1,17 @@
+name: "📝 Update Documentation"
+description: Use this template for correction needed in the documentation.
+title: "[Update Documentation]: "
+labels: documentation
+assignees:
+  - sgvignali
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to read and improve the package documentation!
+  - type: textarea
+    id: description
+    attributes:
+      label: "Explain which part of the documentation should be changed and how to checnge it"
+    validations:
+      required: true
