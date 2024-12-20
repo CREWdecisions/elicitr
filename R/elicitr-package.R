@@ -46,6 +46,7 @@
 #' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 unit
 #' @importFrom googlesheets4 read_sheet
+#' @importFrom mc2d rpert
 #' @importFrom miceadds sumpreserving.rounding
 #' @importFrom openxlsx read.xlsx
 #' @importFrom rlang .data

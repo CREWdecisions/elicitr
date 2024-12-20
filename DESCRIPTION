@@ -27,6 +27,7 @@ Imports:
     extraDistr,
     ggplot2,
     googlesheets4,
+    mc2d,
     miceadds,
     openxlsx,
     rlang,
@@ -40,7 +41,6 @@ Imports:
 Suggests:
     lifecycle,
     lintr,
-    mc2d,
     randomNames,
     Surrogate,
     testthat (>= 3.0.0),

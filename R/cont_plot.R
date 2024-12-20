@@ -287,41 +287,6 @@ add_truth_data <- function(data, truth, elic_type) {
   data
 }
 
-#' Get type
-#'
-#' Get variable or elicitation type for the given variable.
-#'
-#' @param x an object of class `elic_cont`.
-#' @param var character string with the variable name.
-#' @param type character string, either `var` or `elic`.
-#'
-#' @return A character string with the variable or elicitation type.
-#' @noRd
-#'
-#' @author Sergio Vignali
-get_type <- function(x, var, type) {
-  x[[paste0(type, "_types")]][x[["var_names"]] == var]
-}
-
-#' Rescale data
-#'
-#' Rescale the min and max values of the data to the confidence value.
-#'
-#' @param x a data.frame with the elicitation data.
-#' @param s numeric, the scale factor for the confidence interval.
-#'
-#' @return A data.frame with the rescaled min and max values.
-#' @noRd
-#'
-#' @author Sergio Vignali and Stefano Canessa
-rescale_data <- function(x, s = 100) {
-
-  x[["min"]] <- x[["best"]] - (x[["best"]] - x[["min"]]) * s / x[["conf"]]
-  x[["max"]] <- x[["best"]] + (x[["max"]] - x[["best"]]) * s / x[["conf"]]
-
-  x
-}
-
 # Checkers----
 
 #' Check variable in object

@@ -647,6 +647,59 @@ hash_names <- function(x) {
            stop = 7)
 }
 
+#' Get type
+#'
+#' Get variable or elicitation type for the given variable.
+#'
+#' @param x an object of class `elic_cont`.
+#' @param var character string with the variable name.
+#' @param type character string, either `var` or `elic`.
+#'
+#' @return A character string with the variable or elicitation type.
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_type <- function(x, var, type) {
+  x[[paste0(type, "_types")]][x[["var_names"]] == var]
+}
+
+#' Rescale data
+#'
+#' Rescale the min and max values of the data to the confidence value.
+#'
+#' @param x a data.frame with the elicitation data.
+#' @param s numeric, the scale factor for the confidence interval.
+#'
+#' @return A data.frame with the rescaled min and max values.
+#' @noRd
+#'
+#' @author Sergio Vignali and Stefano Canessa
+rescale_data <- function(x, s = 100) {
+
+  x[["min"]] <- x[["best"]] - (x[["best"]] - x[["min"]]) * s / x[["conf"]]
+  x[["max"]] <- x[["best"]] + (x[["max"]] - x[["best"]]) * s / x[["conf"]]
+
+  x
+}
+
+#' Get bootstrap number of samples
+#'
+#' @param experts character vector with the expert ids.
+#' @param n_votes numeric indicating the number of votes to consider for each
+#' expert.
+#' @param conf numeric vector with the confidence values.
+#'
+#' @returns A vector with the number of samples to take for each expert.
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_boostrap_n_sample <- function(experts, n_votes, conf) {
+
+  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
+    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  n_samp
+}
+
 # Theme----
 
 #' Elic theme
@@ -674,22 +727,4 @@ elic_theme <- function(family = "sans") {
                    axis.text = ggplot2::element_text(size = 14,
                                                      family = family),
                    plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
-}
-
-#' Get bootstrap number of samples
-#'
-#' @param experts character vector with the expert ids.
-#' @param n_votes numeric indicating the number of votes to consider for each
-#' expert.
-#' @param conf numeric vector with the confidence values.
-#'
-#' @returns A vector with the number of samples to take for each expert.
-#' @noRd
-#'
-#' @author Sergio Vignali
-get_boostrap_n_sample <- function(experts, n_votes, conf) {
-
-  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
-    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
-  n_samp
 }
