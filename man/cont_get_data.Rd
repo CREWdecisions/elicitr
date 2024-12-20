@@ -121,6 +121,7 @@ cont_get_data(my_elicit, round = 2, elic_types = "14")
 \seealso{
 Other cont data helpers: 
 \code{\link{cont_add_data}()},
+\code{\link{cont_sample_data}()},
 \code{\link{cont_start}()}
 }
 \author{

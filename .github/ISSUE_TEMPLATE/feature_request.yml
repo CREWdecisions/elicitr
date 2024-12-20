@@ -1,7 +1,7 @@
 name: 🚀 Feature Request
 description: Use this template to request a new feature
 title: "[Feature request]: "
-labels: "new feature"
+labels: "enhancement"
 assignees:
   - sgvignali
 body:

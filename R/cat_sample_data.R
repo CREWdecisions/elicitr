@@ -9,8 +9,7 @@
 #' @inheritParams cat_get_data
 #' @param method character string with the name of the method to sample the
 #' data. The available methods are: _basic_ and _bootstrap_, see Methods below.
-#' @param n_votes numeric indicating the number of votes to consider, used only
-#' in the _basic_ aggregation method.
+#' @param n_votes numeric indicating the number of votes to consider.
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Methods:
@@ -217,22 +216,4 @@ get_conf <- function(x, y, z) {
     dplyr::filter(dplyr::row_number() %% z == 1,
                   .data[["option"]] == y) |>
     dplyr::pull("confidence")
-}
-
-#' Get bootstrap number of samples
-#'
-#' @param experts character vector with the expert ids.
-#' @param n_votes numeric indicating the number of votes to consider for each
-#' expert.
-#' @param conf numeric vector with the confidence values.
-#'
-#' @returns A vector with the number of samples to take for each expert.
-#' @noRd
-#'
-#' @author Sergio Vignali
-get_boostrap_n_sample <- function(experts, n_votes, conf) {
-
-  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
-    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
-  n_samp
 }

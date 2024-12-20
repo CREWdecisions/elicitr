@@ -1,7 +1,7 @@
 name: "📝 Update Documentation"
 description: Use this template for correction needed in the documentation.
 title: "[Update Documentation]: "
-labels: documentation
+labels: documentation, help wanted
 assignees:
   - sgvignali
 body:

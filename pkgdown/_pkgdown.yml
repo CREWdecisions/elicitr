@@ -11,6 +11,7 @@ reference:
   - cont_start
   - cont_add_data
   - cont_get_data
+  - cont_sample_data
   - cont_plot
 
 - title: Elicitation of categorical data
