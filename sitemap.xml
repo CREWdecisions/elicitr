@@ -1,7 +1,9 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://crewdecisions.github.io/elicitr/404.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://crewdecisions.github.io/elicitr/CONTRIBUTING.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/LICENSE.html</loc></url>
+<url><loc>https://crewdecisions.github.io/elicitr/PULL_REQUEST_TEMPLATE.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/authors.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/index.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cat_add_data.html</loc></url>
