@@ -1,5 +1,5 @@
 name: "\U0001F41B Bug Report"
-about: Use this template for filing a bug report.
+description: Use this template for filing a bug report.
 title: "[Bug]: "
 labels: bug
 assignees:
