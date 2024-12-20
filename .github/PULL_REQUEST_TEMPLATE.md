@@ -14,7 +14,7 @@ The first three are required (you can also fill these out after creating the PR)
 
 - [ ] I have read the [contributing](./CONTRIBUTING.md) guidelines
 - [ ] All steps described in the contributing guidelines can be executed successfully
-- [ ] I have linked the PR to the corresponding issue
+- [ ] I have linked the PR to the corresponding issue, see [link a pull request to and issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue)
 - [ ] I have added tests that prove my fix is valid or my feature works (if appropriate)
 - [ ] I have added the necessary documentation (if appropriate)
 
