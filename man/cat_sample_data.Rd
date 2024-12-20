@@ -26,8 +26,7 @@ belongs.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{n_votes}{numeric indicating the number of votes to consider, used only
-in the \emph{basic} aggregation method.}
+\item{n_votes}{numeric indicating the number of votes to consider.}
 
 \item{option}{character string with the name of the option or character
 vector with the options that you want to extract from the data. Use \code{all} for

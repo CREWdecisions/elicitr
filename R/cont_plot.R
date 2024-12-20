@@ -314,7 +314,7 @@ get_type <- function(x, var, type) {
 #' @noRd
 #'
 #' @author Sergio Vignali and Stefano Canessa
-rescale_data <- function(x, s) {
+rescale_data <- function(x, s = 100) {
 
   x[["min"]] <- x[["best"]] - (x[["best"]] - x[["min"]]) * s / x[["conf"]]
   x[["max"]] <- x[["best"]] + (x[["max"]] - x[["best"]]) * s / x[["conf"]]

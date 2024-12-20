@@ -171,6 +171,7 @@ my_elicit
 \seealso{
 Other cont data helpers: 
 \code{\link{cont_get_data}()},
+\code{\link{cont_sample_data}()},
 \code{\link{cont_start}()}
 }
 \author{

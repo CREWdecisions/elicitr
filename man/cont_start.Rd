@@ -125,7 +125,8 @@ using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
 \seealso{
 Other cont data helpers: 
 \code{\link{cont_add_data}()},
-\code{\link{cont_get_data}()}
+\code{\link{cont_get_data}()},
+\code{\link{cont_sample_data}()}
 }
 \author{
 Sergio Vignali

@@ -371,6 +371,34 @@ check_option <- function(x, option) {
   }
 }
 
+#' Check weights
+#'
+#' Check if the weights are either 1 or a vector of length `n`.
+#'
+#' @param x numeric with the weights.
+#' @param n numeric with the number of experts.
+#'
+#' @returns An error if the weights are not 1 or a vector of length `n`.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_weights <- function(x, n) {
+
+
+  if ((length(x) == 1 && x != 1) || (length(x) != 1 && length(x) != n)) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg weights} must be {.val {1}} or a vector of \\
+              length {.val {n}}, same as the number of experts."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+}
+
 # Helpers----
 
 #' Read data
@@ -646,4 +674,22 @@ elic_theme <- function(family = "sans") {
                    axis.text = ggplot2::element_text(size = 14,
                                                      family = family),
                    plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
+}
+
+#' Get bootstrap number of samples
+#'
+#' @param experts character vector with the expert ids.
+#' @param n_votes numeric indicating the number of votes to consider for each
+#' expert.
+#' @param conf numeric vector with the confidence values.
+#'
+#' @returns A vector with the number of samples to take for each expert.
+#' @noRd
+#'
+#' @author Sergio Vignali
+get_boostrap_n_sample <- function(experts, n_votes, conf) {
+
+  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
+    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  n_samp
 }
