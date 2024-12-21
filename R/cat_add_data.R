@@ -376,7 +376,7 @@ check_column_format <- function(x, col) {
 check_sum_1 <- function(x) {
 
   sums <- x |>
-    # Convert to facto to avoid unwanted reorder of the table rows
+    # Convert to factor to avoid unwanted reorder of the table rows
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>

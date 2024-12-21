@@ -66,9 +66,9 @@ var_labels <- list("1p" = "best",
 #' to build the column names is taken from the metadata available in the
 #' [elic_cont] object.
 #'
-#' `var_conf`, given in percents, can be any number between 60 and 100. Any
-#' value under 50 would imply that the accuracy of the estimates is only due to
-#' chance).
+#' `var_conf`, given as percentage, can be any number in the range (50, 100].
+#' Any value smaller or equal to 50 would imply that the accuracy of the
+#' estimates is only due to chance).
 #'
 #' @section Data cleaning:
 #'
@@ -171,6 +171,8 @@ cont_add_data <- function(x,
 
   # Anonymise names
   data <- anonimise_names(data)
+
+  check_data_types(x, data)
 
   # If necessary, fix element order for each variable
   data <- fix_var_order(data,
@@ -599,5 +601,228 @@ check_round_data <- function(data, experts, round) {
   }
 
   data
+}
 
+#' Check data type
+#'
+#' Check if the data types are correct according to the metadata stored in the
+#' [elic_cont] object.
+#'
+#' @param x [elic_cont] object containing the metadata.
+#' @param data [`tibble`][tibble::tibble] with the data to be checked.
+#'
+#' @returns An error if the data types are not correct.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_data_types <- function(x, data) {
+
+  var_names <- x[["var_names"]]
+  var_types <- x[["var_types"]]
+  elic_types <- x[["elic_types"]]
+
+  for (i in seq_along(var_names)) {
+
+    idx <- grepl(var_names[[i]], colnames(data))
+
+    df <- data[, idx] |>
+      unlist()
+
+    if (var_types[i] == "Z") {
+
+      check_is_integer(df, var_names[i])
+
+    } else if (var_types[i] == "N") {
+
+      check_is_positive_integer(df, var_names[i])
+
+    } else if (var_types[i] == "z") {
+
+      check_is_negative_integer(df, var_names[i])
+
+    } else if (var_types[i] == "s") {
+
+      check_is_positive_real(df, var_names[i])
+
+    } else if (var_types[i] == "r") {
+
+      check_is_negative_real(df, var_names[i])
+
+    } else if (var_types[i] == "p") {
+
+      check_is_probability(df, var_names[i])
+
+    }
+
+    if (elic_types[i]  == "4p") {
+      check_conf(df, var_names[i])
+    }
+  }
+}
+
+#' Title
+#'
+#' @param x
+#' @param v
+#'
+#' @returns
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_integer <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (!all(x %% 1 == 0)) {
+
+    error <- "Variable {.val {v}} contains some non integer numbers."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check if the argument `x` is a positive integer
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some non positive integer numbers.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_positive_integer <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (!all(x %% 1 == 0) || any(x < 0)) {
+
+    error <- "Variable {.val {v}} contains some non positive integer numbers."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check if the argument `x` is a negative integer
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some non negative integer numbers.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_negative_integer <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (!all(x %% 1 == 0) || any(x) >= 0) {
+
+    error <- "Variable {.val {v}} contains some non negative integer numbers."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check if the argument `x` is a positive real number
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some non positive numbers.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_positive_real <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (any(x < 0)) {
+
+    error <- "Variable {.val {v}} contains some non positive numbers."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check if the argument `x` is a negative real number
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some non negative numbers.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_negative_real <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (any(x >= 0)) {
+
+    error <- "Variable {.val {v}} contains some non negative numbers."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check if the argument `x` is a probability
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some values not in the range [0, 1].
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_is_probability <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[!idx]
+
+  if (!all(x >= 0) || !all(x <= 1)) {
+
+    error <- "Variable {.val {v}} contains some values not in the range [0, 1]."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
+}
+
+check_conf <- function(x, v) {
+
+  idx <- grepl("conf", names(x), fixed = TRUE)
+  x <- x[idx]
+
+  if (!all(x > 50) || !all(x <= 100)) {
+
+    error <- "Variable {.val {v}} contains confidence estimates not in the \\
+              range (50, 100]."
+
+    cli::cli_abort(c("Invalid data type:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
 }
