@@ -89,7 +89,7 @@ plot.cont_sample <- function(x,
   } else {
     n <- unique(x[["id"]]) |>
       length()
-    x_var = "id"
+    x_var <- "id"
     error <- "The number of colours provided does not match the number of \\
               experts."
     info <- "Please provide a vector with {.val {n}} colours."
