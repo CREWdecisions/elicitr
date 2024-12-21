@@ -187,7 +187,7 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
       }
 
       if (verbose) {
-        cli::cli_alert_success("Rescaled min and max")
+        cli::cli_alert_success("Rescaled min and max for variable {.val {v}}.")
       }
     }
 
