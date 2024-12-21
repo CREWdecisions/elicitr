@@ -78,8 +78,7 @@ plot.cont_sample <- function(x,
   vars <- var
   x <- x |>
     dplyr::filter(.data[["var"]] %in% vars) |>
-    dplyr::mutate("id" = factor(.data[["id"]], levels = unique(x[["id"]])),
-                  "var" = factor(.data[["var"]], levels = vars))
+    dplyr::mutate("id" = factor(.data[["id"]], levels = unique(x[["id"]])))
 
   if (group) {
     n <- 1
@@ -113,7 +112,7 @@ plot.cont_sample <- function(x,
 
   if (is.null(theme)) {
     theme <- elic_theme(family = family) +
-      cont_sample_theme(type = type)
+      cont_sample_theme(type = type, group = group)
   }
 
   if (type == "violin") {
@@ -169,28 +168,37 @@ plot.cont_sample <- function(x,
 #' @noRd
 #'
 #' @author Sergio Vignali
-cont_sample_theme <- function(type) {
+cont_sample_theme <- function(type, group) {
+
+  y_grid <- ggplot2::element_line(colour = "black",
+                                  linetype = 8,
+                                  linewidth = 0.1)
 
   if (type == "violin") {
-    ggplot2::theme(axis.ticks = ggplot2::element_blank(),
-                   panel.grid.major.x = ggplot2::element_blank(),
-                   panel.grid.major.y = ggplot2::element_line(colour = "black",
-                                                              linetype = 8,
-                                                              linewidth = 0.1),
-                   axis.text.x = ggplot2::element_text(angle = 90,
-                                                       vjust = 0.5,
-                                                       hjust = 1),
-                   legend.position = "none")
+    th <- ggplot2::theme(axis.ticks = ggplot2::element_blank(),
+                         panel.grid.major.x = ggplot2::element_blank(),
+                         panel.grid.major.y = y_grid,
+                         legend.position = "none")
+
+    if (!group) {
+      th <- th +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                           vjust = 0.5,
+                                                           hjust = 1))
+    }
+
   } else if (type == "density") {
-    ggplot2::theme(axis.ticks = ggplot2::element_blank(),
-                   panel.grid.major.x = ggplot2::element_blank(),
-                   panel.grid.major.y = ggplot2::element_line(colour = "black",
-                                                              linetype = 8,
-                                                              linewidth = 0.1),
-                   legend.position = "bottom",
-                   legend.key.size = ggplot2::unit(1.5, "line"),
-                   legend.title = ggplot2::element_blank())
+    th <- ggplot2::theme(axis.ticks = ggplot2::element_blank(),
+                         panel.grid.major.x = ggplot2::element_blank(),
+                         panel.grid.major.y = y_grid,
+                         legend.position = "bottom",
+                         legend.key.size = ggplot2::unit(1.5, "line"),
+                         legend.title = ggplot2::element_blank())
+  } else {
+    th <- NULL
   }
+
+  th
 }
 
 # Checkers----

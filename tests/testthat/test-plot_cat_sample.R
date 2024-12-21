@@ -58,6 +58,7 @@ test_that("Output", {
                    "Y-axis")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Test theme
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
