@@ -16,4 +16,7 @@ test_that("Output", {
   expect_s3_class(out, "tbl_df")
   expect_named(out, c("Category", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
   expect_identical(nrow(out), 5L)
+  expect_identical(out[["Category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
 })
