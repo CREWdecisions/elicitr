@@ -1,6 +1,6 @@
 Package: elicitr
 Title: A user friendly interface to aggregate elicitation data
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
     person("Sergio", "Vignali", email = "crewdecisions@gmail.com",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3390-5442")),
