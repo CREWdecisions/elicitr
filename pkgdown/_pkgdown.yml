@@ -11,8 +11,9 @@ reference:
   - cont_start
   - cont_add_data
   - cont_get_data
-  - cont_sample_data
   - plot.elic_cont
+  - cont_sample_data
+  - summary.cont_sample
   - plot.cont_sample
 
 - title: Elicitation of categorical data
@@ -22,8 +23,8 @@ reference:
   - cat_add_data
   - cat_get_data
   - cat_sample_data
-  - plot.cat_sample
   - summary.cat_sample
+  - plot.cat_sample
 
 - title: Classes
   desc: Description of the classes available in the package.

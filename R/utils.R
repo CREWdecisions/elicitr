@@ -399,6 +399,31 @@ check_weights <- function(x, n) {
   }
 }
 
+#' Check if the variable is available in the sampled data
+#'
+#' @param x [`tibble`][tibble::tibble] with the sampled data.
+#' @param var character vector with the name of the variable to be checked.
+#'
+#' @returns An error if the variable is not available in the sampled data.
+#' @noRd
+#'
+#' @author Sergio Vignali
+check_var_in_sample <- function(x, var) {
+
+  vars <- unique(x[["var"]])
+
+  if (!all(var %in% vars)) {
+
+    diff <- setdiff(var, vars)
+
+    error <- "Variable{?s} {.val {diff}} {?is/are} not available in the \\
+              sampled data."
+    cli::cli_abort(c("Invalid value for argument {.arg var}:",
+                     "x" = error,
+                     "i" = "Available variable{?s} {?is/are} {.val {vars}}."))
+  }
+}
+
 # Helpers----
 
 #' Read data

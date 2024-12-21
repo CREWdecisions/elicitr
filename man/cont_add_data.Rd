@@ -172,7 +172,8 @@ my_elicit
 Other cont data helpers: 
 \code{\link{cont_get_data}()},
 \code{\link{cont_sample_data}()},
-\code{\link{cont_start}()}
+\code{\link{cont_start}()},
+\code{\link{summary.cont_sample}()}
 }
 \author{
 Sergio Vignali

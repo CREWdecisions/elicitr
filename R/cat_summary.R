@@ -1,4 +1,4 @@
-#' Summarise categorical sample
+#' Summarise samples of categorical data
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
@@ -14,6 +14,10 @@
 #'
 #' @returns A [`tibble`][tibble::tibble] with the summary statistics.
 #' @export
+#'
+#' @family cat data helpers
+#'
+#' @author Sergio Vignali
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
