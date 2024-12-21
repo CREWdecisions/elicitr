@@ -4,6 +4,13 @@ template:
   math-rendering: mathjax
   light-switch: true
 
+articles:
+- title: Analyses
+  navbar: ~
+  contents:
+  - continuous_variables
+  - categorical_variables
+
 reference:
 - title: Elicitation of continuous variables
   desc: Functions for handling and plotting continuous variables.
