@@ -671,7 +671,7 @@ check_data_types <- function(x, data) {
 #' @author Sergio Vignali
 check_is_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (!all(x %% 1 == 0)) {
@@ -696,7 +696,7 @@ check_is_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_positive_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (!all(x %% 1 == 0) || any(x < 0)) {
@@ -721,7 +721,7 @@ check_is_positive_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_negative_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (!all(x %% 1 == 0) || any(x) >= 0) {
@@ -746,7 +746,7 @@ check_is_negative_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_positive_real <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (any(x < 0)) {
@@ -771,7 +771,7 @@ check_is_positive_real <- function(x, v) {
 #' @author Sergio Vignali
 check_is_negative_real <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (any(x >= 0)) {
@@ -796,7 +796,7 @@ check_is_negative_real <- function(x, v) {
 #' @author Sergio Vignali
 check_is_probability <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
 
   if (!all(x >= 0) || !all(x <= 1)) {
@@ -812,7 +812,7 @@ check_is_probability <- function(x, v) {
 
 check_conf <- function(x, v) {
 
-  idx <- grepl("conf", names(x))
+  idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[idx]
 
   if (!all(x > 50) || !all(x <= 100)) {
