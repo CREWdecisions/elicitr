@@ -4,9 +4,6 @@ template:
   math-rendering: mathjax
   light-switch: true
 
-development:
-  mode: auto
-
 reference:
 - title: Elicitation of continuous variables
   desc: Functions for handling and plotting continuous variables.
