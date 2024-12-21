@@ -156,6 +156,96 @@
       x "Round 2" has 4 <id> not present in "Round 1" which has only 2 "NA" rows.
       i Check raw data and use `elicitr::cont_add_data()` to add the dataset after manual corrections.
 
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var1" contains some non integer numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var2" contains some non positive integer numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(y, data_source = round_1, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var1" contains some non negative integer numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(y, data_source = z, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains some non positive numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(y, data_source = round_1, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains some non negative numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains some values not in the range [0, 1].
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains some values not in the range [0, 1].
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Invalid data type:
+      x Variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check raw data.
+
 # Warnings
 
     Code
