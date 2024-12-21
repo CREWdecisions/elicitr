@@ -5,9 +5,9 @@
 #'
 #' `plot()` aggregates and plots the categorical samples as violin plot.
 #'
+#' @inheritParams cat_get_data
 #' @param x an object of class `cat_sample` created by the function
 #' [cat_sample_data].
-#' @inheritParams cat_get_data
 #' @param title character string with the title of the plot. If `NULL`, the
 #' title will be the topic name.
 #' @param ylab character string with the label of the y-axis.
@@ -117,7 +117,7 @@ plot.cat_sample <- function(x,
     ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
                                                 y = .data[["prob"]],
                                                 fill = .data[["category"]]),
-                         color = "black",
+                         colour = "black",
                          alpha = 0.8,
                          scale = "width",
                          linewidth = 0.2,
@@ -127,7 +127,7 @@ plot.cat_sample <- function(x,
                                                  y = .data[["prob"]]),
                           fun = mean,
                           geom = "point",
-                          color = "black",
+                          colour = "black",
                           size = 0.8) +
     ggplot2::labs(title = title,
                   y = ylab) +

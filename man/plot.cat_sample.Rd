@@ -87,6 +87,7 @@ plot(samp, theme = ggplot2::theme_minimal())
 }
 \seealso{
 Other plot helpers: 
+\code{\link{plot.cont_sample}()},
 \code{\link{plot.elic_cont}()}
 }
 \author{
