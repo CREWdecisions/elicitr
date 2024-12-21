@@ -118,5 +118,7 @@ summary(samp, option = "option_1")
 And plotted as violin plot:
 
 ```{r plot-all}
+#| fig.alt: >
+#|   Violin plot of the sampled data for all options.
 plot(samp)
 ```
