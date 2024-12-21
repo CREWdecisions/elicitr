@@ -11,7 +11,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
+knitr::opts_chunk$set( #nolint
   collapse = TRUE,
   comment = "#>"
 )
@@ -61,7 +61,7 @@ Once the `elic_cont` object has been created, data belonging to each round can b
 ```{r add-data}
 my_elicitation <- cont_add_data(my_elicitation,
                                 data_source = round_1,
-                                round = 1) |> 
+                                round = 1) |>
   cont_add_data(data_source = round_2,
                 round = 2)
 my_elicitation
@@ -134,7 +134,8 @@ Finally, the group mean can be added to the plot:
 
 ```{r plot-data-var3-group}
 #| fig.alt: >
-#|  Estimates of variable 3 collected with a four points elicitation process with group mean.
+#|  Estimates of variable 3 collected with a four points elicitation process
+#|  with group mean.
 plot(my_elicitation, round = 2, var = "var3", group = TRUE)
 ```
 
