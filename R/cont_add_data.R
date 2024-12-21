@@ -60,7 +60,7 @@ var_labels <- list("1p" = "best",
 #' Moreover, the name of the columns is not important, `cont_add_data()` will
 #' overwrite it according to the following convention:
 #'
-#' *varname*_*suffix*
+#' *variable_name*_*suffix*
 #'
 #' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
 #' to build the column names is taken from the metadata available in the
@@ -78,8 +78,8 @@ var_labels <- list("1p" = "best",
 #' hashes. In this way, sensible information collected during the elicitation
 #' process never reaches the [elic_cont] object. For three and four points
 #' elicitation processes, the order of the values is checked for each expert. If
-#' it is not _min-max-best_, the values are swaped accordingly and a informative
-#' warn is raised.
+#' it is not _min-max-best_, the values are swapped accordingly and a
+#' informative warn is raised.
 #'
 #' If the data are imported from _Google Sheets_, `cont_add_data()` performs
 #' additional data cleaning operations. This is relevant when data are collected
@@ -660,12 +660,12 @@ check_data_types <- function(x, data) {
   }
 }
 
-#' Title
+#' Check if the argument `x` is a integer
 #'
-#' @param x
-#' @param v
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
 #'
-#' @returns
+#' @returns An error if `x` contains some non integer numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali

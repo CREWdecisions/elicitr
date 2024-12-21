@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Elicitr is an R package, used to aggregate elicitation data. The package is in active development and will implement functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.
+Elicitr is an R package, used to aggregate elicitation data. The package is in active development and implements functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.
 }
 \seealso{
 Useful links:

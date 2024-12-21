@@ -6,7 +6,7 @@
 #' `cat_add_data()` adds data to an [elic_cat] object from different sources.
 #'
 #' @param x an object of class [elic_cat].
-#' @param topic character string that indicates the machanism to which the data
+#' @param topic character string that indicates the mechanism to which the data
 #' belongs.
 #' @inheritParams cont_add_data
 #'
