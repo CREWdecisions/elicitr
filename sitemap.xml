@@ -14,7 +14,6 @@
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cont_add_data.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cont_data.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cont_get_data.html</loc></url>
-<url><loc>https://crewdecisions.github.io/elicitr/reference/cont_plot.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cont_sample_data.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/cont_start.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/elic_cat.html</loc></url>
@@ -22,6 +21,8 @@
 <url><loc>https://crewdecisions.github.io/elicitr/reference/elicitr-package.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/index.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/plot.cat_sample.html</loc></url>
+<url><loc>https://crewdecisions.github.io/elicitr/reference/plot.cont_sample.html</loc></url>
+<url><loc>https://crewdecisions.github.io/elicitr/reference/plot.elic_cont.html</loc></url>
 <url><loc>https://crewdecisions.github.io/elicitr/reference/summary.cat_sample.html</loc></url>
 </urlset>
 
