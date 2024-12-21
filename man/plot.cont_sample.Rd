@@ -53,8 +53,7 @@ Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{plot()} aggregates and plots the continuous samples as violin or density
-plot.
+\code{plot()} aggregates and plots continuous samples as violin or density plot.
 }
 \details{
 If a \code{theme} is provided, the \code{family} argument is ignored.

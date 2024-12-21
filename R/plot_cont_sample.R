@@ -3,8 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `plot()` aggregates and plots the continuous samples as violin or density
-#' plot.
+#' `plot()` aggregates and plots continuous samples as violin or density plot.
 #'
 #' @inheritParams cont_get_data
 #' @param x n object of class `cont_sample` created by the function
