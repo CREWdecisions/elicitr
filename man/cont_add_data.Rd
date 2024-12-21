@@ -85,15 +85,15 @@ repeated for each variable.
 Moreover, the name of the columns is not important, \code{cont_add_data()} will
 overwrite it according to the following convention:
 
-\emph{varname}_\emph{suffix}
+\emph{variable_name}_\emph{suffix}
 
 with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
 to build the column names is taken from the metadata available in the
 \link{elic_cont} object.
 
-\code{var_conf}, given in percents, can be any number between 60 and 100. Any
-value under 50 would imply that the accuracy of the estimates is only due to
-chance).
+\code{var_conf}, given as percentage, can be any number in the range (50, 100].
+Any value smaller or equal to 50 would imply that the accuracy of the
+estimates is only due to chance).
 }
 
 \section{Data cleaning}{
@@ -105,8 +105,8 @@ and punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
 process never reaches the \link{elic_cont} object. For three and four points
 elicitation processes, the order of the values is checked for each expert. If
-it is not \emph{min-max-best}, the values are swaped accordingly and a informative
-warn is raised.
+it is not \emph{min-max-best}, the values are swapped accordingly and a
+informative warn is raised.
 
 If the data are imported from \emph{Google Sheets}, \code{cont_add_data()} performs
 additional data cleaning operations. This is relevant when data are collected
