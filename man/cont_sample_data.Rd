@@ -75,6 +75,33 @@ parameters of the PERT distribution from which the data are sampled.
 }
 }
 
+\examples{
+# Create the elict object and add data for the first and second round from a
+# data.frame.
+my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
+                        var_types = "ZNp",
+                        elic_types = "134",
+                        experts = 6) |>
+  cont_add_data(x, data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_2, round = 2)
+
+# Sample data for the first round for all variables
+samp <- cont_sample_data(my_elicit, round = 1)
+samp
+
+# Sample data for the first round for the variable `var1` and `var2`
+samp <- cont_sample_data(my_elicit, round = 1, var = c("var1", "var2"))
+
+# Sample data for the second round for the variable `var3`. Notice that the
+# data are rescaled using the expert confidence before sampling.
+samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
+
+# Sample data for the first round for the variable `var3` providing the
+# weights. Nnotice that the weights overwrite the confidence estimates and
+# that some values are constrained to be between 0 and 1 after rescaling.
+samp <- cont_sample_data(my_elicit, round = 1, var = "var3",
+                         weights = c(0.8, 0.7, 0.9, 0.7, 0.6, 0.9))
+}
 \seealso{
 Other cont data helpers: 
 \code{\link{cont_add_data}()},
