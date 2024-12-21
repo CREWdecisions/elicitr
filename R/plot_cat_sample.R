@@ -21,6 +21,8 @@
 #' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
+#' @family plot helpers
+#'
 #' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples

@@ -138,6 +138,10 @@ plot(my_elicit, round = 1, var = "var3",
 plot(my_elicit, round = 1, var = "var3",
           theme = ggplot2::theme_classic())
 }
+\seealso{
+Other plot helpers: 
+\code{\link{plot.cat_sample}()}
+}
 \author{
 Sergio Vignali, Maude Vernet and Stefano Canessa
 }
