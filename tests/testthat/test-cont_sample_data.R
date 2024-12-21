@@ -71,6 +71,20 @@ test_that("Info", {
   expect_identical(nrow(out), as.integer(obj[["experts"]] * 100 * 2))
   expect_identical(as.vector(table(out[["id"]])), rep(200L, 6))
 
+  # Three variables
+  expect_snapshot(out <- cont_sample_data(obj,
+                                          round = 2))
+  expect_s3_class(out, class = "cont_sample")
+  expect_identical(attr(out, "round"), 2)
+  expect_identical(nrow(out), as.integer(obj[["experts"]] * 1000 * 3))
+  experts <- unique(obj[["data"]][["round_2"]][["id"]])
+  n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
+    as.vector()
+  conf <- obj[["data"]][["round_2"]][, 9, drop = TRUE] / 100
+  n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
+    as.integer()
+  expect_identical(n_samp_actual, n_samp_expected + 2000L)
+
   # One variable with 3p and weights
   w <- c(0.8, 0.7, 0.9, 0.7, 0.6, 0.9)
   expect_snapshot(out <- cont_sample_data(obj, round = 2,

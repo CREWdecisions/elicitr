@@ -103,9 +103,17 @@
 ---
 
     Code
+      out <- cont_sample_data(obj, round = 2)
+    Message
+      v Rescaled min and max for variable "var3".
+      v Data for 3 variables sampled successfully using the "basic" method.
+
+---
+
+    Code
       out <- cont_sample_data(obj, round = 2, var = "var3", weights = w)
     Message
       i Provided weights used instead of confidence estimates
-      v Rescaled min and max
+      v Rescaled min and max for variable "var3".
       v Data for 1 variable sampled successfully using the "basic" method.
 
