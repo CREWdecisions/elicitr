@@ -13,6 +13,7 @@ reference:
   - cont_get_data
   - cont_sample_data
   - plot.elic_cont
+  - plot.cont_sample
 
 - title: Elicitation of categorical data
   desc: Functions for handling and plotting categorical data.
