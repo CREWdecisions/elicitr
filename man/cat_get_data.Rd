@@ -58,7 +58,8 @@ cat_get_data(my_elicit,
 Other cat data helpers: 
 \code{\link{cat_add_data}()},
 \code{\link{cat_sample_data}()},
-\code{\link{cat_start}()}
+\code{\link{cat_start}()},
+\code{\link{summary.cat_sample}()}
 }
 \author{
 Sergio Vignali

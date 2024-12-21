@@ -2,7 +2,7 @@
 % Please edit documentation in R/cat_summary.R
 \name{summary.cat_sample}
 \alias{summary.cat_sample}
-\title{Summarise categorical sample}
+\title{Summarise samples of categorical data}
 \usage{
 \method{summary}{cat_sample}(object, option, ...)
 }
@@ -47,3 +47,14 @@ samp <- cat_sample_data(my_elicit,
 # Summarise the sampled data
 summary(samp, option = "option_1")
 }
+\seealso{
+Other cat data helpers: 
+\code{\link{cat_add_data}()},
+\code{\link{cat_get_data}()},
+\code{\link{cat_sample_data}()},
+\code{\link{cat_start}()}
+}
+\author{
+Sergio Vignali
+}
+\concept{cat data helpers}
