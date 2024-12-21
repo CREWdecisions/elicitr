@@ -17,8 +17,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><script src="deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A user friendly interface to aggregate elicitation data">
-<meta name="description" content="Elicitr is an R package, used to aggregate elicitation data. The package is in active development and will implement functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.">
-<meta property="og:description" content="Elicitr is an R package, used to aggregate elicitation data. The package is in active development and will implement functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.">
+<meta name="description" content="Elicitr is an R package, used to aggregate elicitation data. The package is in active development and implements functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.">
+<meta property="og:description" content="Elicitr is an R package, used to aggregate elicitation data. The package is in active development and implements functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.">
 <meta property="og:image" content="https://crewdecisions.github.io/elicitr/logo.png">
 </head>
 <body>
@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">elicitr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,14 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/continuous_variables.html">Continuous variables</a></li>
+    <li><a class="dropdown-item" href="articles/categorical_variables.html">Categorical variables</a></li>
+  </ul>
+</li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -68,9 +76,9 @@
 </div>
 <!-- badges: start -->
 
-<div class="section level3">
-<h3 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
-</h3>
+<div class="section level2">
+<h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
+</h2>
 <p>elicitr is an R package used to standardise, visualise and aggregate data from expert elicitation.<br>
 The package is in active development and will implement functions based on two formal elicitation methods:</p>
 <ul>
@@ -82,235 +90,90 @@ Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-bas
 </li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>You can install the development version of elicitr from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"CREWdecisions/elicitr"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
-</h3>
+<div class="section level2">
+<h2 id="how-elicitr-works">How elicitr works<a class="anchor" aria-label="anchor" href="#how-elicitr-works"></a>
+</h2>
+<p>Just as one creates a form to collect estimates in an elicitation process, with elicitr one creates an object to store metadata information. This allows to check whether experts have given their answers in the expected way.<br>
+All the functions in the elicitr package start with two prefixes: <code>cont</code> and <code>cat</code>. This design choice is intended to enhance functions discovery. <code>cont</code> functions are used for the elicitation of continuous variables while <code>cat</code> functions for the elicitation of categorical variables.</p>
+</div>
+<div class="section level2">
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://crewdecisions.github.io/elicitr/">elicitr</a></span><span class="op">)</span></span></code></pre></div>
-<p>All the functions in the elicitr package start with two prefixes: <code>cont</code> and <code>cat</code>. This design choice is intended to enhance functions discovery.<br><code>cont</code> functions are used for the elicitation of continuous variables while <code>cat</code> functions for the elicitation of categorical variables.</p>
-<div class="section level4">
-<h4 id="how-elicitr-works">How elicitr works<a class="anchor" aria-label="anchor" href="#how-elicitr-works"></a>
-</h4>
-<p>Just like you create a form to collect estimates in an elicitation process, the core of elicitr is the creation of an object to store the metadata information. This allows to check whether experts have given their answers in the expected way.<br>
-Any analysis starts by creating this object with the <code>start</code> function. Then, data can be added and retrieved using the <code>add_data</code> and <code>get_data</code> functions respectively. Finally data can be plotted using the <code>plot</code> function. Details about the implementation and example usages of these functions based on the simulated datasets included in elicitr can be seen bellow.<br>
-In total, there are five simulated datasets provided in the package. They are intended to demonstrate the functionality of the package and do not represent an actual elicitation process (names are also randomly generated).</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="elicitation-of-continuous-variables">Elicitation of continuous variables<a class="anchor" aria-label="anchor" href="#elicitation-of-continuous-variables"></a>
-</h3>
-<div class="section level4">
-<h4 id="simulated-datasets">Simulated datasets<a class="anchor" aria-label="anchor" href="#simulated-datasets"></a>
-</h4>
-<p>Two datasets that simulate the elicitation of continuous variables are included in elicitr:</p>
+<p>Create the metadata object and load the data for continuous variables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">round_1</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
-<span><span class="co">#&gt;   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Derek Macle…         1       20       24        22     0.43     0.83      0.73</span></span>
-<span><span class="co">#&gt; 2 Christopher…         0        7       10         9     0.67     0.87      0.77</span></span>
-<span><span class="co">#&gt; 3 Mar'Quasa B…         0       10       15        12     0.65     0.95      0.85</span></span>
-<span><span class="co">#&gt; 4 Mastoora al…        -7        4       12         9     0.44     0.84      0.64</span></span>
-<span><span class="co">#&gt; 5 Eriberto Mu…        -5       13       18        16     0.38     0.88      0.68</span></span>
-<span><span class="co">#&gt; 6 Paul Bol             3       20       26        25     0.35     0.85      0.65</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">round_2</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
-<span><span class="co">#&gt;   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Mar'Quasa B…        -2       15       21        18     0.62     0.82      0.72</span></span>
-<span><span class="co">#&gt; 2 Mastoora al…        -4       11       15        12     0.52     0.82      0.72</span></span>
-<span><span class="co">#&gt; 3 Eriberto Mu…         1       15       20        17     0.58     0.78      0.68</span></span>
-<span><span class="co">#&gt; 4 Derek Macle…         0       11       18        15     0.52     0.82      0.72</span></span>
-<span><span class="co">#&gt; 5 Christopher…        -2       14       18        15     0.55     0.85      0.75</span></span>
-<span><span class="co">#&gt; 6 Paul Bol             1       18       23        20     0.66     0.86      0.76</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
-</h4>
-<p>Any analysis of continuous variables starts by creating the <code>elic_cont</code> object with the function <code><a href="reference/cont_start.html">cont_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cont</code> object, four parameters must be specified:</p>
-<ul>
-<li>
-<code>var</code> the number of variables (i.e. the number of topics in your elicitation)</li>
-<li>
-<code>var_types</code> the type of variables for each of these variables (many options are available, ranging from real numbers to probabilities)</li>
-<li>
-<code>elic_types</code> the type of elicitation for each of these variables (three options are available: one, three, and four points elicitations)</li>
-<li>
-<code>experts</code> the number of experts that replied to the elicitation</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_start.html">cont_start</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span>
-<span>                                  var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span>
-<span>                                  elic_types <span class="op">=</span> <span class="st">"134"</span>,</span>
-<span>                                  experts <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                                  title <span class="op">=</span> <span class="st">"Continuous elicitation example"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ &lt;elic_cont&gt; object for "Continuous elicitation example" correctly initialised</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span></span>
+<code class="sourceCode R"><span><span class="va">my_elicitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_start.html">cont_start</a></span><span class="op">(</span>var_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span>
+<span>                             var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span>
+<span>                             elic_types <span class="op">=</span> <span class="st">"134"</span>,</span>
+<span>                             experts <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">round_1</span>, round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">round_2</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ &lt;elic_cont&gt; object for "Elicitation" correctly initialised</span></span>
+<span><span class="co">#&gt; ✔ Data added to "Round 1" from "data.frame"</span></span>
+<span><span class="co">#&gt; ✔ Data added to "Round 2" from "data.frame"</span></span>
+<span><span class="va">my_elicitation</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Continuous elicitation example ──</span></span>
+<span><span class="co">#&gt; ── Elicitation ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; • Variables: "var1", "var2", and "var3"</span></span>
 <span><span class="co">#&gt; • Variable types: "Z", "N", and "p"</span></span>
 <span><span class="co">#&gt; • Elicitation types: "1p", "3p", and "4p"</span></span>
 <span><span class="co">#&gt; • Number of experts: 6</span></span>
-<span><span class="co">#&gt; • Number of rounds: 0</span></span></code></pre></div>
-<p>Once the metadata has been added to the <code>elic_cont</code> object, the data of the first round of elicitation can be added with the function <code><a href="reference/cont_add_data.html">cont_add_data()</a></code>:</p>
+<span><span class="co">#&gt; • Number of rounds: 2</span></span></code></pre></div>
+<p>Plot raw data for variable 2 in round 1:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var2"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-plot-raw-data-1.png" width="100%"></p>
+<p>Data can be sampled from the elicitation object:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_sample_data.html">cont_sample_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Rescaled min and max for variable "var3".</span></span>
+<span><span class="co">#&gt; ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.</span></span>
+<span><span class="va">samp</span></span>
+<span><span class="co">#&gt; # A tibble: 18,000 × 3</span></span>
+<span><span class="co">#&gt;    id      var   value</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 5ac97e0 var1     -2</span></span>
+<span><span class="co">#&gt;  2 5ac97e0 var1     -2</span></span>
+<span><span class="co">#&gt;  3 5ac97e0 var1      1</span></span>
+<span><span class="co">#&gt;  4 5ac97e0 var1      1</span></span>
+<span><span class="co">#&gt;  5 5ac97e0 var1     -2</span></span>
+<span><span class="co">#&gt;  6 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt;  7 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt;  8 5ac97e0 var1     -2</span></span>
+<span><span class="co">#&gt;  9 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; 10 5ac97e0 var1     -2</span></span>
+<span><span class="co">#&gt; # ℹ 17,990 more rows</span></span></code></pre></div>
+<p>And the sample summarised:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">samp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 7</span></span>
+<span><span class="co">#&gt;   Var      Min     Q1 Median   Mean     Q3    Max</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 var1  -4     -2      0     -0.986  1      1    </span></span>
+<span><span class="co">#&gt; 2 var2  11.0   14.5   16.2   16.3   18.4   22.5  </span></span>
+<span><span class="co">#&gt; 3 var3   0.464  0.672  0.717  0.715  0.761  0.870</span></span></code></pre></div>
+<p>And plotted as violin plots:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>                                     data_source <span class="op">=</span> <span class="va">round_1</span>,</span>
-<span>                                     round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Data added to "Round 1" from "data.frame"</span></span></code></pre></div>
-<p>The information message confirms that the data for the first round has been added to the <code>elic_cont</code> object from a <code>data.frame</code>. Besides <code>data frames</code>, elicitr also allows users to add data from <code>.csv</code> or <code>.xlsx</code> files, and from Google Sheets.</p>
-<p>If you conducted a second round of elicitation, it can be added to the <code>elic_cont</code> object after the first round has been added:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, var <span class="op">=</span> <span class="st">"var2"</span>, type <span class="op">=</span> <span class="st">"violin"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-sample-plot-violin-1.png" alt="Violin plot of the sampled data for variable 2." width="100%"></p>
+<p>Or plotted as density plots:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cont_add_data.html">cont_add_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>                                     data_source <span class="op">=</span> <span class="va">round_2</span>,</span>
-<span>                                     round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Data added to "Round 2" from "data.frame"</span></span></code></pre></div>
-<p>To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the <code>id</code> column. These are then used to match the expert’s answers in the two rounds.</p>
-<p>The function <code><a href="reference/cont_get_data.html">cont_get_data()</a></code> retrieves data from an <code>elic_cont</code> object. It is possible to get the whole dataset of a given round, or extract only the data for a given variable, variable type, or elicitation type:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cont_get_data.html">cont_get_data</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>              round <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>              var <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
-<span><span class="co">#&gt;   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;    &lt;int&gt;    &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 5ac97e0         1       20       24        22     0.43     0.83      0.73</span></span>
-<span><span class="co">#&gt; 2 e51202e         0        7       10         9     0.67     0.87      0.77</span></span>
-<span><span class="co">#&gt; 3 e78cbf4         0       10       15        12     0.65     0.95      0.85</span></span>
-<span><span class="co">#&gt; 4 9fafbee        -7        4       12         9     0.44     0.84      0.64</span></span>
-<span><span class="co">#&gt; 5 3cc9c29        -5       13       18        16     0.38     0.88      0.68</span></span>
-<span><span class="co">#&gt; 6 3d32ab9         3       20       26        25     0.35     0.85      0.65</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: var3_conf &lt;int&gt;</span></span></code></pre></div>
-<p>Finally, data can be plotted using the function <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. This function plots data belonging to a given round and for a given variable.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation_cont</span>,</span>
-<span>     round <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>     group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>     var <span class="op">=</span> <span class="st">"var3"</span>,</span>
-<span>     xlab <span class="op">=</span> <span class="st">"Variable 3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Rescaled min and max</span></span></code></pre></div>
-<p><img src="reference/figures/README-cont_plot-1.png" width="100%"></p>
-<p>Variable 3 (the plotted variable) is the result of a four points elicitation, where minimum and maximum estimates, best guess, and expert confidence is provided. In the plot, the best guess is represented with a dot, and the range between minimum and maximum estimates is represented with a line. Expert estimates are represented in purple, while the group’s mean is represented in orange.</p>
-<p>The message printed when the function is ran informs users that the minimum and maximum value given by experts have been rescaled using their provided confidence level.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, var <span class="op">=</span> <span class="st">"var3"</span>, type <span class="op">=</span> <span class="st">"density"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-sample-plot-density-1.png" alt="Density plot of the sampled data for variable 3." width="100%"></p>
 </div>
-</div>
-<div class="section level3">
-<h3 id="elicitation-of-categorical-variables">Elicitation of categorical variables<a class="anchor" aria-label="anchor" href="#elicitation-of-categorical-variables"></a>
-</h3>
-<div class="section level4">
-<h4 id="simulated-datasets-1">Simulated datasets<a class="anchor" aria-label="anchor" href="#simulated-datasets-1"></a>
-</h4>
-<p>Three datasets that simulate the elicitation of categorical variables are included in elicitr:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">topic_1</span></span>
-<span><span class="co">#&gt; # A tibble: 120 × 5</span></span>
-<span><span class="co">#&gt;    name            category   option   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Derek Maclellan category_1 option_1         15     0.08</span></span>
-<span><span class="co">#&gt;  2 Derek Maclellan category_2 option_1         15     0   </span></span>
-<span><span class="co">#&gt;  3 Derek Maclellan category_3 option_1         15     0.85</span></span>
-<span><span class="co">#&gt;  4 Derek Maclellan category_4 option_1         15     0.02</span></span>
-<span><span class="co">#&gt;  5 Derek Maclellan category_5 option_1         15     0.05</span></span>
-<span><span class="co">#&gt;  6 Derek Maclellan category_1 option_2         35     0.02</span></span>
-<span><span class="co">#&gt;  7 Derek Maclellan category_2 option_2         35     0.11</span></span>
-<span><span class="co">#&gt;  8 Derek Maclellan category_3 option_2         35     0.18</span></span>
-<span><span class="co">#&gt;  9 Derek Maclellan category_4 option_2         35     0.02</span></span>
-<span><span class="co">#&gt; 10 Derek Maclellan category_5 option_2         35     0.67</span></span>
-<span><span class="co">#&gt; # ℹ 110 more rows</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">topic_2</span></span>
-<span><span class="co">#&gt; # A tibble: 100 × 5</span></span>
-<span><span class="co">#&gt;    name              category   option   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Christopher Felix category_1 option_1        100     0.09</span></span>
-<span><span class="co">#&gt;  2 Christopher Felix category_2 option_1        100     0.21</span></span>
-<span><span class="co">#&gt;  3 Christopher Felix category_3 option_1        100     0.11</span></span>
-<span><span class="co">#&gt;  4 Christopher Felix category_4 option_1        100     0.59</span></span>
-<span><span class="co">#&gt;  5 Christopher Felix category_5 option_1        100     0   </span></span>
-<span><span class="co">#&gt;  6 Christopher Felix category_1 option_2         20     0.09</span></span>
-<span><span class="co">#&gt;  7 Christopher Felix category_2 option_2         20     0.05</span></span>
-<span><span class="co">#&gt;  8 Christopher Felix category_3 option_2         20     0.33</span></span>
-<span><span class="co">#&gt;  9 Christopher Felix category_4 option_2         20     0.24</span></span>
-<span><span class="co">#&gt; 10 Christopher Felix category_5 option_2         20     0.29</span></span>
-<span><span class="co">#&gt; # ℹ 90 more rows</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">topic_3</span></span>
-<span><span class="co">#&gt; # A tibble: 90 × 5</span></span>
-<span><span class="co">#&gt;    name            category   option   confidence estimate</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 Derek Maclellan category_1 option_1         80     0.02</span></span>
-<span><span class="co">#&gt;  2 Derek Maclellan category_2 option_1         80     0.02</span></span>
-<span><span class="co">#&gt;  3 Derek Maclellan category_3 option_1         80     0.01</span></span>
-<span><span class="co">#&gt;  4 Derek Maclellan category_4 option_1         80     0.87</span></span>
-<span><span class="co">#&gt;  5 Derek Maclellan category_5 option_1         80     0.08</span></span>
-<span><span class="co">#&gt;  6 Derek Maclellan category_1 option_2         50     0.11</span></span>
-<span><span class="co">#&gt;  7 Derek Maclellan category_2 option_2         50     0.09</span></span>
-<span><span class="co">#&gt;  8 Derek Maclellan category_3 option_2         50     0.17</span></span>
-<span><span class="co">#&gt;  9 Derek Maclellan category_4 option_2         50     0.09</span></span>
-<span><span class="co">#&gt; 10 Derek Maclellan category_5 option_2         50     0.54</span></span>
-<span><span class="co">#&gt; # ℹ 80 more rows</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="functions-1">Functions<a class="anchor" aria-label="anchor" href="#functions-1"></a>
-</h4>
-<p>Just like continuous variables, any analysis of categorical variables starts by creating the <code>elic_cat</code> object with the function <code><a href="reference/cat_start.html">cat_start()</a></code> to store the metadata of the elicitation. To build this <code>elic_cat</code> object, four parameters must be specified:</p>
-<ul>
-<li>
-<code>categories</code> the names of the categories you used in your elicitation</li>
-<li>
-<code>options</code> the names of all options investigated</li>
-<li>
-<code>experts</code> the maximum number of experts participating in the elicitation process for one topic</li>
-<li>
-<code>topics</code> the names of the topics investigated</li>
-</ul>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cat_start.html">cat_start</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"category_1"</span>, <span class="st">"category_2"</span>, <span class="st">"category_3"</span>, <span class="st">"category_4"</span>, <span class="st">"category_5"</span><span class="op">)</span>,</span>
-<span>                                options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"option_1"</span>, <span class="st">"option_2"</span>, <span class="st">"option_3"</span>, <span class="st">"option_4"</span><span class="op">)</span>,</span>
-<span>                                experts <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                                topics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"topic_1"</span>,<span class="st">"topic_2"</span>, <span class="st">"topic_3"</span><span class="op">)</span>,</span>
-<span>                                title <span class="op">=</span> <span class="st">"Categorical elicitation example"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ &lt;elic_cat&gt; object for "Categorical elicitation example" correctly initialised</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_elicitation_cat</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Categorical elicitation example ──</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; • Categories: "category_1", "category_2", "category_3", "category_4", and</span></span>
-<span><span class="co">#&gt; "category_5"</span></span>
-<span><span class="co">#&gt; • Options: "option_1", "option_2", "option_3", and "option_4"</span></span>
-<span><span class="co">#&gt; • Number of experts: 6</span></span>
-<span><span class="co">#&gt; • Topics: "topic_1", "topic_2", and "topic_3"</span></span>
-<span><span class="co">#&gt; • Data available for 0 topics</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="functions-under-development">Functions under development<a class="anchor" aria-label="anchor" href="#functions-under-development"></a>
-</h4>
-<ul>
-<li><code><a href="reference/cat_add_data.html">cat_add_data()</a></code></li>
-<li><code><a href="reference/cat_get_data.html">cat_get_data()</a></code></li>
-<li><code>elic_cat_plot_data</code></li>
-</ul>
-</div>
-</div>
-<div class="section level3">
-<h3 id="similar-packages">Similar packages<a class="anchor" aria-label="anchor" href="#similar-packages"></a>
-</h3>
+<div class="section level2">
+<h2 id="similar-packages">Similar packages<a class="anchor" aria-label="anchor" href="#similar-packages"></a>
+</h2>
 <ul>
 <li>{shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. <a href="https://doi.org/10.32614/CRAN.package.SHELF" class="external-link uri">https://doi.org/10.32614/CRAN.package.SHELF</a>
 </li>

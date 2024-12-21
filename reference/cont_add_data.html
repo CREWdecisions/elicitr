@@ -9,7 +9,7 @@ cont_add_data() adds data to an elic_cont object from different sources."><meta 
 
     <a class="navbar-brand me-2" href="../index.html">elicitr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +18,12 @@ cont_add_data() adds data to an elic_cont object from different sources."><meta 
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/continuous_variables.html">Continuous variables</a></li>
+    <li><a class="dropdown-item" href="../articles/categorical_variables.html">Categorical variables</a></li>
+  </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CREWdecisions/elicitr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -130,13 +136,13 @@ specifications below:</p>
 repeated for each variable.</p>
 <p>Moreover, the name of the columns is not important, <code>cont_add_data()</code> will
 overwrite it according to the following convention:</p>
-<p><em>varname</em>_<em>suffix</em></p>
+<p><em>variable_name</em>_<em>suffix</em></p>
 <p>with <em>suffix</em> being one of <em>min</em>, <em>max</em>, <em>best</em>, or <em>conf</em>. The information
 to build the column names is taken from the metadata available in the
 <a href="elic_cont.html">elic_cont</a> object.</p>
-<p><code>var_conf</code>, given in percents, can be any number between 60 and 100. Any
-value under 50 would imply that the accuracy of the estimates is only due to
-chance).</p>
+<p><code>var_conf</code>, given as percentage, can be any number in the range (50, 100].
+Any value smaller or equal to 50 would imply that the accuracy of the
+estimates is only due to chance).</p>
     </div>
     <div class="section level2">
     <h2 id="data-cleaning">Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a></h2>
@@ -149,8 +155,8 @@ and punctuation. Then, data are anonymised by converting names to short sha1
 hashes. In this way, sensible information collected during the elicitation
 process never reaches the <a href="elic_cont.html">elic_cont</a> object. For three and four points
 elicitation processes, the order of the values is checked for each expert. If
-it is not <em>min-max-best</em>, the values are swaped accordingly and a informative
-warn is raised.</p>
+it is not <em>min-max-best</em>, the values are swapped accordingly and a
+informative warn is raised.</p>
 <p>If the data are imported from <em>Google Sheets</em>, <code>cont_add_data()</code> performs
 additional data cleaning operations. This is relevant when data are collected
 with Google Forms because, for example, there could be multiple submission by
