@@ -40,9 +40,11 @@ Imports:
     tools,
     utils
 Suggests:
+    knitr,
     lifecycle,
     lintr,
     randomNames,
+    rmarkdown,
     Surrogate,
     testthat (>= 3.0.0),
     withr (>= 3.0.1)
@@ -50,3 +52,4 @@ Config/testthat/edition: 3
 Depends:
     R (>= 4.2.0)
 LazyData: true
+VignetteBuilder: knitr
