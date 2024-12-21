@@ -39,7 +39,7 @@ test_that("Output", {
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
   expect_s3_class(p[["data"]][["id"]], "factor")
   expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
-  expect_identical(length(unique(ld1[["fill"]])), 6L)
+  expect_length(unique(ld1[["fill"]]), 6L)
   expect_identical(p[["theme"]][["legend.position"]], "none")
 
   # Density plot without group
@@ -52,7 +52,7 @@ test_that("Output", {
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
   expect_s3_class(p[["data"]][["id"]], "factor")
   expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
-  expect_identical(length(unique(ld1[["colour"]])), 6L)
+  expect_length(unique(ld1[["colour"]]), 6L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Violin plot with group
@@ -66,7 +66,7 @@ test_that("Output", {
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
   expect_s3_class(p[["data"]][["id"]], "factor")
   expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
-  expect_identical(length(unique(ld1[["fill"]])), 1L)
+  expect_length(unique(ld1[["fill"]]), 1L)
   expect_identical(p[["theme"]][["legend.position"]], "none")
 
   # Density plot with group
@@ -79,12 +79,12 @@ test_that("Output", {
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
   expect_s3_class(p[["data"]][["id"]], "factor")
   expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
-  expect_identical(length(unique(ld1[["colour"]])), 1L)
+  expect_length(unique(ld1[["colour"]]), 1L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Colours and and other plot elements
-  cols = c("steelblue4", "darkcyan", "chocolate1",
-           "chocolate3", "orangered4", "royalblue1")
+  cols <- c("steelblue4", "darkcyan", "chocolate1",
+            "chocolate3", "orangered4", "royalblue1")
   p <- plot(samp,
             var = "var1",
             title = "title",
@@ -107,7 +107,7 @@ test_that("Output", {
   # Test theme
   test_theme <- ggplot2::theme(plot.title = ggplot2::element_text(size = 14,
                                                                   hjust = 1))
-  p <- plot(samp, var = "var1" , theme = test_theme)
+  p <- plot(samp, var = "var1", theme = test_theme)
   expect_identical(p[["theme"]][["plot.title"]][["size"]], 14)
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
