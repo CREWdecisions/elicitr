@@ -1,0 +1,124 @@
+---
+title: "Categorical variables"
+description: > 
+  Learn the workflow for loading and analysing data collected during the
+  elicitation of categorical variables.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Categorical variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set( #nolint
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(elicitr)
+```
+
+Many of the concepts introduced in `vignette("continuous_variables")` are also applicable to categorical variables, and the name of the functions are the same but have the prefix `cat` instead of `cont`. However, there are some differences in the workflow for loading and analysing data collected during the elicitation of categorical variables. This vignette will guide you through the process of loading and analysing categorical data.
+
+## Datasets
+
+There are three datasets included in the package for demonstration purposes: `?topic_1`, `?topic_2`,  and `?topic_3`:
+
+```{r topic1}
+topic_1
+```
+
+```{r topic2}
+topic_2
+```
+
+```{r topic3}
+topic_3
+```
+
+In each dataset the first column contains the name of the expert and the second the categories of the categorical variable. Each category can have different options, saved in column three. The fourth column contains the expert's confidence, and the fifth the expert's estimate.
+
+## Load data
+
+We start by creating the `?elic_cat` object with the function `cat_start()`. As for the continuous variables, this objects stores the metadata of the elicitation process:
+
+```{r cat-start}
+my_categories <- c("category_1", "category_2", "category_3",
+                   "category_4", "category_5")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
+my_topics <- c("topic_1", "topic_2", "topic_3")
+my_elicitation <- cat_start(categories = my_categories,
+                            options = my_options,
+                            experts = 6,
+                            topics = my_topics)
+my_elicitation
+```
+
+This elicitation process is for a categorical variables with 5 categories estimated for four options and three topics by six experts.
+
+Similarly as we did for continuous variables, we can load the data with the function `cat_load()`:
+
+```{r add-data}
+my_elicitation <- cat_add_data(my_elicitation,
+                               data_source = topic_1,
+                               topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
+```
+
+Again, metadata are used to validate the data. If the data is not consistent with the metadata, an error message will be displayed. For example, if we try to load data with a category not defined in the metadata:
+
+```{r error, error=TRUE}
+malformed_data <- topic_1
+malformed_data[1, 2] <- "category_6"
+cat_add_data(my_elicitation,
+             data_source = malformed_data,
+             topic = "topic_1")
+```
+
+## Get data
+
+Data can be retrieved from the `elic_cat` object with the `cat_get_data()` function:
+
+```{r get-data}
+cat_get_data(my_elicitation, topic = "topic_1")
+```
+
+Notice that the name of the expert has been anonymised and assigned to the column `id`. Data can be retrieved only for given options:
+
+```{r get-data-var1}
+cat_get_data(my_elicitation, topic = "topic_2", option = "option_1")
+```
+
+## Data analysis
+
+Contrary to continuous variables, there is not yet a function for plotting the raw data. However, we can plot the distribution of the sampled data.
+
+### Sample data
+
+Data can be sampled using the function `cat_sample()` (see the variable documentation for the explanation of the sampling methods). Here we sample 100 values for each option:
+
+```{r sample}
+samp <- cat_sample_data(my_elicitation,
+                        method = "basic",
+                        topic = "topic_1",
+                        n_votes = 100)
+samp
+```
+
+Sampled data can be summarised for any option:
+
+```{r sample-summary}
+summary(samp, option = "option_1")
+```
+
+And plotted as violin plot:
+
+```{r plot-all}
+#| fig.alt: >
+#|   Violin plot of the sampled data for all options.
+plot(samp)
+```

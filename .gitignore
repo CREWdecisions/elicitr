@@ -3,3 +3,4 @@ docs
 .Rhistory
 .DS_Store
 *.html
+inst/doc

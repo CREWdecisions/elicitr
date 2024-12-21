@@ -20,7 +20,7 @@ cat_sample_data(
 \item{method}{character string with the name of the method to sample the
 data. The available methods are: \emph{basic} and \emph{bootstrap}, see Methods below.}
 
-\item{topic}{character string that indicates the machanism to which the data
+\item{topic}{character string that indicates the mechanism to which the data
 belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the

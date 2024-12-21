@@ -22,7 +22,7 @@ cat_add_data(
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
 or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
 
-\item{topic}{character string that indicates the machanism to which the data
+\item{topic}{character string that indicates the mechanism to which the data
 belongs.}
 
 \item{...}{Unused arguments, included only for future extensions of the

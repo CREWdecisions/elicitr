@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/CREWdecisions/elicitr/graph/badge.svg)](https://app.codecov.io/gh/CREWdecisions/elicitr)
 <!-- badges: end -->
 
-### Description
+## Description
 
 elicitr is an R package used to standardise, visualise and aggregate data from expert elicitation.\
 The package is in active development and will implement functions based on two formal elicitation methods:
@@ -31,7 +31,7 @@ The package is in active development and will implement functions based on two f
 * Elicitation of categorical data\
   Adapted from Vernet, M. et al. (2024). Assessing invasion risks using EICAT-based expert elicitation: application to a conservation translocation. Biological Invasions, 26(8), 2707–2721. https://doi.org/10.1007/s10530-024-03341-2
 
-### Installation
+## Installation
 
 You can install the development version of elicitr from GitHub with:
 
@@ -40,146 +40,65 @@ You can install the development version of elicitr from GitHub with:
 pak::pak("CREWdecisions/elicitr")
 ```
 
-### Getting started
+## How elicitr works
 
-```{r}
+Just as one creates a form to collect estimates in an elicitation process, with elicitr one creates an object to store metadata information. This allows to check whether experts have given their answers in the expected way.\
+All the functions in the elicitr package start with two prefixes: `cont` and `cat`. This design choice is intended to enhance functions discovery. `cont` functions are used for the elicitation of continuous variables while `cat` functions for the elicitation of categorical variables.
+
+## Getting started
+
+```{r setup}
 library(elicitr)
 ```
 
-All the functions in the elicitr package start with two prefixes: `cont` and `cat`. This design choice is intended to enhance functions discovery.\
-`cont` functions are used for the elicitation of continuous variables while `cat` functions for the elicitation of categorical variables.
+Create the metadata object and load the data for continuous variables:
 
-#### How elicitr works
+```{r load-data}
+my_elicitation <- cont_start(var_names = c("var1", "var2", "var3"),
+                             var_types = "ZNp",
+                             elic_types = "134",
+                             experts = 6) |>
+  cont_add_data(data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_2, round = 2)
+my_elicitation
+```
 
-Just like you create a form to collect estimates in an elicitation process, the core of elicitr is the creation of an object to store the metadata information. This allows to check whether experts have given their answers in the expected way.\
-Any analysis starts by creating this object with the `start` function. Then, data can be added and retrieved using the `add_data` and `get_data` functions respectively. Finally data can be plotted using the `plot` function. Details about the implementation and example usages of these functions based on the simulated datasets included in elicitr can be seen bellow.\
-In total, there are five simulated datasets provided in the package. They are intended to demonstrate the functionality of the package and do not represent an actual elicitation process (names are also randomly generated).
+Plot raw data for variable 2 in round 1:
 
-### Elicitation of continuous variables
+```{r plot-raw-data}
+plot(my_elicitation, round = 1, var = "var2")
+```
 
-#### Simulated datasets
-
-Two datasets that simulate the elicitation of continuous variables are included in elicitr:
+Data can be sampled from the elicitation object:
 
 ```{r}
-round_1
+samp <- cont_sample_data(my_elicitation, round = 2)
+samp
 ```
 
-```{r}
-round_2
+And the sample summarised:
+
+```{r sample-summary}
+summary(samp)
 ```
 
-#### Functions
+And plotted as violin plots:
 
-Any analysis of continuous variables starts by creating the `elic_cont` object with the function `cont_start()` to store the metadata of the elicitation. To build this `elic_cont` object, four parameters must be specified: 
-
-* `var` the number of variables (i.e. the number of topics in your elicitation)
-* `var_types` the type of variables for each of these variables (many options are available, ranging from real numbers to probabilities)
-* `elic_types` the type of elicitation for each of these variables (three options are available: one, three, and four points elicitations)
-* `experts` the number of experts that replied to the elicitation
-
-```{r}
-my_elicitation_cont <- cont_start(var = c("var1", "var2", "var3"),
-                                  var_types = "ZNp",
-                                  elic_types = "134",
-                                  experts = 6,
-                                  title = "Continuous elicitation example")
+```{r sample-plot-violin}
+#| fig.alt: >
+#|  Violin plot of the sampled data for variable 2.
+plot(samp, var = "var2", type = "violin")
 ```
 
-```{r}
-my_elicitation_cont
+Or plotted as density plots:
+
+```{r sample-plot-density}
+#| fig.alt: >
+#|  Density plot of the sampled data for variable 3.
+plot(samp, var = "var3", type = "density")
 ```
 
-Once the metadata has been added to the `elic_cont` object, the data of the first round of elicitation can be added with the function `cont_add_data()`:
-
-```{r}
-my_elicitation_cont <- cont_add_data(my_elicitation_cont,
-                                     data_source = round_1,
-                                     round = 1)
-```
-
-The information message confirms that the data for the first round has been added to the `elic_cont` object from a `data.frame`. Besides `data frames`, elicitr also allows users to add data from `.csv` or `.xlsx` files, and from Google Sheets.
-
-If you conducted a second round of elicitation, it can be added to the `elic_cont` object after the first round has been added:
-
-```{r}
-my_elicitation_cont <- cont_add_data(my_elicitation_cont,
-                                     data_source = round_2,
-                                     round = 2)
-```
-
-To keep the anonymity of experts, their names are converted to short sha1 hashes and saved in the `id` column. These are then used to match the expert’s answers in the two rounds.
-
-The function `cont_get_data()` retrieves data from an `elic_cont` object. It is possible to get the whole dataset of a given round, or extract only the data for a given variable, variable type, or elicitation type:
-
-```{r}
-cont_get_data(my_elicitation_cont,
-              round = 1,
-              var = "all")
-```
-
-Finally, data can be plotted using the function `plot()`. This function plots data belonging to a given round and for a given variable.
-
-```{r cont_plot}
-plot(my_elicitation_cont,
-     round = 2,
-     group = TRUE,
-     var = "var3",
-     xlab = "Variable 3")
-```
-
-Variable 3 (the plotted variable) is the result of a four points elicitation, where minimum and maximum estimates, best guess, and expert confidence is provided. In the plot, the best guess is represented with a dot, and the range between minimum and maximum estimates is represented with a line. Expert estimates are represented in purple, while the group's mean is represented in orange.
-
-The message printed when the function is ran informs users that the minimum and maximum value given by experts have been rescaled using their provided confidence level.
-
-### Elicitation of categorical variables
-
-#### Simulated datasets
-
-Three datasets that simulate the elicitation of categorical variables are included in elicitr:
-
-```{r}
-topic_1
-```
-
-```{r}
-topic_2
-```
-
-```{r}
-topic_3
-```
-
-#### Functions
-
-Just like continuous variables, any analysis of categorical variables starts by creating the `elic_cat` object with the function `cat_start()` to store the metadata of the elicitation. To build this `elic_cat` object, four parameters must be specified: 
-
-* `categories` the names of the categories you used in your elicitation
-* `options` the names of all options investigated
-* `experts` the maximum number of experts participating in the elicitation process for one topic
-* `topics` the names of the topics investigated
-
-```{r}
-my_elicitation_cat <- cat_start(categories = c("category_1", "category_2", "category_3", "category_4", "category_5"),
-                                options = c("option_1", "option_2", "option_3", "option_4"),
-                                experts = 6,
-                                topics = c("topic_1","topic_2", "topic_3"),
-                                title = "Categorical elicitation example")
-```
-
-```{r}
-my_elicitation_cat
-```
-
-#### Functions under development
-
-* `cat_add_data()`
-* `cat_get_data()`
-* `elic_cat_plot_data`
-
-
-
-### Similar packages
+## Similar packages
 
 * {shelf} : Oakley, J. (2024). Package “SHELF” Tools to Support the Sheffield Elicitation Framework. https://doi.org/10.32614/CRAN.package.SHELF
 * {prefR} : Lepird, J. (2022). Package “prefeR” R Package for Pairwise Preference Elicitation. https://doi.org/10.32614/CRAN.package.prefeR
