@@ -51,35 +51,56 @@ All the functions in the elicitr package start with two prefixes: `cont` and `ca
 library(elicitr)
 ```
 
-Create the metadata object and load the data for continuous variables:
+### Elicitation of continuous variables
+
+Create the metadata object that will be able to hold the continuous data based on the elicitation design:
 
 ```{r load-data}
-my_elicitation <- cont_start(var_names = c("var1", "var2", "var3"),
-                             var_types = "ZNp",
-                             elic_types = "134",
-                             experts = 6) |>
-  cont_add_data(data_source = round_1, round = 1) |>
-  cont_add_data(data_source = round_2, round = 2)
-my_elicitation
+my_elic_cont <- cont_start(var_names = c("var1", "var2", "var3"),
+                           var_types = "ZNp",
+                           elic_types = "134",
+                           experts = 6)
+
+my_elic_cont
+```
+
+Load the continuous data into the metadata object
+(round_1 and round_2 data are provided as example datasets in the package):
+
+```{r add data to the metadata object}
+my_elic_cont <- cont_add_data(my_elic_cont,
+                              data_source = round_1,
+                              round = 1)
+my_elic_cont <- cont_add_data(my_elic_cont,
+                              data_source = round_2,
+                              round = 2)
+my_elic_cont
+```
+
+View the data stored in the elicitation object:
+
+```{r get data from elicitation object}
+cont_get_data(my_elic_cont, round = 1)
 ```
 
 Plot raw data for variable 2 in round 1:
 
 ```{r plot-raw-data}
-plot(my_elicitation, round = 1, var = "var2")
+plot(my_elic_cont,, round = 1, var = "var2")
 ```
 
 Data can be sampled from the elicitation object:
 
 ```{r}
-samp <- cont_sample_data(my_elicitation, round = 2)
-samp
+samp_cont <- cont_sample_data(my_elic_cont,, round = 2)
+
+samp_cont
 ```
 
 And the sample summarised:
 
 ```{r sample-summary}
-summary(samp)
+summary(samp_cont)
 ```
 
 And plotted as violin plots:
@@ -87,7 +108,7 @@ And plotted as violin plots:
 ```{r sample-plot-violin}
 #| fig.alt: >
 #|  Violin plot of the sampled data for variable 2.
-plot(samp, var = "var2", type = "violin")
+plot(samp_cont, var = "var2", type = "violin")
 ```
 
 Or plotted as density plots:
@@ -95,7 +116,87 @@ Or plotted as density plots:
 ```{r sample-plot-density}
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3.
-plot(samp, var = "var3", type = "density")
+plot(samp_cont, var = "var3", type = "density")
+```
+
+### Elicitation of categorical variables
+
+Create the metadata object that will be able to hold the categorical data based on the elicitation design:
+Categories correspond to impact levels and options to islands in Vernet, M. et al. (2024).
+
+```{r load-cat-data}
+my_elic_cat <- cat_start(topics = c("Mechanism1",
+                                    "Mechanism2",
+                                    "Mechanism3"),
+                         categories = c("category_1",
+                                        "category_2",
+                                        "category_3",
+                                        "category_4",
+                                        "category_5"),
+                         options = c("option_1",
+                                     "option_2",
+                                     "option_3",
+                                     "option_4"),
+                         experts = 6)
+
+my_elic_cat
+```
+
+Load the categorical data into the metadata object
+(topic_1, topic_2 and topic_3 data are provided as example datasets in the package):
+
+```{r add data to categirical metadata object}
+my_elic_cat <- cat_add_data(my_elic_cat,
+                            data_source = topic_1,
+                            topic = "Mechanism1")
+
+my_elic_cat <- cat_add_data(my_elic_cat,
+                            data_source = topic_2,
+                            topic = "Mechanism2")
+
+my_elic_cat <- cat_add_data(my_elic_cat,
+                            data_source = topic_3,
+                            topic = "Mechanism3")
+
+my_elic_cat
+```
+
+View the data stored in the elicitation object:
+
+```{r get data from categorical data}
+cat_get_data(my_elic_cat,
+             topic = "Mechanism1")
+```
+
+Data can be sampled from the elicitation object using the basic or bootstrap method:
+
+```{r sample data from categorical data}
+samp_cat <- cat_sample_data(my_elic_cat,
+                            topic = "Mechanism1",
+                            method = "basic")
+samp_cat
+
+samp_cat <- cat_sample_data(my_elic_cat,
+                            topic = "Mechanism3",
+                            method = "bootstrap")
+samp_cat
+```
+
+And the sample summarised:
+
+```{r sample-summary from categorical data}
+summary(samp_cat, option = "option_2")
+```
+
+And plotted as violin plots:
+
+```{r plot sampled data from categorical data - violin}
+#| fig.alt: >
+#|  Density plot of the sampled data for variable 3.
+plot(samp_cat,
+     topic = "Mechanism1",
+     title = "Sampled data for Mechanism1",
+     ylab = "Probability")
 ```
 
 ## Similar packages
