@@ -141,7 +141,7 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for one expert and option
+  # When estimates don't sum to 1 or 100 for one expert and option
   y <- topic_1
   y[1, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
@@ -149,13 +149,50 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for more experts and options
+  # When estimates don't sum to 1 or 100 for more experts and options
   y[19, 5] <- 0.99
   y[120, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
+})
+
+test_that("Accepts all estimates summing to 100", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  # All estimates sum to 100
+  y <- topic_1
+  y[, 5] <- y[, 5]*100 # Convert to percentages
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  #expect_identical(out[["data"]][["topic_1"]][, -1], topic_1[, -1]) <<<- to add
+  # once we implement the normalising proportions to 1
+})
+
+test_that("Accepts some estimates summing to 1 and some to 100", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  # Some estimates sum to 1, some to 100
+  y <- topic_1
+  exp1 <- y[[1,1]]
+  opt1 <- y[[1,3]]
+  idx <- which(y[,1] == exp1 & y[,3] == opt1)
+  y[idx, 5] <- y[idx, 5]*100 # Convert to percentages
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  #expect_identical(out[["data"]][["topic_1"]][, -1], topic_1[, -1]) <<<- to add
+  # once we implement the normalising proportions to 1
 })
 
 test_that("Info", {

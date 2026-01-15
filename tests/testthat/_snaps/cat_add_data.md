@@ -183,7 +183,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one expert and one option don't sum to 1.
+      x Estimates of one expert and one option don't sum to 1 or 100.
       * Check id "5ac97e0" for option "option_1": sum 1.91
 
 ---
@@ -193,10 +193,24 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one/some experts for one/some options don't sum to 1.
+      x Estimates of one/some experts for one/some options don't sum to 1 or 100.
       * Check id "5ac97e0" for option "option_1": sum 1.91
       * Check id "5ac97e0" for option "option_4": sum 1.94
       * Check id "3d32ab9" for option "option_4": sum 1.97
+
+# Accepts all estimates summing to 100
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      v Data added to Topic "topic_1" from "data.frame"
+
+# Accepts some estimates summing to 1 and some to 100
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      v Data added to Topic "topic_1" from "data.frame"
 
 # Info
 
