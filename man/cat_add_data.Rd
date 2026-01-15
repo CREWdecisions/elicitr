@@ -70,7 +70,8 @@ estimates for each block of categories and for each option. Therefore, expert
 confidence estimates should be repeated as many times as the number of
 categories of impact considered.
 \item The final column should be the estimates of each expert for each option and
-category.
+category. These estimates should sum up to 1 (or 100) for each expert and
+option.
 }
 
 The name of the columns is not important, \code{cat_add_data()} will overwrite

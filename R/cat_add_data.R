@@ -29,7 +29,8 @@
 #' confidence estimates should be repeated as many times as the number of
 #' categories of impact considered.
 #' * The final column should be the estimates of each expert for each option and
-#' category.
+#' category. These estimates should sum up to 1 (or 100) for each expert and
+#' option.
 #'
 #' The name of the columns is not important, `cat_add_data()` will overwrite
 #' them according to the following convention:
@@ -380,22 +381,27 @@ check_sum_1 <- function(x) {
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
-    dplyr::summarise(sum = sum(.data[["estimate"]]))
+    dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
   sums_vector <- sums |>
     dplyr::pull("sum")
+  tol <- 1.5e-8
+  #in case estimates were given in proportions
+  bad_1 <- sums_vector > 1 + tol | sums_vector < 1 - tol
+  #in case estimates were given in percents
+  bad_100 <- sums_vector > 100 + tol | sums_vector < 100 - tol
 
-  total <- sum(sums_vector > 1 + 1.5e-8 | sums_vector < 1 - 1.5e-8)
+  total <- sum(bad_1 & bad_100)
 
   if (total > 0) {
 
-    idx <- which(sums_vector != 1)
+    idx <- which(bad_1 & bad_100)
     wrong_data <- sums[idx, ]
 
     if (total == 1) {
-      error <- "Estimates of one expert and one option don't sum to 1."
+      error <- "Estimates of one expert and one option don't sum to 1 or 100."
     } else {
       error <- "Estimates of one/some experts for one/some options don't sum \\
-                to 1."
+                to 1 or 100."
     }
 
     msg <- paste0("{cli::symbol$bullet} Check {.field id} {.val ",
