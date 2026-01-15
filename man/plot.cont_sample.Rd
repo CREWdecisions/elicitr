@@ -45,7 +45,24 @@ function.}
 
 \item{family}{character string with the font family to be used in the plot.}
 
-\item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.}
+\item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.
+
+#' @section scale_conf:
+
+If the variable plotted is the result of a four points elicitation where
+expert confidence is provided, the minimum and maximum values provided by
+each expert are rescaled using their provided confidence categories. Users
+can choose how they want to rescale minimum and maximum values by providing a
+value for the \code{scale_conf} argument. If no argument is provided, a default
+value of 100 is used for scale_conf.
+
+The scaled minimum and maximum values are obtained with:
+
+\eqn{minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
+{confidence}}
+
+\eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
+{confidence}}}
 }
 \value{
 Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.

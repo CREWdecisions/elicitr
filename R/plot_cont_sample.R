@@ -20,6 +20,24 @@
 #' @param family character string with the font family to be used in the plot.
 #' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
 #'
+#' #' @section scale_conf:
+#'
+#' If the variable plotted is the result of a four points elicitation where
+#' expert confidence is provided, the minimum and maximum values provided by
+#' each expert are rescaled using their provided confidence categories. Users
+#' can choose how they want to rescale minimum and maximum values by providing a
+#' value for the `scale_conf` argument. If no argument is provided, a default
+#' value of 100 is used for scale_conf.
+#'
+#' The scaled minimum and maximum values are obtained with:
+#'
+#' \eqn{minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
+#' {confidence}}
+#'
+#' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
+#' {confidence}}
+#'
+#'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
 #' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
