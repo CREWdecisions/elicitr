@@ -86,13 +86,28 @@ cont_get_data(my_elic_cont, round = 1)
 Plot raw data for variable 2 in round 1:
 
 ```{r plot-raw-data}
-plot(my_elic_cont,, round = 1, var = "var2")
+plot(my_elic_cont, round = 1, var = "var2")
+```
+
+When the elicitation process is part of a workshop and is used for demonstration, it can be useful to show a truth argumenton the plot. This argument can be added as a list of estimates.
+
+```{r plot-truth}
+plot(my_elic_cont, round = 1, var = "var2",
+     truth = list(min = 10, max = 20, best = 15))
+```
+
+Estimates can also be plotted grouped across experts:
+
+```{r plot-group}
+plot(my_elic_cont, round = 1, var = "var2",
+     truth = list(min = 10, max = 20, best = 15),
+     group = TRUE)
 ```
 
 Data can be sampled from the elicitation object:
 
 ```{r}
-samp_cont <- cont_sample_data(my_elic_cont,, round = 2)
+samp_cont <- cont_sample_data(my_elic_cont, round = 2)
 
 samp_cont
 ```
@@ -117,6 +132,15 @@ Or plotted as density plots:
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3.
 plot(samp_cont, var = "var3", type = "density")
+```
+
+And can be grouped across experts:
+
+```{r sample-plot-density-group}
+#| fig.alt: >
+#|  Density plot of the sampled data for variable 3, grouped by experts.
+plot(samp_cont, var = "var3", type = "density",
+     group = TRUE)
 ```
 
 ### Elicitation of categorical variables
