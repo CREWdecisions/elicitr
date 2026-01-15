@@ -170,12 +170,12 @@ plot.elic_cont <- function(x,
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
-      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = .data[["id"]],
+      ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
                                                      xmin = .data[["min"]],
                                                      xmax = .data[["max"]],
                                                      colour = .data[["col"]]),
                               position = "identity",
-                              height = 0,
+                              width = 0,
                               linewidth = line_width)
   }
 

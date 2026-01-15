@@ -31,9 +31,9 @@ test_that("Output", {
   # Violin plot without group
   p <- plot(samp, var = "var1", type = "violin")
   ld1 <- ggplot2::layer_data(p, i = 1L)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
@@ -45,7 +45,7 @@ test_that("Output", {
   # Density plot without group
   p <- plot(samp, var = "var1", type = "density")
   ld1 <- ggplot2::layer_data(p, i = 1L)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomLine")
   expect_identical(ncol(p[["data"]]), 3L)
@@ -58,9 +58,9 @@ test_that("Output", {
   # Violin plot with group
   p <- plot(samp, var = "var1", type = "violin", group = TRUE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
   expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
@@ -72,7 +72,7 @@ test_that("Output", {
   # Density plot with group
   p <- plot(samp, var = "var1", type = "density", group = TRUE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomLine")
   expect_identical(ncol(p[["data"]]), 3L)

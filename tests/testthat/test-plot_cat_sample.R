@@ -18,9 +18,9 @@ test_that("Output", {
 
   # When option is not specified
   p <- plot(samp)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 4L)
   expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
@@ -30,9 +30,9 @@ test_that("Output", {
 
   # When option is specified
   p <- plot(samp, option = c("option_3", "option_2"))
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 4L)
   expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))

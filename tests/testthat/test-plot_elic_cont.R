@@ -58,7 +58,7 @@ test_that("Output", {
   # 1p----
   # Plot for a variable with 1 point elicitation
   p <- plot(obj, round = 2, var = "var1", verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
@@ -72,7 +72,7 @@ test_that("Output", {
 
   # Plot for a variable with 1 point elicitation and group
   p <- plot(obj, round = 2, var = "var1", group = TRUE, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
@@ -88,7 +88,7 @@ test_that("Output", {
   # Plot for a variable with 1 point elicitation and truth
   p <- plot(obj, round = 2, var = "var1", truth = list(best = 0.8),
             verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
@@ -102,7 +102,7 @@ test_that("Output", {
   # Plot for a variable with 1 point elicitation, group and truth
   p <- plot(obj, round = 2, var = "var1", group = TRUE,
             truth = list(best = 0.8), verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
@@ -119,10 +119,10 @@ test_that("Output", {
   # 3p----
   # Plot for a variable with 3 points elicitation
   p <- plot(obj, round = 2, var = "var2", verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 5L)
   expect_identical(colnames(p[["data"]]), c("id", "min", "max", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), "experts")
@@ -135,10 +135,10 @@ test_that("Output", {
 
   # Plot for a variable with 3 points elicitation and group
   p <- plot(obj, round = 2, var = "var2", group = TRUE, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 5L)
   expect_identical(colnames(p[["data"]]), c("id", "min", "max", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), c("experts", "group"))
@@ -156,10 +156,10 @@ test_that("Output", {
   # Plot for a variable with 3 points elicitation and truth
   truth_data <- list(min = 0.7, max = 0.9, best = 0.8)
   p <- plot(obj, round = 2, var = "var2", truth = truth_data, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 5L)
   expect_identical(colnames(p[["data"]]), c("id", "min", "max", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), c("experts", "truth"))
@@ -177,10 +177,10 @@ test_that("Output", {
   # Plot for a variable with 3 points elicitation, group and truth
   p <- plot(obj, round = 2, var = "var2", truth = truth_data,
             group = TRUE, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 5L)
   expect_identical(colnames(p[["data"]]), c("id", "min", "max", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), c("experts", "group", "truth"))
@@ -201,10 +201,10 @@ test_that("Output", {
   # 4p----
   # Plot for a variable with 4 points elicitation
   p <- plot(obj, round = 2, var = "var3", scale_conf = 90, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 6L)
   expect_identical(colnames(p[["data"]]),
                    c("id", "min", "max", "best", "conf", "col"))
@@ -223,10 +223,10 @@ test_that("Output", {
   # Plot for a variable with 4 points elicitation and group
   p <- plot(obj, round = 2, var = "var3", scale_conf = 90,
             group = TRUE, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 6L)
   expect_identical(colnames(p[["data"]]),
                    c("id", "min", "max", "best", "conf", "col"))
@@ -247,10 +247,10 @@ test_that("Output", {
   truth_data_rescaled <- rescale_data(truth_data, s = 90)
   p <- plot(obj, round = 2, var = "var3", scale_conf = 90,
             truth = truth_data, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 6L)
   expect_identical(colnames(p[["data"]]),
                    c("id", "min", "max", "best", "conf", "col"))
@@ -270,10 +270,10 @@ test_that("Output", {
   p <- plot(obj, round = 2, var = "var3", scale_conf = 90,
             truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
             group = TRUE, verbose = FALSE)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
-  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbarh")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 6L)
   expect_identical(colnames(p[["data"]]),
                    c("id", "min", "max", "best", "conf", "col"))
