@@ -124,10 +124,9 @@ Plot raw data for variable 2 in round 1:
 
 ``` r
 plot(my_elic_cont, round = 1, var = "var2")
-#> `height` was translated to `width`.
 ```
 
-<img src="man/figures/README-plot-raw-data-1.png" width="100%" />
+<img src="man/figures/README-plot-raw-data-1.png" alt="" width="100%" />
 
 When the elicitation process is part of a workshop and is used for
 demonstration, it can be useful to show a truth argumenton the plot.
@@ -136,10 +135,9 @@ This argument can be added as a list of estimates.
 ``` r
 plot(my_elic_cont, round = 1, var = "var2",
      truth = list(min = 10, max = 20, best = 15))
-#> `height` was translated to `width`.
 ```
 
-<img src="man/figures/README-plot-truth-1.png" width="100%" />
+<img src="man/figures/README-plot-truth-1.png" alt="" width="100%" />
 
 Estimates can also be plotted grouped across experts:
 
@@ -147,10 +145,9 @@ Estimates can also be plotted grouped across experts:
 plot(my_elic_cont, round = 1, var = "var2",
      truth = list(min = 10, max = 20, best = 15),
      group = TRUE)
-#> `height` was translated to `width`.
 ```
 
-<img src="man/figures/README-plot-group-1.png" width="100%" />
+<img src="man/figures/README-plot-group-1.png" alt="" width="100%" />
 
 Data can be sampled from the elicitation object:
 
@@ -163,16 +160,16 @@ samp_cont
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1     -2
-#>  2 5ac97e0 var1     -2
-#>  3 5ac97e0 var1      0
-#>  4 5ac97e0 var1      1
+#>  1 5ac97e0 var1      1
+#>  2 5ac97e0 var1      1
+#>  3 5ac97e0 var1     -2
+#>  4 5ac97e0 var1     -2
 #>  5 5ac97e0 var1      1
-#>  6 5ac97e0 var1      0
+#>  6 5ac97e0 var1      1
 #>  7 5ac97e0 var1     -2
 #>  8 5ac97e0 var1      1
 #>  9 5ac97e0 var1      1
-#> 10 5ac97e0 var1      1
+#> 10 5ac97e0 var1     -2
 #> # ℹ 17,990 more rows
 ```
 
@@ -183,9 +180,9 @@ summary(samp_cont)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 var1  -4     -2     -2     -1.04   1      1    
-#> 2 var2  11.0   14.4   16.3   16.3   18.3   22.6  
-#> 3 var3   0.452  0.671  0.716  0.715  0.762  0.872
+#> 1 var1  -4     -2      0     -0.972  1      1    
+#> 2 var2  11.0   14.5   16.2   16.3   18.4   22.7  
+#> 3 var3   0.484  0.671  0.716  0.715  0.761  0.874
 ```
 
 And plotted as violin plots:
@@ -254,16 +251,19 @@ topic_3 data are provided as example datasets in the package):
 my_elic_cat <- cat_add_data(my_elic_cat,
                             data_source = topic_1,
                             topic = "Mechanism1")
+#> ℹ Estimates sum to 1. Rescaling to 100.
 #> ✔ Data added to Topic "Mechanism1" from "data.frame"
 
 my_elic_cat <- cat_add_data(my_elic_cat,
                             data_source = topic_2,
                             topic = "Mechanism2")
+#> ℹ Estimates sum to 1. Rescaling to 100.
 #> ✔ Data added to Topic "Mechanism2" from "data.frame"
 
 my_elic_cat <- cat_add_data(my_elic_cat,
                             data_source = topic_3,
                             topic = "Mechanism3")
+#> ℹ Estimates sum to 1. Rescaling to 100.
 #> ✔ Data added to Topic "Mechanism3" from "data.frame"
 
 my_elic_cat
@@ -286,16 +286,16 @@ cat_get_data(my_elic_cat,
 #> # A tibble: 120 × 5
 #>    id      category   option   confidence estimate
 #>    <chr>   <chr>      <chr>         <dbl>    <dbl>
-#>  1 5ac97e0 category_1 option_1         15     0.08
-#>  2 5ac97e0 category_2 option_1         15     0   
-#>  3 5ac97e0 category_3 option_1         15     0.85
-#>  4 5ac97e0 category_4 option_1         15     0.02
-#>  5 5ac97e0 category_5 option_1         15     0.05
-#>  6 5ac97e0 category_1 option_2         35     0.02
-#>  7 5ac97e0 category_2 option_2         35     0.11
-#>  8 5ac97e0 category_3 option_2         35     0.18
-#>  9 5ac97e0 category_4 option_2         35     0.02
-#> 10 5ac97e0 category_5 option_2         35     0.67
+#>  1 5ac97e0 category_1 option_1         15        8
+#>  2 5ac97e0 category_2 option_1         15        0
+#>  3 5ac97e0 category_3 option_1         15       85
+#>  4 5ac97e0 category_4 option_1         15        2
+#>  5 5ac97e0 category_5 option_1         15        5
+#>  6 5ac97e0 category_1 option_2         35        2
+#>  7 5ac97e0 category_2 option_2         35       11
+#>  8 5ac97e0 category_3 option_2         35       18
+#>  9 5ac97e0 category_4 option_2         35        2
+#> 10 5ac97e0 category_5 option_2         35       67
 #> # ℹ 110 more rows
 ```
 
@@ -311,16 +311,16 @@ samp_cat
 #> # A tibble: 2,400 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1   1.34e-12          0     1.000    1.32e-18   1.54e-12
-#>  2 5ac97e0 option_1   3.88e- 1          0     0.612    1.89e- 9   2.98e- 9
-#>  3 5ac97e0 option_1   3.53e- 8          0     1.000    1.41e-43   2.56e-18
-#>  4 5ac97e0 option_1   5.66e- 4          0     0.999    5.26e-11   7.76e-13
-#>  5 5ac97e0 option_1   7.82e-27          0     1.000    1.51e-32   1.62e- 5
-#>  6 5ac97e0 option_1   1.13e- 3          0     0.999    1.89e-16   3.19e- 4
-#>  7 5ac97e0 option_1   1.24e- 3          0     0.999    1.43e-12   3.33e- 8
-#>  8 5ac97e0 option_1   9.42e- 1          0     0.0311   2.69e- 2   3.15e- 4
-#>  9 5ac97e0 option_1   3.77e- 2          0     0.962    5.16e- 4   6.58e- 9
-#> 10 5ac97e0 option_1   1.77e-15          0     0.999    9.17e- 5   5.47e- 4
+#>  1 5ac97e0 option_1     0.0879          0      0.826   0.0247       0.0612
+#>  2 5ac97e0 option_1     0.0452          0      0.917   0.0163       0.0219
+#>  3 5ac97e0 option_1     0.0705          0      0.910   0.000390     0.0190
+#>  4 5ac97e0 option_1     0.0385          0      0.942   0.00231      0.0172
+#>  5 5ac97e0 option_1     0.0604          0      0.859   0.0190       0.0618
+#>  6 5ac97e0 option_1     0.109           0      0.840   0.0116       0.0396
+#>  7 5ac97e0 option_1     0.0645          0      0.817   0.0516       0.0665
+#>  8 5ac97e0 option_1     0.0448          0      0.887   0.0123       0.0559
+#>  9 5ac97e0 option_1     0.119           0      0.756   0.0750       0.0502
+#> 10 5ac97e0 option_1     0.0896          0      0.849   0.0317       0.0294
 #> # ℹ 2,390 more rows
 
 samp_cat <- cat_sample_data(my_elic_cat,
@@ -331,16 +331,16 @@ samp_cat
 #> # A tibble: 1,800 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1   1.50e-16   2.11e-94  2.89e- 26      1.000   2.71e- 6
-#>  2 5ac97e0 option_1   4.28e- 9   4.41e-64  5.51e- 20      1.000   6.55e- 5
-#>  3 5ac97e0 option_1   2.77e- 9   5.40e- 4  4.16e- 70      0.999   1.18e-11
-#>  4 5ac97e0 option_1   4.72e-47   5.34e-26  3.95e-114      0.368   6.32e- 1
-#>  5 5ac97e0 option_1   2.35e- 7   3.36e- 3  4.58e- 88      0.995   1.92e- 3
-#>  6 5ac97e0 option_1   3.57e-81   2.76e-30  9.17e- 64      0.584   4.16e- 1
-#>  7 5ac97e0 option_1   5.58e- 6   2.02e- 3  5.46e- 17      0.750   2.48e- 1
-#>  8 5ac97e0 option_1   1.52e- 1   3.89e-43  2.66e- 78      0.831   1.65e- 2
-#>  9 5ac97e0 option_1   7.79e- 5   1.08e- 2  1.24e- 64      0.989   3.40e-17
-#> 10 5ac97e0 option_1   4.58e-29   1.33e-30  2.30e-  4      1.000   5.88e-25
+#>  1 5ac97e0 option_1    0.0332     0.00647   0.0426        0.801     0.117 
+#>  2 5ac97e0 option_1    0.0300     0.00762   0.00216       0.883     0.0774
+#>  3 5ac97e0 option_1    0.0209     0.00303   0.0176        0.915     0.0439
+#>  4 5ac97e0 option_1    0.0137     0.0239    0.0142        0.875     0.0732
+#>  5 5ac97e0 option_1    0.0293     0.0172    0.00436       0.822     0.127 
+#>  6 5ac97e0 option_1    0.00812    0.00286   0.00411       0.933     0.0522
+#>  7 5ac97e0 option_1    0.0176     0.0143    0.0118        0.847     0.109 
+#>  8 5ac97e0 option_1    0.00447    0.0115    0.00817       0.909     0.0668
+#>  9 5ac97e0 option_1    0.0268     0.0517    0.000157      0.799     0.122 
+#> 10 5ac97e0 option_1    0.0233     0.0477    0.0104        0.874     0.0447
 #> # ℹ 1,790 more rows
 ```
 
@@ -349,13 +349,13 @@ And the sample summarised:
 ``` r
 summary(samp_cat, option = "option_2")
 #> # A tibble: 5 × 7
-#>   Category        Min       Q1     Median   Mean     Q3   Max
-#>   <chr>         <dbl>    <dbl>      <dbl>  <dbl>  <dbl> <dbl>
-#> 1 category_1 0        1.88e-13 0.0139     0.211  0.277  1.000
-#> 2 category_2 1.96e-24 5.72e- 4 0.0256     0.200  0.324  0.996
-#> 3 category_3 4.56e-33 2.08e- 4 0.0163     0.148  0.163  0.994
-#> 4 category_4 0        0        0.00000324 0.0876 0.0169 0.992
-#> 5 category_5 1.43e-15 2.26e- 2 0.199      0.353  0.682  1.000
+#>   Category         Min     Q1 Median   Mean    Q3   Max
+#>   <chr>          <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
+#> 1 category_1 0.0000133 0.0130 0.161  0.208  0.391 0.598
+#> 2 category_2 0.0341    0.146  0.194  0.190  0.234 0.408
+#> 3 category_3 0.0375    0.133  0.171  0.173  0.209 0.345
+#> 4 category_4 0         0      0.0796 0.0865 0.159 0.311
+#> 5 category_5 0.129     0.245  0.325  0.343  0.424 0.668
 ```
 
 And plotted as violin plots:
