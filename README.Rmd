@@ -195,15 +195,15 @@ cat_get_data(my_elic_cat,
 Data can be sampled from the elicitation object using the basic or bootstrap method:
 
 ```{r sample data from categorical data}
-samp_cat <- cat_sample_data(my_elic_cat,
+samp_cat_basic <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism1",
                             method = "basic")
-samp_cat
+samp_cat_basic
 
-samp_cat <- cat_sample_data(my_elic_cat,
+samp_cat_bootstrap <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism3",
                             method = "bootstrap")
-samp_cat
+samp_cat_bootstrap
 ```
 
 And the sample summarised:
@@ -218,9 +218,7 @@ And plotted as violin plots:
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3.
 plot(samp_cat,
-     topic = "Mechanism1",
-     title = "Sampled data for Mechanism1",
-     ylab = "Probability")
+     title = "Sampled data for Mechanism1")
 ```
 
 ## Similar packages
