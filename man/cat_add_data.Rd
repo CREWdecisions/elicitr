@@ -174,6 +174,7 @@ my_elicit
 # Add data for the first and second round from Google Sheets
 googlesheets4::gs4_deauth()
 gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
+
 # Using the sheet index
 my_elicit <- cat_add_data(x,
                           data_source = gs,
@@ -186,7 +187,9 @@ my_elicit <- cat_add_data(x,
                sheet = 3,
                topic = "topic_3")
 my_elicit
-# Using the sheet name
+
+# (You can also do this using the sheet name)
+\dontrun{
 my_elicit <- cat_add_data(x, data_source = gs,
                           sheet = "Topic 1",
                           topic = "topic_1") |>
@@ -197,6 +200,7 @@ my_elicit <- cat_add_data(x, data_source = gs,
                sheet = "Topic 3",
                topic = "topic_3")
 my_elicit
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -137,6 +137,7 @@
 #' # Add data for the first and second round from Google Sheets
 #' googlesheets4::gs4_deauth()
 #' gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
+#'
 #' # Using the sheet index
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = gs,
@@ -149,7 +150,9 @@
 #'                sheet = 3,
 #'                topic = "topic_3")
 #' my_elicit
-#' # Using the sheet name
+#'
+#' # (You can also do this using the sheet name)
+#' \dontrun{
 #' my_elicit <- cat_add_data(x, data_source = gs,
 #'                           sheet = "Topic 1",
 #'                           topic = "topic_1") |>
@@ -160,6 +163,7 @@
 #'                sheet = "Topic 3",
 #'                topic = "topic_3")
 #' my_elicit
+#' }
 cat_add_data <- function(x,
                          data_source,
                          topic,
@@ -225,7 +229,7 @@ cat_add_data <- function(x,
 
   # Check if estimates for each expert and option sum to 1. This is done after
   # anonymising the names to avoid exposing the names in the error message.
-  check_sum_1(data)
+  data <- check_sum_1(data)
 
   x[["data"]][[topic]] <- data
 
@@ -366,14 +370,15 @@ check_column_format <- function(x, col) {
 
 #' Check estimates
 #'
-#' Check if estimates for each expert and option sum to 1.
+#' Check if estimates for each expert and option sum to 1 or 100 and normalise
+#' to 100.
 #'
 #' @param x data.frame with the data to be checked.
 #'
 #' @return An error if estimates for each expert and option don't sum to 1.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali, Maude Vernet
 check_sum_1 <- function(x) {
 
   sums <- x |>
@@ -383,14 +388,15 @@ check_sum_1 <- function(x) {
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
     dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
   sums_vector <- sums |>
-    dplyr::pull("sum")
+    dplyr::pull("sum") #sum is the sum of the estimates for each expert & option
+
   tol <- 1.5e-8
   #in case estimates were given in proportions
   bad_1 <- sums_vector > 1 + tol | sums_vector < 1 - tol
   #in case estimates were given in percents
   bad_100 <- sums_vector > 100 + tol | sums_vector < 100 - tol
 
-  total <- sum(bad_1 & bad_100)
+  total <- sum(bad_1 & bad_100) #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
@@ -414,5 +420,43 @@ check_sum_1 <- function(x) {
                      "x" = error,
                      msg),
                    call = rlang::caller_env())
+  } else {
+
+    #in case estimates were given in proportions
+    good_1 <- abs(sums_vector - 1) < tol
+    has_1 <- any(good_1)
+
+    #in case estimates were given in percents
+    has_100 <- any(abs(sums_vector - 100) < tol)
+
+    if (has_1) {
+
+      if (has_100) {
+        cli::cli_inform(c("i" = "Estimates sum to 100 for some \\
+                          experts/options, and to 1 for others. \\
+                          Rescaling the 1-sums to 100."))
+      } else {
+        cli::cli_inform(c("i" = "Estimates sum to 1. Rescaling to 100."))
+      }
+
+      # Rescaling to 100
+      sums_flag <- sums |>
+        # add a column to sums which flags the ones equal to 1
+        dplyr::mutate("flag" = good_1) |>
+        # Keep only the columns id, option and flag from sums (drop sum column)
+        dplyr::select(.data[["id"]], .data[["option"]], .data[["flag"]])
+
+      x <- x |>
+        # Join the flags to the original data
+        dplyr::left_join(sums_flag, by = c("id", "option")) |>
+        # Rescale only the flagged rows (if flag is true -> *100)
+        dplyr::mutate("estimate" = dplyr::if_else(.data[["flag"]],
+                                                  .data[["estimate"]] * 100,
+                                                  .data[["estimate"]])) |>
+        # Remove the flag column
+        dplyr::select(-.data[["flag"]])
+    }
   }
+
+  x
 }
