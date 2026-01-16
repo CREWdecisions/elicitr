@@ -209,7 +209,7 @@ samp_cat_bootstrap
 And the sample summarised:
 
 ```{r sample-summary from categorical data}
-summary(samp_cat, option = "option_2")
+summary(samp_cat_basic, option = "option_2")
 ```
 
 And plotted as violin plots:
@@ -217,7 +217,7 @@ And plotted as violin plots:
 ```{r plot sampled data from categorical data - violin}
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3.
-plot(samp_cat,
+plot(samp_cat_basic,
      title = "Sampled data for Mechanism1")
 ```
 
