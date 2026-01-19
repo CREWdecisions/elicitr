@@ -77,7 +77,7 @@ test_that("Errors", {
 
   # When one category is not on the metadata
   y <- topic_1
-  y[1, 2] <- "category_6"
+  y[1, 3] <- "category_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -85,8 +85,8 @@ test_that("Errors", {
 
   # When two categories are not on the metadata
   y <- topic_1
-  y[1, 2] <- "category_6"
-  y[2, 2] <- "category_7"
+  y[1, 3] <- "category_6"
+  y[2, 3] <- "category_7"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -94,7 +94,7 @@ test_that("Errors", {
 
   # When one option is not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "option_5"
+  y[1:5, 2] <- "option_5"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -102,8 +102,8 @@ test_that("Errors", {
 
   # When two options are not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "option_5"
-  y[6:10, 3] <- "option_6"
+  y[1:5, 2] <- "option_5"
+  y[6:10, 2] <- "option_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -119,7 +119,7 @@ test_that("Errors", {
 
   # When the column with the categories is malformed
   y <- topic_1
-  y[1:5, 2] <- "category_1"
+  y[1:5, 3] <- "category_1"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -127,7 +127,7 @@ test_that("Errors", {
 
   # When the column with the options is malformed
   y <- topic_1
-  y[1:5, 3] <- c(paste0("option_", 1:4), "option_1")
+  y[1:5, 2] <- c(paste0("option_", 1:4), "option_1")
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -188,12 +188,12 @@ test_that("Accepts some estimates summing to 1 and some to 100", {
   # Some estimates sum to 1, some to 100
   y <- topic_1
   exp1 <- y[[1,1]]
-  opt1 <- y[[1,3]]
+  opt1 <- y[[1,2]]
 
   z <- topic_1
   z[, 5] <- z[, 5]*100 # Convert to percentages
 
-  idx <- which(y[,1] == exp1 & y[,3] == opt1)
+  idx <- which(y[,1] == exp1 & y[,2] == opt1)
   y[idx, 5] <- y[idx, 5]*100 # Convert to percentages
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = y,

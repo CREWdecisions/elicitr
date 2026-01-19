@@ -83,7 +83,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column types:
-      x The columns "category" and "option" are not of type "character" but of type "factor".
+      x The columns "option" and "category" are not of type "character" but of type "factor".
       i See Data format in `elicitr::cat_add_data()`.
 
 ---

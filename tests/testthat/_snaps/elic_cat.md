@@ -25,6 +25,9 @@
     Code
       create_cat_obj()
     Message
+      i Estimates sum to 1. Rescaling to 100.
+      i Estimates sum to 1. Rescaling to 100.
+      i Estimates sum to 1. Rescaling to 100.
       
       -- Elicitation --
       

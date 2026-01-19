@@ -7,32 +7,35 @@
 #' metadata for the data collected during the elicitation process of categorical
 #' data.
 #'
-#' @param categories character vector with the names of the categories. See
-#' Categories for more.
+#' @param topics character vector with the names of the topics.
 #' @param options character vector with the names of all options investigated.
 #' See Options for more.
+#' @param categories character vector with the names of the categories. See
+#' Categories for more.
 #' @param experts numeric, indicating the maximum number of experts
 #' participating in the elicitation process for one topic. See Experts for more.
-#' @param topics character vector with the names of the topics.
 #' @inheritParams cont_start
-#'
-#' @section Categories:
-#'
-#' Categories are inherited between topics. A minimum of two categories are
-#' needed. If only one category is investigated, please refer to the functions
-#' for the elicitation of continuous data (e.g. [cont_start]).
-#'
-#' @section Options:
-#'
-#' The option parameter is a character vector containing the names of all the
-#' options investigated in the elicitation. However, not all options have to be
-#' investigated in every topic.
 #'
 #' @section Experts:
 #'
 #' The expert parameter is a number indicating the maximum number of experts
 #' taking part in the elicitation of one of the investigated topics. The number
 #' and IDs of experts can differ between the topics.
+#'
+#' @section Options:
+#'
+#' The option parameter is a character vector containing the names of all the
+#' options investigated in the elicitation. However, not all options have to be
+#' investigated in every topic.
+#' If you do not use multiple options in your study, please still input 1 option
+#' which will apply to all topics, categories and experts
+#' (e.g., options = "none").
+#'
+#' @section Categories:
+#'
+#' Categories are inherited between topics. A minimum of two categories are
+#' needed. If only one category is investigated, please refer to the functions
+#' for the elicitation of continuous data (e.g. [cont_start]).
 #'
 #' @return An object of class [elic_cat] binding metadata related to the
 #' elicitation process. These metadata are used by other functions to validate
@@ -58,23 +61,23 @@
 #' # options, 3 categories per options, and a maximum number of 8 experts per
 #' # topic
 #' my_categories <- c("category_1", "category_2", "category_3")
-#' my_elicit <- cat_start(categories = my_categories,
+#' my_elicit <- cat_start(topics = c("topic_1","topic_2"),
 #'                        options = c("option_1", "option_2", "option_3"),
-#'                        experts = 8,
-#'                        topics = c("topic_1","topic_2"))
+#'                        categories = my_categories,
+#'                        experts = 8)
 #' my_elicit
 #'
 #' # A title can be added to bind a name to the object:
-#' my_elicit <- cat_start(categories = my_categories,
+#' my_elicit <- cat_start(topics = c("topic_1","topic_2"),
 #'                        options = c("option_1", "option_2", "option_3"),
+#'                        categories = my_categories,
 #'                        experts = 8,
-#'                        topics = c("topic_1","topic_2"),
 #'                        title = "My elicitation")
 #' my_elicit
-cat_start <- function(categories,
+cat_start <- function(topics,
                       options,
+                      categories,
                       experts,
-                      topics,
                       ...,
                       title = "Elicitation",
                       verbose = TRUE) {

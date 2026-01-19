@@ -65,7 +65,17 @@ my_elic_cont
 ```
 
 Load the continuous data into the metadata object
-(round_1 and round_2 data are provided as example datasets in the package):
+(round_1 and round_2 data are provided as example datasets in the package).
+This is how your data should look like before they are added to the metadata:
+
+```{r example-data}
+round_1
+
+round_2
+```
+
+Load the data into the metadata object:
+Data can also be imported from a GoogleSheet. See the function documentation for more details.
 
 ```{r add data to the metadata object}
 my_elic_cont <- cont_add_data(my_elic_cont,
@@ -152,22 +162,38 @@ Categories correspond to impact levels and options to islands in Vernet, M. et a
 my_elic_cat <- cat_start(topics = c("Mechanism1",
                                     "Mechanism2",
                                     "Mechanism3"),
+                         options = c("option_1",
+                                     "option_2",
+                                     "option_3",
+                                     "option_4"),
                          categories = c("category_1",
                                         "category_2",
                                         "category_3",
                                         "category_4",
                                         "category_5"),
-                         options = c("option_1",
-                                     "option_2",
-                                     "option_3",
-                                     "option_4"),
                          experts = 6)
 
 my_elic_cat
 ```
 
 Load the categorical data into the metadata object
-(topic_1, topic_2 and topic_3 data are provided as example datasets in the package):
+(topic_1, topic_2 and topic_3 data are provided as example datasets in the package): \
+Here is an example of data correctly formatted for an elicitation with two options and five categories (only one expert is shown):
+
+```
+name         option       category      confidence      estimate
+----------------------------------------------------------------
+expert 1     option 1     category 1            15          0.08
+expert 1     option 1     category 2            15          0
+expert 1     option 1     category 3            15          0.84
+expert 1     option 1     category 4            15          0.02
+expert 1     option 1     category 5            15          0.06
+expert 1     option 2     category 1            35          0.02
+expert 1     option 2     category 2            35          0.11
+expert 1     option 2     category 3            35          0.19
+expert 1     option 2     category 4            35          0.02
+expert 1     option 2     category 5            35          0.66
+```
 
 ```{r add data to categirical metadata object}
 my_elic_cat <- cat_add_data(my_elic_cat,

@@ -30,9 +30,9 @@ get_values <- function() {
 }
 
 topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_options),
-                      category = rep(categories, times = n_experts * n_options),
                       option = rep(rep(options, each = n_categories),
                                    times = n_experts),
+                      category = rep(categories, times = n_experts * n_options),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_options,
                                               replace = TRUE),
@@ -41,9 +41,9 @@ topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_options),
   tibble::as_tibble()
 
 topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_options),
-                      category = rep(categories, times = n_experts * n_options),
                       option = rep(rep(options, each = n_categories),
                                    times = n_experts),
+                      category = rep(categories, times = n_experts * n_options),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_options,
                                               replace = TRUE),
@@ -53,9 +53,9 @@ topic_2 <- data.frame(name = rep(random_names, each = n_categories * n_options),
   tibble::as_tibble()
 
 topic_3 <- data.frame(name = rep(random_names, each = n_categories * n_options),
-                      category = rep(categories, times = n_experts * n_options),
                       option = rep(rep(options, each = n_categories),
                                    times = n_experts),
+                      category = rep(categories, times = n_experts * n_options),
                       confidence = rep(sample(seq(0, 100, by = 5),
                                               size = n_experts * n_options,
                                               replace = TRUE),
