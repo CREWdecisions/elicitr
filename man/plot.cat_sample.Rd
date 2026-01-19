@@ -9,7 +9,7 @@
   ...,
   option = "all",
   title = NULL,
-  ylab = "Probabolity",
+  ylab = "Probability",
   colours = NULL,
   family = "sans",
   theme = NULL
