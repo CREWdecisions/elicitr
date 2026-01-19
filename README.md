@@ -82,7 +82,37 @@ my_elic_cont
 ```
 
 Load the continuous data into the metadata object (round_1 and round_2
-data are provided as example datasets in the package):
+data are provided as example datasets in the package). This is how your
+data should look like before they are added to the metadata:
+
+``` r
+round_1
+#> # A tibble: 6 × 9
+#>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
+#>   <chr>            <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
+#> 1 Derek Macle…         1       20       24        22     0.43     0.83      0.73
+#> 2 Christopher…         0        7       10         9     0.67     0.87      0.77
+#> 3 Mar'Quasa B…         0       10       15        12     0.65     0.95      0.85
+#> 4 Mastoora al…        -7        4       12         9     0.44     0.84      0.64
+#> 5 Eriberto Mu…        -5       13       18        16     0.38     0.88      0.68
+#> 6 Paul Bol             3       20       26        25     0.35     0.85      0.65
+#> # ℹ 1 more variable: var3_conf <int>
+
+round_2
+#> # A tibble: 6 × 9
+#>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
+#>   <chr>            <int>    <int>    <int>     <int>    <dbl>    <dbl>     <dbl>
+#> 1 Mar'Quasa B…        -2       15       21        18     0.62     0.82      0.72
+#> 2 Mastoora al…        -4       11       15        12     0.52     0.82      0.72
+#> 3 Eriberto Mu…         1       15       20        17     0.58     0.78      0.68
+#> 4 Derek Macle…         0       11       18        15     0.52     0.82      0.72
+#> 5 Christopher…        -2       14       18        15     0.55     0.85      0.75
+#> 6 Paul Bol             1       18       23        20     0.66     0.86      0.76
+#> # ℹ 1 more variable: var3_conf <int>
+```
+
+Load the data into the metadata object: Data can also be imported from a
+GoogleSheet. See the function documentation for more details.
 
 ``` r
 my_elic_cont <- cont_add_data(my_elic_cont,
@@ -160,16 +190,16 @@ samp_cont
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1      0
-#>  2 5ac97e0 var1      0
+#>  1 5ac97e0 var1      1
+#>  2 5ac97e0 var1     -2
 #>  3 5ac97e0 var1     -2
-#>  4 5ac97e0 var1      0
-#>  5 5ac97e0 var1      0
-#>  6 5ac97e0 var1      0
+#>  4 5ac97e0 var1     -2
+#>  5 5ac97e0 var1     -4
+#>  6 5ac97e0 var1     -2
 #>  7 5ac97e0 var1     -4
 #>  8 5ac97e0 var1     -2
 #>  9 5ac97e0 var1     -2
-#> 10 5ac97e0 var1     -2
+#> 10 5ac97e0 var1      1
 #> # ℹ 17,990 more rows
 ```
 
@@ -180,9 +210,9 @@ summary(samp_cont)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 var1  -4     -2     -2     -1.01   1      1    
-#> 2 var2  11.0   14.5   16.3   16.3   18.3   22.7  
-#> 3 var3   0.486  0.672  0.715  0.715  0.761  0.875
+#> 1 var1  -4     -2      0     -0.985  1      1    
+#> 2 var2  11.0   14.5   16.3   16.3   18.3   22.6  
+#> 3 var3   0.470  0.672  0.715  0.714  0.760  0.872
 ```
 
 And plotted as violin plots:
@@ -220,15 +250,15 @@ levels and options to islands in Vernet, M. et al. (2024).
 my_elic_cat <- cat_start(topics = c("Mechanism1",
                                     "Mechanism2",
                                     "Mechanism3"),
+                         options = c("option_1",
+                                     "option_2",
+                                     "option_3",
+                                     "option_4"),
                          categories = c("category_1",
                                         "category_2",
                                         "category_3",
                                         "category_4",
                                         "category_5"),
-                         options = c("option_1",
-                                     "option_2",
-                                     "option_3",
-                                     "option_4"),
                          experts = 6)
 #> ✔ <elic_cat> object for "Elicitation" correctly initialised
 
@@ -245,7 +275,22 @@ my_elic_cat
 ```
 
 Load the categorical data into the metadata object (topic_1, topic_2 and
-topic_3 data are provided as example datasets in the package):
+topic_3 data are provided as example datasets in the package):  
+Here is an example of data correctly formatted for an elicitation with
+two options and five categories (only one expert is shown):
+
+    name         option       category      confidence      estimate
+    ----------------------------------------------------------------
+    expert 1     option 1     category 1            15          0.08
+    expert 1     option 1     category 2            15          0
+    expert 1     option 1     category 3            15          0.84
+    expert 1     option 1     category 4            15          0.02
+    expert 1     option 1     category 5            15          0.06
+    expert 1     option 2     category 1            35          0.02
+    expert 1     option 2     category 2            35          0.11
+    expert 1     option 2     category 3            35          0.19
+    expert 1     option 2     category 4            35          0.02
+    expert 1     option 2     category 5            35          0.66
 
 ``` r
 my_elic_cat <- cat_add_data(my_elic_cat,
@@ -284,88 +329,88 @@ View the data stored in the elicitation object:
 cat_get_data(my_elic_cat,
              topic = "Mechanism1")
 #> # A tibble: 120 × 5
-#>    id      category   option   confidence estimate
-#>    <chr>   <chr>      <chr>         <dbl>    <dbl>
-#>  1 5ac97e0 category_1 option_1         15        8
-#>  2 5ac97e0 category_2 option_1         15        0
-#>  3 5ac97e0 category_3 option_1         15       85
-#>  4 5ac97e0 category_4 option_1         15        2
-#>  5 5ac97e0 category_5 option_1         15        5
-#>  6 5ac97e0 category_1 option_2         35        2
-#>  7 5ac97e0 category_2 option_2         35       11
-#>  8 5ac97e0 category_3 option_2         35       18
-#>  9 5ac97e0 category_4 option_2         35        2
-#> 10 5ac97e0 category_5 option_2         35       67
+#>    id      option   category   confidence estimate
+#>    <chr>   <chr>    <chr>           <dbl>    <dbl>
+#>  1 5ac97e0 option_1 category_1         15        8
+#>  2 5ac97e0 option_1 category_2         15        0
+#>  3 5ac97e0 option_1 category_3         15       85
+#>  4 5ac97e0 option_1 category_4         15        2
+#>  5 5ac97e0 option_1 category_5         15        5
+#>  6 5ac97e0 option_2 category_1         35        2
+#>  7 5ac97e0 option_2 category_2         35       11
+#>  8 5ac97e0 option_2 category_3         35       18
+#>  9 5ac97e0 option_2 category_4         35        2
+#> 10 5ac97e0 option_2 category_5         35       67
 #> # ℹ 110 more rows
 ```
 
-Data can be sampled from the elicitation object using the basic or
-bootstrap method:
+Data can be sampled from the elicitation object using the unweighted or
+weighted method:
 
 ``` r
-samp_cat_basic <- cat_sample_data(my_elic_cat,
+samp_cat_unweighted <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism1",
-                            method = "basic")
-#> ✔ Data sampled successfully using "basic" method.
-samp_cat_basic
+                            method = "unweighted")
+#> ✔ Data sampled successfully using "unweighted" method.
+samp_cat_unweighted
 #> # A tibble: 2,400 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1     0.0710          0      0.870    0.0185      0.0400
-#>  2 5ac97e0 option_1     0.0886          0      0.819    0.0234      0.0695
-#>  3 5ac97e0 option_1     0.147           0      0.799    0.00641     0.0472
-#>  4 5ac97e0 option_1     0.0857          0      0.847    0.0207      0.0467
-#>  5 5ac97e0 option_1     0.104           0      0.822    0.00639     0.0678
-#>  6 5ac97e0 option_1     0.0499          0      0.836    0.0844      0.0296
-#>  7 5ac97e0 option_1     0.0858          0      0.834    0.00791     0.0722
-#>  8 5ac97e0 option_1     0.105           0      0.820    0.0309      0.0439
-#>  9 5ac97e0 option_1     0.0557          0      0.863    0.00943     0.0718
-#> 10 5ac97e0 option_1     0.0636          0      0.795    0.0351      0.106 
+#>  1 5ac97e0 option_1     0.0745          0      0.892    0.00889     0.0248
+#>  2 5ac97e0 option_1     0.0875          0      0.875    0.0129      0.0241
+#>  3 5ac97e0 option_1     0.0176          0      0.905    0.0127      0.0647
+#>  4 5ac97e0 option_1     0.0749          0      0.853    0.00418     0.0679
+#>  5 5ac97e0 option_1     0.107           0      0.838    0.0157      0.0390
+#>  6 5ac97e0 option_1     0.0538          0      0.883    0.00156     0.0619
+#>  7 5ac97e0 option_1     0.125           0      0.802    0.0139      0.0587
+#>  8 5ac97e0 option_1     0.104           0      0.858    0.00191     0.0370
+#>  9 5ac97e0 option_1     0.0524          0      0.840    0.0572      0.0503
+#> 10 5ac97e0 option_1     0.0699          0      0.875    0.00703     0.0478
 #> # ℹ 2,390 more rows
 
-samp_cat_bootstrap <- cat_sample_data(my_elic_cat,
+samp_cat_weighted <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism3",
-                            method = "bootstrap")
-#> ✔ Data sampled successfully using "bootstrap" method.
-samp_cat_bootstrap
+                            method = "weighted")
+#> ✔ Data sampled successfully using "weighted" method.
+samp_cat_weighted
 #> # A tibble: 1,800 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1     0.0210    0.0170    0.0133        0.809     0.139 
-#>  2 5ac97e0 option_1     0.0103    0.0228    0.00143       0.894     0.0712
-#>  3 5ac97e0 option_1     0.0310    0.0397    0.0278        0.780     0.121 
-#>  4 5ac97e0 option_1     0.0451    0.0158    0.0110        0.830     0.0977
-#>  5 5ac97e0 option_1     0.0258    0.00895   0.0251        0.828     0.113 
-#>  6 5ac97e0 option_1     0.0463    0.0228    0.000724      0.840     0.0898
-#>  7 5ac97e0 option_1     0.0111    0.00310   0.0140        0.918     0.0542
-#>  8 5ac97e0 option_1     0.0106    0.00862   0.0128        0.897     0.0711
-#>  9 5ac97e0 option_1     0.0124    0.0361    0.0236        0.836     0.0917
-#> 10 5ac97e0 option_1     0.0462    0.0107    0.0131        0.821     0.109 
+#>  1 5ac97e0 option_1    0.0159     0.00579 0.00969         0.905     0.0635
+#>  2 5ac97e0 option_1    0.0117     0.0211  0.00396         0.830     0.133 
+#>  3 5ac97e0 option_1    0.00588    0.00733 0.000652        0.942     0.0442
+#>  4 5ac97e0 option_1    0.0192     0.0203  0.0161          0.914     0.0306
+#>  5 5ac97e0 option_1    0.0667     0.0233  0.00812         0.839     0.0633
+#>  6 5ac97e0 option_1    0.0231     0.0166  0.0303          0.870     0.0599
+#>  7 5ac97e0 option_1    0.0200     0.00851 0.00000405      0.856     0.116 
+#>  8 5ac97e0 option_1    0.00413    0.0248  0.00286         0.903     0.0652
+#>  9 5ac97e0 option_1    0.0150     0.00934 0.00539         0.913     0.0573
+#> 10 5ac97e0 option_1    0.0198     0.0162  0.00480         0.874     0.0853
 #> # ℹ 1,790 more rows
 ```
 
 And the sample summarised:
 
 ``` r
-summary(samp_cat_basic, option = "option_2")
+summary(samp_cat_unweighted, option = "option_2")
 #> # A tibble: 5 × 7
 #>   Category        Min     Q1 Median   Mean    Q3   Max
 #>   <chr>         <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
-#> 1 category_1 0.000924 0.100  0.159  0.194  0.323 0.475
-#> 2 category_2 0.0180   0.0848 0.134  0.206  0.342 0.584
-#> 3 category_3 0.00532  0.115  0.208  0.223  0.290 0.607
-#> 4 category_4 0.000489 0.0264 0.0731 0.0953 0.144 0.407
-#> 5 category_5 0.000643 0.148  0.247  0.282  0.351 0.802
+#> 1 category_1 0.000914 0.0985 0.160  0.194  0.319 0.483
+#> 2 category_2 0.0145   0.0815 0.133  0.206  0.339 0.607
+#> 3 category_3 0.0130   0.122  0.212  0.226  0.289 0.620
+#> 4 category_4 0.000904 0.0276 0.0765 0.0963 0.145 0.354
+#> 5 category_5 0.000476 0.152  0.238  0.278  0.345 0.758
 ```
 
 And plotted as violin plots:
 
 ``` r
-plot(samp_cat_basic,
+plot(samp_cat_unweighted,
      title = "Sampled data for Mechanism1")
 ```
 
-<img src="man/figures/README-plot sampled data from categorical data - violin-1.png" alt="Density plot of the sampled data for variable 3." width="100%" />
+<img src="man/figures/README-sample-plot-categorical-data-violin-1.png" alt="Density plot of the sampled data for variable 3." width="100%" />
 
 ## Similar packages
 

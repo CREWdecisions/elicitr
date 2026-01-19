@@ -328,7 +328,7 @@ check_method <- function(x, method) {
 
 
   if (inherits(x, "elic_cat")) {
-    methods <- c("basic", "bootstrap")
+    methods <- c("unweighted", "weighted")
     data_type <- "categorical"
   } else {
     methods <- "basic"

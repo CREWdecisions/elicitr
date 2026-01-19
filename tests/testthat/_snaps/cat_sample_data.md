@@ -1,7 +1,7 @@
 # Errors
 
     Code
-      cat_sample_data("abc", method = "basic", topic = "topic_1")
+      cat_sample_data("abc", method = "unweighted", topic = "topic_1")
     Condition
       Error in `cat_sample_data()`:
       ! Invalid value for `x`:
@@ -11,7 +11,7 @@
 ---
 
     Code
-      cat_sample_data(obj, method = c("basic", "bootstrap"), topic = "topic_1")
+      cat_sample_data(obj, method = c("unweighted", "weighted"), topic = "topic_1")
     Condition
       Error in `cat_sample_data()`:
       ! Incorrect value for `method`:
@@ -31,15 +31,15 @@
 # Info
 
     Code
-      out <- cat_sample_data(obj, method = "basic", topic = "topic_1", option = c(
+      out <- cat_sample_data(obj, method = "unweighted", topic = "topic_1", option = c(
         "option_1", "option_2"), n_votes = 50)
     Message
-      v Data sampled successfully using "basic" method.
+      v Data sampled successfully using "unweighted" method.
 
 ---
 
     Code
-      out <- cat_sample_data(obj, method = "bootstrap", topic = "topic_1")
+      out <- cat_sample_data(obj, method = "weighted", topic = "topic_1")
     Message
-      v Data sampled successfully using "bootstrap" method.
+      v Data sampled successfully using "weighted" method.
 

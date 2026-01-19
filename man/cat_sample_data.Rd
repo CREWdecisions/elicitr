@@ -18,7 +18,8 @@ cat_sample_data(
 \item{x}{an object of class \link{elic_cat}.}
 
 \item{method}{character string with the name of the method to sample the
-data. The available methods are: \emph{basic} and \emph{bootstrap}, see Methods below.}
+data. The available methods are: \emph{unweighted} and \emph{weighted}, see Methods
+below.}
 
 \item{topic}{character string that indicates the mechanism to which the data
 belongs.}
@@ -49,12 +50,12 @@ the additional class \code{cat_sample} used to implement the plotting method.
 Two methods are implemented. These methods are explained in Vernet et al.
 (2024), see references below.
 \itemize{
-\item \emph{basic}: This method samples data based on the expert estimates without
+\item \emph{unweighted}: This method samples data based on the expert estimates without
 accounting for their confidence. Values are sampled from a Dirichlet
 distribution using the expert estimates as parameters. When only one estimate
 is provided, i.e. 100 \% for one category, the method assigns 100 \% to all
 votes for this category.
-\item \emph{bootstrap}: This method samples data based on the expert estimates
+\item \emph{weighted}: This method samples data based on the expert estimates
 accounting for their confidence. The confidence is used to weight the
 number of votes assigned to each expert. The method samples data from a
 Dirichlet distribution using the expert estimates as parameters. When only
@@ -78,14 +79,14 @@ my_elicit <- cat_start(categories = my_categories,
   cat_add_data(data_source = topic_2, topic = "topic_2") |>
   cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Topic 1 for all options using the basic method
+# Sample data from Topic 1 for all options using the unweighted method
 samp <- cat_sample_data(my_elicit,
-                        method = "basic",
+                        method = "unweighted",
                         topic = "topic_1")
 
-# Sample data from Topic 2 for option 1 and 3 using the bootstrap method
+# Sample data from Topic 2 for option 1 and 3 using the weighted method
 samp <- cat_sample_data(my_elicit,
-                        method = "bootstrap",
+                        method = "weighted",
                         topic = "topic_2",
                         option = c("option_1", "option_3"))
 }

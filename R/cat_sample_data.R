@@ -8,7 +8,8 @@
 #'
 #' @inheritParams cat_get_data
 #' @param method character string with the name of the method to sample the
-#' data. The available methods are: _basic_ and _bootstrap_, see Methods below.
+#' data. The available methods are: _unweighted_ and _weighted_, see Methods
+#' below.
 #' @param n_votes numeric indicating the number of votes to consider.
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
@@ -16,13 +17,13 @@
 #' Two methods are implemented. These methods are explained in Vernet et al.
 #' (2024), see references below.
 #'
-#' * _basic_: This method samples data based on the expert estimates without
+#' * _unweighted_: This method samples data based on the expert estimates without
 #' accounting for their confidence. Values are sampled from a Dirichlet
 #' distribution using the expert estimates as parameters. When only one estimate
 #' is provided, i.e. 100 % for one category, the method assigns 100 % to all
 #' votes for this category.
 #'
-#' * _bootstrap_: This method samples data based on the expert estimates
+#' * _weighted_: This method samples data based on the expert estimates
 #' accounting for their confidence. The confidence is used to weight the
 #' number of votes assigned to each expert. The method samples data from a
 #' Dirichlet distribution using the expert estimates as parameters. When only
@@ -58,14 +59,14 @@
 #'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
 #'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Topic 1 for all options using the basic method
+#' # Sample data from Topic 1 for all options using the unweighted method
 #' samp <- cat_sample_data(my_elicit,
-#'                         method = "basic",
+#'                         method = "unweighted",
 #'                         topic = "topic_1")
 #'
-#' # Sample data from Topic 2 for option 1 and 3 using the bootstrap method
+#' # Sample data from Topic 2 for option 1 and 3 using the weighted method
 #' samp <- cat_sample_data(my_elicit,
-#'                         method = "bootstrap",
+#'                         method = "weighted",
 #'                         topic = "topic_2",
 #'                         option = c("option_1", "option_3"))
 cat_sample_data <- function(x,
@@ -112,7 +113,7 @@ cat_sample_data <- function(x,
 #'
 #' @param x [`tibble`][tibble::tibble] with the expert estimates.
 #' @param method character string with the name of the method to sample the
-#' data, either _basic_ or _bootstrap_.
+#' data, either _unweighted_ or _weighted_.
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
 #'
@@ -135,7 +136,7 @@ do_sampling <- function(x, method, n_votes) {
     conf <- get_conf(x, s, length(categories))
 
     # Determine n sample of each expert
-    if (method == "basic") {
+    if (method == "unweighted") {
       n_samp <- rep(n_votes, length(experts))
     } else {
       n_samp <- get_boostrap_n_sample(experts, n_votes, conf)

@@ -39,7 +39,7 @@ topic_2
 topic_3
 ```
 
-In each dataset the first column contains the name of the expert and the second the categories of the categorical variable. Each category can have different options, saved in column three. The fourth column contains the expert's confidence, and the fifth the expert's estimate.
+In each dataset the first column contains the name of the expert, the second the options considered and the third the categories of the categorical variable. The fourth column contains the expert's confidence, and the fifth the expert's estimate.
 
 ## Load data
 
@@ -103,7 +103,7 @@ Data can be sampled using the function `cat_sample()` (see the variable document
 
 ```{r sample}
 samp <- cat_sample_data(my_elicitation,
-                        method = "basic",
+                        method = "unweighted",
                         topic = "topic_1",
                         n_votes = 100)
 samp

@@ -218,32 +218,32 @@ cat_get_data(my_elic_cat,
              topic = "Mechanism1")
 ```
 
-Data can be sampled from the elicitation object using the basic or bootstrap method:
+Data can be sampled from the elicitation object using the unweighted or weighted method:
 
 ```{r sample data from categorical data}
-samp_cat_basic <- cat_sample_data(my_elic_cat,
+samp_cat_unweighted <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism1",
-                            method = "basic")
-samp_cat_basic
+                            method = "unweighted")
+samp_cat_unweighted
 
-samp_cat_bootstrap <- cat_sample_data(my_elic_cat,
+samp_cat_weighted <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism3",
-                            method = "bootstrap")
-samp_cat_bootstrap
+                            method = "weighted")
+samp_cat_weighted
 ```
 
 And the sample summarised:
 
 ```{r sample-summary from categorical data}
-summary(samp_cat_basic, option = "option_2")
+summary(samp_cat_unweighted, option = "option_2")
 ```
 
 And plotted as violin plots:
 
-```{r plot sampled data from categorical data - violin}
+```{r sample-plot-categorical-data-violin}
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3.
-plot(samp_cat_basic,
+plot(samp_cat_unweighted,
      title = "Sampled data for Mechanism1")
 ```
 

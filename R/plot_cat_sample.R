@@ -40,9 +40,9 @@
 #'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
 #'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Topic 1 for all options using the basic method
+#' # Sample data from Topic 1 for all options using the unweighted method
 #' samp <- cat_sample_data(my_elicit,
-#'                         method = "basic",
+#'                         method = "unweighted",
 #'                         topic = "topic_1")
 #'
 #' # Plot the sampled data for all options
