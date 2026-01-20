@@ -231,7 +231,7 @@ test_that("Info", {
   z <- topic_1
   z[, 5] <- z[, 5]*100 # Convert to percentages
 
-  # Success adding data.frame
+  # Success adding data.frame with and without anonymisation
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = topic_1,
                                       topic = "topic_1"))
@@ -240,6 +240,16 @@ test_that("Info", {
     elicitr:::stand_names() |>
     elicitr:::hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = topic_1,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    elicitr:::stand_names() |>
+    elicitr:::hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding csv file
   files <- list.files(path = system.file("extdata", package = "elicitr"),
@@ -256,6 +266,18 @@ test_that("Info", {
     elicitr:::hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
 
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = files[[1]],
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    elicitr:::stand_names() |>
+    elicitr:::hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
+
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
                      pattern = "topics",
@@ -270,6 +292,18 @@ test_that("Info", {
     elicitr:::stand_names() |>
     elicitr:::hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = file,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    elicitr:::stand_names() |>
+    elicitr:::hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Data imported from Google Sheets
   googlesheets4::gs4_deauth()
@@ -290,4 +324,21 @@ test_that("Info", {
     elicitr:::stand_names() |>
     elicitr:::hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = gs,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    elicitr:::stand_names() |>
+    elicitr:::hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 })

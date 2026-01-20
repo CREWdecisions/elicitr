@@ -232,7 +232,23 @@
 ---
 
     Code
+      out <- cat_add_data(x, data_source = topic_1, topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "data.frame"
+
+---
+
+    Code
       out <- cat_add_data(x, data_source = files[[1]], topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "csv file"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = files[[1]], topic = "topic_1", anonymise = FALSE)
     Message
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "csv file"
@@ -248,7 +264,23 @@
 ---
 
     Code
+      out <- cat_add_data(x, data_source = file, topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "xlsx file"
+
+---
+
+    Code
       out <- cat_add_data(x, data_source = gs, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "Google Sheets"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = gs, topic = "topic_1", anonymise = FALSE)
     Message
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "Google Sheets"

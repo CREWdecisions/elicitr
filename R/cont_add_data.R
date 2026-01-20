@@ -27,6 +27,8 @@ var_labels <- list("1p" = "best",
 #' @param overwrite logical, whether to overwrite existing data already added to
 #' the [elic_cont] object.
 #' @param verbose logical, if `TRUE` it prints informative messages.
+#' @param anonymise logical, if `TRUE` expert names are anonymised before adding
+#' the data to the [elic_cont] object.
 #'
 #' @section Data format:
 #'
@@ -152,7 +154,8 @@ cont_add_data <- function(x,
                           sep = ",",
                           sheet = 1,
                           overwrite = FALSE,
-                          verbose = TRUE) {
+                          verbose = TRUE,
+                          anonymise = TRUE) {
 
   check_elic_obj(x, type = "cont")
   check_round(round)
@@ -169,8 +172,10 @@ cont_add_data <- function(x,
   check_columns(data, length(col_names))
   colnames(data) <- col_names
 
-  # Anonymise names
-  data <- anonimise_names(data)
+  if(anonymise) {
+    # Anonymise names
+    data <- anonimise_names(data)
+  }
 
   check_data_types(x, data)
 

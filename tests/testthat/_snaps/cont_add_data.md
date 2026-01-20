@@ -330,6 +330,13 @@
 ---
 
     Code
+      out <- cont_add_data(x, data_source = round_1, round = 1, anonymise = FALSE)
+    Message
+      v Data added to "Round 1" from "data.frame"
+
+---
+
+    Code
       out <- cont_add_data(x, data_source = files[[1]], round = 1)
     Message
       v Data added to "Round 1" from "csv file"
@@ -337,7 +344,21 @@
 ---
 
     Code
+      out <- cont_add_data(x, data_source = files[[1]], round = 1, anonymise = FALSE)
+    Message
+      v Data added to "Round 1" from "csv file"
+
+---
+
+    Code
       out <- cont_add_data(x, data_source = file, round = 1)
+    Message
+      v Data added to "Round 1" from "xlsx file"
+
+---
+
+    Code
+      out <- cont_add_data(x, data_source = file, round = 1, anonymise = FALSE)
     Message
       v Data added to "Round 1" from "xlsx file"
 

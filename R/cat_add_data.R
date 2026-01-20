@@ -172,7 +172,8 @@ cat_add_data <- function(x,
                          sep = ",",
                          sheet = 1,
                          overwrite = FALSE,
-                         verbose = TRUE) {
+                         verbose = TRUE,
+                         anonymise = TRUE) {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
@@ -225,8 +226,10 @@ cat_add_data <- function(x,
   # experts
   check_column_format(data, col = "confidence")
 
-  # Anonymise names
-  data <- anonimise_names(data)
+  if (anonymise) {
+    # Anonymise names
+    data <- anonimise_names(data)
+  }
 
   # Check if estimates for each expert and option sum to 1. This is done after
   # anonymising the names to avoid exposing the names in the error message.
