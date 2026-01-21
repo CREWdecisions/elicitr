@@ -1,5 +1,5 @@
-# elicitr 0.0.1
+# elicitr 0.1.0
 
-* Initial release of the package.
-* Implemented functions to add, get, plot, sample, and aggregate data from elicitations of continuous variables.
-* Implemented functions to add, get, plot, sample, and aggregate data from elicitations of categorical variables.
+Update to the package.
+* Added new features to all functions
+* Improved performance and fixed bugs
