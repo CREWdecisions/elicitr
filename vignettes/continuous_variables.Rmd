@@ -148,8 +148,8 @@ When the elicitation process is part of a workshop and is used for demonstration
 
 ```{r plot-data-var3-truth}
 #| fig.alt: >
-#| Estimates of variable 3 collected with a four points elicitation process
-#| with group mean and truth.
+#|  Estimates of variable 3 collected with a four points elicitation process
+#|  with group mean and truth.
 plot(my_elicitation, round = 1, var = "var2",
      group = TRUE,
      truth = list(min = 10, max = 20, best = 15))
@@ -159,8 +159,8 @@ Expert names identifiers can also be changed on the plot:
 
 ```{r plot-data-var3-custom-id}
 #| fig.alt: >
-#| Estimates of variable 3 collected with a four points elicitation process
-#| with custom expert identifiers.
+#|  Estimates of variable 3 collected with a four points elicitation process
+#|  with custom expert identifiers.
 plot(my_elicitation, round = 1, var = "var2",
      group = TRUE,
      truth = list(min = 10, max = 20, best = 15),
@@ -202,13 +202,13 @@ Or plotted as beeswarm plots and adapted as needed:
 
 ```{r sample-plot-beeswarm}
 #| fig.alt: >
-#| Beeswarm plot of the sampled data for variable 1.
+#|  Beeswarm plot of the sampled data for variable 1.
 plot(samp, var = "var2", type = "beeswarm")
 ```
 
 ```{r sample-plot-beeswarm-wrap}
 #| fig.alt: >
-#| Beeswarm plot of the sampled data for variable 1, wrapped.
+#|  Beeswarm plot of the sampled data for variable 1, wrapped.
 plot(samp, var = "var2", type = "beeswarm",
      beeswarm_cex = 0.9, beeswarm_corral = "wrap")
 ```
@@ -227,7 +227,7 @@ plot(samp, var = "var2", type = "violin", group = TRUE)
 plot(samp, var = "var3", type = "density", group = TRUE)
 ```
 
-```{r sample-plot-density-group}
+```{r sample-plot-beeswarm-group}
 #| fig.alt: >
 #|  Beeswarm plot of the sampled data for variable 3 with group mean.
 plot(samp, var = "var3", type = "beeswarm", group = TRUE)

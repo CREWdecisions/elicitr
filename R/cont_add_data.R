@@ -99,7 +99,7 @@ var_labels <- list("1p" = "best",
 #'
 #' @family cont data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elic_cont object for an elicitation process that estimates 3

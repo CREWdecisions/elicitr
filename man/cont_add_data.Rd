@@ -180,6 +180,6 @@ Other cont data helpers:
 \code{\link{summary.cont_sample}()}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cont data helpers}

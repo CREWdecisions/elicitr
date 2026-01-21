@@ -123,6 +123,6 @@ Other plot helpers:
 \code{\link{plot.elic_cont}()}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{plot helpers}

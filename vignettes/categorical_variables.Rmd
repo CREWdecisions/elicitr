@@ -61,7 +61,7 @@ This elicitation process is for a categorical variables with 5 categories estima
 
 As we did for continuous variables, we can load the data with the function `cat_load()`:
 
-```{r add-data}
+```{r cat-add-data}
 my_elicitation <- cat_add_data(my_elicitation,
                                data_source = topic_1,
                                topic = "topic_1") |>
@@ -71,7 +71,7 @@ my_elicitation <- cat_add_data(my_elicitation,
 
 As mentioned before, estimates can also sum up to 100.
 
-```{r add-data}
+```{r cat-add-data-percent}
 topic_1_percent <- topic_1 |>
   dplyr::mutate(estimate = estimate * 100)
 
@@ -168,6 +168,6 @@ We can also plot the distribution for a specific option:
 
 ```{r plot-option2}
 #| fig.alt: >
-#| Violin plot of the sampled data for option 2.
+#|  Violin plot of the sampled data for option 2.
 plot(samp, option = "option_2")
 ```

@@ -50,7 +50,7 @@
 #'
 #' @family plot helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a

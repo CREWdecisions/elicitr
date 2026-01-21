@@ -404,6 +404,7 @@ cont_theme <- function() {
                  legend.position = "none")
 }
 
+# Rename experts----
 
 #' Rename experts
 #' Check if the new names vector is of the correct length

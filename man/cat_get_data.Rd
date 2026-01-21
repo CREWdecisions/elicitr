@@ -62,6 +62,6 @@ Other cat data helpers:
 \code{\link{summary.cat_sample}()}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cat data helpers}

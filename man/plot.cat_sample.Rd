@@ -85,7 +85,10 @@ samp <- cat_sample_data(my_elicit,
 plot(samp)
 
 # Plot the sampled data as beeswarm plot
-plot(samp, type = "beeswarm")
+
+\dontrun{
+plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
+}
 
 # Plot the sampled data for option 1
 plot(samp, option = "option_1")
