@@ -38,7 +38,8 @@ Imports:
     tibble,
     tidyr,
     tools,
-    utils
+    utils,
+    ggbeeswarm
 Suggests:
     knitr,
     lifecycle,

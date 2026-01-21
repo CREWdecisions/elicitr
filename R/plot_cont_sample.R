@@ -10,8 +10,8 @@
 #' [cont_sample_data].
 #' @param var character string with the name of the variable to be plotted.
 #' @param group logical, if `TRUE` data are aggregated by expert.
-#' @param type character string with the type of plot, either _violin_ or
-#' _density_.
+#' @param type character string with the type of plot, either _beeswarm_ or
+#' _violin_ or _density_.
 #' @param title character string with the title of the plot.
 #' @param xlab character string with the x-axis label.
 #' @param ylab character string with the y-axis label.
@@ -20,6 +20,10 @@
 #' @param family character string with the font family to be used in the plot.
 #' @param expert_names numeric or character, the labels for the experts.
 #' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
+#' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
+#' @param beeswarm_corral character string, the wrapping corral for the beeswarm
+#' plot. Anything accepted by the [geom_beeswarm][beeswarm::geom_beeswarm]
+#' function.
 #'
 #' #' @section scale_conf:
 #'
@@ -87,7 +91,9 @@ plot.cont_sample <- function(x,
                              line_width = 0.7,
                              family = "sans",
                              expert_names = NULL,
-                             theme = NULL) {
+                             theme = NULL,
+                             beeswarm_cex = 0.6,
+                             beeswarm_corral = "none") {
 
   if (!is.null(expert_names)) {
     x <- cont_rename_experts(x = x,
@@ -166,9 +172,24 @@ plot.cont_sample <- function(x,
                             position = "identity",
                             linewidth = line_width) +
       ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
+  } else if (type == "beeswarm") {
+    p <- ggplot2::ggplot(x) +
+      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                       y = .data[["value"]],
+                                                       colour = .data[[x_var]]),
+                                cex = beeswarm_cex,
+                                size = 1,
+                                corral = beeswarm_corral) +
+      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                   y = .data[["value"]]),
+                            fun = mean,
+                            geom = "point",
+                            colour = "black",
+                            size = 0.8)
   } else {
 
-    info <- "Available types are {.val violin} and {.val density}."
+    info <- "Available types are {.val beeswarm}, {.val violin} and \\
+    {.val density}."
     cli::cli_abort(c("Invalid value for argument {.arg type}:",
                      "x" = "Type {.val {type}} is not implemented.",
                      "i" = info))
@@ -177,9 +198,15 @@ plot.cont_sample <- function(x,
   p <- p +
     ggplot2::labs(title = title,
                   x = xlab,
-                  y = ylab) +
-    ggplot2::scale_fill_manual(values = colours) +
-    theme
+                  y = ylab)
+
+  if (type == "violin") {
+    p <- p + ggplot2::scale_fill_manual(values = colours)
+  } else {
+    p <- p + ggplot2::scale_colour_manual(values = colours)
+    }
+
+  p <- p + theme
 
   p
 }
@@ -220,6 +247,19 @@ cont_sample_theme <- function(type, group) {
                          legend.position = "bottom",
                          legend.key.size = ggplot2::unit(1.5, "line"),
                          legend.title = ggplot2::element_blank())
+  } else if (type == "beeswarm") {
+
+    th <- ggplot2::theme(axis.ticks = ggplot2::element_blank(),
+                         panel.grid.major.x = ggplot2::element_blank(),
+                         panel.grid.major.y = y_grid,
+                         legend.position = "none")
+
+    if (!group) {
+      th <- th +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                           vjust = 0.5,
+                                                           hjust = 1))
+    }
   } else {
     th <- NULL
   }

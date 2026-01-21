@@ -68,6 +68,19 @@ test_that("Output", {
   expect_length(unique(ld1[["colour"]]), 6L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
+  # Beeswarm plot without group
+  p <- plot(samp, var = "var1", type = "beeswarm")
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 3L)
+  expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
+  expect_s3_class(p[["data"]][["id"]], "factor")
+  expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
+  expect_length(unique(ld1[["colour"]]), 6L)
+  expect_identical(p[["theme"]][["legend.position"]], "none")
+
   # Violin plot with group
   p <- plot(samp, var = "var1", type = "violin", group = TRUE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
@@ -94,6 +107,36 @@ test_that("Output", {
   expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
   expect_length(unique(ld1[["colour"]]), 1L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
+
+  # Beeswarm plot with group
+  p <- plot(samp, var = "var1", type = "beeswarm", group = TRUE)
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 3L)
+  expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
+  expect_s3_class(p[["data"]][["id"]], "factor")
+  expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
+  expect_length(unique(ld1[["colour"]]), 1L)
+  expect_identical(p[["theme"]][["legend.position"]], "none")
+
+  # Beeswarm plot with cex and corral
+  p <- plot(samp, var = "var1", type = "beeswarm", group = TRUE,
+            beeswarm_cex = 0.8,
+            beeswarm_corral = "wrap")
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 3L)
+  expect_identical(colnames(p[["data"]]), c("id", "var", "value"))
+  expect_s3_class(p[["data"]][["id"]], "factor")
+  expect_identical(levels(p[["data"]][["id"]]), unique(samp[["id"]]))
+  expect_length(unique(ld1[["colour"]]), 1L)
+  expect_identical(p[["theme"]][["legend.position"]], "none")
 
   # Colours and and other plot elements
   cols <- c("steelblue4", "darkcyan", "chocolate1",

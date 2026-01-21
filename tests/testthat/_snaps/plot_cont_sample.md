@@ -26,7 +26,7 @@
       Error in `plot()`:
       ! Invalid value for argument `type`:
       x Type "boxplot" is not implemented.
-      i Available types are "violin" and "density".
+      i Available types are "beeswarm", "violin" and "density".
 
 ---
 

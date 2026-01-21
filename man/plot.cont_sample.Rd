@@ -17,7 +17,9 @@
   line_width = 0.7,
   family = "sans",
   expert_names = NULL,
-  theme = NULL
+  theme = NULL,
+  beeswarm_cex = 0.6,
+  beeswarm_corral = "none"
 )
 }
 \arguments{
@@ -31,8 +33,8 @@ function.}
 
 \item{group}{logical, if \code{TRUE} data are aggregated by expert.}
 
-\item{type}{character string with the type of plot, either \emph{violin} or
-\emph{density}.}
+\item{type}{character string with the type of plot, either \emph{beeswarm} or
+\emph{violin} or \emph{density}.}
 
 \item{title}{character string with the title of the plot.}
 
@@ -48,7 +50,13 @@ function.}
 
 \item{expert_names}{numeric or character, the labels for the experts.}
 
-\item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.
+\item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.}
+
+\item{beeswarm_cex}{numeric, the space between points in the beeswarm plot.}
+
+\item{beeswarm_corral}{character string, the wrapping corral for the beeswarm
+plot. Anything accepted by the \link[beeswarm:geom_beeswarm]{geom_beeswarm}
+function.
 
 #' @section scale_conf:
 
