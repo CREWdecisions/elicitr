@@ -41,8 +41,16 @@ check_elic_obj <- function(x,
 #'
 #' @author Sergio Vignali
 check_round <- function(x) {
+  if (length(x) > 1) {
 
-  if (x > 2 || x <= 0) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    cli::cli_abort(c("Incorrect value for {.arg round}:",
+                     "x" = "{.arg round} can only be {.val {1}} or {.val {2}}.",
+                     "i" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+
+  } else if (x > 2 || x <= 0) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
