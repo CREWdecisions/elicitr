@@ -19,7 +19,6 @@
 #' @param line_width numeric with the width of the lines in the density plot.
 #' @param family character string with the font family to be used in the plot.
 #' @param expert_names numeric or character, the labels for the experts.
-
 #' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
 #'
 #' #' @section scale_conf:
