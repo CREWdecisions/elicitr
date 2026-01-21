@@ -21,6 +21,14 @@
 ---
 
     Code
+      cont_add_data(x, data_source = round_1, round = round_1)
+    Condition
+      Error:
+      ! object 'x' not found
+
+---
+
+    Code
       cont_get_data(obj, round = 1, var = "var5")
     Condition
       Error in `cont_get_data()`:

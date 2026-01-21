@@ -39,7 +39,7 @@ check_elic_obj <- function(x,
 #' @return An error if `x` is neither `1` nor `2`.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_round <- function(x) {
   if (length(x) > 1) {
 

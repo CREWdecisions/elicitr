@@ -7,6 +7,9 @@ test_that("Errors", {
   # When round is not 1 or 2
   expect_snapshot(cont_get_data(obj, round = 3),
                   error = TRUE)
+  # When round is not a number
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = round_1),
+                  error = TRUE)
   # When var is neither a variable in the elicit object nor all
   expect_snapshot(cont_get_data(obj, round = 1, var = "var5"),
                   error = TRUE)

@@ -44,6 +44,8 @@ test_that("Errors ", {
                   error = TRUE)
   expect_snapshot(cont_add_data(x, data_source = round_1, round = 0),
                   error = TRUE)
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = round_1),
+                  error = TRUE)
   # When >=2 id are present in Round 2 but not in Round 1 and there are not NAs
   y <- cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
