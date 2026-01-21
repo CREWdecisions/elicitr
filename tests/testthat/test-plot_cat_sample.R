@@ -9,6 +9,9 @@ test_that("Errors", {
   # When colours are less than the number of categories
   expect_snapshot(plot(samp, colours = c("red", "blue")),
                   error = TRUE)
+
+  #When type is not valid
+  expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
 })
 
 test_that("Output", {
@@ -58,6 +61,20 @@ test_that("Output", {
                    "Y-axis")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["legend.position"]], "bottom")
+
+  # Test type = "beeswarm"
+  p <- plot(samp, type = "beeswarm")
+  # ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
+  # expect_length(unique(ld1[["colour"]]), 5L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Test theme

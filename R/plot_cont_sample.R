@@ -22,7 +22,7 @@
 #' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
 #' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
 #' @param beeswarm_corral character string, the wrapping corral for the beeswarm
-#' plot. Anything accepted by the [geom_beeswarm][beeswarm::geom_beeswarm]
+#' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
 #' function.
 #'
 #' #' @section scale_conf:
@@ -67,6 +67,9 @@
 #'
 #' # Plot the sampled data for the variable `var3` as violin plot
 #' plot(samp, var = "var3", type = "violin")
+#'
+#' # Plot the sampled data for the variable `var1` as beeswarm plot
+#' plot(samp, var = "var1", type = "beeswarm")
 #'
 #' # Plot the sampled data for the variable `var2` as density plot
 #' plot(samp, var = "var2", type = "density")

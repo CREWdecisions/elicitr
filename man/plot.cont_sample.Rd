@@ -55,7 +55,7 @@ function.}
 \item{beeswarm_cex}{numeric, the space between points in the beeswarm plot.}
 
 \item{beeswarm_corral}{character string, the wrapping corral for the beeswarm
-plot. Anything accepted by the \link[beeswarm:geom_beeswarm]{geom_beeswarm}
+plot. Anything accepted by the \link[ggbeeswarm:geom_beeswarm]{geom_beeswarm}
 function.
 
 #' @section scale_conf:
@@ -101,6 +101,9 @@ samp <- cont_sample_data(my_elicit, round = 1)
 
 # Plot the sampled data for the variable `var3` as violin plot
 plot(samp, var = "var3", type = "violin")
+
+# Plot the sampled data for the variable `var1` as beeswarm plot
+plot(samp, var = "var1", type = "beeswarm")
 
 # Plot the sampled data for the variable `var2` as density plot
 plot(samp, var = "var2", type = "density")
