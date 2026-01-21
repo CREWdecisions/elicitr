@@ -39,6 +39,24 @@ test_that("Errors", {
                        truth = list(min = 0.7, beast = 0.8,
                                     max = 0.9, conf = 100)),
                   error = TRUE)
+  # When expert_names has the wrong length
+  expect_snapshot(plot(obj, round = 1, var = "var1",
+                       expert_names = paste0("E", 1:obj[["experts"]])[-1]),
+                  error = TRUE)
+  #When multiple names are the same
+  expect_snapshot(plot(obj, round = 2, var = "var1",
+                       expert_names = rep("Same", obj[["experts"]])),
+                  error = TRUE)
+  #When Group is used as expert name
+  expect_snapshot(plot(obj, round = 2, var = "var1",
+                       expert_names = c("Group",
+                                        paste0("E", 1:obj[["experts"]])[-1])),
+                  error = TRUE)
+  #When Truth is used as expert name
+  expect_snapshot(plot(obj, round = 2, var = "var1",
+                       expert_names = c("Truth",
+                                        paste0("E", 1:obj[["experts"]])[-1])),
+                  error = TRUE)
 })
 
 test_that("Warnings", {
@@ -341,6 +359,22 @@ test_that("Output", {
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
 
+  # Test expert renaming
+  new_names <- paste("Expert", 1:obj[["experts"]])
+  p <- plot(obj, round = 2, var = "var3",
+            expert_names = new_names,
+            verbose = FALSE)
+  expect_identical(levels(p[["data"]][["id"]]),
+                   new_names)
+
+  # Test expert renaming with group and truth
+  p <- plot(obj, round = 2, var = "var3",
+            expert_names = new_names,
+            group = TRUE,
+            truth = list(min = 0.7, max = 0.9, best = 0.8, conf = 100),
+            verbose = FALSE)
+  expect_identical(levels(p[["data"]][["id"]]),
+                   c(new_names, "Group", "Truth"))
 })
 
 test_that("Rows with all NAs are removed", {
@@ -350,7 +384,6 @@ test_that("Rows with all NAs are removed", {
   p <- plot(obj, round = 1, var = "var1", verbose = FALSE)
   expect_identical(nrow(p[["data"]]), 4L)
   expect_identical(dplyr::pull(p[["data"]][5:6, 2]), rep(NA_integer_, 2))
-
 })
 
 test_that("get_type()", {

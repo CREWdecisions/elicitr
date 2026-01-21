@@ -21,6 +21,7 @@
   xlab = var,
   ylab = "Experts",
   family = "sans",
+  expert_names = NULL,
   theme = NULL,
   verbose = TRUE
 )
@@ -59,6 +60,8 @@ function.}
 \item{ylab}{character, the title of the y axis.}
 
 \item{family}{character, the font family.}
+
+\item{expert_names}{numeric or character, the labels for the experts.}
 
 \item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
 theme.}

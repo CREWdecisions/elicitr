@@ -17,6 +17,7 @@
 #' @param title character, the title of the plot.
 #' @param xlab character, the title of the x axis.
 #' @param ylab character, the title of the y axis.
+#' @param expert_names numeric or character, the labels for the experts.
 #' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
@@ -90,6 +91,7 @@ plot.elic_cont <- function(x,
                            xlab = var,
                            ylab = "Experts",
                            family = "sans",
+                           expert_names = NULL,
                            theme = NULL,
                            verbose = TRUE) {
 
@@ -106,6 +108,12 @@ plot.elic_cont <- function(x,
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+
+  if (!is.null(expert_names)) {
+    data <- cont_rename_experts(x,
+                                data,
+                                expert_names)
+  }
 
   ids <- data |>
     dplyr::pull(.data[["id"]])
@@ -394,4 +402,56 @@ cont_theme <- function() {
                  panel.grid.major.y = ggplot2::element_blank(),
                  axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
                  legend.position = "none")
+}
+
+
+#' Rename experts
+#' Check if the new names vector is of the correct length
+#' Rename experts in elic_cont object
+#' @param x the object to be plotted
+#' @param data tibble with the elicitation data
+#' @param expert_names character vector with the new names for the experts
+#'
+#' @return the object with renamed experts
+#' @noRd
+#'
+#' @author Maude Vernet
+cont_rename_experts <- function(x,
+                                data,
+                                expert_names) {
+
+  n_experts <- length(unique(data[["id"]]))
+
+  if (length(expert_names) != n_experts) {
+    error <- "You provided {.val {length(expert_names)}} expert names but the \\
+              elicitation process has {.val {n_experts}} experts."
+    cli::cli_abort(c("Incorrect length of {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Provide a vector of length {.val {n_experts}}."),
+                   call = rlang::caller_env())
+  }
+
+  if (length(unique(expert_names)) != length(expert_names)) {
+    error <- "Multiple experts have the same name in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide unique names for each expert."),
+                   call = rlang::caller_env())
+  }
+
+  if (any(expert_names == "Group") || any(expert_names == "Truth")) {
+    error <- "The names {.val Group} and {.val Truth} are reserved and cannot \\
+              be used in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide different names for the experts."),
+                   call = rlang::caller_env())
+  }
+
+if (class(x) == "elic_cont") {
+  expert_names <- as.character(expert_names)
+  data[["id"]] <- expert_names
+}
+
+  data
 }
