@@ -16,6 +16,7 @@
   colours = NULL,
   line_width = 0.7,
   family = "sans",
+  expert_names = NULL,
   theme = NULL
 )
 }
@@ -44,6 +45,8 @@ function.}
 \item{line_width}{numeric with the width of the lines in the density plot.}
 
 \item{family}{character string with the font family to be used in the plot.}
+
+\item{expert_names}{numeric or character, the labels for the experts.}
 
 \item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.
 

@@ -448,10 +448,16 @@ cont_rename_experts <- function(x,
                    call = rlang::caller_env())
   }
 
-if (class(x) == "elic_cont") {
-  expert_names <- as.character(expert_names)
-  data[["id"]] <- expert_names
-}
+  if (class(x)[1] == "elic_cont") {
+    expert_names <- as.character(expert_names)
+    data[["id"]] <- expert_names
+  }
+
+  if (class(data)[1] == "cont_sample") {
+    names(expert_names) <- unique(data$id)
+    data$id <- expert_names[data$id]
+    data
+  }
 
   data
 }

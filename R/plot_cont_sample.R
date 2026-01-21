@@ -18,6 +18,8 @@
 #' @param colours character vector with the colours to be used in the plot.
 #' @param line_width numeric with the width of the lines in the density plot.
 #' @param family character string with the font family to be used in the plot.
+#' @param expert_names numeric or character, the labels for the experts.
+
 #' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
 #'
 #' #' @section scale_conf:
@@ -85,7 +87,14 @@ plot.cont_sample <- function(x,
                              colours = NULL,
                              line_width = 0.7,
                              family = "sans",
+                             expert_names = NULL,
                              theme = NULL) {
+
+  if (!is.null(expert_names)) {
+    x <- cont_rename_experts(x = x,
+                             data = x,
+                             expert_names)
+  }
 
   # Check if var is available
   check_length(var, "var", 1)

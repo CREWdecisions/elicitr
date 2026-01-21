@@ -22,6 +22,19 @@ test_that("Errors", {
   expect_snapshot(plot(samp, var = "var1", colours = c("red", "blue"),
                        group = TRUE),
                   error = TRUE)
+  # When expert_names has the wrong length
+  expect_snapshot(plot(obj, round = 1, var = "var1",
+                       expert_names = paste0("E", 1:obj[["experts"]])[-1]),
+                  error = TRUE)
+  #When multiple names are the same
+  expect_snapshot(plot(samp, var = "var1",
+                       expert_names = rep("Same", obj[["experts"]])),
+                  error = TRUE)
+  #When Group is used as expert name
+  expect_snapshot(plot(samp, var = "var1",
+                       expert_names = c("Group",
+                                        paste0("E", 1:obj[["experts"]])[-1])),
+                  error = TRUE)
 })
 
 test_that("Output", {
@@ -111,4 +124,12 @@ test_that("Output", {
   expect_identical(p[["theme"]][["plot.title"]][["size"]], 14)
   expect_identical(p[["theme"]][["plot.title"]][["hjust"]], 1)
   expect_null(p[["theme"]][["plot.face"]][["hjust"]])
+
+  # Test expert renaming
+  new_names <- paste("Expert", 1:obj[["experts"]])
+  p <- plot(samp, var = "var1",
+            expert_names = new_names,
+            verbose = FALSE)
+  expect_identical(levels(p[["data"]][["id"]]),
+                   new_names)
 })
