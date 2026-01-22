@@ -167,10 +167,10 @@ test_that("Accepts all estimates summing to 100", {
 
   # All estimates sum to 100, they are not again multiplied by 100
   y <- topic_1
-  y[, 5] <- y[, 5]*100 # Convert to percentages
+  y[, 5] <- y[, 5] * 100 # Convert to percentages
 
   z <- topic_1
-  z[, 5] <- z[, 5]*100 # Convert to percentages
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
 
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = y,
@@ -187,14 +187,14 @@ test_that("Accepts some estimates summing to 1 and some to 100", {
 
   # Some estimates sum to 1, some to 100
   y <- topic_1
-  exp1 <- y[[1,1]]
-  opt1 <- y[[1,2]]
+  exp1 <- y[[1, 1]]
+  opt1 <- y[[1, 2]]
 
   z <- topic_1
-  z[, 5] <- z[, 5]*100 # Convert to percentages
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
 
-  idx <- which(y[,1] == exp1 & y[,2] == opt1)
-  y[idx, 5] <- y[idx, 5]*100 # Convert to percentages
+  idx <- which(y[, 1] == exp1 & y[, 2] == opt1)
+  y[idx, 5] <- y[idx, 5] * 100 # Convert to percentages
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = y,
                                       topic = "topic_1"))
@@ -213,7 +213,7 @@ test_that("Accepts all estimates summing to 1", {
   y[, 5] <- y[, 5]
 
   z <- topic_1
-  z[, 5] <- z[, 5]*100 # Convert to percentages
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
 
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = y,
@@ -229,7 +229,7 @@ test_that("Info", {
                  verbose = FALSE)
 
   z <- topic_1
-  z[, 5] <- z[, 5]*100 # Convert to percentages
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
 
   # Success adding data.frame with and without anonymisation
   expect_snapshot(out <- cat_add_data(x,

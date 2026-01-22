@@ -146,9 +146,9 @@ plot.cat_sample <- function(x,
         mapping = ggplot2::aes(x = .data[["category"]],
                                y = .data[["prob"]],
                                colour = .data[["category"]]),
-                                cex = beeswarm_cex,
-                                size = 1,
-                                corral = beeswarm_corral)
+        cex = beeswarm_cex,
+        size = 1,
+        corral = beeswarm_corral)
   } else {
 
     info <- "Available types are {.val beeswarm} and {.val violin}."

@@ -392,7 +392,8 @@ check_sum_1 <- function(x) {
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
     dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
   sums_vector <- dplyr::pull(sums,
-                "sum") #sum is the sum of the estimates for each expert & option
+                             "sum")
+  #sum is the sum of the estimates for each expert & option
 
   tol <- 1.5e-8
   #in case estimates were given in proportions

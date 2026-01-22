@@ -583,9 +583,10 @@ clean_gs_data <- function(x) {
     dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character),
                   # Some experts use a comma as decimal separator
                   dplyr::across(dplyr::everything(), clean),
-                  # If there is a mix of integer and doubles, or if there are different
-                  # decimal separators, or if someone omit the leading zero on a decimal
-                  # number, these columns are imported as character
+                  # If there is a mix of integer and doubles,or if there are
+                  # different decimal separators, or if someone omit the leading
+                  # zero on a decimal number, these columns are imported as
+                  # character
                   dplyr::across(!dplyr::all_of(cols), as.numeric))
 }
 
