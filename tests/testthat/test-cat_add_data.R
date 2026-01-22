@@ -237,8 +237,8 @@ test_that("Info", {
                                       topic = "topic_1"))
   expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
 
   expect_snapshot(out <- cat_add_data(x,
@@ -247,8 +247,8 @@ test_that("Info", {
                                       anonymise = FALSE))
   expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding csv file
@@ -262,8 +262,8 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
 
   expect_snapshot(out <- cat_add_data(x,
@@ -274,8 +274,8 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding xlsx file
@@ -289,8 +289,8 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
 
   expect_snapshot(out <- cat_add_data(x,
@@ -301,8 +301,8 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Data imported from Google Sheets
@@ -321,8 +321,8 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
 
   x <- cat_start(categories = paste0("category_", 1:5),
@@ -338,7 +338,7 @@ test_that("Info", {
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
-    elicitr:::stand_names() |>
-    elicitr:::hash_names()
+    stand_names() |>
+    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 })

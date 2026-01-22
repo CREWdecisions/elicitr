@@ -172,7 +172,7 @@ cont_add_data <- function(x,
   check_columns(data, length(col_names))
   colnames(data) <- col_names
 
-  if(anonymise) {
+  if (anonymise) {
     # Anonymise names
     data <- anonimise_names(data)
   }
@@ -264,10 +264,10 @@ get_labels <- function(n,
   }
 
   # Labels are stored on the `var_labels` data object
-  raw_labels <- var_labels[elic_types] |>
-    unlist(use.names = FALSE)
+  raw_labels <- unlist(var_labels[elic_types],
+                       use.names = FALSE)
 
-  return(raw_labels)
+  raw_labels
 }
 
 #' Fix variable order
@@ -417,8 +417,8 @@ omogenise_datasets <- function(x, data) {
       x[["data"]][["round_1"]][["id"]][selection] <- r1_diff_ids
 
       if (round_2_has_nas) {
-        data <- data |>
-          add_nas_rows(x[["experts"]])
+        data <- add_nas_rows(data,
+                             x[["experts"]])
       }
 
       n <- length(r1_diff_ids)
@@ -427,8 +427,8 @@ omogenise_datasets <- function(x, data) {
                            Th{?is/ese} {.cls id} ha{?s/ve} been added to \\
                            {.val Round 1} with {.val {NA}} values.")
 
-      return(list(round_1 = x[["data"]][["round_1"]],
-                  round_2 = data))
+      list(round_1 = x[["data"]][["round_1"]],
+           round_2 = data)
     } else {
       r1_na_idx <- which(is.na(round_1_ids))
       n <- length(r1_diff_ids)
@@ -443,8 +443,8 @@ omogenise_datasets <- function(x, data) {
         x[["data"]][["round_1"]][["id"]][selection] <- r1_diff_ids
         r2_na_idx <- which(is.na(round_2_ids))
         data[data[["id"]] == r2_diff_ids, -1] <- NA
-        data <- data |>
-          add_nas_rows(x[["experts"]])
+        data <- add_nas_rows(data,
+                             x[["experts"]])
 
         warn <- "The dataset in {.val Round 2} has {.val {n}} {.cls id} not \\
                  present in {.val Round 1}. Th{?is/ese} {.cls id} ha{?s/ve} \\
@@ -455,8 +455,8 @@ omogenise_datasets <- function(x, data) {
                  {.code overwrite = TRUE}."
         cli::cli_warn(c(warn, "i" = info))
 
-        return(list(round_1 = x[["data"]][["round_1"]],
-                    round_2 = data))
+        list(round_1 = x[["data"]][["round_1"]],
+             round_2 = data)
       } else {
         text <- "Impossible to combine {.val Round 1} and {.val Round 2} \\
                  datasets:"
@@ -486,8 +486,8 @@ omogenise_datasets <- function(x, data) {
         data[data[["id"]] %in% mis_in_round_2, -1] <- NA
       }
 
-      return(list(round_1 = x[["data"]][["round_1"]],
-                  round_2 = data))
+      list(round_1 = x[["data"]][["round_1"]],
+           round_2 = data)
 
     } else if (n == 1) {
       # Same number of rows in Round 1 and Round 2 but one id is different ==>
@@ -525,8 +525,8 @@ omogenise_datasets <- function(x, data) {
       cli::cli_warn(c("!" = warn,
                       "i" = info))
 
-      return(list(round_1 = x[["data"]][["round_1"]],
-                  round_2 = data))
+      list(round_1 = x[["data"]][["round_1"]],
+           round_2 = data)
     } else {
       # More than 1 id present in Round 2 is not in Round 1 ==> Raise an error
       missing <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
@@ -630,8 +630,7 @@ check_data_types <- function(x, data) {
 
     idx <- grepl(var_names[[i]], colnames(data))
 
-    df <- data[, idx] |>
-      unlist()
+    df <- unlist(data[, idx])
 
     if (var_types[i] == "Z") {
 

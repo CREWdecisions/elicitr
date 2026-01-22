@@ -72,8 +72,8 @@ my_elicitation <- cat_add_data(my_elicitation,
 As mentioned before, estimates can also sum up to 100.
 
 ```{r cat-add-data-percent}
-topic_1_percent <- topic_1 |>
-  dplyr::mutate(estimate = estimate * 100)
+topic_1_percent <- dplyr::mutate(topic_1,
+                                 estimate = estimate * 100)
 
 my_elicitation <- cat_add_data(my_elicitation,
                                data_source = topic_1_percent,

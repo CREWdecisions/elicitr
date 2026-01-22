@@ -303,7 +303,7 @@ check_names_categories_options <- function(x, data, type) {
     }
   }
 
-  if (nchar(error) > 0) {
+  if (nzchar(error, keepNA = TRUE)) {
 
     info <- "Check the metadata in the {.cls elic_cat} object."
 
@@ -391,8 +391,8 @@ check_sum_1 <- function(x) {
                                 levels = unique(.data[["id"]]))) |>
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
     dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
-  sums_vector <- sums |>
-    dplyr::pull("sum") #sum is the sum of the estimates for each expert & option
+  sums_vector <- dplyr::pull(sums,
+                "sum") #sum is the sum of the estimates for each expert & option
 
   tol <- 1.5e-8
   #in case estimates were given in proportions

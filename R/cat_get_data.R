@@ -82,8 +82,8 @@ cat_get_data <- function(x,
     }
     # Avoid overwrite dplyr variable
     vals <- option
-    out <- x[["data"]][[topic]] |>
-      dplyr::filter(.data[["option"]] %in% vals)
+    out <- dplyr::filter(x[["data"]][[topic]],
+                         .data[["option"]] %in% vals)
 
   }
 

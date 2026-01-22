@@ -8,28 +8,26 @@ random_names <- randomNames::randomNames(n,
 
 round_1 <- data.frame(name = random_names,
                       # 1 point elicitation with integers
-                      var1_best = mc2d::rpert(n,
-                                              min = -10,
-                                              mode = -1,
-                                              max = 10) |>
-                        as.integer(),
+                      var1_best = as.integer(mc2d::rpert(n,
+                                                         min = -10,
+                                                         mode = -1,
+                                                         max = 10)),
                       # 3 points elicitation with positive integers
-                      var2_best = mc2d::rpert(n,
-                                              min = 0,
-                                              mode = 20,
-                                              max = 50) |>
-                        as.integer(),
+                      var2_best = as.integer(mc2d::rpert(n,
+                                                         min = 0,
+                                                         mode = 20,
+                                                         max = 50)),
                       # 4 points elicitation with probabilities
                       var3_best = mc2d::rpert(n,
                                               min = 0.6,
                                               mode = 0.7,
                                               max = 1)) |>
-  dplyr::mutate(var2_min = var2_best - sample(1:6,
-                                              size = n,
-                                              replace = TRUE),
-                var2_max = var2_best + sample(1:6,
-                                              size = n,
-                                              replace = TRUE),
+  dplyr::mutate(var2_min = var2_best - sample.int(6,
+                                                  size = n,
+                                                  replace = TRUE),
+                var2_max = var2_best + sample.int(6,
+                                                  size = n,
+                                                  replace = TRUE),
                 var3_min = var3_best - sample(c(0.1, 0.2, 0.3),
                                               size = n,
                                               replace = TRUE),
@@ -54,28 +52,26 @@ round_1 <- data.frame(name = random_names,
 # Narrow values closer to the mode
 round_2 <- data.frame(name = random_names,
                       # 1 point elicitation with integers
-                      var1_best = mc2d::rpert(n,
-                                              min = -5,
-                                              mode = -1,
-                                              max = 5) |>
-                        as.integer(),
+                      var1_best = as.integer(mc2d::rpert(n,
+                                                         min = -5,
+                                                         mode = -1,
+                                                         max = 5)),
                       # 3 points elicitation with positive integers
-                      var2_best = mc2d::rpert(n,
-                                              min = 0,
-                                              mode = 20,
-                                              max = 25) |>
-                        as.integer(),
+                      var2_best = as.integer(mc2d::rpert(n,
+                                                         min = 0,
+                                                         mode = 20,
+                                                         max = 25)),
                       # 4 points elicitation with probabilities
                       var3_best = mc2d::rpert(n,
                                               min = 0.6,
                                               mode = 0.7,
                                               max = 0.9)) |>
-  dplyr::mutate(var2_min = var2_best - sample(1:4,
-                                              size = n,
-                                              replace = TRUE),
-                var2_max = var2_best + sample(1:4,
-                                              size = n,
-                                              replace = TRUE),
+  dplyr::mutate(var2_min = var2_best - sample.int(4,
+                                                  size = n,
+                                                  replace = TRUE),
+                var2_max = var2_best + sample.int(4,
+                                                  size = n,
+                                                  replace = TRUE),
                 var3_min = var3_best - sample(c(0.1, 0.2),
                                               size = n,
                                               replace = TRUE),
@@ -122,17 +118,17 @@ openxlsx::write.xlsx(list("Round 1" = round_1,
 # Generate random timestamps simulating answers given within 30 seconds and 3
 # minutes (when data are collected with a Google Forms, they are saved in
 # Google Sheets and the timestamps is added as first column)
-times <- runif(n, min = 30, max = 180) |>
-  as.POSIXct(origin = "2024-11-24 14:00:00")
-new_time <- (times[[3]] + 66) |>
-  format("%d-%m-%Y %H:%M:%S")
-times <- times |>
-  format("%d-%m-%Y %H:%M:%S")
+times <- as.POSIXct(runif(n, min = 30, max = 180),
+                    origin = "2024-11-24 14:00:00")
+new_time <- format((times[[3]] + 66),
+                   "%d-%m-%Y %H:%M:%S")
+times <- format(times,
+                "%d-%m-%Y %H:%M:%S")
 
-rnd_1 <- round_1 |>
-  dplyr::mutate("Time" = times, .before = 1)
-rnd_2 <- round_2 |>
-  dplyr::mutate("Time" = times, .before = 1)
+rnd_1 <- dplyr::mutate(round_1,
+                       "Time" = times, .before = 1)
+rnd_2 <- dplyr::mutate(round_2,
+                       "Time" = times, .before = 1)
 # The following code needs to authorise the package to access the correct
 # account. Uncomment the code below if you need to create a new file, if not,
 # just use the code strings.

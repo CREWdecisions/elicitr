@@ -50,8 +50,8 @@ the additional class \code{cat_sample} used to implement the plotting method.
 Two methods are implemented. These methods are explained in Vernet et al.
 (2024), see references below.
 \itemize{
-\item \emph{unweighted}: This method samples data based on the expert estimates without
-accounting for their confidence. Values are sampled from a Dirichlet
+\item \emph{unweighted}: This method samples data based on the expert estimates
+without accounting for their confidence. Values are sampled from a Dirichlet
 distribution using the expert estimates as parameters. When only one estimate
 is provided, i.e. 100 \% for one category, the method assigns 100 \% to all
 votes for this category.

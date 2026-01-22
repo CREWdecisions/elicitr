@@ -65,7 +65,6 @@ test_that("Output", {
 
   # Test type = "beeswarm"
   p <- plot(samp, type = "beeswarm")
-  # ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
@@ -74,7 +73,6 @@ test_that("Output", {
   expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
   expect_s3_class(p[["data"]][["category"]], "factor")
   expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
-  # expect_length(unique(ld1[["colour"]]), 5L)
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Test theme

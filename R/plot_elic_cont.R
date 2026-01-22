@@ -115,8 +115,8 @@ plot.elic_cont <- function(x,
                                 expert_names)
   }
 
-  ids <- data |>
-    dplyr::pull(.data[["id"]])
+  ids <- dplyr::pull(data,
+                     .data[["id"]])
   elic_type <- get_type(x, var, "elic")
   var_type <- get_type(x, var, "var")
   idx <- seq_len(x[["experts"]])
@@ -179,12 +179,12 @@ plot.elic_cont <- function(x,
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
       ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
-                                                     xmin = .data[["min"]],
-                                                     xmax = .data[["max"]],
-                                                     colour = .data[["col"]]),
-                              position = "identity",
-                              width = 0,
-                              linewidth = line_width)
+                                                    xmin = .data[["min"]],
+                                                    xmax = .data[["max"]],
+                                                    colour = .data[["col"]]),
+                             position = "identity",
+                             width = 0,
+                             linewidth = line_width)
   }
 
   if (var_type == "p") {
@@ -251,29 +251,29 @@ add_group_data <- function(data, elic_type) {
 #' @return A tibble with the true data added.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 add_truth_data <- function(data, truth, elic_type) {
 
   if (elic_type == "1p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "col" = "truth")
   } else if (elic_type == "3p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "min" = truth[["min"]],
-                     "max" = truth[["max"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "min" = truth[["min"]],
+                           "max" = truth[["max"]],
+                           "col" = "truth")
   } else if (elic_type == "4p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "min" = truth[["min"]],
-                     "max" = truth[["max"]],
-                     "conf" = truth[["conf"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "min" = truth[["min"]],
+                           "max" = truth[["max"]],
+                           "conf" = truth[["conf"]],
+                           "col" = "truth")
   }
 
   data
@@ -376,7 +376,7 @@ check_truth <- function(x, elic_type) {
     info <- "See {.fn elicitr::plot.elic_cont}."
   }
 
-  if (nchar(error) > 0) {
+  if (nzchar(error, keepNA = TRUE)) {
 
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
@@ -432,7 +432,7 @@ cont_rename_experts <- function(x,
                    call = rlang::caller_env())
   }
 
-  if (length(unique(expert_names)) != length(expert_names)) {
+  if (anyDuplicated(expert_names) > 0) {
     error <- "Multiple experts have the same name in {.arg expert_names}."
     cli::cli_abort(c("Invalid value for {.arg expert_names}:",
                      "x" = error,

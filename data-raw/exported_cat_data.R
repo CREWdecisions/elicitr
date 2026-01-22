@@ -25,8 +25,7 @@ get_values <- function() {
     miceadds::sumpreserving.rounding(digits = 2, preserve = TRUE) |>
     t()
 
-  rand_data |>
-    as.vector()
+  as.vector(rand_data)
 }
 
 topic_1 <- data.frame(name = rep(random_names, each = n_categories * n_options),

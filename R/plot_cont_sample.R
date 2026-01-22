@@ -134,14 +134,11 @@ plot.cont_sample <- function(x,
 
   if (is.null(colours)) {
     colours <- scales::hue_pal()(n)
-  } else {
+  } else if (length(colours) != n) {
 
-    if (length(colours) != n) {
-
-      cli::cli_abort(c("Invalid value for argument {.arg colours}:",
-                       "x" = error,
-                       "i" = info))
-    }
+    cli::cli_abort(c("Invalid value for argument {.arg colours}:",
+                     "x" = error,
+                     "i" = info))
   }
 
   if (is.null(theme)) {
@@ -207,7 +204,7 @@ plot.cont_sample <- function(x,
     p <- p + ggplot2::scale_fill_manual(values = colours)
   } else {
     p <- p + ggplot2::scale_colour_manual(values = colours)
-    }
+  }
 
   p <- p + theme
 
