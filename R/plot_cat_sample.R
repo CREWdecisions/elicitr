@@ -142,13 +142,13 @@ plot.cat_sample <- function(x,
                            key_glyph = "dotplot")
   } else if (type == "beeswarm") {
     p <- ggplot2::ggplot(x) +
-      ggbeeswarm::geom_beeswarm(
-        mapping = ggplot2::aes(x = .data[["category"]],
-                               y = .data[["prob"]],
-                               colour = .data[["category"]]),
-        cex = beeswarm_cex,
-        size = 1,
-        corral = beeswarm_corral)
+      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[["category"]],
+                                                       y = .data[["prob"]],
+                                                       colour =
+                                                         .data[["category"]]),
+                                cex = beeswarm_cex,
+                                size = 1,
+                                corral = beeswarm_corral)
   } else {
 
     info <- "Available types are {.val beeswarm} and {.val violin}."
