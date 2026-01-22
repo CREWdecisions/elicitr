@@ -48,6 +48,7 @@
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 unit
+#' @importFrom ggbeeswarm geom_beeswarm
 #' @importFrom googlesheets4 read_sheet
 #' @importFrom mc2d rpert
 #' @importFrom miceadds sumpreserving.rounding

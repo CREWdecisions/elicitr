@@ -39,7 +39,7 @@ topic_2
 topic_3
 ```
 
-In each dataset the first column contains the name of the expert and the second the categories of the categorical variable. Each category can have different options, saved in column three. The fourth column contains the expert's confidence, and the fifth the expert's estimate.
+In each dataset the first column contains the name of the expert, the second the options considered and the third the categories of the categorical variable. The fourth column contains the expert's confidence, and the fifth the expert's estimate. Expert estimates for each option should represent probabilities or percentages, and should thus sum up to 1 or 100. Both are accepted and data scaled to 1 will be automatically rescaled to 100.
 
 ## Load data
 
@@ -59,14 +59,34 @@ my_elicitation
 
 This elicitation process is for a categorical variables with 5 categories estimated for four options and three topics by six experts.
 
-Similarly as we did for continuous variables, we can load the data with the function `cat_load()`:
+As we did for continuous variables, we can load the data with the function `cat_load()`:
 
-```{r add-data}
+```{r cat-add-data}
 my_elicitation <- cat_add_data(my_elicitation,
                                data_source = topic_1,
                                topic = "topic_1") |>
   cat_add_data(data_source = topic_2, topic = "topic_2") |>
   cat_add_data(data_source = topic_3, topic = "topic_3")
+```
+
+As mentioned before, estimates can also sum up to 100.
+
+```{r cat-add-data-percent}
+topic_1_percent <- dplyr::mutate(topic_1,
+                                 estimate = estimate * 100)
+
+my_elicitation <- cat_add_data(my_elicitation,
+                               data_source = topic_1_percent,
+                               topic = "topic_1")
+```
+
+Expert anonymisation is automatic but optional. If expert names are not to be anonymised, the argument `anonymise` can be set to `FALSE` in the `cat_add_data()` function.
+
+```{r add-data-no-anon}
+my_elicitation <- cat_add_data(my_elicitation,
+                               data_source = topic_1,
+                               topic = "topic_1",
+                               anonymise = FALSE)
 ```
 
 Again, metadata are used to validate the data. If the data is not consistent with the metadata, an error message will be displayed. For example, if we try to load data with a category not defined in the metadata:
@@ -87,11 +107,15 @@ Data can be retrieved from the `elic_cat` object with the `cat_get_data()` funct
 cat_get_data(my_elicitation, topic = "topic_1")
 ```
 
-Notice that the name of the expert has been anonymised and assigned to the column `id`. Data can be retrieved only for given options:
+Notice that the name of the expert is not anonymised in this case and assigned to the column `id`. 
+
+Data can also be retrieved only for given options:
 
 ```{r get-data-var1}
 cat_get_data(my_elicitation, topic = "topic_2", option = "option_1")
 ```
+
+Here, the data is anonymised, following what was specified when loading the data.
 
 ## Data analysis
 
@@ -103,7 +127,7 @@ Data can be sampled using the function `cat_sample()` (see the variable document
 
 ```{r sample}
 samp <- cat_sample_data(my_elicitation,
-                        method = "basic",
+                        method = "unweighted",
                         topic = "topic_1",
                         n_votes = 100)
 samp
@@ -121,4 +145,29 @@ And plotted as violin plot:
 #| fig.alt: >
 #|   Violin plot of the sampled data for all options.
 plot(samp)
+```
+
+Or as beeswarm plot, which can be adapted as needed:
+
+```{r cat-plot-beeswarm}
+#| fig.alt: >
+#|  Beeswarm plot of the sampled data for all options.
+#|  Each point represents a sampled value.
+plot(samp, type = "beeswarm")
+```
+
+```{r cat-plot-beeswarm-wrap}
+#| fig.alt: >
+#|  Beeswarm plot of the sampled data for all options.
+#|  Each point represents a sampled value.
+plot(samp, type = "beeswarm",
+     beeswarm_cex = 0.9, beeswarm_corral = "wrap")
+```
+
+We can also plot the distribution for a specific option:
+
+```{r plot-option2}
+#| fig.alt: >
+#|  Violin plot of the sampled data for option 2.
+plot(samp, option = "option_2")
 ```

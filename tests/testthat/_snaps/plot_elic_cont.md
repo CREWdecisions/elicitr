@@ -99,6 +99,49 @@
       x The name of the element in `truth` should be "min", "max", "best", and "conf" and not "min", "beast", "max", and "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
+---
+
+    Code
+      plot(obj, round = 1, var = "var1", expert_names = paste0("E", 1:obj[["experts"]])[
+        -1])
+    Condition
+      Error in `plot()`:
+      ! Incorrect length of `expert_names`:
+      x You provided 5 expert names but the elicitation process has 6 experts.
+      i Provide a vector of length 6.
+
+---
+
+    Code
+      plot(obj, round = 2, var = "var1", expert_names = rep("Same", obj[["experts"]]))
+    Condition
+      Error in `plot()`:
+      ! Invalid value for `expert_names`:
+      x Multiple experts have the same name in `expert_names`.
+      i Please provide unique names for each expert.
+
+---
+
+    Code
+      plot(obj, round = 2, var = "var1", expert_names = c("Group", paste0("E", 1:obj[[
+        "experts"]])[-1]))
+    Condition
+      Error in `plot()`:
+      ! Invalid value for `expert_names`:
+      x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
+      i Please provide different names for the experts.
+
+---
+
+    Code
+      plot(obj, round = 2, var = "var1", expert_names = c("Truth", paste0("E", 1:obj[[
+        "experts"]])[-1]))
+    Condition
+      Error in `plot()`:
+      ! Invalid value for `expert_names`:
+      x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
+      i Please provide different names for the experts.
+
 # Warnings
 
     Code

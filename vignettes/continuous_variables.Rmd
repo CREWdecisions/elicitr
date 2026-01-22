@@ -67,7 +67,10 @@ my_elicitation <- cont_add_data(my_elicitation,
 my_elicitation
 ```
 
-Notice that the commands can be piped together. As explained above, the metadata are used to validate the data added to the `elic_cont` object. If the data is not consistent with the metadata, an error message will be displayed. For example, if we try to add a data frame with a different number of columns:
+Notice that the commands can be piped together.
+When we load the data into the `elic_cont` object, the name of the experts are anonymised and replaced with an identifier. This is automatic but optional and can be disabled by setting the argument `anonymise = FALSE` in the `cont_add_data()` function.
+
+As explained above, the metadata are used to validate the data added to the `elic_cont` object. If the data is not consistent with the metadata, an error message will be displayed. For example, if we try to add a data frame with a different number of columns:
 
 ```{r add-wrong-data, error=TRUE}
 cont_add_data(my_elicitation,
@@ -95,7 +98,9 @@ Data can be retrieved from the `elic_cont` object with the `cont_get_data()` fun
 cont_get_data(my_elicitation, round = 1)
 ```
 
-Notice that the name of the expert has been anonymised and assigned to the column `id`. If you add the data from a file, the name of the experts will never reach the `elic_cont` object. Data can be retrieved only for given variables or for given variable or elicitation types. For example, to get data for the first variable only:
+Notice that the name of the expert has been anonymised and assigned to the column `id`. If you add the data from a file, the name of the experts will never reach the `elic_cont` object. 
+
+Data can be retrieved only for given variables or for given variable or elicitation types. For example, to get data for the first variable only:
 
 ```{r get-data-var1}
 cont_get_data(my_elicitation, round = 1, var = "var1")
@@ -139,6 +144,29 @@ Finally, the group mean can be added to the plot:
 plot(my_elicitation, round = 2, var = "var3", group = TRUE)
 ```
 
+When the elicitation process is part of a workshop and is used for demonstration, it can be useful to show a truth argumenton the plot. This argument can be added as a list of estimates.
+
+```{r plot-data-var3-truth}
+#| fig.alt: >
+#|  Estimates of variable 3 collected with a four points elicitation process
+#|  with group mean and truth.
+plot(my_elicitation, round = 1, var = "var2",
+     group = TRUE,
+     truth = list(min = 10, max = 20, best = 15))
+```
+
+Expert names identifiers can also be changed on the plot:
+
+```{r plot-data-var3-custom-id}
+#| fig.alt: >
+#|  Estimates of variable 3 collected with a four points elicitation process
+#|  with custom expert identifiers.
+plot(my_elicitation, round = 1, var = "var2",
+     group = TRUE,
+     truth = list(min = 10, max = 20, best = 15),
+     expert_names = 1:6)
+```
+
 ### Sample data
 
 Data can be sampled using the function `cont_sample()` (see the variable documentation for the explanation of the sampling methods). Here we sample 1000 values for each variable:
@@ -162,7 +190,7 @@ Plotted as violin plots:
 plot(samp, var = "var2", type = "violin")
 ```
 
-Or plotted as density plots:
+Plotted as density plots:
 
 ```{r sample-plot-density}
 #| fig.alt: >
@@ -170,7 +198,22 @@ Or plotted as density plots:
 plot(samp, var = "var3", type = "density")
 ```
 
-The same plots can be generated for the group (aggregated data):
+Or plotted as beeswarm plots and adapted as needed:
+
+```{r sample-plot-beeswarm}
+#| fig.alt: >
+#|  Beeswarm plot of the sampled data for variable 1.
+plot(samp, var = "var2", type = "beeswarm")
+```
+
+```{r sample-plot-beeswarm-wrap}
+#| fig.alt: >
+#|  Beeswarm plot of the sampled data for variable 1, wrapped.
+plot(samp, var = "var2", type = "beeswarm",
+     beeswarm_cex = 0.9, beeswarm_corral = "wrap")
+```
+
+The same plots can be generated for the group (aggregated data) with violin plots, density plots or beeswarm plots.
 
 ```{r sample-plot-violin-group}
 #| fig.alt: >
@@ -182,4 +225,10 @@ plot(samp, var = "var2", type = "violin", group = TRUE)
 #| fig.alt: >
 #|  Density plot of the sampled data for variable 3 with group mean.
 plot(samp, var = "var3", type = "density", group = TRUE)
+```
+
+```{r sample-plot-beeswarm-group}
+#| fig.alt: >
+#|  Beeswarm plot of the sampled data for variable 3 with group mean.
+plot(samp, var = "var3", type = "beeswarm", group = TRUE)
 ```

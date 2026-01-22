@@ -18,3 +18,13 @@
       x The number of colours provided does not match the number of categories.
       i Please provide a vector with 5 colours.
 
+---
+
+    Code
+      plot(samp, type = "boxplot")
+    Condition
+      Error in `plot()`:
+      ! Invalid value for argument `type`:
+      x Type "boxplot" is not implemented.
+      i Available types are "beeswarm" and "violin".
+

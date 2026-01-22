@@ -6,18 +6,24 @@
 \usage{
 \method{plot}{cat_sample}(
   x,
+  type = "violin",
   ...,
   option = "all",
   title = NULL,
-  ylab = "Probabolity",
+  ylab = "Probability",
   colours = NULL,
   family = "sans",
-  theme = NULL
+  theme = NULL,
+  beeswarm_cex = 0.6,
+  beeswarm_corral = "none"
 )
 }
 \arguments{
 \item{x}{an object of class \code{cat_sample} created by the function
 \link{cat_sample_data}.}
+
+\item{type}{character string with the type of plot, either \emph{beeswarm} or
+\emph{violin}.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -37,6 +43,12 @@ title will be the topic name.}
 
 \item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
 theme.}
+
+\item{beeswarm_cex}{numeric, the space between points in the beeswarm plot.}
+
+\item{beeswarm_corral}{character string, the wrapping corral for the beeswarm
+plot. Anything accepted by the \link[ggbeeswarm:geom_beeswarm]{geom_beeswarm}
+function.}
 }
 \value{
 Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
@@ -64,13 +76,19 @@ my_elicit <- cat_start(categories = my_categories,
   cat_add_data(data_source = topic_2, topic = "topic_2") |>
   cat_add_data(data_source = topic_3, topic = "topic_3")
 
-# Sample data from Topic 1 for all options using the basic method
+# Sample data from Topic 1 for all options using the unweighted method
 samp <- cat_sample_data(my_elicit,
-                        method = "basic",
+                        method = "unweighted",
                         topic = "topic_1")
 
 # Plot the sampled data for all options
 plot(samp)
+
+# Plot the sampled data as beeswarm plot
+
+\dontrun{
+plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
+}
 
 # Plot the sampled data for option 1
 plot(samp, option = "option_1")

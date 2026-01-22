@@ -97,6 +97,16 @@
 ---
 
     Code
+      cont_add_data(x, data_source = round_1, round = round_1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Incorrect value for `round`:
+      x `round` can only be 1 or 2.
+      i See `elicitr::cont_add_data()`.
+
+---
+
+    Code
       out <- cont_add_data(y, data_source = z, round = 2, verbose = FALSE)
     Condition
       Error in `cont_add_data()`:
@@ -330,6 +340,13 @@
 ---
 
     Code
+      out <- cont_add_data(x, data_source = round_1, round = 1, anonymise = FALSE)
+    Message
+      v Data added to "Round 1" from "data.frame"
+
+---
+
+    Code
       out <- cont_add_data(x, data_source = files[[1]], round = 1)
     Message
       v Data added to "Round 1" from "csv file"
@@ -337,7 +354,21 @@
 ---
 
     Code
+      out <- cont_add_data(x, data_source = files[[1]], round = 1, anonymise = FALSE)
+    Message
+      v Data added to "Round 1" from "csv file"
+
+---
+
+    Code
       out <- cont_add_data(x, data_source = file, round = 1)
+    Message
+      v Data added to "Round 1" from "xlsx file"
+
+---
+
+    Code
+      out <- cont_add_data(x, data_source = file, round = 1, anonymise = FALSE)
     Message
       v Data added to "Round 1" from "xlsx file"
 

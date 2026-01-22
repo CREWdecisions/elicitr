@@ -12,7 +12,8 @@ cont_add_data(
   sep = ",",
   sheet = 1,
   overwrite = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  anonymise = TRUE
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ from \emph{Google Sheets}.}
 the \link{elic_cont} object.}
 
 \item{verbose}{logical, if \code{TRUE} it prints informative messages.}
+
+\item{anonymise}{logical, if \code{TRUE} expert names are anonymised before adding
+the data to the \link{elic_cont} object.}
 }
 \value{
 The provided object of class \link{elic_cont} updated with the data.
@@ -176,6 +180,6 @@ Other cont data helpers:
 \code{\link{summary.cont_sample}()}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cont data helpers}

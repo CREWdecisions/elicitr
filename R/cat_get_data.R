@@ -15,19 +15,19 @@
 #'
 #' @family cat data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
 #' # four options, five categories and a maximum of six experts per topic
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
+#' my_options <- c("option_1", "option_2", "option_3", "option_4")
 #' my_categories <- c("category_1", "category_2", "category_3",
 #'                    "category_4", "category_5")
-#' my_options <- c("option_1", "option_2", "option_3", "option_4")
-#' my_topics <- c("topic_1", "topic_2", "topic_3")
-#' my_elicit <- cat_start(categories = my_categories,
+#' my_elicit <- cat_start(topics = my_topics,
 #'                        options = my_options,
-#'                        experts = 6,
-#'                        topics = my_topics) |>
+#'                        categories = my_categories,
+#'                        experts = 6) |>
 #'   cat_add_data(data_source = topic_1, topic = "topic_1") |>
 #'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
 #'   cat_add_data(data_source = topic_3, topic = "topic_3")
@@ -82,8 +82,8 @@ cat_get_data <- function(x,
     }
     # Avoid overwrite dplyr variable
     vals <- option
-    out <- x[["data"]][[topic]] |>
-      dplyr::filter(.data[["option"]] %in% vals)
+    out <- dplyr::filter(x[["data"]][[topic]],
+                         .data[["option"]] %in% vals)
 
   }
 

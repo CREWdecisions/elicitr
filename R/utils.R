@@ -39,10 +39,18 @@ check_elic_obj <- function(x,
 #' @return An error if `x` is neither `1` nor `2`.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_round <- function(x) {
+  if (length(x) > 1) {
 
-  if (x > 2 || x <= 0) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    cli::cli_abort(c("Incorrect value for {.arg round}:",
+                     "x" = "{.arg round} can only be {.val {1}} or {.val {2}}.",
+                     "i" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+
+  } else if (x > 2 || x <= 0) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
@@ -163,7 +171,7 @@ check_experts_arg <- function(x) {
               vector of length {.val {length(x)}}."
   }
 
-  if (nchar(error) > 0) {
+  if (nzchar(error, keepNA = TRUE)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
@@ -328,7 +336,7 @@ check_method <- function(x, method) {
 
 
   if (inherits(x, "elic_cat")) {
-    methods <- c("basic", "bootstrap")
+    methods <- c("unweighted", "weighted")
     data_type <- "categorical"
   } else {
     methods <- "basic"
@@ -449,8 +457,7 @@ read_data <- function(data_source,
     assign("src", "data.frame", envir = rlang::caller_env())
 
     # Make sure is a tibble
-    data <- data_source |>
-      tibble::as_tibble()
+    data <- tibble::as_tibble(data_source)
 
   } else if (inherits(data_source, "character")) {
     # When `data_source` contains the file extension at the end of the string,
@@ -573,13 +580,14 @@ clean_gs_data <- function(x) {
 
   x |>
     # Columns with mixed integer and real numbers are imported as list
-    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character)) |>
-    # Some experts use a comma as decimal separator
-    dplyr::mutate(dplyr::across(dplyr::everything(), clean)) |>
-    # If there is a mix of integer and doubles, or if there are different
-    # decimal separators, or if someone omit the leading zero on a decimal
-    # number, these columns are imported as character
-    dplyr::mutate(dplyr::across(!dplyr::all_of(cols), as.numeric))
+    dplyr::mutate(dplyr::across(dplyr::where(is.list), as.character),
+                  # Some experts use a comma as decimal separator
+                  dplyr::across(dplyr::everything(), clean),
+                  # If there is a mix of integer and doubles,or if there are
+                  # different decimal separators, or if someone omit the leading
+                  # zero on a decimal number, these columns are imported as
+                  # character
+                  dplyr::across(!dplyr::all_of(cols), as.numeric))
 }
 
 #' Split short codes
@@ -601,8 +609,8 @@ split_short_codes <- function(x,
                                  pattern = "")
 
   if (add_p) {
-    output <- output |>
-      paste0("p")
+    output <- paste0(output,
+                     "p")
   }
 
   output
@@ -626,9 +634,8 @@ anonimise_names <- function(x) {
   x |>
     dplyr::rename("id" = dplyr::all_of(col_1)) |>
     # Standardise names: remove capital letters, whitespaces, and punctuation
-    dplyr::mutate("id" = stand_names(.data[["id"]])) |>
-    # Hash names
-    dplyr::mutate("id" = hash_names(.data[["id"]]))
+    dplyr::mutate("id" = stand_names(.data[["id"]]),
+                  "id" = hash_names(.data[["id"]]))
 }
 
 #' Standardise names

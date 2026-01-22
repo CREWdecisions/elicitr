@@ -83,7 +83,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Unexpected column types:
-      x The columns "category" and "option" are not of type "character" but of type "factor".
+      x The columns "option" and "category" are not of type "character" but of type "factor".
       i See Data format in `elicitr::cat_add_data()`.
 
 ---
@@ -183,7 +183,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one expert and one option don't sum to 1.
+      x Estimates of one expert and one option don't sum to 1 or 100.
       * Check id "5ac97e0" for option "option_1": sum 1.91
 
 ---
@@ -193,16 +193,48 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
-      x Estimates of one/some experts for one/some options don't sum to 1.
+      x Estimates of one/some experts for one/some options don't sum to 1 or 100.
       * Check id "5ac97e0" for option "option_1": sum 1.91
       * Check id "5ac97e0" for option "option_4": sum 1.94
       * Check id "3d32ab9" for option "option_4": sum 1.97
+
+# Accepts all estimates summing to 100
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      v Data added to Topic "topic_1" from "data.frame"
+
+# Accepts some estimates summing to 1 and some to 100
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      i Estimates sum to 100 for some experts/options, and to 1 for others. Rescaling the 1-sums to 100.
+      v Data added to Topic "topic_1" from "data.frame"
+
+# Accepts all estimates summing to 1
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "data.frame"
 
 # Info
 
     Code
       out <- cat_add_data(x, data_source = topic_1, topic = "topic_1")
     Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "data.frame"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = topic_1, topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "data.frame"
 
 ---
@@ -210,6 +242,15 @@
     Code
       out <- cat_add_data(x, data_source = files[[1]], topic = "topic_1")
     Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "csv file"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = files[[1]], topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "csv file"
 
 ---
@@ -217,6 +258,15 @@
     Code
       out <- cat_add_data(x, data_source = file, topic = "topic_1")
     Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "xlsx file"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = file, topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "xlsx file"
 
 ---
@@ -224,5 +274,14 @@
     Code
       out <- cat_add_data(x, data_source = gs, topic = "topic_1")
     Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "Google Sheets"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = gs, topic = "topic_1", anonymise = FALSE)
+    Message
+      i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "Google Sheets"
 

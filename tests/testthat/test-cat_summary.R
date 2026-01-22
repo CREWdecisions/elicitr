@@ -1,6 +1,6 @@
 test_that("Errors", {
   obj <- create_cat_obj()
-  samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
 
   # When option is not available in the object
@@ -10,7 +10,7 @@ test_that("Errors", {
 
 test_that("Output", {
   obj <- create_cat_obj()
-  samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
   out <- summary(samp, option = "option_1")
   expect_s3_class(out, "tbl_df")

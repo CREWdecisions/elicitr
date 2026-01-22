@@ -17,19 +17,21 @@
 #' of each expert should be repeated as many times as the number of categories
 #' and options. (i.e. each expert should appear \eqn{number\ of\ categories
 #' \cdot number\ of\ options} times).
-#' * The second column should be the names of the categories considered in the
+#' * The second column should hold the names of the options considered in the
+#' study. The name of each option should be repeated as many times as the number
+#' of categories considered. If you do not use multiple options in your study,
+#' please input 1 option for all elements.
+#' * The third column should be the names of the categories considered in the
 #' elicitation. Each block of categories should be repeated as many times as the
 #' number of options considered.
-#' * The third column should hold the names of the options considered in the
-#' study. The name of each option should be repeated as many times as the number
-#' of categories considered.
 #' * The fourth column should be the experts confidence in their own estimates
 #' (given in percent). Experts should estimate how confident they are in their
 #' estimates for each block of categories and for each option. Therefore, expert
 #' confidence estimates should be repeated as many times as the number of
-#' categories of impact considered.
+#' categories of impact considered for each option.
 #' * The final column should be the estimates of each expert for each option and
-#' category.
+#' category. These estimates should sum up to 1 (probabilities) (or 100
+#' (percentages)) for each expert and option.
 #'
 #' The name of the columns is not important, `cat_add_data()` will overwrite
 #' them according to the following convention:
@@ -42,18 +44,18 @@
 #' categories and two options (only one expert is shown):
 #'
 #' ```
-#' name         category       option      confidence      estimate
+#' name         option       category      confidence      estimate
 #' ----------------------------------------------------------------
-#' expert 1     category 1     option 1            15          0.08
-#' expert 1     category 2     option 1            15          0
-#' expert 1     category 3     option 1            15          0.84
-#' expert 1     category 4     option 1            15          0.02
-#' expert 1     category 5     option 1            15          0.06
-#' expert 1     category 1     option 2            35          0.02
-#' expert 1     category 2     option 2            35          0.11
-#' expert 1     category 3     option 2            35          0.19
-#' expert 1     category 4     option 2            35          0.02
-#' expert 1     category 5     option 2            35          0.66
+#' expert 1     option 1     category 1            15          0.08
+#' expert 1     option 1     category 2            15          0
+#' expert 1     option 1     category 3            15          0.84
+#' expert 1     option 1     category 4            15          0.02
+#' expert 1     option 1     category 5            15          0.06
+#' expert 1     option 2     category 1            35          0.02
+#' expert 1     option 2     category 2            35          0.11
+#' expert 1     option 2     category 3            35          0.19
+#' expert 1     option 2     category 4            35          0.02
+#' expert 1     option 2     category 5            35          0.66
 #' ```
 #'
 #' @section Data cleaning:
@@ -74,14 +76,14 @@
 #' @examples
 #' # Create the elic_cat object for an elicitation process with three topics,
 #' # four options, five categories and a maximum of six experts per topic
+#' my_topics <- c("topic_1", "topic_2", "topic_3")
 #' my_categories <- c("category_1", "category_2", "category_3",
 #'                    "category_4", "category_5")
 #' my_options <- c("option_1", "option_2", "option_3", "option_4")
-#' my_topics <- c("topic_1", "topic_2", "topic_3")
-#' x <- cat_start(categories = my_categories,
+#' x <- cat_start(topics = my_topics,
 #'                options = my_options,
-#'                experts = 6,
-#'                topics = my_topics)
+#'                categories = my_categories,
+#'                experts = 6)
 #'
 #' # Add data for the three topics from a data.frame. Notice that the three
 #' # commands can be piped
@@ -136,6 +138,7 @@
 #' # Add data for the first and second round from Google Sheets
 #' googlesheets4::gs4_deauth()
 #' gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
+#'
 #' # Using the sheet index
 #' my_elicit <- cat_add_data(x,
 #'                           data_source = gs,
@@ -148,7 +151,9 @@
 #'                sheet = 3,
 #'                topic = "topic_3")
 #' my_elicit
-#' # Using the sheet name
+#'
+#' # (You can also do this using the sheet name)
+#' \dontrun{
 #' my_elicit <- cat_add_data(x, data_source = gs,
 #'                           sheet = "Topic 1",
 #'                           topic = "topic_1") |>
@@ -159,6 +164,7 @@
 #'                sheet = "Topic 3",
 #'                topic = "topic_3")
 #' my_elicit
+#' }
 cat_add_data <- function(x,
                          data_source,
                          topic,
@@ -166,7 +172,8 @@ cat_add_data <- function(x,
                          sep = ",",
                          sheet = 1,
                          overwrite = FALSE,
-                         verbose = TRUE) {
+                         verbose = TRUE,
+                         anonymise = TRUE) {
 
   # Check if the object is of class elic_cat
   check_elic_obj(x, type = "cat")
@@ -186,7 +193,7 @@ cat_add_data <- function(x,
 
   # Check if data has the correct number of columns
   check_columns(data, 5)
-  colnames(data) <- c("id", "category", "option", "confidence", "estimate")
+  colnames(data) <- c("id", "option", "category", "confidence", "estimate")
 
   # Check columns type
   check_columns_type(data[1:3], "character")
@@ -219,12 +226,14 @@ cat_add_data <- function(x,
   # experts
   check_column_format(data, col = "confidence")
 
-  # Anonymise names
-  data <- anonimise_names(data)
+  if (anonymise) {
+    # Anonymise names
+    data <- anonimise_names(data)
+  }
 
   # Check if estimates for each expert and option sum to 1. This is done after
   # anonymising the names to avoid exposing the names in the error message.
-  check_sum_1(data)
+  data <- check_sum_1(data)
 
   x[["data"]][[topic]] <- data
 
@@ -294,7 +303,7 @@ check_names_categories_options <- function(x, data, type) {
     }
   }
 
-  if (nchar(error) > 0) {
+  if (nzchar(error, keepNA = TRUE)) {
 
     info <- "Check the metadata in the {.cls elic_cat} object."
 
@@ -329,7 +338,7 @@ check_column_format <- function(x, col) {
     }
   } else {
     col_values <- unique(x[[col]])
-    diff_cols <- setdiff(c("id", "category", "option"), col)
+    diff_cols <- setdiff(c("id", "option", "category"), col)
     col_1 <- unique(x[[diff_cols[[1]]]]) |>
       length()
     col_2 <- unique(x[[diff_cols[[2]]]]) |>
@@ -348,8 +357,8 @@ check_column_format <- function(x, col) {
 
     what <- switch(col,
                    "id" = "expert names",
-                   "category" = "categories",
                    "option" = "options",
+                   "category" = "categories",
                    "confidence" = "confidence values")
 
     error <- "The column containing the {what} is not formatted as \\
@@ -365,14 +374,15 @@ check_column_format <- function(x, col) {
 
 #' Check estimates
 #'
-#' Check if estimates for each expert and option sum to 1.
+#' Check if estimates for each expert and option sum to 1 or 100 and normalise
+#' to 100.
 #'
 #' @param x data.frame with the data to be checked.
 #'
 #' @return An error if estimates for each expert and option don't sum to 1.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali, Maude Vernet
 check_sum_1 <- function(x) {
 
   sums <- x |>
@@ -380,22 +390,29 @@ check_sum_1 <- function(x) {
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
-    dplyr::summarise(sum = sum(.data[["estimate"]]))
-  sums_vector <- sums |>
-    dplyr::pull("sum")
+    dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
+  sums_vector <- dplyr::pull(sums,
+                             "sum")
+  #sum is the sum of the estimates for each expert & option
 
-  total <- sum(sums_vector > 1 + 1.5e-8 | sums_vector < 1 - 1.5e-8)
+  tol <- 1.5e-8
+  #in case estimates were given in proportions
+  bad_1 <- sums_vector > 1 + tol | sums_vector < 1 - tol
+  #in case estimates were given in percents
+  bad_100 <- sums_vector > 100 + tol | sums_vector < 100 - tol
+
+  total <- sum(bad_1 & bad_100) #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
-    idx <- which(sums_vector != 1)
+    idx <- which(bad_1 & bad_100)
     wrong_data <- sums[idx, ]
 
     if (total == 1) {
-      error <- "Estimates of one expert and one option don't sum to 1."
+      error <- "Estimates of one expert and one option don't sum to 1 or 100."
     } else {
       error <- "Estimates of one/some experts for one/some options don't sum \\
-                to 1."
+                to 1 or 100."
     }
 
     msg <- paste0("{cli::symbol$bullet} Check {.field id} {.val ",
@@ -408,5 +425,43 @@ check_sum_1 <- function(x) {
                      "x" = error,
                      msg),
                    call = rlang::caller_env())
+  } else {
+
+    #in case estimates were given in proportions
+    good_1 <- abs(sums_vector - 1) < tol
+    has_1 <- any(good_1)
+
+    #in case estimates were given in percents
+    has_100 <- any(abs(sums_vector - 100) < tol)
+
+    if (has_1) {
+
+      if (has_100) {
+        cli::cli_inform(c("i" = "Estimates sum to 100 for some \\
+                          experts/options, and to 1 for others. \\
+                          Rescaling the 1-sums to 100."))
+      } else {
+        cli::cli_inform(c("i" = "Estimates sum to 1. Rescaling to 100."))
+      }
+
+      # Rescaling to 100
+      sums_flag <- sums |>
+        # add a column to sums which flags the ones equal to 1
+        dplyr::mutate("flag" = good_1) |>
+        # Keep only the columns id, option and flag from sums (drop sum column)
+        dplyr::select(id, option, flag)
+
+      x <- x |>
+        # Join the flags to the original data
+        dplyr::left_join(sums_flag, by = c("id", "option")) |>
+        # Rescale only the flagged rows (if flag is true -> *100)
+        dplyr::mutate("estimate" = dplyr::if_else(flag,
+                                                  estimate * 100,
+                                                  estimate)) |>
+        # Remove the flag column
+        dplyr::select(-"flag")
+    }
   }
+
+  x
 }

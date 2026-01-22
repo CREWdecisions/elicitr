@@ -193,8 +193,8 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
 
   if (elic_type == "1p") {
     # One point elicitation
-    estimates <- data |>
-      dplyr::pull(2)
+    estimates <- dplyr::pull(data,
+                             2)
 
   } else {
     # Three or four points elicitation
@@ -218,8 +218,8 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
       }
     }
 
-    estimates <- data |>
-      dplyr::select(2:4)
+    estimates <- dplyr::select(data,
+                               2:4)
   }
 
   estimates

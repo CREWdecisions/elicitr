@@ -77,7 +77,7 @@ test_that("Errors", {
 
   # When one category is not on the metadata
   y <- topic_1
-  y[1, 2] <- "category_6"
+  y[1, 3] <- "category_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -85,8 +85,8 @@ test_that("Errors", {
 
   # When two categories are not on the metadata
   y <- topic_1
-  y[1, 2] <- "category_6"
-  y[2, 2] <- "category_7"
+  y[1, 3] <- "category_6"
+  y[2, 3] <- "category_7"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -94,7 +94,7 @@ test_that("Errors", {
 
   # When one option is not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "option_5"
+  y[1:5, 2] <- "option_5"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -102,8 +102,8 @@ test_that("Errors", {
 
   # When two options are not on the metadata
   y <- topic_1
-  y[1:5, 3] <- "option_5"
-  y[6:10, 3] <- "option_6"
+  y[1:5, 2] <- "option_5"
+  y[6:10, 2] <- "option_6"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -119,7 +119,7 @@ test_that("Errors", {
 
   # When the column with the categories is malformed
   y <- topic_1
-  y[1:5, 2] <- "category_1"
+  y[1:5, 3] <- "category_1"
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -127,7 +127,7 @@ test_that("Errors", {
 
   # When the column with the options is malformed
   y <- topic_1
-  y[1:5, 3] <- c(paste0("option_", 1:4), "option_1")
+  y[1:5, 2] <- c(paste0("option_", 1:4), "option_1")
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -141,7 +141,7 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for one expert and option
+  # When estimates don't sum to 1 or 100 for one expert and option
   y <- topic_1
   y[1, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
@@ -149,13 +149,76 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
-  # When estimates don't sum to 1 for more experts and options
+  # When estimates don't sum to 1 or 100 for more experts and options
   y[19, 5] <- 0.99
   y[120, 5] <- 0.99
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
+})
+
+test_that("Accepts all estimates summing to 100", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  # All estimates sum to 100, they are not again multiplied by 100
+  y <- topic_1
+  y[, 5] <- y[, 5] * 100 # Convert to percentages
+
+  z <- topic_1
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
+})
+
+test_that("Accepts some estimates summing to 1 and some to 100", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  # Some estimates sum to 1, some to 100
+  y <- topic_1
+  exp1 <- y[[1, 1]]
+  opt1 <- y[[1, 2]]
+
+  z <- topic_1
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
+
+  idx <- which(y[, 1] == exp1 & y[, 2] == opt1)
+  y[idx, 5] <- y[idx, 5] * 100 # Convert to percentages
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
+})
+
+test_that("Accepts all estimates summing to 1", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  # All estimates sum to 1, they are rescaled at 100
+  y <- topic_1
+  y[, 5] <- y[, 5]
+
+  z <- topic_1
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
 })
 
 test_that("Info", {
@@ -165,15 +228,28 @@ test_that("Info", {
                  topics = c("topic_1", "topic_2"),
                  verbose = FALSE)
 
-  # Success adding data.frame
+  z <- topic_1
+  z[, 5] <- z[, 5] * 100 # Convert to percentages
+
+  # Success adding data.frame with and without anonymisation
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = topic_1,
                                       topic = "topic_1"))
-  expect_identical(out[["data"]][["topic_1"]][, -1], topic_1[, -1])
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
   hashed_id <- dplyr::pull(topic_1, "name") |>
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = topic_1,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding csv file
   files <- list.files(path = system.file("extdata", package = "elicitr"),
@@ -183,12 +259,24 @@ test_that("Info", {
                                       data_source = files[[1]],
                                       topic = "topic_1"))
   # Test equal and not identical because when saved as file we loose precision
-  expect_equal(out[["data"]][["topic_1"]][, -1], topic_1[, -1],
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = files[[1]],
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
@@ -198,12 +286,24 @@ test_that("Info", {
                                       data_source = file,
                                       topic = "topic_1"))
   # Test equal and not identical because when saved as file we loose precision
-  expect_equal(out[["data"]][["topic_1"]][, -1], topic_1[, -1],
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = file,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Data imported from Google Sheets
   googlesheets4::gs4_deauth()
@@ -218,10 +318,27 @@ test_that("Info", {
                                       data_source = gs,
                                       topic = "topic_1"))
   # Test equal and not identical because when saved as file we loose precision
-  expect_equal(out[["data"]][["topic_1"]][, -1], topic_1[, -1],
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())
   hashed_id <- dplyr::pull(topic_1, "name") |>
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), hashed_id)
+
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = gs,
+                                      topic = "topic_1",
+                                      anonymise = FALSE))
+  # Test equal and not identical because when saved as file we loose precision
+  expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
+               tolerance = testthat_tolerance())
+  hashed_id <- dplyr::pull(topic_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 })

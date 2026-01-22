@@ -1,6 +1,6 @@
 test_that("Errors", {
   obj <- create_cat_obj()
-  samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
 
   # When option is not available in the data
@@ -9,18 +9,21 @@ test_that("Errors", {
   # When colours are less than the number of categories
   expect_snapshot(plot(samp, colours = c("red", "blue")),
                   error = TRUE)
+
+  #When type is not valid
+  expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
 })
 
 test_that("Output", {
   obj <- create_cat_obj()
-  samp <- cat_sample_data(obj, method = "basic", topic = "topic_1",
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
 
   # When option is not specified
   p <- plot(samp)
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 4L)
   expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
@@ -30,9 +33,9 @@ test_that("Output", {
 
   # When option is specified
   p <- plot(samp, option = c("option_3", "option_2"))
-  expect_true(ggplot2::is.ggplot(p))
+  expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "GeomViolin")
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
   expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 4L)
   expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
@@ -58,6 +61,18 @@ test_that("Output", {
                    "Y-axis")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["legend.position"]], "bottom")
+
+  # Test type = "beeswarm"
+  p <- plot(samp, type = "beeswarm")
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
   expect_identical(p[["theme"]][["legend.position"]], "bottom")
 
   # Test theme

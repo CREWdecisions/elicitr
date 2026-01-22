@@ -44,6 +44,8 @@ test_that("Errors ", {
                   error = TRUE)
   expect_snapshot(cont_add_data(x, data_source = round_1, round = 0),
                   error = TRUE)
+  expect_snapshot(cont_add_data(x, data_source = round_1, round = round_1),
+                  error = TRUE)
   # When >=2 id are present in Round 2 but not in Round 1 and there are not NAs
   y <- cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE)
   z <- round_2
@@ -261,6 +263,15 @@ test_that("Info", {
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cont_add_data(x, data_source = round_1, round = 1,
+                                       anonymise = FALSE))
+  expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
+  hashed_id <- dplyr::pull(round_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), round_1$name)
+
   # Success adding csv file
   files <- list.files(path = system.file("extdata", package = "elicitr"),
                       pattern = "round_",
@@ -271,6 +282,15 @@ test_that("Info", {
     stand_names() |>
     hash_names()
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), hashed_id)
+
+  expect_snapshot(out <- cont_add_data(x, data_source = files[[1]], round = 1,
+                                       anonymise = FALSE))
+  expect_identical(out[["data"]][["round_1"]][, -1], round_1[, -1])
+  hashed_id <- dplyr::pull(round_1, "name") |>
+    stand_names() |>
+    hash_names()
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), round_1$name)
+
   # Success adding xlsx file
   file <- list.files(path = system.file("extdata", package = "elicitr"),
                      pattern = "rounds",
@@ -280,6 +300,12 @@ test_that("Info", {
                tolerance = testthat_tolerance())
   expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"),
                    hash_names(stand_names(dplyr::pull(round_1, "name"))))
+
+  expect_snapshot(out <- cont_add_data(x, data_source = file, round = 1,
+                                       anonymise = FALSE))
+  expect_equal(out[["data"]][["round_1"]][, -1], round_1[, -1],
+               tolerance = testthat_tolerance())
+  expect_identical(dplyr::pull(out[["data"]][["round_1"]], "id"), round_1$name)
 
   # Data imported from Google Sheets
   googlesheets4::gs4_deauth()

@@ -17,27 +17,11 @@
 #' @param title character, the title of the plot.
 #' @param xlab character, the title of the x axis.
 #' @param ylab character, the title of the y axis.
+#' @param expert_names numeric or character, the labels for the experts.
 #' @param family character, the font family.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
 #' @inheritParams cont_add_data
-#'
-#' @section scale_conf:
-#'
-#' If the variable plotted is the result of a four points elicitation where
-#' expert confidence is provided, the minimum and maximum values provided by
-#' each expert are rescaled using their provided confidence categories. Users
-#' can choose how they want to rescale minimum and maximum values by providing a
-#' value for the `scale_conf` argument. If no argument is provided, a default
-#' value of 100 is used for scale_conf.
-#'
-#' The scaled minimum and maximum values are obtained with:
-#'
-#' \eqn{minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
-#' {confidence}}
-#'
-#' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
-#' {confidence}}
 #'
 #' @details
 #' The `truth` argument is useful when the elicitation process is part of a
@@ -107,6 +91,7 @@ plot.elic_cont <- function(x,
                            xlab = var,
                            ylab = "Experts",
                            family = "sans",
+                           expert_names = NULL,
                            theme = NULL,
                            verbose = TRUE) {
 
@@ -124,8 +109,14 @@ plot.elic_cont <- function(x,
     dplyr::mutate(col = "experts")
   colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
 
-  ids <- data |>
-    dplyr::pull(.data[["id"]])
+  if (!is.null(expert_names)) {
+    data <- cont_rename_experts(x,
+                                data,
+                                expert_names)
+  }
+
+  ids <- dplyr::pull(data,
+                     .data[["id"]])
   elic_type <- get_type(x, var, "elic")
   var_type <- get_type(x, var, "var")
   idx <- seq_len(x[["experts"]])
@@ -187,13 +178,13 @@ plot.elic_cont <- function(x,
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
-      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = .data[["id"]],
-                                                     xmin = .data[["min"]],
-                                                     xmax = .data[["max"]],
-                                                     colour = .data[["col"]]),
-                              position = "identity",
-                              height = 0,
-                              linewidth = line_width)
+      ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
+                                                    xmin = .data[["min"]],
+                                                    xmax = .data[["max"]],
+                                                    colour = .data[["col"]]),
+                             position = "identity",
+                             width = 0,
+                             linewidth = line_width)
   }
 
   if (var_type == "p") {
@@ -260,29 +251,29 @@ add_group_data <- function(data, elic_type) {
 #' @return A tibble with the true data added.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 add_truth_data <- function(data, truth, elic_type) {
 
   if (elic_type == "1p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "col" = "truth")
   } else if (elic_type == "3p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "min" = truth[["min"]],
-                     "max" = truth[["max"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "min" = truth[["min"]],
+                           "max" = truth[["max"]],
+                           "col" = "truth")
   } else if (elic_type == "4p") {
-    data <- data |>
-      dplyr::add_row("id" = "Truth",
-                     "best" = truth[["best"]],
-                     "min" = truth[["min"]],
-                     "max" = truth[["max"]],
-                     "conf" = truth[["conf"]],
-                     "col" = "truth")
+    data <- dplyr::add_row(data,
+                           "id" = "Truth",
+                           "best" = truth[["best"]],
+                           "min" = truth[["min"]],
+                           "max" = truth[["max"]],
+                           "conf" = truth[["conf"]],
+                           "col" = "truth")
   }
 
   data
@@ -385,7 +376,7 @@ check_truth <- function(x, elic_type) {
     info <- "See {.fn elicitr::plot.elic_cont}."
   }
 
-  if (nchar(error) > 0) {
+  if (nzchar(error, keepNA = TRUE)) {
 
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
@@ -411,4 +402,63 @@ cont_theme <- function() {
                  panel.grid.major.y = ggplot2::element_blank(),
                  axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
                  legend.position = "none")
+}
+
+# Rename experts----
+
+#' Rename experts
+#' Check if the new names vector is of the correct length
+#' Rename experts in elic_cont object
+#' @param x the object to be plotted
+#' @param data tibble with the elicitation data
+#' @param expert_names character vector with the new names for the experts
+#'
+#' @return the object with renamed experts
+#' @noRd
+#'
+#' @author Maude Vernet
+cont_rename_experts <- function(x,
+                                data,
+                                expert_names) {
+
+  n_experts <- length(unique(data[["id"]]))
+
+  if (length(expert_names) != n_experts) {
+    error <- "You provided {.val {length(expert_names)}} expert names but the \\
+              elicitation process has {.val {n_experts}} experts."
+    cli::cli_abort(c("Incorrect length of {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Provide a vector of length {.val {n_experts}}."),
+                   call = rlang::caller_env())
+  }
+
+  if (anyDuplicated(expert_names) > 0) {
+    error <- "Multiple experts have the same name in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide unique names for each expert."),
+                   call = rlang::caller_env())
+  }
+
+  if (any(expert_names == "Group") || any(expert_names == "Truth")) {
+    error <- "The names {.val Group} and {.val Truth} are reserved and cannot \\
+              be used in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide different names for the experts."),
+                   call = rlang::caller_env())
+  }
+
+  if (class(x)[1] == "elic_cont") {
+    expert_names <- as.character(expert_names)
+    data[["id"]] <- expert_names
+  }
+
+  if (class(data)[1] == "cont_sample") {
+    names(expert_names) <- unique(data$id)
+    data$id <- expert_names[data$id]
+    data
+  }
+
+  data
 }

@@ -8,6 +8,8 @@
 #' @inheritParams cat_get_data
 #' @param x an object of class `cat_sample` created by the function
 #' [cat_sample_data].
+#' @param type character string with the type of plot, either _beeswarm_ or
+#' _violin_.
 #' @param title character string with the title of the plot. If `NULL`, the
 #' title will be the topic name.
 #' @param ylab character string with the label of the y-axis.
@@ -15,6 +17,10 @@
 #' @param family character string with the font family to use in the plot.
 #' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
 #' theme.
+#' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
+#' @param beeswarm_corral character string, the wrapping corral for the beeswarm
+#' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
+#' function.
 #'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
@@ -40,13 +46,19 @@
 #'   cat_add_data(data_source = topic_2, topic = "topic_2") |>
 #'   cat_add_data(data_source = topic_3, topic = "topic_3")
 #'
-#' # Sample data from Topic 1 for all options using the basic method
+#' # Sample data from Topic 1 for all options using the unweighted method
 #' samp <- cat_sample_data(my_elicit,
-#'                         method = "basic",
+#'                         method = "unweighted",
 #'                         topic = "topic_1")
 #'
 #' # Plot the sampled data for all options
 #' plot(samp)
+#'
+#' # Plot the sampled data as beeswarm plot
+#'
+#' \dontrun{
+#' plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
+#' }
 #'
 #' # Plot the sampled data for option 1
 #' plot(samp, option = "option_1")
@@ -61,13 +73,16 @@
 #' # Overwrite the default theme
 #' plot(samp, theme = ggplot2::theme_minimal())
 plot.cat_sample <- function(x,
+                            type = "violin",
                             ...,
                             option = "all",
                             title = NULL,
-                            ylab = "Probabolity",
+                            ylab = "Probability",
                             colours = NULL,
                             family = "sans",
-                            theme = NULL) {
+                            theme = NULL,
+                            beeswarm_cex = 0.6,
+                            beeswarm_corral = "none") {
 
   if (any(option != "all")) {
 
@@ -113,16 +128,36 @@ plot.cat_sample <- function(x,
       cat_sample_theme()
   }
 
-  p <- ggplot2::ggplot(x) +
-    ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
-                                                y = .data[["prob"]],
-                                                fill = .data[["category"]]),
-                         colour = "black",
-                         alpha = 0.8,
-                         scale = "width",
-                         linewidth = 0.2,
-                         draw_quantiles = c(0.25, 0.75),
-                         key_glyph = "dotplot") +
+  if (type == "violin") {
+    p <- ggplot2::ggplot(x) +
+      ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
+                                                  y = .data[["prob"]],
+                                                  fill = .data[["category"]]),
+                           colour = "black",
+                           alpha = 0.8,
+                           scale = "width",
+                           linewidth = 0.2,
+                           quantiles = c(0.25, 0.75),
+                           quantile.linetype = 1L,
+                           key_glyph = "dotplot")
+  } else if (type == "beeswarm") {
+    p <- ggplot2::ggplot(x) +
+      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[["category"]],
+                                                       y = .data[["prob"]],
+                                                       colour =
+                                                         .data[["category"]]),
+                                cex = beeswarm_cex,
+                                size = 1,
+                                corral = beeswarm_corral)
+  } else {
+
+    info <- "Available types are {.val beeswarm} and {.val violin}."
+    cli::cli_abort(c("Invalid value for argument {.arg type}:",
+                     "x" = "Type {.val {type}} is not implemented.",
+                     "i" = info))
+  }
+
+  p <- p +
     ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[["category"]],
                                                  y = .data[["prob"]]),
                           fun = mean,
