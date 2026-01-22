@@ -1,6 +1,7 @@
 linters: all_linters(
   packages = "lintr",
   object_overwrite_linter = NULL,
+  if_switch_linter = NULL,
   implicit_assignment_linter = NULL,
   implicit_integer_linter = NULL,
   keyword_quote_linter = NULL,
