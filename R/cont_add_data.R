@@ -632,7 +632,7 @@ check_data_types <- function(x, data) {
 
     df <- unlist(data[, idx])
 
-    if (any(is.na(df))) {
+    if (anyNA(df)) {
 
       error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
 
