@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/v0.1.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/main/DESCRIPTION)
 
 Vignali S, Vernet M, Canessa S (2026). *elicitr: A user friendly
 interface to aggregate elicitation data*. R package version 0.1.0,
