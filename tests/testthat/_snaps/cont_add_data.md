@@ -171,6 +171,16 @@
     Code
       cont_add_data(x, data_source = y, round = 1)
     Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var1" contains "NA" values.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
       Error in `cont_add_data()`:
       ! Invalid data type:
       x Variable "var1" contains some non integer numbers.
@@ -181,9 +191,29 @@
     Code
       cont_add_data(x, data_source = y, round = 1)
     Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var1" contains "NA" values.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
       Error in `cont_add_data()`:
       ! Invalid data type:
       x Variable "var2" contains some non positive integer numbers.
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var2" contains "NA" values.
       i Check raw data.
 
 ---
@@ -209,6 +239,16 @@
 ---
 
     Code
+      cont_add_data(y, data_source = z, round = 1)
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var3" contains "NA" values.
+      i Check raw data.
+
+---
+
+    Code
       cont_add_data(y, data_source = round_1, round = 1)
     Condition
       Error in `cont_add_data()`:
@@ -219,6 +259,16 @@
 ---
 
     Code
+      cont_add_data(y, data_source = z, round = 1)
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var3" contains "NA" values.
+      i Check raw data.
+
+---
+
+    Code
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
@@ -234,6 +284,16 @@
       Error in `cont_add_data()`:
       ! Invalid data type:
       x Variable "var3" contains some values not in the range [0, 1].
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var3" contains "NA" values.
       i Check raw data.
 
 ---
@@ -254,6 +314,16 @@
       Error in `cont_add_data()`:
       ! Invalid data type:
       x Variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check raw data.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Variable "var3" contains "NA" values.
       i Check raw data.
 
 # Warnings

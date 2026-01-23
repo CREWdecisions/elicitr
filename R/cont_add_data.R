@@ -632,6 +632,17 @@ check_data_types <- function(x, data) {
 
     df <- unlist(data[, idx])
 
+    if (anyNA(df)) {
+
+      error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
+
+      cli::cli_abort(c("Invalid raw data:",
+                       "x" = error,
+                       "i" = "Check raw data."),
+                     call = rlang::caller_env(n = 2))
+
+    }
+
     if (var_types[i] == "Z") {
 
       check_is_integer(df, var_names[i])

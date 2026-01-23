@@ -85,15 +85,31 @@ test_that("Errors ", {
                                        round = 2, verbose = FALSE),
                   error = TRUE)
 
+  # When a R variable contains NAs
+  y <- round_1
+  y[1, 2] <- NA
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+
   # When a Z variable contains non integer numbers
   y <- round_1
   y[, 2] <- y[, 2] * 0.1
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+  # When a Z variable contains NAs
+  y <- round_1
+  y[1, 2] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
 
   # When a N variable contains non positive integer numbers
   y <- round_1
   y[, 3] <- y[1, 3] * -1
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+  # When a N variable contains NAs
+  y <- round_1
+  y[1, 3] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
 
@@ -110,11 +126,26 @@ test_that("Errors ", {
   z[1, 6] <- -0.5
   expect_snapshot(cont_add_data(y, data_source = z, round = 1),
                   error = TRUE)
+  # When a s variable contains NAs
+  y <- x
+  y[["var_types"]][[3]] <- "s"
+  z <- round_1
+  z[1, 6] <- NA
+  expect_snapshot(cont_add_data(y, data_source = z, round = 1),
+                  error = TRUE)
 
   # When a r variable contains positive numbers
   y <- x
   y[["var_types"]][[3]] <- "r"
   expect_snapshot(cont_add_data(y, data_source = round_1, round = 1),
+                  error = TRUE)
+  # When a r variable contains NAs
+  y <- x
+  y[["var_types"]][[3]] <- "r"
+  z <- round_1
+  z[, 6:8] <- z[, 6:8] * -1
+  z[1, 6] <- NA
+  expect_snapshot(cont_add_data(y, data_source = z, round = 1),
                   error = TRUE)
 
   # When a p variable contains non probability numbers
@@ -124,6 +155,11 @@ test_that("Errors ", {
                   error = TRUE)
   y <- round_1
   y[1, 6] <- 1.5
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+  # When a p variable contains NAs
+  y <- round_1
+  y[1, 6] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
 
@@ -136,7 +172,11 @@ test_that("Errors ", {
   y[1, 9] <- 101
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
-
+  # When conf contains NAs
+  y <- round_1
+  y[1, 9] <- NA
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
 })
 
 test_that("Warnings", {
