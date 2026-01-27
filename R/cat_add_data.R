@@ -401,6 +401,21 @@ check_sum_1 <- function(x) {
   #in case estimates were given in percents
   bad_100 <- sums_vector > 100 + tol | sums_vector < 100 - tol
 
+  na_options <- is.na(sums_vector)
+
+  if (sum(na_options) > 0) {
+
+    error <- "Expert {.val {sums[na_options,]$id[1]}} did not give \\
+    estimates for option {.val {sums[na_options,]$option[1]}}. The raw data \\
+    contains {.val NA} values."
+
+    cli::cli_abort(c("Invalid raw data:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+
+  }
+
   total <- sum(bad_1 & bad_100) #if both are bad, then the sum is wrong
 
   if (total > 0) {

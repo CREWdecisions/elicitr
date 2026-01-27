@@ -221,6 +221,26 @@
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "data.frame"
 
+# Refuses if an option wasn't filled
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Expert 5ac97e0 did not give estimates for option "option_1". The raw data contains "NA" values.
+      i Check raw data.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error:
+      ! Invalid raw data:
+      x Expert 5ac97e0 did not give estimates for option "option_1". The raw data contains "NA" values.
+      i Check raw data.
+
 # Info
 
     Code

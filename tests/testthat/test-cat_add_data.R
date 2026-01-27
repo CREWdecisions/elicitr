@@ -221,6 +221,31 @@ test_that("Accepts all estimates summing to 1", {
   expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
 })
 
+test_that("Refuses if an option wasn't filled", {
+  x <- cat_start(categories = paste0("category_", 1:5),
+                 options = paste0("option_", 1:4),
+                 experts = 6,
+                 topics = c("topic_1", "topic_2"),
+                 verbose = FALSE)
+
+  y <- topic_1
+  y[1:5, 5] <- NA
+
+  #if one option is NA
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  y[21:25, 5] <- NA
+
+  #if multiple options are NA
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+})
+
 test_that("Info", {
   x <- cat_start(categories = paste0("category_", 1:5),
                  options = paste0("option_", 1:4),
