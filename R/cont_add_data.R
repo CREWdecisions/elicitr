@@ -305,7 +305,7 @@ fix_var_order <- function(x,
 
     idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
 
-    if (sum(idx_rows) > 0) {
+    if (sum(idx_rows, na.rm = TRUE) > 0) {
       x[, idx_cols] <- apply(x[, idx_cols], 1, min_max_best) |>
         t()
 
@@ -633,14 +633,42 @@ check_data_types <- function(x, data) {
     df <- unlist(data[, idx])
 
     if (anyNA(df)) {
+      nm <- names(df)
+      i_na <- which(is.na(df))
 
-      error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
+      for (j in seq_along(i_na)) {
+        current_name <- nm[i_na[j]]
 
-      cli::cli_abort(c("Invalid raw data:",
-                       "x" = error,
-                       "i" = "Check raw data."),
-                     call = rlang::caller_env(n = 2))
+        # Extract prefix (variable name) and index (number of the expert)
+        m <- regexec("^(.*)_(best|min|max|conf)([0-9]+)$", current_name)
+        parts <- regmatches(current_name, m)[[1]]
+        prefix <- parts[2]
+        idx <- parts[4]
 
+        # Build pattern to extract all values for the current variable and
+        pat  <- paste0("^", prefix, "_(best|min|max|conf)", idx, "$")
+
+        # Extract all values for the current variable and expert
+        vals <- df[grepl(pat, nm)]
+
+        if (all(is.na(vals))) {
+          some_NAs <- TRUE
+        } else {
+          error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
+
+          cli::cli_abort(c("Invalid raw data:",
+                           "x" = error,
+                           "i" = "Check raw data."),
+                         call = rlang::caller_env(n = 2))
+        }
+      }
+      if (some_NAs) {
+        warn <- "Some expert(s) did not report estimates for all variables"
+        info <- "Check raw data and if you want to update the dataset use \\
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
+        cli::cli_warn(c("!" = warn,
+                        "i" = info))
+      }
     }
 
     if (var_types[i] == "Z") {
@@ -688,6 +716,7 @@ check_is_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0)) {
 
@@ -713,6 +742,7 @@ check_is_positive_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0) || any(x < 0)) {
 
@@ -738,6 +768,7 @@ check_is_negative_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0) || any(x) >= 0) {
 
@@ -763,6 +794,7 @@ check_is_positive_real <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (any(x < 0)) {
 
@@ -788,6 +820,7 @@ check_is_negative_real <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (any(x >= 0)) {
 
@@ -813,6 +846,7 @@ check_is_probability <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x >= 0) || !all(x <= 1)) {
 
@@ -829,6 +863,7 @@ check_conf <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[idx]
+  x <- x[!is.na(x)]
 
   if (!all(x > 50) || !all(x <= 100)) {
 
