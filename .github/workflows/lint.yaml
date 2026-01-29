@@ -25,6 +25,7 @@ jobs:
         with:
           extra-packages: any::usethis, any::withr, any::lintr, any::cyclocomp, local::.
           needs: lint
+          lockfile: false
 
       - name: Lint
         run: lintr::lint_package()
