@@ -146,6 +146,12 @@ specifications below:</p>
 <li><p><code>var_conf</code>: confidence for the estimate</p></li>
 </ul><p>The column with names is unique, the other columns are a block and can be
 repeated for each variable.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="column-and-variable-names">Column and variable names<a class="anchor" aria-label="anchor" href="#column-and-variable-names"></a></h2>
+
+
+
 <p>Moreover, the name of the columns is not important, <code>cont_add_data()</code> will
 overwrite it according to the following convention:</p>
 <p><em>variable_name</em>_<em>suffix</em></p>
@@ -155,6 +161,17 @@ to build the column names is taken from the metadata available in the
 <p><code>var_conf</code>, given as percentage, can be any number in the range (50, 100].
 Any value smaller or equal to 50 would imply that the accuracy of the
 estimates is only due to chance).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="nas">NAs<a class="anchor" aria-label="anchor" href="#nas"></a></h2>
+
+
+
+<p>It is possible that some experts did not provide estimates for all variables.
+In this case, the missing values should be recorded as <code>NA</code>. However, experts
+should always answer completely or not at all. If estimates are only
+partially given for a  variable (example <em>min</em> and <em>max</em> provided but not
+<em>best</em> for 3p elicitation), an error is raised.</p>
     </div>
     <div class="section level2">
     <h2 id="data-cleaning">Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a></h2>
