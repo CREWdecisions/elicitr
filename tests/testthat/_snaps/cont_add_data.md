@@ -169,11 +169,22 @@
 ---
 
     Code
-      cont_add_data(x, data_source = y, round = 1)
+      out <- cont_add_data(z, data_source = y, round = 1)
     Condition
-      Error:
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      v Data added to "Round 1" from "data.frame"
+
+---
+
+    Code
+      cont_add_data(z, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
       ! Invalid raw data:
-      x Variable "var1" contains "NA" values.
+      x Variable "var2" contains "NA" values.
       i Check raw data.
 
 ---
@@ -189,12 +200,13 @@
 ---
 
     Code
-      cont_add_data(x, data_source = y, round = 1)
+      out <- cont_add_data(x, data_source = y, round = 1)
     Condition
-      Error:
-      ! Invalid raw data:
-      x Variable "var1" contains "NA" values.
-      i Check raw data.
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      v Data added to "Round 1" from "data.frame"
 
 ---
 
@@ -209,12 +221,13 @@
 ---
 
     Code
-      cont_add_data(x, data_source = y, round = 1)
+      out <- cont_add_data(x, data_source = y, round = 1)
     Condition
-      Error:
-      ! Invalid raw data:
-      x Variable "var2" contains "NA" values.
-      i Check raw data.
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      v Data added to "Round 1" from "data.frame"
 
 ---
 
@@ -239,12 +252,13 @@
 ---
 
     Code
-      cont_add_data(y, data_source = z, round = 1)
+      out <- cont_add_data(y, data_source = z, round = 1)
     Condition
-      Error:
-      ! Invalid raw data:
-      x Variable "var3" contains "NA" values.
-      i Check raw data.
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      v Data added to "Round 1" from "data.frame"
 
 ---
 
@@ -259,12 +273,15 @@
 ---
 
     Code
-      cont_add_data(y, data_source = z, round = 1)
+      out <- cont_add_data(y, data_source = z, round = 1)
     Condition
-      Error:
-      ! Invalid raw data:
-      x Variable "var3" contains "NA" values.
-      i Check raw data.
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Warning:
+      ! var2 of <id> "e51202e", "e78cbf4", "9fafbee", "3cc9c29", and "3d32ab9" reordered following the order "min-max-best".
+    Message
+      v Data added to "Round 1" from "data.frame"
 
 ---
 
@@ -289,12 +306,13 @@
 ---
 
     Code
-      cont_add_data(x, data_source = y, round = 1)
+      out <- cont_add_data(x, data_source = y, round = 1)
     Condition
-      Error:
-      ! Invalid raw data:
-      x Variable "var3" contains "NA" values.
-      i Check raw data.
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      v Data added to "Round 1" from "data.frame"
 
 ---
 
@@ -321,7 +339,7 @@
     Code
       cont_add_data(x, data_source = y, round = 1)
     Condition
-      Error:
+      Error in `cont_add_data()`:
       ! Invalid raw data:
       x Variable "var3" contains "NA" values.
       i Check raw data.

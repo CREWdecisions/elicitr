@@ -157,3 +157,21 @@
     Message
       v Rescaled min and max
 
+# NAs are discarded correctly
+
+    Code
+      p <- plot(obj, round = 2, var = "var1", verbose = FALSE)
+
+---
+
+    Code
+      p <- plot(obj, round = 2, var = "var2", verbose = FALSE)
+
+---
+
+    Code
+      p <- plot(obj, round = 1, var = "var3", verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
+

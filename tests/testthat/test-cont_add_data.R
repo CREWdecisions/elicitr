@@ -85,10 +85,20 @@ test_that("Errors ", {
                                        round = 2, verbose = FALSE),
                   error = TRUE)
 
-  # When a R variable contains NAs
+  # When a R variable contains full NAs
+  z <- cont_start(var_names = c("var1", "var2", "var3"),
+                  var_types = "ZRp",
+                  elic_types = "134",
+                  experts = 6,
+                  verbose = FALSE)
   y <- round_1
-  y[1, 2] <- NA
-  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+  y[1, 3:5] <- NA
+  expect_snapshot(out <- cont_add_data(z, data_source = y, round = 1))
+
+  #When it contains 1 NA
+  y <- round_1
+  y[1, 3] <- NA
+  expect_snapshot(cont_add_data(z, data_source = y, round = 1),
                   error = TRUE)
 
   # When a Z variable contains non integer numbers
@@ -99,8 +109,7 @@ test_that("Errors ", {
   # When a Z variable contains NAs
   y <- round_1
   y[1, 2] <- NA
-  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
-                  error = TRUE)
+  expect_snapshot(out <- cont_add_data(x, data_source = y, round = 1))
 
   # When a N variable contains non positive integer numbers
   y <- round_1
@@ -109,9 +118,8 @@ test_that("Errors ", {
                   error = TRUE)
   # When a N variable contains NAs
   y <- round_1
-  y[1, 3] <- NA
-  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
-                  error = TRUE)
+  y[1, 3:5] <- NA
+  expect_snapshot(out <- cont_add_data(x, data_source = y, round = 1))
 
   # When a z variable contains positive integer numbers
   y <- x
@@ -128,11 +136,10 @@ test_that("Errors ", {
                   error = TRUE)
   # When a s variable contains NAs
   y <- x
-  y[["var_types"]][[3]] <- "s"
+  y[["var_types"]][[2]] <- "s"
   z <- round_1
-  z[1, 6] <- NA
-  expect_snapshot(cont_add_data(y, data_source = z, round = 1),
-                  error = TRUE)
+  z[1, 3:5] <- NA
+  expect_snapshot(out <- cont_add_data(y, data_source = z, round = 1))
 
   # When a r variable contains positive numbers
   y <- x
@@ -141,12 +148,11 @@ test_that("Errors ", {
                   error = TRUE)
   # When a r variable contains NAs
   y <- x
-  y[["var_types"]][[3]] <- "r"
+  y[["var_types"]][[2]] <- "r"
   z <- round_1
-  z[, 6:8] <- z[, 6:8] * -1
-  z[1, 6] <- NA
-  expect_snapshot(cont_add_data(y, data_source = z, round = 1),
-                  error = TRUE)
+  z[, 3:5] <- z[, 3:5] * -1
+  z[1, 3:5] <- NA
+  expect_snapshot(out <- cont_add_data(y, data_source = z, round = 1))
 
   # When a p variable contains non probability numbers
   y <- round_1
@@ -159,9 +165,8 @@ test_that("Errors ", {
                   error = TRUE)
   # When a p variable contains NAs
   y <- round_1
-  y[1, 6] <- NA
-  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
-                  error = TRUE)
+  y[1, 6:9] <- NA
+  expect_snapshot(out <- cont_add_data(x, data_source = y, round = 1))
 
   # When conf contains values not in the range (50, 100]
   y <- round_1
@@ -172,7 +177,7 @@ test_that("Errors ", {
   y[1, 9] <- 101
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
-  # When conf contains NAs
+  # When conf contains NAs while the rest isn't
   y <- round_1
   y[1, 9] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),

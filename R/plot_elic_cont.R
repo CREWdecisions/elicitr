@@ -143,7 +143,8 @@ plot.elic_cont <- function(x,
 
       # Rescale min and max
       data <- rescale_data(data, scale_conf)
-      needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
+
+      needs_resc <- check_resc_na(data = data, idx = idx)
 
       if (var_type == "p" && needs_resc) {
 
@@ -461,4 +462,27 @@ cont_rename_experts <- function(x,
   }
 
   data
+}
+
+#' Check if rescaling needed and if NA present
+#'
+#' @param data the data to be checked.
+#' @param idx the indices of the experts.
+#'
+#' @returns a logical indicating if rescaling is needed.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_resc_na <- function(data, idx) {
+  if (anyNA(data)) {
+    has_na <- which(rowSums(is.na(data)) > 0)
+    data_na <- data[-has_na, ]
+    idx_na <- seq_len(nrow(data_na))
+    needs_resc <-
+      any(data_na[["min"]][idx_na] < 0) || any(data_na[["max"]][idx_na] > 1)
+
+  } else {
+    needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
+  }
+  needs_resc
 }

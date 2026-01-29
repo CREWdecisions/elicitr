@@ -59,6 +59,8 @@ var_labels <- list("1p" = "best",
 #' The column with names is unique, the other columns are a block and can be
 #' repeated for each variable.
 #'
+#' @section Column and variable names:
+#'
 #' Moreover, the name of the columns is not important, `cont_add_data()` will
 #' overwrite it according to the following convention:
 #'
@@ -71,6 +73,14 @@ var_labels <- list("1p" = "best",
 #' `var_conf`, given as percentage, can be any number in the range (50, 100].
 #' Any value smaller or equal to 50 would imply that the accuracy of the
 #' estimates is only due to chance).
+#'
+#' @section NAs:
+#'
+#' It is possible that some experts did not provide estimates for all variables.
+#' In this case, the missing values should be recorded as `NA`. However, experts
+#' should always answer completely or not at all. If estimates are only
+#' partially given for a  variable (example _min_ and _max_ provided but not
+#' _best_ for 3p elicitation), an error is raised.
 #'
 #' @section Data cleaning:
 #'
@@ -305,7 +315,7 @@ fix_var_order <- function(x,
 
     idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
 
-    if (sum(idx_rows) > 0) {
+    if (sum(idx_rows, na.rm = TRUE) > 0) {
       x[, idx_cols] <- apply(x[, idx_cols], 1, min_max_best) |>
         t()
 
@@ -632,16 +642,7 @@ check_data_types <- function(x, data) {
 
     df <- unlist(data[, idx])
 
-    if (anyNA(df)) {
-
-      error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
-
-      cli::cli_abort(c("Invalid raw data:",
-                       "x" = error,
-                       "i" = "Check raw data."),
-                     call = rlang::caller_env(n = 2))
-
-    }
+    check_na_blocks(df = df, var_name = var_names[[i]])
 
     if (var_types[i] == "Z") {
 
@@ -688,6 +689,7 @@ check_is_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0)) {
 
@@ -713,6 +715,7 @@ check_is_positive_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0) || any(x < 0)) {
 
@@ -738,6 +741,7 @@ check_is_negative_integer <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0) || any(x) >= 0) {
 
@@ -763,6 +767,7 @@ check_is_positive_real <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (any(x < 0)) {
 
@@ -788,6 +793,7 @@ check_is_negative_real <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (any(x >= 0)) {
 
@@ -813,6 +819,7 @@ check_is_probability <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[!idx]
+  x <- x[!is.na(x)]
 
   if (!all(x >= 0) || !all(x <= 1)) {
 
@@ -829,6 +836,7 @@ check_conf <- function(x, v) {
 
   idx <- grepl("conf", names(x), fixed = TRUE)
   x <- x[idx]
+  x <- x[!is.na(x)]
 
   if (!all(x > 50) || !all(x <= 100)) {
 
@@ -839,5 +847,58 @@ check_conf <- function(x, v) {
                      "x" = error,
                      "i" = "Check raw data."),
                    call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check NA blocks
+#'
+#' @param df the df to be checked.
+#' @param var_name character string with the name of the variable to be checked.
+#'
+#' @returns An error if `df` contains some partial NAs for a variable and a
+#' warning if some experts did not provide estimates for all variables.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_na_blocks <- function(df, var_name) {
+  if (anyNA(df)) {
+    nm <- names(df)
+    i_na <- which(is.na(df))
+
+    for (j in seq_along(i_na)) {
+      current_name <- nm[i_na[j]]
+
+      # Extract prefix (variable name) and index (number of the expert)
+      m <- regexec("^(.*)_(best|min|max|conf)([0-9]+)$", current_name)
+      parts <- regmatches(current_name, m)[[1]]
+      prefix <- parts[2]
+      number <- parts[4]
+
+      # Build pattern to extract all values for the current variable and
+      pat  <- paste0("^", prefix, "_(best|min|max|conf)", number, "$")
+
+      # Extract all values for the current variable and expert
+      vals <- df[grepl(pat, nm)]
+
+      some_nas <- FALSE
+
+      if (all(is.na(vals))) {
+        some_nas <- TRUE
+      } else {
+        error <- "Variable {.val {var_name}} contains {.val NA} values."
+
+        cli::cli_abort(c("Invalid raw data:",
+                         "x" = error,
+                         "i" = "Check raw data."),
+                       call = rlang::caller_env(n = 2))
+      }
+    }
+    if (some_nas) {
+      warn <- "Some expert(s) did not report estimates for all variables"
+      info <- "Check raw data and if you want to update the dataset use \\
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
+      cli::cli_warn(c("!" = warn,
+                      "i" = info))
+    }
   }
 }

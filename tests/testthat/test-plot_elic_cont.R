@@ -395,3 +395,19 @@ test_that("get_type()", {
   expect_identical(get_type(obj, "var2", "elic"), "3p")
   expect_identical(get_type(obj, "var3", "elic"), "4p")
 })
+
+test_that("NAs are discarded correctly", {
+  obj <- create_cont_obj()
+  # 1p
+  obj[["data"]][["round_2"]][1, "var1_best"] <- NA
+  expect_snapshot(p <- plot(obj, round = 2, var = "var1", verbose = FALSE))
+  # 3p
+  obj <- create_cont_obj()
+  obj[["data"]][["round_2"]][1, c("var2_min", "var2_max", "var2_best")] <- NA
+  expect_snapshot(p <- plot(obj, round = 2, var = "var2", verbose = FALSE))
+  # 4p
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][1, c("var3_min", "var3_max",
+                                  "var3_best", "var3_conf")] <- NA
+  expect_snapshot(p <- plot(obj, round = 1, var = "var3", verbose = FALSE))
+})
