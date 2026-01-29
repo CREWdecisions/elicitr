@@ -59,6 +59,8 @@ var_labels <- list("1p" = "best",
 #' The column with names is unique, the other columns are a block and can be
 #' repeated for each variable.
 #'
+#' @section Column and variable names:
+#'
 #' Moreover, the name of the columns is not important, `cont_add_data()` will
 #' overwrite it according to the following convention:
 #'
@@ -71,6 +73,14 @@ var_labels <- list("1p" = "best",
 #' `var_conf`, given as percentage, can be any number in the range (50, 100].
 #' Any value smaller or equal to 50 would imply that the accuracy of the
 #' estimates is only due to chance).
+#'
+#' @section NAs:
+#'
+#' It is possible that some experts did not provide estimates for all variables.
+#' In this case, the missing values should be recorded as `NA`. However, experts
+#' should always answer completely or not at all. If estimates are only
+#' partially given for a  variable (example _min_ and _max_ provided but not
+#' _best_ for 3p elicitation), an error is raised.
 #'
 #' @section Data cleaning:
 #'
