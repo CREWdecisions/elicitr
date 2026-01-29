@@ -661,6 +661,8 @@ check_data_types <- function(x, data) {
         # Extract all values for the current variable and expert
         vals <- df[grepl(pat, nm)]
 
+        some_nas <- FALSE
+
         if (all(is.na(vals))) {
           some_nas <- TRUE
         } else {
