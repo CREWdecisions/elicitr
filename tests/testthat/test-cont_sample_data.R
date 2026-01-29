@@ -50,6 +50,18 @@ test_that("Warnings", {
   expect_identical(n_samp_actual, n_samp_expected)
 })
 
+test_that("accepts NAs", {
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][1, 6:9] <- NA
+  expect_snapshot(out <- cont_sample_data(obj,
+                                          round = 1,
+                                          var = "var3",
+                                          verbose = FALSE))
+  expect_length(which(out[["id"]] == unique(out[["id"]])[1]),
+                1)
+  expect_identical(out[["value"]][1], NA_real_)
+})
+
 test_that("Info", {
   obj <- create_cont_obj()
 
