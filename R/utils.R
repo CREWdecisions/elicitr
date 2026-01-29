@@ -727,8 +727,18 @@ rescale_data <- function(x, s = 100) {
 #' @author Sergio Vignali
 get_boostrap_n_sample <- function(experts, n_votes, conf) {
 
+  if(anyNA(conf)) {
+    position <- which(is.na(conf))
+    conf[is.na(conf)] <- 0
+  }
+
   n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
     miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+
+  if (exists("position")) {
+    n_samp[position] <- 1
+  }
+
   n_samp
 }
 

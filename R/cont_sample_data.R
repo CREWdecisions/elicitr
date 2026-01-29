@@ -119,6 +119,11 @@ cont_sample_data <- function(x,
     data <- cont_get_data(x, round = round, var = v)
     colnames(data) <- gsub(paste0(v, "_"), "", colnames(data))
 
+    # if (anyNA(data)) {
+    #   na_rows <- which(is.na(rowSums(data[ , -1])))
+    #   data <- data[-na_rows, ]
+    # }
+
     if (elic_type == "4p") {
       if (sum(weights) == n_experts) {
         weights <- data[, 5, drop = TRUE] / 100
@@ -246,10 +251,16 @@ get_sample <- function(estimates, n_samp, e, elic_type) {
   if (elic_type == "1p") {
     samp <- sample(estimates, n_samp[[e]], replace = TRUE)
   } else {
-    samp <- mc2d::rpert(n = n_samp[[e]],
-                        min = estimates[[1]] [[e]],
-                        mode = estimates[[3]] [[e]],
-                        max = estimates[[2]] [[e]])
+    if (anyNA(c(estimates[[1]][[e]],
+                estimates[[2]][[e]],
+                estimates[[3]][[e]]))) {
+      samp <- rep(NA, n_samp[[e]])
+    } else {
+      samp <- mc2d::rpert(n = n_samp[[e]],
+                          min = estimates[[1]] [[e]],
+                          mode = estimates[[3]] [[e]],
+                          max = estimates[[2]] [[e]])
+    }
   }
 
   samp
