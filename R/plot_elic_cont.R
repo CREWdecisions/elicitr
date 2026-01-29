@@ -144,7 +144,7 @@ plot.elic_cont <- function(x,
       # Rescale min and max
       data <- rescale_data(data, scale_conf)
 
-      if (any(is.na(data))) {
+      if (anyNA(data)) {
         has_na <- which(rowSums(is.na(data)) > 0)
         data_na <- data[-has_na, ]
         idx_na <- seq_len(nrow(data_na))

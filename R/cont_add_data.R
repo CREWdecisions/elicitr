@@ -662,7 +662,7 @@ check_data_types <- function(x, data) {
         vals <- df[grepl(pat, nm)]
 
         if (all(is.na(vals))) {
-          some_NAs <- TRUE
+          some_nas <- TRUE
         } else {
           error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
 
@@ -672,7 +672,7 @@ check_data_types <- function(x, data) {
                          call = rlang::caller_env(n = 2))
         }
       }
-      if (some_NAs) {
+      if (some_nas) {
         warn <- "Some expert(s) did not report estimates for all variables"
         info <- "Check raw data and if you want to update the dataset use \\
                {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
