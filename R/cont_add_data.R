@@ -853,6 +853,7 @@ check_conf <- function(x, v) {
 #' Check NA blocks
 #'
 #' @param df the df to be checked.
+#' @param var_name character string with the name of the variable to be checked.
 #'
 #' @returns An error if `df` contains some partial NAs for a variable and a
 #' warning if some experts did not provide estimates for all variables.
