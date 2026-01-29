@@ -182,7 +182,7 @@
     Code
       cont_add_data(z, data_source = y, round = 1)
     Condition
-      Error:
+      Error in `cont_add_data()`:
       ! Invalid raw data:
       x Variable "var2" contains "NA" values.
       i Check raw data.
@@ -339,7 +339,7 @@
     Code
       cont_add_data(x, data_source = y, round = 1)
     Condition
-      Error:
+      Error in `cont_add_data()`:
       ! Invalid raw data:
       x Variable "var3" contains "NA" values.
       i Check raw data.

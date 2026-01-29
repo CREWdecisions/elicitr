@@ -642,46 +642,7 @@ check_data_types <- function(x, data) {
 
     df <- unlist(data[, idx])
 
-    if (anyNA(df)) {
-      nm <- names(df)
-      i_na <- which(is.na(df))
-
-      for (j in seq_along(i_na)) {
-        current_name <- nm[i_na[j]]
-
-        # Extract prefix (variable name) and index (number of the expert)
-        m <- regexec("^(.*)_(best|min|max|conf)([0-9]+)$", current_name)
-        parts <- regmatches(current_name, m)[[1]]
-        prefix <- parts[2]
-        idx <- parts[4]
-
-        # Build pattern to extract all values for the current variable and
-        pat  <- paste0("^", prefix, "_(best|min|max|conf)", idx, "$")
-
-        # Extract all values for the current variable and expert
-        vals <- df[grepl(pat, nm)]
-
-        some_nas <- FALSE
-
-        if (all(is.na(vals))) {
-          some_nas <- TRUE
-        } else {
-          error <- "Variable {.val {var_names[[i]]}} contains {.val NA} values."
-
-          cli::cli_abort(c("Invalid raw data:",
-                           "x" = error,
-                           "i" = "Check raw data."),
-                         call = rlang::caller_env(n = 2))
-        }
-      }
-      if (some_nas) {
-        warn <- "Some expert(s) did not report estimates for all variables"
-        info <- "Check raw data and if you want to update the dataset use \\
-               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
-        cli::cli_warn(c("!" = warn,
-                        "i" = info))
-      }
-    }
+    check_na_blocks(df = df, var_name = var_names[[i]])
 
     if (var_types[i] == "Z") {
 
@@ -886,5 +847,57 @@ check_conf <- function(x, v) {
                      "x" = error,
                      "i" = "Check raw data."),
                    call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check NA blocks
+#'
+#' @param df the df to be checked.
+#'
+#' @returns An error if `df` contains some partial NAs for a variable and a
+#' warning if some experts did not provide estimates for all variables.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_na_blocks <- function(df, var_name) {
+  if (anyNA(df)) {
+    nm <- names(df)
+    i_na <- which(is.na(df))
+
+    for (j in seq_along(i_na)) {
+      current_name <- nm[i_na[j]]
+
+      # Extract prefix (variable name) and index (number of the expert)
+      m <- regexec("^(.*)_(best|min|max|conf)([0-9]+)$", current_name)
+      parts <- regmatches(current_name, m)[[1]]
+      prefix <- parts[2]
+      number <- parts[4]
+
+      # Build pattern to extract all values for the current variable and
+      pat  <- paste0("^", prefix, "_(best|min|max|conf)", number, "$")
+
+      # Extract all values for the current variable and expert
+      vals <- df[grepl(pat, nm)]
+
+      some_nas <- FALSE
+
+      if (all(is.na(vals))) {
+        some_nas <- TRUE
+      } else {
+        error <- "Variable {.val {var_name}} contains {.val NA} values."
+
+        cli::cli_abort(c("Invalid raw data:",
+                         "x" = error,
+                         "i" = "Check raw data."),
+                       call = rlang::caller_env(n = 2))
+      }
+    }
+    if (some_nas) {
+      warn <- "Some expert(s) did not report estimates for all variables"
+      info <- "Check raw data and if you want to update the dataset use \\
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
+      cli::cli_warn(c("!" = warn,
+                      "i" = info))
+    }
   }
 }

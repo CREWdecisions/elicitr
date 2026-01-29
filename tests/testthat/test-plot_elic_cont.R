@@ -407,7 +407,7 @@ test_that("NAs are discarded correctly", {
   expect_snapshot(p <- plot(obj, round = 2, var = "var2", verbose = FALSE))
   # 4p
   obj <- create_cont_obj()
-  obj[["data"]][["round_2"]][1, c("var3_min", "var3_max",
+  obj[["data"]][["round_1"]][1, c("var3_min", "var3_max",
                                   "var3_best", "var3_conf")] <- NA
   expect_snapshot(p <- plot(obj, round = 1, var = "var3", verbose = FALSE))
 })
