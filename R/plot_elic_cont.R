@@ -143,7 +143,17 @@ plot.elic_cont <- function(x,
 
       # Rescale min and max
       data <- rescale_data(data, scale_conf)
-      needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
+
+      if (any(is.na(data))) {
+        has_na <- which(rowSums(is.na(data)) > 0)
+        data_na <- data[-has_na, ]
+        idx_na <- seq_len(nrow(data_na))
+        needs_resc <-
+          any(data_na[["min"]][idx_na] < 0) || any(data_na[["max"]][idx_na] > 1)
+
+      } else {
+        needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
+      }
 
       if (var_type == "p" && needs_resc) {
 
