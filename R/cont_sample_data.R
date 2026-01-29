@@ -245,6 +245,10 @@ get_sample <- function(estimates, n_samp, e, elic_type) {
 
   if (elic_type == "1p") {
     samp <- sample(estimates, n_samp[[e]], replace = TRUE)
+  } else if (anyNA(c(estimates[[1]][[e]],
+                     estimates[[2]][[e]],
+                     estimates[[3]][[e]]))) {
+    samp <- rep(NA, n_samp[[e]])
   } else {
     samp <- mc2d::rpert(n = n_samp[[e]],
                         min = estimates[[1]] [[e]],

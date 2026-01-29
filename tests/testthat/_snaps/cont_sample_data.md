@@ -86,6 +86,14 @@
       Warning:
       ! Some values have been constrained to be between 0 and 1.
 
+# accepts NAs
+
+    Code
+      out <- cont_sample_data(obj, round = 1, var = "var3", verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
+
 # Info
 
     Code
