@@ -31,14 +31,14 @@ test_that("accepts NAs", {
   samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
 
   # Introduce NAs
-  samp_NA <- samp
-  samp_NA$value[1:10] <- NA
+  samp_na <- samp
+  samp_na$value[1:10] <- NA
 
-  samp <- samp[-(1:10), ,drop = FALSE]
+  samp <- samp[-(1:10), , drop = FALSE]
 
   out <- summary(samp, var = "var1")
-  out_NA <- summary(samp_NA, var = "var1")
-  expect_s3_class(out_NA, "tbl_df")
-  expect_named(out_NA, c("Var", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
-  expect_identical(out, out_NA)
+  out_na <- summary(samp_na, var = "var1")
+  expect_s3_class(out_na, "tbl_df")
+  expect_named(out_na, c("Var", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
+  expect_identical(out, out_na)
 })
