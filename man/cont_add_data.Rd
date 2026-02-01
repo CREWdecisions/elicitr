@@ -110,7 +110,7 @@ estimates is only due to chance).
 It is possible that some experts did not provide estimates for all variables.
 In this case, the missing values should be recorded as \code{NA}. However, experts
 should always answer completely or not at all. If estimates are only
-partially given for a  variable (example \emph{min} and \emph{max} provided but not
+partially given for a variable (example \emph{min} and \emph{max} provided but not
 \emph{best} for 3p elicitation), an error is raised.
 }
 

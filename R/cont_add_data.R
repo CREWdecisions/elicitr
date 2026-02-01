@@ -79,7 +79,7 @@ var_labels <- list("1p" = "best",
 #' It is possible that some experts did not provide estimates for all variables.
 #' In this case, the missing values should be recorded as `NA`. However, experts
 #' should always answer completely or not at all. If estimates are only
-#' partially given for a  variable (example _min_ and _max_ provided but not
+#' partially given for a variable (example _min_ and _max_ provided but not
 #' _best_ for 3p elicitation), an error is raised.
 #'
 #' @section Data cleaning:
@@ -874,7 +874,7 @@ check_na_blocks <- function(df, var_name) {
       prefix <- parts[2]
       number <- parts[4]
 
-      # Build pattern to extract all values for the current variable and
+      # Build pattern to extract all values for the current variable and expert
       pat  <- paste0("^", prefix, "_(best|min|max|conf)", number, "$")
 
       # Extract all values for the current variable and expert
