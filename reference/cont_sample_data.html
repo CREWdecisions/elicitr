@@ -142,10 +142,27 @@ repetition.</p></li>
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The <code>weights</code> argument can be used to weight the
 estimates of each expert.</p></li>
-<li><p><em>five points elicitation</em>: the minimum, best, and maximum estimates of
+<li><p><em>four points elicitation</em>: the minimum, best, and maximum estimates of
 each expert are rescaled according to their confidence and used as scaling
 parameters of the PERT distribution from which the data are sampled.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="scale-conf">scale_conf<a class="anchor" aria-label="anchor" href="#scale-conf"></a></h2>
+
+
+
+<p>If the variable plotted is the result of a four points elicitation where
+expert confidence is provided, the minimum and maximum values provided by
+each expert are rescaled using their provided confidence categories. Users
+can choose how they want to rescale minimum and maximum values by providing a
+value for the <code>scale_conf</code> argument. If no argument is provided, a default
+value of 100 is used for scale_conf.</p>
+<p>The scaled minimum and maximum values are obtained with:</p>
+<p>\(minimum = best\ guess - (best\ guess - minimum)\frac{scale\_conf}
+{confidence}\)</p>
+<p>\(maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
+{confidence}\)</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other cont data helpers:

@@ -90,10 +90,27 @@ the different elicitation types:
   from which the data are sampled. The `weights` argument can be used to
   weight the estimates of each expert.
 
-- *five points elicitation*: the minimum, best, and maximum estimates of
+- *four points elicitation*: the minimum, best, and maximum estimates of
   each expert are rescaled according to their confidence and used as
   scaling parameters of the PERT distribution from which the data are
   sampled.
+
+## scale_conf
+
+If the variable plotted is the result of a four points elicitation where
+expert confidence is provided, the minimum and maximum values provided
+by each expert are rescaled using their provided confidence categories.
+Users can choose how they want to rescale minimum and maximum values by
+providing a value for the `scale_conf` argument. If no argument is
+provided, a default value of 100 is used for scale_conf.
+
+The scaled minimum and maximum values are obtained with:
+
+\\minimum = best\\ guess - (best\\ guess - minimum)\frac{scale\\conf}
+{confidence}\\
+
+\\maximum = best\\ guess + (maximum - best\\ guess) \frac{scale\\conf}
+{confidence}\\
 
 ## See also
 
