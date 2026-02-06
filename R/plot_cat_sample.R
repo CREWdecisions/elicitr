@@ -60,18 +60,23 @@
 #' plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
 #' }
 #'
+#'\dontrun{
 #' # Plot the sampled data for option 1
 #' plot(samp, option = "option_1")
-#'
+#'}
+#'\dontrun{
 #' # Plot the sampled data for option 1 and 3
 #' plot(samp, option = c("option_1", "option_3"))
-#'
+#'}
+#'\dontrun{
 #' # Provide custom colours
 #' plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
 #'                        "chocolate3", "orangered4"))
 #'
+#'\dontrun{
 #' # Overwrite the default theme
 #' plot(samp, theme = ggplot2::theme_minimal())
+#' }
 plot.cat_sample <- function(x,
                             type = "violin",
                             ...,

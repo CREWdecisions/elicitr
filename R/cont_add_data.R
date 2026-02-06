@@ -310,7 +310,7 @@ fix_var_order <- function(x,
 
     # The confidence value should not be reordered
     if (sum(idx_cols) == 4) {
-      idx_cols[length(idx_cols)] <- FALSE
+      idx_cols[which(idx_cols)[length(which(idx_cols))]] <- FALSE
     }
 
     idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
