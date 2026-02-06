@@ -96,3 +96,62 @@ Other plot helpers:
 ## Author
 
 Sergio Vignali and Maude Vernet
+
+## Examples
+
+``` r
+# Create the elic_cat object for an elicitation process with three topics,
+# four options, five categories and a maximum of six experts per topic
+my_categories <- c("category_1", "category_2", "category_3",
+                   "category_4", "category_5")
+my_options <- c("option_1", "option_2", "option_3", "option_4")
+my_topics <- c("topic_1", "topic_2", "topic_3")
+my_elicit <- cat_start(categories = my_categories,
+                       options = my_options,
+                       experts = 6,
+                       topics = my_topics) |>
+  cat_add_data(data_source = topic_1, topic = "topic_1") |>
+  cat_add_data(data_source = topic_2, topic = "topic_2") |>
+  cat_add_data(data_source = topic_3, topic = "topic_3")
+#> ✔ <elic_cat> object for "Elicitation" correctly initialised
+#> ℹ Estimates sum to 1. Rescaling to 100.
+#> ✔ Data added to Topic "topic_1" from "data.frame"
+#> ℹ Estimates sum to 1. Rescaling to 100.
+#> ✔ Data added to Topic "topic_2" from "data.frame"
+#> ℹ Estimates sum to 1. Rescaling to 100.
+#> ✔ Data added to Topic "topic_3" from "data.frame"
+
+# Sample data from Topic 1 for all options using the unweighted method
+samp <- cat_sample_data(my_elicit,
+                        method = "unweighted",
+                        topic = "topic_1")
+#> ✔ Data sampled successfully using "unweighted" method.
+
+# Plot the sampled data for all options
+plot(samp)
+
+
+# Plot the sampled data as beeswarm plot
+
+if (FALSE) { # \dontrun{
+plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
+} # }
+
+if (FALSE) { # \dontrun{
+# Plot the sampled data for option 1
+plot(samp, option = "option_1")
+} # }
+if (FALSE) { # \dontrun{
+# Plot the sampled data for option 1 and 3
+plot(samp, option = c("option_1", "option_3"))
+} # }
+if (FALSE) { # \dontrun{
+# Provide custom colours
+plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
+                       "chocolate3", "orangered4"))
+} # }
+if (FALSE) { # \dontrun{
+# Overwrite the default theme
+plot(samp, theme = ggplot2::theme_minimal())
+} # }
+```
