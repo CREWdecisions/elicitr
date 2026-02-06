@@ -72,7 +72,7 @@
 #' # Provide custom colours
 #' plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
 #'                        "chocolate3", "orangered4"))
-#'
+#'}
 #'\dontrun{
 #' # Overwrite the default theme
 #' plot(samp, theme = ggplot2::theme_minimal())

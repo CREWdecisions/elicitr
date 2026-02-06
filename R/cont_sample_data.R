@@ -138,16 +138,18 @@ cont_sample_data <- function(x,
 
     if (elic_type == "4p") {
       if (sum(weights) == n_experts) {
-        weights <- data[, 5, drop = TRUE] / 100
+        weights_conf <- data[, 5, drop = TRUE] / 100
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_conf)
       } else {
         cli::cli_alert_info("Provided weights used instead of confidence \\
                              estimates")
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
       }
+    } else {
+      n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
     }
 
     estimates <- get_est(data, v, n_experts, var_type, elic_type, verbose)
-
-    n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
 
     for (e in seq_along(experts)) {
 
