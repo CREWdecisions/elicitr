@@ -221,7 +221,9 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
 
       # Rescale min and max
       data <- rescale_data(data)
-      needs_resc <- any(data[["min"]] < 0) || any(data[["max"]] > 1)
+      needs_resc <- any(data[["min"]] < 0,
+                        na.rm = TRUE) || any(data[["max"]] > 1,
+                                                  na.rm = TRUE)
 
       if (var_type == "p" && needs_resc) {
 
