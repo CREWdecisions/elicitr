@@ -58,10 +58,13 @@ summary.cont_sample <- function(object,
     dplyr::select(!"id") |>
     dplyr::group_by(.data[["var"]]) |>
     dplyr::summarise("Min" = min(.data[["value"]]),
-                     "Q1" = stats::quantile(.data[["value"]], probs = 0.25),
+                     "Q1" = stats::quantile(.data[["value"]], probs = 0.25,
+                                            na.rm = TRUE),
                      "Median" = median(.data[["value"]]),
-                     "Mean" = mean(.data[["value"]]),
-                     "Q3" = stats::quantile(.data[["value"]], probs = 0.75),
+                     "Mean" = mean(.data[["value"]],
+                                    na.rm = TRUE),
+                     "Q3" = stats::quantile(.data[["value"]], probs = 0.75,
+                                            na.rm = TRUE),
                      "Max" = max(.data[["value"]])) |>
     dplyr::rename("Var" = "var")
 }

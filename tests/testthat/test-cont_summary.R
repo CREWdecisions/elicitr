@@ -25,3 +25,14 @@ test_that("Output", {
   expect_identical(nrow(out), 1L)
   expect_identical(out[["Var"]], "var1")
 })
+
+test_that("Missing variable", {
+  obj <- create_cont_obj()
+  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp[1, 3] <- NA
+  out <- summary(samp, var = "var1")
+  expect_s3_class(out, "tbl_df")
+  expect_named(out, c("Var", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
+  expect_identical(nrow(out), 1L)
+  expect_identical(out[["Var"]], "var1")
+})
