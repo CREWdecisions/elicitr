@@ -62,7 +62,7 @@ summary.cont_sample <- function(object,
                                             na.rm = TRUE),
                      "Median" = median(.data[["value"]]),
                      "Mean" = mean(.data[["value"]],
-                                    na.rm = TRUE),
+                                   na.rm = TRUE),
                      "Q3" = stats::quantile(.data[["value"]], probs = 0.75,
                                             na.rm = TRUE),
                      "Max" = max(.data[["value"]])) |>
