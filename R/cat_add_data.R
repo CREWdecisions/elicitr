@@ -426,7 +426,7 @@ check_sum_1 <- function(x) {
   zeros <- sums_vector_na == 0
 
   total <- sum(bad_1 & bad_100) - sum(zeros)
-               #if both are bad, then the sum is wrong
+  #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
@@ -504,16 +504,12 @@ check_sum_1 <- function(x) {
 #' @author Sergio Vignali, Maude Vernet
 check_na <- function(x) {
 
-  wrong_data <- NULL
-  for (i in seq_len(nrow(x))) {
-    if (is.na(x[i, "confidence"]) && !is.na(x[i, "estimate"]) ||
-          !is.na(x[i, "confidence"]) && is.na(x[i, "estimate"])) {
-      wrong_data <- c(wrong_data, i)
-    }
-  }
-  if (length(wrong_data) > 0) {
-    error <- "Expert {.val {unique(x$id[wrong_data])}} reported NA values \\
-              for only part of an estimation."
+  mismatch <- xor(is.na(x$confidence), is.na(x$estimate))
+  #checks if exactly one of them is NA (logical, length = nrow(x))
+
+  if (sum(mismatch) > 0) {
+    error <- "Expert {.val {unique(x$id[which(mismatch)])}} reported NA \\
+              values for only part of an estimation."
 
     cli::cli_abort(c("Invalid value for {.arg confidence} or {.arg estimate}:",
                      "x" = error,
