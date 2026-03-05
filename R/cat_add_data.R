@@ -235,9 +235,9 @@ cat_add_data <- function(x,
   # anonymising the names to avoid exposing the names in the error message.
   data <- check_sum_1(data)
 
-  # Check that NAs happen for all categories in an option and for both confidence
-  # and estimate columns
-  check_NA(data)
+  # Check that NAs happen for all categories in an option and for both
+  # confidence and estimate columns
+  check_na(data)
 
   x[["data"]][[topic]] <- data
 
@@ -331,9 +331,9 @@ check_names_categories_options <- function(x, data, type) {
 check_column_format <- function(x, col) {
 
   if (col == "confidence") {
-    x_noNA <- tidyr::replace_na(x[[col]], 1)
+    x_nona <- tidyr::replace_na(x[[col]], 1)
     n_categories <- length(unique(x[["category"]]))
-    diff <- rle(x_noNA)[["lengths"]] %% n_categories
+    diff <- rle(x_nona)[["lengths"]] %% n_categories
 
     if (sum(diff) == 0) {
       expected_values <- x[[col]]
@@ -401,12 +401,12 @@ check_sum_1 <- function(x) {
   sums_vector <- dplyr::pull(sums, #pull is basically the same as $
                              "sum")
   #sum is the sum of the estimates for each expert & option
-  sums_vector_NA <- dplyr::pull(sums,
+  sums_vector_na <- dplyr::pull(sums,
                                 "sum_NA")
 
   na_options <- is.na(sums_vector)
 
-  if (sum(na_options) > 0 && any(sums_vector_NA[which(na_options)] != 0)) {
+  if (sum(na_options) > 0 && any(sums_vector_na[which(na_options)] != 0)) {
 
     error <- "Expert {.val {sums[na_options,]$id[1]}} gave estimates for only \\
     part of an option."
@@ -419,13 +419,14 @@ check_sum_1 <- function(x) {
 
   tol <- 1.5e-8
   #in case estimates were given in proportions
-  bad_1 <- sums_vector_NA > 1 + tol | sums_vector_NA < 1 - tol
+  bad_1 <- sums_vector_na > 1 + tol | sums_vector_na < 1 - tol
   #in case estimates were given in percents
-  bad_100 <- sums_vector_NA > 100 + tol | sums_vector_NA < 100 - tol
+  bad_100 <- sums_vector_na > 100 + tol | sums_vector_na < 100 - tol
   #NA
-  zeros <- sums_vector_NA == 0
+  zeros <- sums_vector_na == 0
 
-  total <- sum(bad_1 & bad_100) - sum(zeros) #if both are bad, then the sum is wrong
+  total <- sum(bad_1 & bad_100) - sum(zeros)
+               #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
@@ -452,11 +453,11 @@ check_sum_1 <- function(x) {
   } else {
 
     #in case estimates were given in proportions
-    good_1 <- abs(sums_vector_NA - 1) < tol
+    good_1 <- abs(sums_vector_na - 1) < tol
     has_1 <- any(good_1)
 
     #in case estimates were given in percents
-    has_100 <- any(abs(sums_vector_NA - 100) < tol)
+    has_100 <- any(abs(sums_vector_na - 100) < tol)
 
     if (has_1) {
 
@@ -501,12 +502,12 @@ check_sum_1 <- function(x) {
 #' @noRd
 #'
 #' @author Sergio Vignali, Maude Vernet
-check_NA <- function(x) {
+check_na <- function(x) {
 
-  wrong_data <- c()
-  for (i in 1:nrow(x)) {
-    if (is.na(x[i, "confidence"]) & !is.na(x[i, "estimate"]) |
-        !is.na(x[i, "confidence"]) & is.na(x[i, "estimate"])) {
+  wrong_data <- NULL
+  for (i in seq_len(nrow(x))) {
+    if (is.na(x[i, "confidence"]) && !is.na(x[i, "estimate"]) ||
+          !is.na(x[i, "confidence"]) && is.na(x[i, "estimate"])) {
       wrong_data <- c(wrong_data, i)
     }
   }
