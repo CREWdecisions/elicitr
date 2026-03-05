@@ -235,6 +235,10 @@ cat_add_data <- function(x,
   # anonymising the names to avoid exposing the names in the error message.
   data <- check_sum_1(data)
 
+  # Check that NAs happen for all categories in an option and for both confidence
+  # and estimate columns
+  check_NA(data)
+
   x[["data"]][[topic]] <- data
 
   if (verbose) {
@@ -323,12 +327,13 @@ check_names_categories_options <- function(x, data, type) {
 #' @return An error if the given column containing is malformed.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali, Maude Vernet
 check_column_format <- function(x, col) {
 
   if (col == "confidence") {
+    x_noNA <- tidyr::replace_na(x[[col]], 1)
     n_categories <- length(unique(x[["category"]]))
-    diff <- rle(x[[col]])[["lengths"]] %% n_categories
+    diff <- rle(x_noNA)[["lengths"]] %% n_categories
 
     if (sum(diff) == 0) {
       expected_values <- x[[col]]
@@ -390,33 +395,37 @@ check_sum_1 <- function(x) {
     dplyr::mutate("id" = factor(.data[["id"]],
                                 levels = unique(.data[["id"]]))) |>
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
-    dplyr::summarise(sum = sum(.data[["estimate"]]), .groups = "drop")
-  sums_vector <- dplyr::pull(sums,
+    dplyr::summarise(sum = sum(.data[["estimate"]]),
+                     sum_NA = sum(.data[["estimate"]], na.rm = TRUE),
+                     .groups = "drop")
+  sums_vector <- dplyr::pull(sums, #pull is basically the same as $
                              "sum")
   #sum is the sum of the estimates for each expert & option
-
-  tol <- 1.5e-8
-  #in case estimates were given in proportions
-  bad_1 <- sums_vector > 1 + tol | sums_vector < 1 - tol
-  #in case estimates were given in percents
-  bad_100 <- sums_vector > 100 + tol | sums_vector < 100 - tol
+  sums_vector_NA <- dplyr::pull(sums,
+                                "sum_NA")
 
   na_options <- is.na(sums_vector)
 
-  if (sum(na_options) > 0) {
+  if (sum(na_options) > 0 && any(sums_vector_NA[which(na_options)] != 0)) {
 
-    error <- "Expert {.val {sums[na_options,]$id[1]}} did not give \\
-    estimates for option {.val {sums[na_options,]$option[1]}}. The raw data \\
-    contains {.val NA} values."
+    error <- "Expert {.val {sums[na_options,]$id[1]}} gave estimates for only \\
+    part of an option."
 
     cli::cli_abort(c("Invalid raw data:",
                      "x" = error,
                      "i" = "Check raw data."),
                    call = rlang::caller_env(n = 2))
-
   }
 
-  total <- sum(bad_1 & bad_100) #if both are bad, then the sum is wrong
+  tol <- 1.5e-8
+  #in case estimates were given in proportions
+  bad_1 <- sums_vector_NA > 1 + tol | sums_vector_NA < 1 - tol
+  #in case estimates were given in percents
+  bad_100 <- sums_vector_NA > 100 + tol | sums_vector_NA < 100 - tol
+  #NA
+  zeros <- sums_vector_NA == 0
+
+  total <- sum(bad_1 & bad_100) - sum(zeros) #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
@@ -443,11 +452,11 @@ check_sum_1 <- function(x) {
   } else {
 
     #in case estimates were given in proportions
-    good_1 <- abs(sums_vector - 1) < tol
+    good_1 <- abs(sums_vector_NA - 1) < tol
     has_1 <- any(good_1)
 
     #in case estimates were given in percents
-    has_100 <- any(abs(sums_vector - 100) < tol)
+    has_100 <- any(abs(sums_vector_NA - 100) < tol)
 
     if (has_1) {
 
@@ -479,4 +488,35 @@ check_sum_1 <- function(x) {
   }
 
   x
+}
+
+#' Check NAs
+#'
+#' Check that NAs happen for all categories in an option and for both confidence
+#' and estimate columns
+#'
+#' @param x data.frame with the data to be checked.
+#'
+#' @return An error if only some values are NA for an expert in an option
+#' @noRd
+#'
+#' @author Sergio Vignali, Maude Vernet
+check_NA <- function(x) {
+
+  wrong_data <- c()
+  for (i in 1:nrow(x)) {
+    if (is.na(x[i, "confidence"]) & !is.na(x[i, "estimate"]) |
+        !is.na(x[i, "confidence"]) & is.na(x[i, "estimate"])) {
+      wrong_data <- c(wrong_data, i)
+    }
+  }
+  if (length(wrong_data) > 0) {
+    error <- "Expert {.val {unique(x$id[wrong_data])}} reported NA values \\
+              for only part of an estimation."
+
+    cli::cli_abort(c("Invalid value for {.arg confidence} or {.arg estimate}:",
+                     "x" = error,
+                     "i" = "Check raw data."),
+                   call = rlang::caller_env(n = 2))
+  }
 }

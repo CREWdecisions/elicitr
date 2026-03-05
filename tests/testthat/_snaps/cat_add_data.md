@@ -221,25 +221,75 @@
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "data.frame"
 
-# Refuses if an option wasn't filled
+# NA accepted only if full option is NA
 
     Code
-      cat_add_data(x, data_source = y, topic = "topic_1")
+      cat_add_data(x, data_source = z, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the confidence values is not formatted as expected.
+      i See Data format in `elicitr::cat_add_data()`.
+
+---
+
+    Code
+      cat_add_data(x, data_source = z, topic = "topic_1")
     Condition
       Error:
       ! Invalid raw data:
-      x Expert 5ac97e0 did not give estimates for option "option_1". The raw data contains "NA" values.
+      x Expert 5ac97e0 gave estimates for only part of an option.
       i Check raw data.
 
 ---
 
     Code
-      cat_add_data(x, data_source = y, topic = "topic_1")
+      cat_add_data(x, data_source = z, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Malformatted dataset:
+      x The column containing the confidence values is not formatted as expected.
+      i See Data format in `elicitr::cat_add_data()`.
+
+---
+
+    Code
+      cat_add_data(x, data_source = z, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
     Condition
       Error:
-      ! Invalid raw data:
-      x Expert 5ac97e0 did not give estimates for option "option_1". The raw data contains "NA" values.
+      ! Invalid value for `confidence` or `estimate`:
+      x Expert "5ac97e0" reported NA values for only part of an estimation.
       i Check raw data.
+
+---
+
+    Code
+      cat_add_data(x, data_source = z, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+    Condition
+      Error:
+      ! Invalid value for `confidence` or `estimate`:
+      x Expert "5ac97e0" reported NA values for only part of an estimation.
+      i Check raw data.
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "data.frame"
+
+---
+
+    Code
+      out <- cat_add_data(x, data_source = y, topic = "topic_1")
+    Message
+      i Estimates sum to 1. Rescaling to 100.
+      v Data added to Topic "topic_1" from "data.frame"
 
 # Info
 

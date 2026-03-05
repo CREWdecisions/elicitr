@@ -221,7 +221,7 @@ test_that("Accepts all estimates summing to 1", {
   expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
 })
 
-test_that("Refuses if an option wasn't filled", {
+test_that("NA accepted only if full option is NA", {
   x <- cat_start(categories = paste0("category_", 1:5),
                  options = paste0("option_", 1:4),
                  experts = 6,
@@ -229,21 +229,64 @@ test_that("Refuses if an option wasn't filled", {
                  verbose = FALSE)
 
   y <- topic_1
-  y[1:5, 5] <- NA
 
-  #if one option is NA
+  #if only one confidence is NA in an option
+  z <- y
+  z[1, 4] <- NA
   expect_snapshot(cat_add_data(x,
-                               data_source = y,
+                               data_source = z,
                                topic = "topic_1"),
                   error = TRUE)
 
-  y[21:25, 5] <- NA
-
-  #if multiple options are NA
+  #if only one estimate is NA in an option
+  z <- y
+  z[1, 5] <- NA
   expect_snapshot(cat_add_data(x,
-                               data_source = y,
+                               data_source = z,
                                topic = "topic_1"),
                   error = TRUE)
+
+  #if only one part of an option is NA
+  z <- y
+  z[1, 4:5] <- NA
+  expect_snapshot(cat_add_data(x,
+                               data_source = z,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  #if only confidences are NA in an option
+  z <- y
+  z[1:5, 4] <- NA
+  expect_snapshot(cat_add_data(x,
+                               data_source = z,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  #if only estimates are NA in an option
+  z <- y
+  z[1:5, 5] <- NA
+  expect_snapshot(cat_add_data(x,
+                               data_source = z,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  #if one whole option is NA
+  y[1:5, 4:5] <- NA
+  z <- y
+  z[, 5] <- z[, 5] * 100
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
+
+  #if multiple full options are NA
+  y[21:25, 4:5] <- NA
+  z <- y
+  z[, 5] <- z[, 5] * 100
+  expect_snapshot(out <- cat_add_data(x,
+                                      data_source = y,
+                                      topic = "topic_1"))
+  expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
 })
 
 test_that("Info", {
@@ -271,9 +314,6 @@ test_that("Info", {
                                       topic = "topic_1",
                                       anonymise = FALSE))
   expect_identical(out[["data"]][["topic_1"]][, -1], z[, -1])
-  hashed_id <- dplyr::pull(topic_1, "name") |>
-    stand_names() |>
-    hash_names()
   expect_identical(dplyr::pull(out[["data"]][["topic_1"]], "id"), topic_1$name)
 
   # Success adding csv file
