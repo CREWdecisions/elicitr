@@ -87,7 +87,8 @@ cat_sample_data <- function(x,
   check_method(x, method)
 
   # Get data
-  data <- cat_get_data(x, topic = topic, option = option)
+  data <- x |>
+    cat_get_data(topic = topic, option = option)
 
   out <- do_sampling(data, method, n_votes)
 
@@ -157,7 +158,11 @@ do_sampling <- function(x, method, n_votes) {
       # Strictly positive estimates
       idx <- which(expert_est > 0)
 
-      if (length(idx) == 1) {
+      if (length(idx) == 0) {
+        # If there are no positive estimates -> aka is NA
+        samp <- NA
+        sp[, 3:(2 + length(categories))] <- samp
+      } else if (length(idx) == 1) {
         # If there is only one positive estimate, this is assumed to be 1 since
         # the sum of probabilities must be 1. In this case, assign 100% to all
         # votes for this category.
@@ -167,7 +172,7 @@ do_sampling <- function(x, method, n_votes) {
                                        alpha = expert_est[idx])
       }
 
-      sp[, idx + 2] <- samp
+      sp[, idx + 2] <- samp #only does it for non NAs
       all_sp[[e]] <- sp
     }
 
