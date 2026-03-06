@@ -130,7 +130,7 @@ test_that("Accepts NAs", {
   n_samp_actual <- table(factor(out_na[["id"]],
                                 levels = unique(out_na[["id"]]))) |>
     as.vector()
-  n_samp_expected <- elicitr:::get_boostrap_n_sample(experts, 100, conf_tot) |>
+  n_samp_expected <- get_boostrap_n_sample(experts, 100, conf_tot) |>
     as.integer()
   expect_identical(n_samp_actual[2:6], n_samp_expected[2:6])
 })
