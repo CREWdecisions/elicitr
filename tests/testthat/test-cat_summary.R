@@ -20,3 +20,30 @@ test_that("Output", {
                    c("category_1", "category_2", "category_3",
                      "category_4", "category_5"))
 })
+
+test_that("With NA", {
+  #with one expert giving NA
+  obj <- create_cat_obj()
+  obj[["data"]][["topic_1"]][1:5,4:5] <- NA
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
+                          verbose = FALSE)
+  out <- summary(samp, option = "option_1")
+  expect_s3_class(out, "tbl_df")
+  expect_named(out, c("Category", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
+  expect_identical(nrow(out), 5L)
+  expect_identical(out[["Category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+
+  # with multiple experts giving NA
+  obj[["data"]][["topic_1"]][21:25,4:5] <- NA
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
+                          verbose = FALSE)
+  out <- summary(samp, option = "option_1")
+  expect_s3_class(out, "tbl_df")
+  expect_named(out, c("Category", "Min", "Q1", "Median", "Mean", "Q3", "Max"))
+  expect_identical(nrow(out), 5L)
+  expect_identical(out[["Category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+})
