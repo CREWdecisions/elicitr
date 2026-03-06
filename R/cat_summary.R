@@ -57,12 +57,12 @@ summary.cat_sample <- function(object,
 
   out <- matrix(NA, nrow = ncol(object), ncol = 6)
 
-  out[, 1] <- sapply(object, min)
-  out[, 2] <- sapply(object, stats::quantile, probs = 0.25)
-  out[, 3] <- sapply(object, median)
-  out[, 4] <- sapply(object, mean)
-  out[, 5] <- sapply(object, stats::quantile, probs = 0.75)
-  out[, 6] <- sapply(object, max)
+  out[, 1] <- sapply(object, min, na.rm = TRUE)
+  out[, 2] <- sapply(object, stats::quantile, probs = 0.25, na.rm = TRUE)
+  out[, 3] <- sapply(object, median, na.rm = TRUE)
+  out[, 4] <- sapply(object, mean, na.rm = TRUE)
+  out[, 5] <- sapply(object, stats::quantile, probs = 0.75, na.rm = TRUE)
+  out[, 6] <- sapply(object, max, na.rm = TRUE)
 
   colnames(out) <- c("Min", "Q1", "Median", "Mean", "Q3", "Max")
 
