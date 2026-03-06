@@ -83,3 +83,54 @@ test_that("Output", {
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 })
+
+test_that("Accepts NAs", {
+  obj <- create_cat_obj()
+
+  # Modify one expert estimate to have NAs for all categories in option 1
+  obj_na <- obj
+  obj_na[["data"]][["topic_1"]][1:5, 4:5] <- NA
+
+  # unweighted method
+  out_na <- cat_sample_data(obj_na,
+                            method = "unweighted",
+                            topic = "topic_1",
+                            verbose = FALSE)
+  expect_true(all(is.na(dplyr::pull(out_na, "category_1")[1:100])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_2")[1:100])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_3")[1:100])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_4")[1:100])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_5")[1:100])))
+  expect_identical(nrow(out_na), 2400L)
+  expect_identical(as.vector(table(out_na[["id"]])), rep(400L, 6))
+
+  # weighted method
+  out_na <- cat_sample_data(obj_na,
+                            method = "weighted",
+                            topic = "topic_1",
+                            option = "option_1",
+                            verbose = FALSE)
+  out <- cat_sample_data(obj,
+                         method = "weighted",
+                         topic = "topic_1",
+                         option = "option_1",
+                         verbose = FALSE)
+  expect_true(all(is.na(dplyr::pull(out_na, "category_1")[1])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_2")[1])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_3")[1])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_4")[1])))
+  expect_true(all(is.na(dplyr::pull(out_na, "category_5")[1])))
+  expect_identical(nrow(out_na), nrow(out) + 1L)
+  conf <- get_conf(obj[["data"]][["topic_1"]], "option_1", 5)
+  #NA distributed over the other experts
+  conf_norm <- conf[2:6] / sum(conf[2:6]) * conf[1]
+  conf_tot <- c(0, conf[2:6] + conf_norm)
+
+  experts <- unique(obj[["data"]][["topic_1"]][["id"]])
+  n_samp_actual <- table(factor(out_na[["id"]],
+                                levels = unique(out_na[["id"]]))) |>
+    as.vector()
+  n_samp_expected <- get_boostrap_n_sample(experts, 100, conf_tot) |>
+    as.integer()
+  expect_identical(n_samp_actual[2:6], n_samp_expected[2:6])
+})
