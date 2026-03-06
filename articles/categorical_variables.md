@@ -2,6 +2,9 @@
 
 ``` r
 library(elicitr)
+#> Registered S3 method overwritten by 'lme4':
+#>   method           from
+#>   na.action.merMod car
 ```
 
 Many of the concepts introduced in
