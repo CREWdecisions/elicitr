@@ -93,9 +93,9 @@ test_that("Accepts NAs", {
 
   # unweighted method
   out_na <- cat_sample_data(obj_na,
-                         method = "unweighted",
-                         topic = "topic_1",
-                         verbose = FALSE)
+                            method = "unweighted",
+                            topic = "topic_1",
+                            verbose = FALSE)
   expect_true(all(is.na(dplyr::pull(out_na, "category_1")[1:100])))
   expect_true(all(is.na(dplyr::pull(out_na, "category_2")[1:100])))
   expect_true(all(is.na(dplyr::pull(out_na, "category_3")[1:100])))
@@ -121,16 +121,16 @@ test_that("Accepts NAs", {
   expect_true(all(is.na(dplyr::pull(out_na, "category_4")[1])))
   expect_true(all(is.na(dplyr::pull(out_na, "category_5")[1])))
   expect_identical(nrow(out_na), nrow(out) + 1L)
-  conf <- elicitr:::get_conf(obj[["data"]][["topic_1"]], "option_1", 5)
+  conf <- get_conf(obj[["data"]][["topic_1"]], "option_1", 5)
   #NA distributed over the other experts
-  conf_norm <- conf[2:6] / sum(conf[2:6])*conf[1]
+  conf_norm <- conf[2:6] / sum(conf[2:6]) * conf[1]
   conf_tot <- conf[2:6] + conf_norm
 
   experts <- unique(obj[["data"]][["topic_1"]][["id"]])
   n_samp_actual <- table(factor(out_na[["id"]],
                                 levels = unique(out_na[["id"]]))) |>
     as.vector()
-  n_samp_expected <- elicitr:::get_boostrap_n_sample(experts, 100, conf_tot) |>
+  n_samp_expected <- get_boostrap_n_sample(experts, 100, conf_tot) |>
     as.integer()
   expect_identical(n_samp_actual[2:6], n_samp_expected)
 })

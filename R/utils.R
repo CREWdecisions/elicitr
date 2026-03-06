@@ -724,7 +724,7 @@ rescale_data <- function(x, s = 100) {
 #' @returns A vector with the number of samples to take for each expert.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 get_boostrap_n_sample <- function(experts, n_votes, conf) {
 
   if (anyNA(conf)) {

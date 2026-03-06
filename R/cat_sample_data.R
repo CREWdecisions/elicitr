@@ -87,8 +87,7 @@ cat_sample_data <- function(x,
   check_method(x, method)
 
   # Get data
-  data <- x |>
-    cat_get_data(topic = topic, option = option)
+  data <- cat_get_data(x, topic = topic, option = option)
 
   out <- do_sampling(data, method, n_votes)
 
