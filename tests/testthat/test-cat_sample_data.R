@@ -124,13 +124,13 @@ test_that("Accepts NAs", {
   conf <- get_conf(obj[["data"]][["topic_1"]], "option_1", 5)
   #NA distributed over the other experts
   conf_norm <- conf[2:6] / sum(conf[2:6]) * conf[1]
-  conf_tot <- conf[2:6] + conf_norm
+  conf_tot <- c(0, conf[2:6] + conf_norm)
 
   experts <- unique(obj[["data"]][["topic_1"]][["id"]])
   n_samp_actual <- table(factor(out_na[["id"]],
                                 levels = unique(out_na[["id"]]))) |>
     as.vector()
-  n_samp_expected <- get_boostrap_n_sample(experts, 100, conf_tot) |>
+  n_samp_expected <- elicitr:::get_boostrap_n_sample(experts, 100, conf_tot) |>
     as.integer()
-  expect_identical(n_samp_actual[2:6], n_samp_expected)
+  expect_identical(n_samp_actual[2:6], n_samp_expected[2:6])
 })
