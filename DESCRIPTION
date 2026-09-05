@@ -20,7 +20,6 @@ BugReports: https://github.com/CREWdecisions/elicitr/issues
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Imports:
     cli,
     digest,
@@ -54,3 +53,4 @@ Depends:
     R (>= 4.2.0)
 LazyData: true
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.0

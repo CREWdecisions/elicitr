@@ -21,7 +21,7 @@ cont_add_data(
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
-or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
+or anything accepted by the \link[googlesheets4:read_sheet]{read_sheet} function.}
 
 \item{round}{integer indicating if the data belongs to the first or second
 elicitation round.}
@@ -176,7 +176,7 @@ my_elicit <- cont_add_data(x, data_source = file,
   cont_add_data(data_source = file, sheet = "Round 2", round = 2)
 my_elicit
 
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Add data for the first and second round from Google Sheets
 googlesheets4::gs4_deauth()
 gs1 <- "12lGIPa-jJOh3fogUDaERmkf04pVpPu9i8SloL2jAdqc"
@@ -187,11 +187,11 @@ my_elicit
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other cont data helpers: 
-\code{\link{cont_get_data}()},
-\code{\link{cont_sample_data}()},
-\code{\link{cont_start}()},
-\code{\link{summary.cont_sample}()}
+Other cont data helpers:
+\code{\link[=cont_get_data]{cont_get_data()}},
+\code{\link[=cont_sample_data]{cont_sample_data()}},
+\code{\link[=cont_start]{cont_start()}},
+\code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
 Sergio Vignali and Maude Vernet

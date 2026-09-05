@@ -48,11 +48,11 @@ samp <- cat_sample_data(my_elicit,
 summary(samp, option = "option_1")
 }
 \seealso{
-Other cat data helpers: 
-\code{\link{cat_add_data}()},
-\code{\link{cat_get_data}()},
-\code{\link{cat_sample_data}()},
-\code{\link{cat_start}()}
+Other cat data helpers:
+\code{\link[=cat_add_data]{cat_add_data()}},
+\code{\link[=cat_get_data]{cat_get_data()}},
+\code{\link[=cat_sample_data]{cat_sample_data()}},
+\code{\link[=cat_start]{cat_start()}}
 }
 \author{
 Sergio Vignali

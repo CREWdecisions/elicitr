@@ -109,9 +109,9 @@ plot(samp, theme = ggplot2::theme_minimal())
 }
 }
 \seealso{
-Other plot helpers: 
-\code{\link{plot.cont_sample}()},
-\code{\link{plot.elic_cont}()}
+Other plot helpers:
+\code{\link[=plot.cont_sample]{plot.cont_sample()}},
+\code{\link[=plot.elic_cont]{plot.elic_cont()}}
 }
 \author{
 Sergio Vignali and Maude Vernet

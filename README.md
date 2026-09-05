@@ -38,6 +38,17 @@ You can install the development version of elicitr from GitHub with:
 ``` r
 # install.packages("pak")
 pak::pak("CREWdecisions/elicitr")
+install.packages("elicitr", 
+                 repos = c('https://crewdecisions.r-universe.dev',
+                 'https://cloud.r-project.org'))
+```
+
+Or you can install form R universe using
+
+``` r
+install.packages("elicitr", 
+                 repos = c('https://crewdecisions.r-universe.dev',
+                 'https://cloud.r-project.org'))
 ```
 
 ## How elicitr works
@@ -190,16 +201,16 @@ samp_cont
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1      1
+#>  1 5ac97e0 var1     -2
 #>  2 5ac97e0 var1      1
 #>  3 5ac97e0 var1      1
 #>  4 5ac97e0 var1     -2
-#>  5 5ac97e0 var1     -2
-#>  6 5ac97e0 var1     -4
-#>  7 5ac97e0 var1      0
-#>  8 5ac97e0 var1     -4
-#>  9 5ac97e0 var1     -4
-#> 10 5ac97e0 var1      1
+#>  5 5ac97e0 var1      0
+#>  6 5ac97e0 var1     -2
+#>  7 5ac97e0 var1      1
+#>  8 5ac97e0 var1     -2
+#>  9 5ac97e0 var1     -2
+#> 10 5ac97e0 var1      0
 #> # ℹ 17,990 more rows
 ```
 
@@ -210,9 +221,9 @@ summary(samp_cont)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 var1  -4     -2     -2     -1.01   1      1    
-#> 2 var2  11.0   14.5   16.3   16.3   18.4   22.7  
-#> 3 var3   0.460  0.672  0.717  0.715  0.763  0.865
+#> 1 var1  -4     -2      0     -0.982  1      1    
+#> 2 var2  11.0   14.5   16.3   16.3   18.3   22.6  
+#> 3 var3   0.484  0.671  0.716  0.714  0.760  0.874
 ```
 
 And plotted as violin plots:
@@ -356,16 +367,16 @@ samp_cat_unweighted
 #> # A tibble: 2,400 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1     0.0553          0      0.849    0.0159      0.0798
-#>  2 5ac97e0 option_1     0.0974          0      0.842    0.0173      0.0429
-#>  3 5ac97e0 option_1     0.0844          0      0.879    0.00321     0.0332
-#>  4 5ac97e0 option_1     0.0846          0      0.869    0.00919     0.0367
-#>  5 5ac97e0 option_1     0.0995          0      0.843    0.00974     0.0482
-#>  6 5ac97e0 option_1     0.0652          0      0.882    0.00673     0.0461
-#>  7 5ac97e0 option_1     0.0648          0      0.872    0.0239      0.0394
-#>  8 5ac97e0 option_1     0.0795          0      0.837    0.00301     0.0809
-#>  9 5ac97e0 option_1     0.0751          0      0.873    0.0277      0.0240
-#> 10 5ac97e0 option_1     0.0755          0      0.853    0.00846     0.0626
+#>  1 5ac97e0 option_1     0.0800          0      0.837    0.0251      0.0578
+#>  2 5ac97e0 option_1     0.0673          0      0.835    0.0446      0.0527
+#>  3 5ac97e0 option_1     0.119           0      0.789    0.0180      0.0741
+#>  4 5ac97e0 option_1     0.0362          0      0.922    0.00877     0.0331
+#>  5 5ac97e0 option_1     0.0637          0      0.819    0.0234      0.0941
+#>  6 5ac97e0 option_1     0.0625          0      0.805    0.0355      0.0969
+#>  7 5ac97e0 option_1     0.0553          0      0.878    0.0207      0.0463
+#>  8 5ac97e0 option_1     0.117           0      0.846    0.00632     0.0313
+#>  9 5ac97e0 option_1     0.0970          0      0.812    0.0245      0.0669
+#> 10 5ac97e0 option_1     0.0644          0      0.848    0.0232      0.0645
 #> # ℹ 2,390 more rows
 
 samp_cat_weighted <- cat_sample_data(my_elic_cat,
@@ -376,16 +387,16 @@ samp_cat_weighted
 #> # A tibble: 1,800 × 7
 #>    id      option   category_1 category_2 category_3 category_4 category_5
 #>    <chr>   <chr>         <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 5ac97e0 option_1    0.0143     0.0222    0.00247       0.907     0.0543
-#>  2 5ac97e0 option_1    0.0506     0.00409   0.00775       0.853     0.0842
-#>  3 5ac97e0 option_1    0.00573    0.0217    0.000407      0.898     0.0738
-#>  4 5ac97e0 option_1    0.0280     0.0331    0.0287        0.793     0.117 
-#>  5 5ac97e0 option_1    0.0228     0.0127    0.00122       0.901     0.0625
-#>  6 5ac97e0 option_1    0.0123     0.0801    0.00360       0.878     0.0256
-#>  7 5ac97e0 option_1    0.0495     0.00561   0.00775       0.807     0.130 
-#>  8 5ac97e0 option_1    0.0161     0.0277    0.00144       0.856     0.0985
-#>  9 5ac97e0 option_1    0.0214     0.0119    0.00641       0.859     0.101 
-#> 10 5ac97e0 option_1    0.0266     0.0283    0.00177       0.833     0.110 
+#>  1 5ac97e0 option_1    0.0428     0.0298    0.00248       0.871     0.0538
+#>  2 5ac97e0 option_1    0.0189     0.0166    0.00875       0.877     0.0783
+#>  3 5ac97e0 option_1    0.0194     0.0131    0.000968      0.902     0.0642
+#>  4 5ac97e0 option_1    0.0222     0.00988   0.0172        0.909     0.0420
+#>  5 5ac97e0 option_1    0.00456    0.0226    0.00159       0.895     0.0762
+#>  6 5ac97e0 option_1    0.0120     0.0169    0.00322       0.888     0.0801
+#>  7 5ac97e0 option_1    0.00776    0.00706   0.0152        0.905     0.0647
+#>  8 5ac97e0 option_1    0.0171     0.0205    0.0103        0.796     0.157 
+#>  9 5ac97e0 option_1    0.0297     0.0158    0.00428       0.911     0.0391
+#> 10 5ac97e0 option_1    0.0496     0.0224    0.0112        0.834     0.0826
 #> # ℹ 1,790 more rows
 ```
 
@@ -394,13 +405,13 @@ And the sample summarised:
 ``` r
 summary(samp_cat_unweighted, option = "option_2")
 #> # A tibble: 5 × 7
-#>   Category       Min     Q1 Median   Mean    Q3   Max
-#>   <chr>        <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
-#> 1 category_1 0.00177 0.102  0.156  0.194  0.322 0.473
-#> 2 category_2 0.0128  0.0822 0.129  0.205  0.351 0.612
-#> 3 category_3 0.00735 0.128  0.208  0.226  0.290 0.603
-#> 4 category_4 0.00138 0.0280 0.0694 0.0958 0.145 0.359
-#> 5 category_5 0.00292 0.149  0.246  0.280  0.349 0.787
+#>   Category        Min     Q1 Median   Mean    Q3   Max
+#>   <chr>         <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
+#> 1 category_1 0.00164  0.100  0.164  0.194  0.323 0.474
+#> 2 category_2 0.0174   0.0813 0.128  0.204  0.337 0.625
+#> 3 category_3 0.0125   0.122  0.208  0.224  0.296 0.581
+#> 4 category_4 0.000554 0.0254 0.0724 0.0935 0.140 0.340
+#> 5 category_5 0.00122  0.159  0.250  0.284  0.347 0.782
 ```
 
 And plotted as violin plots:

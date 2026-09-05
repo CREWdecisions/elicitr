@@ -101,9 +101,9 @@ plot(samp, var = "var3", type = "violin",
                  "chocolate3", "orangered4", "royalblue1"))
 }
 \seealso{
-Other plot helpers: 
-\code{\link{plot.cat_sample}()},
-\code{\link{plot.elic_cont}()}
+Other plot helpers:
+\code{\link[=plot.cat_sample]{plot.cat_sample()}},
+\code{\link[=plot.elic_cont]{plot.elic_cont()}}
 }
 \author{
 Sergio Vignali and Maude Vernet
