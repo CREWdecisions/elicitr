@@ -20,6 +20,9 @@ Useful links:
 
 Authors:
 
+- Sergio Vignali <crewdecisions@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-3390-5442))
+
 - Maude Vernet ([ORCID](https://orcid.org/0009-0003-0907-5279))
 
 - Stefano Canessa ([ORCID](https://orcid.org/0000-0002-0932-826X))
