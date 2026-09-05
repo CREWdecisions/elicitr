@@ -147,16 +147,16 @@ samp
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1     -2
-#>  2 5ac97e0 var1     -2
+#>  1 5ac97e0 var1      1
+#>  2 5ac97e0 var1      1
 #>  3 5ac97e0 var1      1
-#>  4 5ac97e0 var1      0
+#>  4 5ac97e0 var1     -2
 #>  5 5ac97e0 var1      1
-#>  6 5ac97e0 var1     -4
+#>  6 5ac97e0 var1     -2
 #>  7 5ac97e0 var1     -2
-#>  8 5ac97e0 var1     -4
-#>  9 5ac97e0 var1      1
-#> 10 5ac97e0 var1     -4
+#>  8 5ac97e0 var1      1
+#>  9 5ac97e0 var1      0
+#> 10 5ac97e0 var1      1
 #> # ℹ 17,990 more rows
 
 # Sample data for the first round for the variable `var1` and `var2`

@@ -1,6 +1,7 @@
 # Categorical variables
 
 ``` r
+
 library(elicitr)
 #> Registered S3 method overwritten by 'lme4':
 #>   method           from
@@ -26,6 +27,7 @@ and
 [`?topic_3`](https://crewdecisions.github.io/elicitr/reference/cat_data.md):
 
 ``` r
+
 topic_1
 #> # A tibble: 120 × 5
 #>    name            option   category   confidence estimate
@@ -44,6 +46,7 @@ topic_1
 ```
 
 ``` r
+
 topic_2
 #> # A tibble: 100 × 5
 #>    name              option   category   confidence estimate
@@ -62,6 +65,7 @@ topic_2
 ```
 
 ``` r
+
 topic_3
 #> # A tibble: 90 × 5
 #>    name            option   category   confidence estimate
@@ -97,6 +101,7 @@ As for the continuous variables, this objects stores the metadata of the
 elicitation process:
 
 ``` r
+
 my_categories <- c("category_1", "category_2", "category_3",
                    "category_4", "category_5")
 my_options <- c("option_1", "option_2", "option_3", "option_4")
@@ -125,6 +130,7 @@ As we did for continuous variables, we can load the data with the
 function `cat_load()`:
 
 ``` r
+
 my_elicitation <- cat_add_data(my_elicitation,
                                data_source = topic_1,
                                topic = "topic_1") |>
@@ -143,6 +149,7 @@ my_elicitation <- cat_add_data(my_elicitation,
 As mentioned before, estimates can also sum up to 100.
 
 ``` r
+
 topic_1_percent <- dplyr::mutate(topic_1,
                                  estimate = estimate * 100)
 
@@ -158,6 +165,7 @@ to be anonymised, the argument `anonymise` can be set to `FALSE` in the
 function.
 
 ``` r
+
 my_elicitation <- cat_add_data(my_elicitation,
                                data_source = topic_1,
                                topic = "topic_1",
@@ -172,6 +180,7 @@ example, if we try to load data with a category not defined in the
 metadata:
 
 ``` r
+
 malformed_data <- topic_1
 malformed_data[1, 2] <- "category_6"
 cat_add_data(my_elicitation,
@@ -190,6 +199,7 @@ Data can be retrieved from the `elic_cat` object with the
 function:
 
 ``` r
+
 cat_get_data(my_elicitation, topic = "topic_1")
 #> # A tibble: 120 × 5
 #>    id              option   category   confidence estimate
@@ -213,6 +223,7 @@ assigned to the column `id`.
 Data can also be retrieved only for given options:
 
 ``` r
+
 cat_get_data(my_elicitation, topic = "topic_2", option = "option_1")
 #> # A tibble: 25 × 5
 #>    id      option   category   confidence estimate
@@ -246,6 +257,7 @@ documentation for the explanation of the sampling methods). Here we
 sample 100 values for each option:
 
 ``` r
+
 samp <- cat_sample_data(my_elicitation,
                         method = "unweighted",
                         topic = "topic_1",
@@ -271,6 +283,7 @@ samp
 Sampled data can be summarised for any option:
 
 ``` r
+
 summary(samp, option = "option_1")
 #> # A tibble: 5 × 7
 #>   Category        Min      Q1  Median   Mean     Q3   Max
@@ -285,6 +298,7 @@ summary(samp, option = "option_1")
 And plotted as violin plot:
 
 ``` r
+
 plot(samp)
 ```
 
@@ -294,6 +308,7 @@ options.](categorical_variables_files/figure-html/plot-all-1.png)
 Or as beeswarm plot, which can be adapted as needed:
 
 ``` r
+
 plot(samp, type = "beeswarm")
 ```
 
@@ -302,6 +317,7 @@ represents a sampled
 value.](categorical_variables_files/figure-html/cat-plot-beeswarm-1.png)
 
 ``` r
+
 plot(samp, type = "beeswarm",
      beeswarm_cex = 0.9, beeswarm_corral = "wrap")
 ```
@@ -313,6 +329,7 @@ value.](categorical_variables_files/figure-html/cat-plot-beeswarm-wrap-1.png)
 We can also plot the distribution for a specific option:
 
 ``` r
+
 plot(samp, option = "option_2")
 ```
 

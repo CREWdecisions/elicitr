@@ -36,41 +36,48 @@ for details):
 2.  Load `devtools` with:
 
     ``` r
+
     library(devtools)
     ```
 
 3.  Load the package with:
 
     ``` r
+
     load_all()
     ```
 
 4.  Rebuild the documentation with:
 
     ``` r
+
     document()
     ```
 
 5.  Rebuild the README file with:
 
     ``` r
+
     build_readme()
     ```
 
 6.  Run R CMD check:
 
     ``` r
+
     check()
     ```
 
 7.  Run spell check:
 
     ``` r
+
     spell_check()
     ```
 
 8.  Lint the package:
 
     ``` r
+
     lintr::lint_package()
     ```

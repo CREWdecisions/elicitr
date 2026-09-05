@@ -1,6 +1,7 @@
 # Continuous variables
 
 ``` r
+
 library(elicitr)
 #> Registered S3 method overwritten by 'lme4':
 #>   method           from
@@ -19,6 +20,7 @@ Both datasets contain the same variables, but the values are less
 disperse in the second round.
 
 ``` r
+
 round_1
 #> # A tibble: 6 × 9
 #>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
@@ -33,6 +35,7 @@ round_1
 ```
 
 ``` r
+
 round_2
 #> # A tibble: 6 × 9
 #>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
@@ -76,6 +79,7 @@ this `elic_cont` object, four parameters must be specified:
 - `title` used to bind a name to the elicitation process
 
 ``` r
+
 my_elicitation <- cont_start(var_names = c("var1", "var2", "var3"),
                              var_types = "ZNp",
                              elic_types = "134",
@@ -110,6 +114,7 @@ the data is consistent with the metadata of the `elic_cont` object. Here
 we add the data available in the package:
 
 ``` r
+
 my_elicitation <- cont_add_data(my_elicitation,
                                 data_source = round_1,
                                 round = 1) |>
@@ -141,6 +146,7 @@ an error message will be displayed. For example, if we try to add a data
 frame with a different number of columns:
 
 ``` r
+
 cont_add_data(my_elicitation,
               data_source = round_1[, 1:5],
               round = 1)
@@ -153,6 +159,7 @@ cont_add_data(my_elicitation,
 Or if we try to add data where the variable has an incorrect type:
 
 ``` r
+
 malformed_data <- round_1
 malformed_data[, 2] <- malformed_data[, 2] * 0.1
 cont_add_data(my_elicitation,
@@ -174,6 +181,7 @@ Data can be retrieved from the `elic_cont` object with the
 function:
 
 ``` r
+
 cont_get_data(my_elicitation, round = 1)
 #> # A tibble: 6 × 9
 #>   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best
@@ -195,6 +203,7 @@ Data can be retrieved only for given variables or for given variable or
 elicitation types. For example, to get data for the first variable only:
 
 ``` r
+
 cont_get_data(my_elicitation, round = 1, var = "var1")
 #> # A tibble: 6 × 2
 #>   id      var1_best
@@ -215,6 +224,7 @@ Now that the data has been loaded in R, it can be analysed. First let’s
 plot the data for the first round and the first variable:
 
 ``` r
+
 plot(my_elicitation, round = 1, var = "var1")
 ```
 
@@ -225,6 +235,7 @@ When the variable has been collected with a *three* or *four points*
 elicitation process, the plot shows the error of the estimates:
 
 ``` r
+
 plot(my_elicitation, round = 1, var = "var2")
 ```
 
@@ -237,6 +248,7 @@ elicitation process, the estimates are rescaled to the \[0, 1\]
 interval:
 
 ``` r
+
 plot(my_elicitation, round = 2, var = "var3")
 #> ✔ Rescaled min and max
 ```
@@ -247,6 +259,7 @@ process.](continuous_variables_files/figure-html/plot-data-var3-1.png)
 Finally, the group mean can be added to the plot:
 
 ``` r
+
 plot(my_elicitation, round = 2, var = "var3", group = TRUE)
 #> ✔ Rescaled min and max
 ```
@@ -260,6 +273,7 @@ demonstration, it can be useful to show a truth argumenton the plot.
 This argument can be added as a list of estimates.
 
 ``` r
+
 plot(my_elicitation, round = 1, var = "var2",
      group = TRUE,
      truth = list(min = 10, max = 20, best = 15))
@@ -272,6 +286,7 @@ truth.](continuous_variables_files/figure-html/plot-data-var3-truth-1.png)
 Expert names identifiers can also be changed on the plot:
 
 ``` r
+
 plot(my_elicitation, round = 1, var = "var2",
      group = TRUE,
      truth = list(min = 10, max = 20, best = 15),
@@ -289,6 +304,7 @@ documentation for the explanation of the sampling methods). Here we
 sample 1000 values for each variable:
 
 ``` r
+
 samp <- cont_sample_data(my_elicitation, round = 2)
 #> ✔ Rescaled min and max for variable "var3".
 #> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
@@ -312,6 +328,7 @@ samp
 Sampled data can be summarised:
 
 ``` r
+
 summary(samp)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
@@ -324,6 +341,7 @@ summary(samp)
 Plotted as violin plots:
 
 ``` r
+
 plot(samp, var = "var2", type = "violin")
 ```
 
@@ -333,6 +351,7 @@ plot(samp, var = "var2", type = "violin")
 Plotted as density plots:
 
 ``` r
+
 plot(samp, var = "var3", type = "density")
 ```
 
@@ -342,6 +361,7 @@ plot(samp, var = "var3", type = "density")
 Or plotted as beeswarm plots and adapted as needed:
 
 ``` r
+
 plot(samp, var = "var2", type = "beeswarm")
 ```
 
@@ -349,6 +369,7 @@ plot(samp, var = "var2", type = "beeswarm")
 1.](continuous_variables_files/figure-html/sample-plot-beeswarm-1.png)
 
 ``` r
+
 plot(samp, var = "var2", type = "beeswarm",
      beeswarm_cex = 0.9, beeswarm_corral = "wrap")
 ```
@@ -360,6 +381,7 @@ The same plots can be generated for the group (aggregated data) with
 violin plots, density plots or beeswarm plots.
 
 ``` r
+
 plot(samp, var = "var2", type = "violin", group = TRUE)
 ```
 
@@ -367,6 +389,7 @@ plot(samp, var = "var2", type = "violin", group = TRUE)
 mean.](continuous_variables_files/figure-html/sample-plot-violin-group-1.png)
 
 ``` r
+
 plot(samp, var = "var3", type = "density", group = TRUE)
 ```
 
@@ -374,6 +397,7 @@ plot(samp, var = "var3", type = "density", group = TRUE)
 mean.](continuous_variables_files/figure-html/sample-plot-density-group-1.png)
 
 ``` r
+
 plot(samp, var = "var3", type = "beeswarm", group = TRUE)
 ```
 

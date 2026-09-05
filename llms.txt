@@ -23,6 +23,7 @@ on two formal elicitation methods:
 You can install the development version of elicitr from GitHub with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("CREWdecisions/elicitr")
 ```
@@ -42,6 +43,7 @@ variables.
 ## Getting started
 
 ``` r
+
 library(elicitr)
 ```
 
@@ -51,6 +53,7 @@ Create the metadata object that will be able to hold the continuous data
 based on the elicitation design:
 
 ``` r
+
 my_elic_cont <- cont_start(var_names = c("var1", "var2", "var3"),
                            var_types = "ZNp",
                            elic_types = "134",
@@ -73,6 +76,7 @@ data are provided as example datasets in the package). This is how your
 data should look like before they are added to the metadata:
 
 ``` r
+
 round_1
 #> # A tibble: 6 × 9
 #>   name         var1_best var2_min var2_max var2_best var3_min var3_max var3_best
@@ -102,6 +106,7 @@ Load the data into the metadata object: Data can also be imported from a
 GoogleSheet. See the function documentation for more details.
 
 ``` r
+
 my_elic_cont <- cont_add_data(my_elic_cont,
                               data_source = round_1,
                               round = 1)
@@ -124,6 +129,7 @@ my_elic_cont
 View the data stored in the elicitation object:
 
 ``` r
+
 cont_get_data(my_elic_cont, round = 1)
 #> # A tibble: 6 × 9
 #>   id      var1_best var2_min var2_max var2_best var3_min var3_max var3_best
@@ -140,6 +146,7 @@ cont_get_data(my_elic_cont, round = 1)
 Plot raw data for variable 2 in round 1:
 
 ``` r
+
 plot(my_elic_cont, round = 1, var = "var2")
 ```
 
@@ -150,6 +157,7 @@ demonstration, it can be useful to show a truth argumenton the plot.
 This argument can be added as a list of estimates.
 
 ``` r
+
 plot(my_elic_cont, round = 1, var = "var2",
      truth = list(min = 10, max = 20, best = 15))
 ```
@@ -159,6 +167,7 @@ plot(my_elic_cont, round = 1, var = "var2",
 Estimates can also be plotted grouped across experts:
 
 ``` r
+
 plot(my_elic_cont, round = 1, var = "var2",
      truth = list(min = 10, max = 20, best = 15),
      group = TRUE)
@@ -169,6 +178,7 @@ plot(my_elic_cont, round = 1, var = "var2",
 Data can be sampled from the elicitation object:
 
 ``` r
+
 samp_cont <- cont_sample_data(my_elic_cont, round = 2)
 #> ✔ Rescaled min and max for variable "var3".
 #> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
@@ -193,6 +203,7 @@ samp_cont
 And the sample summarised:
 
 ``` r
+
 summary(samp_cont)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
@@ -205,6 +216,7 @@ summary(samp_cont)
 And plotted as violin plots:
 
 ``` r
+
 plot(samp_cont, var = "var2", type = "violin")
 ```
 
@@ -214,6 +226,7 @@ plot(samp_cont, var = "var2", type = "violin")
 Or plotted as density plots:
 
 ``` r
+
 plot(samp_cont, var = "var3", type = "density")
 ```
 
@@ -223,6 +236,7 @@ plot(samp_cont, var = "var3", type = "density")
 And can be grouped across experts:
 
 ``` r
+
 plot(samp_cont, var = "var3", type = "density",
      group = TRUE)
 ```
@@ -237,6 +251,7 @@ data based on the elicitation design: Categories correspond to impact
 levels and options to islands in Vernet, M. et al. (2024).
 
 ``` r
+
 my_elic_cat <- cat_start(topics = c("Mechanism1",
                                     "Mechanism2",
                                     "Mechanism3"),
@@ -285,6 +300,7 @@ expert 1     option 2     category 5            35          0.66
 ```
 
 ``` r
+
 my_elic_cat <- cat_add_data(my_elic_cat,
                             data_source = topic_1,
                             topic = "Mechanism1")
@@ -318,6 +334,7 @@ my_elic_cat
 View the data stored in the elicitation object:
 
 ``` r
+
 cat_get_data(my_elic_cat,
              topic = "Mechanism1")
 #> # A tibble: 120 × 5
@@ -340,6 +357,7 @@ Data can be sampled from the elicitation object using the unweighted or
 weighted method:
 
 ``` r
+
 samp_cat_unweighted <- cat_sample_data(my_elic_cat,
                             topic = "Mechanism1",
                             method = "unweighted")
@@ -384,6 +402,7 @@ samp_cat_weighted
 And the sample summarised:
 
 ``` r
+
 summary(samp_cat_unweighted, option = "option_2")
 #> # A tibble: 5 × 7
 #>   Category       Min     Q1 Median   Mean    Q3   Max
@@ -398,6 +417,7 @@ summary(samp_cat_unweighted, option = "option_2")
 And plotted as violin plots:
 
 ``` r
+
 plot(samp_cat_unweighted,
      title = "Sampled data for Mechanism1")
 ```

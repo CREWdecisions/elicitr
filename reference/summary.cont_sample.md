@@ -72,8 +72,8 @@ summary(samp)
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
 #> 1 var1  -4     -2     -2     -1.02   1      1    
-#> 2 var2  11.0   14.5   16.3   16.3   18.4   22.7  
-#> 3 var3   0.453  0.672  0.717  0.716  0.761  0.878
+#> 2 var2  11.0   14.5   16.3   16.3   18.3   22.7  
+#> 3 var3   0.468  0.672  0.716  0.715  0.760  0.872
 
 # Summarise the sampled data for the variable "var1"
 summary(samp, var = "var1")
@@ -88,5 +88,5 @@ summary(samp, var = c("var1", "var3"))
 #>   Var      Min     Q1 Median   Mean    Q3   Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
 #> 1 var1  -4     -2     -2     -1.02  1     1    
-#> 2 var3   0.453  0.672  0.717  0.716 0.761 0.878
+#> 2 var3   0.468  0.672  0.716  0.715 0.760 0.872
 ```
