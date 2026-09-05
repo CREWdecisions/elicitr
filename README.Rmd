@@ -37,7 +37,10 @@ You can install the development version of elicitr from GitHub with:
 
 ```r
 # install.packages("pak")
-pak::pak("CREWdecisions/elicitr")
+#pak::pak("CREWdecisions/elicitr")
+install.packages("elicitr", 
+                 repos = c('https://crewdecisions.r-universe.dev',
+                 'https://cloud.r-project.org'))
 ```
 
 ## How elicitr works
