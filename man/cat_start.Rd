@@ -103,11 +103,11 @@ Biological Invasions, 26(8), 2707–2721.
 \url{https://doi.org/10.1007/s10530-024-03341-2}
 }
 \seealso{
-Other cat data helpers: 
-\code{\link{cat_add_data}()},
-\code{\link{cat_get_data}()},
-\code{\link{cat_sample_data}()},
-\code{\link{summary.cat_sample}()}
+Other cat data helpers:
+\code{\link[=cat_add_data]{cat_add_data()}},
+\code{\link[=cat_get_data]{cat_get_data()}},
+\code{\link[=cat_sample_data]{cat_sample_data()}},
+\code{\link[=summary.cat_sample]{summary.cat_sample()}}
 }
 \author{
 Sergio Vignali and Maude Vernet

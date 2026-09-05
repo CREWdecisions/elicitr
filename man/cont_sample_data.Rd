@@ -122,11 +122,11 @@ samp <- cont_sample_data(my_elicit, round = 1, var = "var3",
                          weights = c(0.8, 0.7, 0.9, 0.7, 0.6, 0.9))
 }
 \seealso{
-Other cont data helpers: 
-\code{\link{cont_add_data}()},
-\code{\link{cont_get_data}()},
-\code{\link{cont_start}()},
-\code{\link{summary.cont_sample}()}
+Other cont data helpers:
+\code{\link[=cont_add_data]{cont_add_data()}},
+\code{\link[=cont_get_data]{cont_get_data()}},
+\code{\link[=cont_start]{cont_start()}},
+\code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
 Sergio Vignali

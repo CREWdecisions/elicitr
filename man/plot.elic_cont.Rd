@@ -142,9 +142,9 @@ plot(my_elicit, round = 1, var = "var3",
           theme = ggplot2::theme_classic())
 }
 \seealso{
-Other plot helpers: 
-\code{\link{plot.cat_sample}()},
-\code{\link{plot.cont_sample}()}
+Other plot helpers:
+\code{\link[=plot.cat_sample]{plot.cat_sample()}},
+\code{\link[=plot.cont_sample]{plot.cont_sample()}}
 }
 \author{
 Sergio Vignali, Maude Vernet and Stefano Canessa

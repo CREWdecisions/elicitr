@@ -123,11 +123,11 @@ using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
 \url{https://doi.org/10.1111/2041-210X.12857}
 }
 \seealso{
-Other cont data helpers: 
-\code{\link{cont_add_data}()},
-\code{\link{cont_get_data}()},
-\code{\link{cont_sample_data}()},
-\code{\link{summary.cont_sample}()}
+Other cont data helpers:
+\code{\link[=cont_add_data]{cont_add_data()}},
+\code{\link[=cont_get_data]{cont_get_data()}},
+\code{\link[=cont_sample_data]{cont_sample_data()}},
+\code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
 Sergio Vignali

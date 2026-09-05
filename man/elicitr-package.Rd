@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Sergio Vignali \email{crewdecisions@gmail.com} (\href{https://orcid.org/0000-0002-3390-5442}{ORCID})
   \item Maude Vernet (\href{https://orcid.org/0009-0003-0907-5279}{ORCID})
   \item Stefano Canessa (\href{https://orcid.org/0000-0002-0932-826X}{ORCID})
 }

@@ -21,7 +21,7 @@ cat_add_data(
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
 \code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
-or anything accepted by the \link[googlesheets4:range_read]{read_sheet} function.}
+or anything accepted by the \link[googlesheets4:read_sheet]{read_sheet} function.}
 
 \item{topic}{character string that indicates the mechanism to which the data
 belongs.}
@@ -175,7 +175,7 @@ my_elicit <- cat_add_data(x,
                topic = "topic_3")
 my_elicit
 
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Add data for the first and second round from Google Sheets
 googlesheets4::gs4_deauth()
 gs <- "18VHeHB89P1s-6banaVoqOP-ggFmQZYx-z_31nMffAb8"
@@ -209,11 +209,11 @@ my_elicit
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other cat data helpers: 
-\code{\link{cat_get_data}()},
-\code{\link{cat_sample_data}()},
-\code{\link{cat_start}()},
-\code{\link{summary.cat_sample}()}
+Other cat data helpers:
+\code{\link[=cat_get_data]{cat_get_data()}},
+\code{\link[=cat_sample_data]{cat_sample_data()}},
+\code{\link[=cat_start]{cat_start()}},
+\code{\link[=summary.cat_sample]{summary.cat_sample()}}
 }
 \author{
 Sergio Vignali and Maude Vernet

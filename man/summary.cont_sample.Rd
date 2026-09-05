@@ -48,11 +48,11 @@ summary(samp, var = "var1")
 summary(samp, var = c("var1", "var3"))
 }
 \seealso{
-Other cont data helpers: 
-\code{\link{cont_add_data}()},
-\code{\link{cont_get_data}()},
-\code{\link{cont_sample_data}()},
-\code{\link{cont_start}()}
+Other cont data helpers:
+\code{\link[=cont_add_data]{cont_add_data()}},
+\code{\link[=cont_get_data]{cont_get_data()}},
+\code{\link[=cont_sample_data]{cont_sample_data()}},
+\code{\link[=cont_start]{cont_start()}}
 }
 \author{
 Sergio Vignali

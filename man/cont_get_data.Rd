@@ -119,11 +119,11 @@ cont_get_data(my_elicit, round = 2, elic_types = "3")
 cont_get_data(my_elicit, round = 2, elic_types = "14")
 }
 \seealso{
-Other cont data helpers: 
-\code{\link{cont_add_data}()},
-\code{\link{cont_sample_data}()},
-\code{\link{cont_start}()},
-\code{\link{summary.cont_sample}()}
+Other cont data helpers:
+\code{\link[=cont_add_data]{cont_add_data()}},
+\code{\link[=cont_sample_data]{cont_sample_data()}},
+\code{\link[=cont_start]{cont_start()}},
+\code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
 Sergio Vignali
