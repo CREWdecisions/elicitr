@@ -811,7 +811,7 @@ check_is_negative_real <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some values not in the range (0, 1).
+#' @returns An error if `x` contains some values not in the range 0, 1.
 #' @noRd
 #'
 #' @author Sergio Vignali
