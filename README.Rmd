@@ -50,7 +50,7 @@ All the functions in the elicitr package start with two prefixes: `cont` and `ca
 
 ## Getting started
 
-```{r setup}
+```{r setup, message = FALSE}
 library(elicitr)
 ```
 
