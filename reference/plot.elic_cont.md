@@ -58,7 +58,7 @@ plot(
 
 - group:
 
-  logical, whether to plot the group mean.
+  logical, whether to plot the group mean, see Details for more.
 
 - truth:
 
@@ -119,6 +119,9 @@ Invisibly a
 [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object.
 
 ## Details
+
+If a 1-point elicitation is plotted, the `group` argument will show the
+mean and 95\\
 
 The `truth` argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is

@@ -109,7 +109,7 @@ function.</p></dd>
 
 
 <dt id="arg-group">group<a class="anchor" aria-label="anchor" href="#arg-group"></a></dt>
-<dd><p>logical, whether to plot the group mean.</p></dd>
+<dd><p>logical, whether to plot the group mean, see Details for more.</p></dd>
 
 
 <dt id="arg-truth">truth<a class="anchor" aria-label="anchor" href="#arg-truth"></a></dt>
@@ -171,7 +171,9 @@ theme.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code>truth</code> argument is useful when the elicitation process is part of a
+    <p>If a 1-point elicitation is plotted, the <code>group</code> argument will show the
+mean and 95\<!-- % CIs of the group estimates. --></p>
+<p>The <code>truth</code> argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is known
 and can be added to the plot. This argument must be a list with the following
 elements: <code>min</code>, <code>max</code>, <code>best</code>, and <code>conf</code>. When <code>var</code> refers to a
