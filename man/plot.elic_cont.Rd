@@ -39,7 +39,7 @@ function.}
 
 \item{scale_conf}{numeric, the scale factor for the confidence interval.}
 
-\item{group}{logical, whether to plot the group mean.}
+\item{group}{logical, whether to plot the group mean, see Details for more.}
 
 \item{truth}{list, the true value of the variable, see Details for more.}
 
@@ -77,6 +77,9 @@ Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 \code{plot()} plots elicitation data for a specific round and variable.
 }
 \details{
+If a 1-point elicitation is plotted, the \code{group} argument will show the
+mean and 95\\% CIs of the group estimates.
+
 The \code{truth} argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is known
 and can be added to the plot. This argument must be a list with the following

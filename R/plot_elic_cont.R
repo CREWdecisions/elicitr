@@ -7,7 +7,7 @@
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
-#' @param group logical, whether to plot the group mean.
+#' @param group logical, whether to plot the group mean, see Details for more.
 #' @param truth list, the true value of the variable, see Details for more.
 #' @param colour character string, the colour of estimated values.
 #' @param group_colour character string, the colour of the group mean.
@@ -24,6 +24,9 @@
 #' @inheritParams cont_add_data
 #'
 #' @details
+#' If a 1-point elicitation is plotted, the `group` argument will show the
+#' mean and 95\% CIs of the group estimates.
+#'
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
 #' and can be added to the plot. This argument must be a list with the following
@@ -141,6 +144,9 @@ plot.elic_cont <- function(x,
   if (group) {
 
     ids <- c(ids, "Group")
+    if (elic_type == "1p") {
+      data_ci <- add_ci(data, elic_type)
+    }
     data <- add_group_data(data, elic_type)
   }
 
@@ -154,35 +160,33 @@ plot.elic_cont <- function(x,
   data <- data |>
     mutate("id" = factor(.data[["id"]], levels = ids))
 
-  if (elic_type %in% c("3p", "4p")) {
 
-    if (elic_type == "4p") {
 
-      # Rescale min and max
-      data <- rescale_data(data, scale_conf)
+  if (elic_type == "4p") {
 
-      needs_resc <- check_resc_na(data = data, idx = idx)
+    # Rescale min and max
+    data <- rescale_data(data, scale_conf)
 
-      if (var_type == "p" && needs_resc) {
+    needs_resc <- check_resc_na(data = data, idx = idx)
 
-        data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
-        data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
-        warn <- "Some values have been constrained to be between {.val {0}} \\
+    if (var_type == "p" && needs_resc) {
+
+      data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
+      data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
+      warn <- "Some values have been constrained to be between {.val {0}} \\
                  and {.val {1}}."
-        cli::cli_warn(c("!" = warn))
-      }
-
-      if (verbose) {
-        cli::cli_alert_success("Rescaled min and max")
-      }
+      cli::cli_warn(c("!" = warn))
     }
 
-    if (group) {
-      data[["min"]][data[["id"]] == "Group"] <- mean(data[["min"]][idx],
-                                                     na.rm = TRUE)
-      data[["max"]][data[["id"]] == "Group"] <- mean(data[["max"]][idx],
-                                                     na.rm = TRUE)
+    if (verbose) {
+      cli::cli_alert_success("Rescaled min and max")
     }
+  }
+  if (elic_type %in% c("3p", "4p") && group) {
+    data[["min"]][data[["id"]] == "Group"] <- mean(data[["min"]][idx],
+                                                   na.rm = TRUE)
+    data[["max"]][data[["id"]] == "Group"] <- mean(data[["max"]][idx],
+                                                   na.rm = TRUE)
   }
 
   p <- ggplot2::ggplot(data) +
@@ -194,22 +198,7 @@ plot.elic_cont <- function(x,
                   x = xlab,
                   y = ylab)
 
-  if (elic_type %in% c("3p", "4p")) {
-    p <- p +
-      ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
-                                                    xmin = .data[["min"]],
-                                                    xmax = .data[["max"]],
-                                                    colour = .data[["col"]]),
-                             position = "identity",
-                             width = 0,
-                             linewidth = line_width)
-  }
-
-  if (var_type == "p") {
-    p <- p +
-      ggplot2::scale_x_continuous(limits = c(0, 1),
-                                  expand = c(0, 0))
-  }
+  p <- plot_addons(p, elic_type, var_type, group, line_width, data_ci)
 
   p +
     ggplot2::scale_colour_manual(values = c("experts" = colour,
@@ -256,6 +245,29 @@ add_group_data <- function(data, elic_type) {
   }
 
   data
+}
+
+#' Add group ci for 1-point elicitation
+#'
+#' Add summary statistics (mean and 95\% CI) around the group mean value in a
+#' 1-point elicitation plot.
+#' @param data tibble with the elicitation data.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tible with the CI data.
+#' @noRd
+#' @author Maude Vernet
+
+add_ci <- function(data, elic_type) {
+  data_ci <- data.frame("id" = "Group",
+                        "group95ciPOS" = quantile(data[["best"]], 0.975,
+                                                  na.rm = TRUE),
+                        "group95ciNEG" = quantile(data[["best"]], 0.025,
+                                                  na.rm = TRUE),
+                        "col" = "group",
+                        stringsAsFactors = FALSE)
+
+  data_ci
 }
 
 #' Add truth data
@@ -502,4 +514,58 @@ check_resc_na <- function(data, idx) {
     needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
   }
   needs_resc
+}
+
+#' Finish plot with depended variables
+#'
+#' Add group error bars to group value if plotting a 1-point elicitation, add
+#' error bars if plotting a 3 or 4-point, and rescale plot if probability values
+#'
+#' @param p a ggplot object.
+#' @param elic_type character string with the elicitation type.
+#' @param var_type character string with the variable type.
+#' @param line_width numeric string with the width of the line.
+#' @param data_ci table with the 95\% CI around the mean of 1-point elicitations
+#'
+#' @return a ggplot object.
+#' @noRd
+#'
+#' @author Maude Vernet
+plot_addons <- function(p,
+                        elic_type,
+                        var_type,
+                        group,
+                        line_width,
+                        data_ci) {
+  if (elic_type == "1p" && group) {
+    p <- p +
+      ggplot2::geom_errorbar(data = data_ci,
+                             mapping =
+                               ggplot2::aes(y = .data[["id"]],
+                                            xmin = .data[["group95ciNEG"]],
+                                            xmax = .data[["group95ciPOS"]],
+                                            colour = .data[["col"]]),
+                             position = "identity",
+                             width = 0,
+                             linewidth = line_width)
+  }
+
+  if (elic_type %in% c("3p", "4p")) {
+    p <- p +
+      ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
+                                                    xmin = .data[["min"]],
+                                                    xmax = .data[["max"]],
+                                                    colour = .data[["col"]]),
+                             position = "identity",
+                             width = 0,
+                             linewidth = line_width)
+  }
+
+  if (var_type == "p") {
+    p <- p +
+      ggplot2::scale_x_continuous(limits = c(0, 1),
+                                  expand = c(0, 0))
+  }
+
+  p
 }

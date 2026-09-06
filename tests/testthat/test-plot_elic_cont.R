@@ -91,8 +91,9 @@ test_that("Output", {
   # Plot for a variable with 1 point elicitation and group
   p <- plot(obj, round = 2, var = "var1", group = TRUE, verbose = FALSE)
   expect_true(ggplot2::is_ggplot(p))
-  expect_length(p[["layers"]], 1)
+  expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 3L)
   expect_identical(colnames(p[["data"]]), c("id", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), c("experts", "group"))
@@ -121,7 +122,7 @@ test_that("Output", {
   p <- plot(obj, round = 2, var = "var1", group = TRUE,
             truth = list(best = 0.8), verbose = FALSE)
   expect_true(ggplot2::is_ggplot(p))
-  expect_length(p[["layers"]], 1)
+  expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
   expect_identical(ncol(p[["data"]]), 3L)
   expect_identical(colnames(p[["data"]]), c("id", "best", "col"))
