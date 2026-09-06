@@ -7,7 +7,7 @@
 #'
 #' @param var character string, the variable to be plotted.
 #' @param scale_conf numeric, the scale factor for the confidence interval.
-#' @param group logical, whether to plot the group mean.
+#' @param group logical, whether to plot the group mean, see Details for more.
 #' @param truth list, the true value of the variable, see Details for more.
 #' @param colour character string, the colour of estimated values.
 #' @param group_colour character string, the colour of the group mean.
@@ -24,6 +24,9 @@
 #' @inheritParams cont_add_data
 #'
 #' @details
+#' If a 1-point elicitation is plotted, the `group` argument will show the
+#' mean and 95 CIs of the group estimates.
+#'
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
 #' and can be added to the plot. This argument must be a list with the following
@@ -142,6 +145,9 @@ plot.elic_cont <- function(x,
 
     ids <- c(ids, "Group")
     data <- add_group_data(data, elic_type)
+    if (elic_type == "1p") {
+      data_ci <- add_ci(data, elic_type)
+    }
   }
 
   if (!is.null(truth)) {
@@ -193,6 +199,21 @@ plot.elic_cont <- function(x,
     ggplot2::labs(title = title,
                   x = xlab,
                   y = ylab)
+
+  if (elic_type == "1p") {
+    if (group) {
+      p <- p +
+        ggplot2::geom_errorbar(data = data_ci,
+                               mapping =
+                                 ggplot2::aes(y = .data[["id"]],
+                                              xmin = .data[["group95ciNEG"]],
+                                              xmax = .data[["group95ciPOS"]],
+                                              colour = .data[["col"]]),
+                               position = "identity",
+                               width = 0,
+                               linewidth = line_width)
+    }
+  }
 
   if (elic_type %in% c("3p", "4p")) {
     p <- p +
@@ -256,6 +277,27 @@ add_group_data <- function(data, elic_type) {
   }
 
   data
+}
+
+#' Add group ci 1p elicitation
+#'
+#' Add summary statistics around group mean value in 1p elicitation plot
+#' @param data tibble with the elicitation data.
+#' @param elic_type character string with the elicitation type.
+#'
+#' @return A tible with the ci data.
+#' @noRd
+#' @author Maude Vernet
+
+add_ci <- function(data, elic_type) {
+  data_ci <- data.frame("id" = "Group",
+                        "group95ciPOS" = quantile(data[["best"]], 0.975,
+                                                  na.rm = TRUE),
+                        "group95ciNEG" = quantile(data[["best"]], 0.025,
+                                                  na.rm = TRUE),
+                        "col" = "group")
+
+  data_ci
 }
 
 #' Add truth data
