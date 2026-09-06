@@ -38,7 +38,9 @@ Imports:
     tidyr,
     tools,
     utils,
-    ggbeeswarm
+    ggbeeswarm,
+    lme4,
+    stringi
 Suggests:
     knitr,
     lifecycle,
