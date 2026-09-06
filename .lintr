@@ -4,6 +4,7 @@ linters: all_linters(
   if_switch_linter = NULL,
   implicit_assignment_linter = NULL,
   implicit_integer_linter = NULL,
+  namespace_linter = NULL,
   keyword_quote_linter = NULL,
   object_usage_linter = NULL,
   undesirable_function_linter = NULL)
