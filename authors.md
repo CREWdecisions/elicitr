@@ -2,10 +2,10 @@
 
 ## Authors
 
-- **Sergio Vignali**. Author, maintainer.
-  [](https://orcid.org/0000-0002-3390-5442)
+- **Sergio Vignali**. Author. [](https://orcid.org/0000-0002-3390-5442)
 
-- **Maude Vernet**. Author. [](https://orcid.org/0009-0003-0907-5279)
+- **Maude Vernet**. Author, maintainer.
+  [](https://orcid.org/0009-0003-0907-5279)
 
 - **Stefano Canessa**. Author. [](https://orcid.org/0000-0002-0932-826X)
 
