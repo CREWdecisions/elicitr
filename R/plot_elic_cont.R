@@ -200,19 +200,17 @@ plot.elic_cont <- function(x,
                   x = xlab,
                   y = ylab)
 
-  if (elic_type == "1p") {
-    if (group) {
-      p <- p +
-        ggplot2::geom_errorbar(data = data_ci,
-                               mapping =
-                                 ggplot2::aes(y = .data[["id"]],
-                                              xmin = .data[["group95ciNEG"]],
-                                              xmax = .data[["group95ciPOS"]],
-                                              colour = .data[["col"]]),
-                               position = "identity",
-                               width = 0,
-                               linewidth = line_width)
-    }
+  if (elic_type == "1p" & group) {
+    p <- p +
+      ggplot2::geom_errorbar(data = data_ci,
+                             mapping =
+                               ggplot2::aes(y = .data[["id"]],
+                                            xmin = .data[["group95ciNEG"]],
+                                            xmax = .data[["group95ciPOS"]],
+                                            colour = .data[["col"]]),
+                             position = "identity",
+                             width = 0,
+                             linewidth = line_width)
   }
 
   if (elic_type %in% c("3p", "4p")) {
@@ -295,7 +293,8 @@ add_ci <- function(data, elic_type) {
                                                   na.rm = TRUE),
                         "group95ciNEG" = quantile(data[["best"]], 0.025,
                                                   na.rm = TRUE),
-                        "col" = "group")
+                        "col" = "group",
+                        stringsAsFactors = FALSE)
 
   data_ci
 }
