@@ -25,7 +25,7 @@
 #'
 #' @details
 #' If a 1-point elicitation is plotted, the `group` argument will show the
-#' mean and 95 CIs of the group estimates.
+#' mean and 95\% CIs of the group estimates.
 #'
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
@@ -144,10 +144,10 @@ plot.elic_cont <- function(x,
   if (group) {
 
     ids <- c(ids, "Group")
-    data <- add_group_data(data, elic_type)
     if (elic_type == "1p") {
       data_ci <- add_ci(data, elic_type)
     }
+    data <- add_group_data(data, elic_type)
   }
 
   if (!is.null(truth)) {
@@ -200,7 +200,7 @@ plot.elic_cont <- function(x,
                   x = xlab,
                   y = ylab)
 
-  if (elic_type == "1p" & group) {
+  if (elic_type == "1p" && group) {
     p <- p +
       ggplot2::geom_errorbar(data = data_ci,
                              mapping =
@@ -277,13 +277,14 @@ add_group_data <- function(data, elic_type) {
   data
 }
 
-#' Add group ci 1p elicitation
+#' Add group ci for 1-point elicitation
 #'
-#' Add summary statistics around group mean value in 1p elicitation plot
+#' Add summary statistics (mean and 95% CI) around the group mean value in a
+#' 1-point elicitation plot.
 #' @param data tibble with the elicitation data.
 #' @param elic_type character string with the elicitation type.
 #'
-#' @return A tible with the ci data.
+#' @return A tible with the CI data.
 #' @noRd
 #' @author Maude Vernet
 

@@ -93,6 +93,7 @@ test_that("Output", {
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
   expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
   expect_identical(ncol(p[["data"]]), 3L)
   expect_identical(colnames(p[["data"]]), c("id", "best", "col"))
   expect_identical(unique(p[["data"]][["col"]]), c("experts", "group"))

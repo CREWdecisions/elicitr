@@ -78,7 +78,7 @@ Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \details{
 If a 1-point elicitation is plotted, the \code{group} argument will show the
-mean and 95 CIs of the group estimates.
+mean and 95\\% CIs of the group estimates.
 
 The \code{truth} argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is known
