@@ -472,17 +472,17 @@ check_sum_1 <- function(x) {
       # Rescaling to 100
       sums_flag <- sums |>
         # add a column to sums which flags the ones equal to 1
-        dplyr::mutate("flag" = good_1) |>
+        dplyr::mutate(flag = good_1) |>
         # Keep only the columns id, option and flag from sums (drop sum column)
-        dplyr::select(id, option, flag)
+        dplyr::select("id", "option", "flag")
 
       x <- x |>
         # Join the flags to the original data
         dplyr::left_join(sums_flag, by = c("id", "option")) |>
         # Rescale only the flagged rows (if flag is true -> *100)
-        dplyr::mutate("estimate" = dplyr::if_else(flag,
-                                                  estimate * 100,
-                                                  estimate)) |>
+        dplyr::mutate("estimate" = dplyr::if_else(.data[["flag"]],
+                                                  .data[["estimate"]] * 100,
+                                                  .data[["estimate"]])) |>
         # Remove the flag column
         dplyr::select(-"flag")
     }
