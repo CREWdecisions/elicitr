@@ -25,9 +25,8 @@
 #' samples the data based on the expert estimates with differences between the
 #' different elicitation types:
 #'
-#' * _one point elicitation_: the best estimate of each expert represent the
-#' pool of values that are sampled `n_votes` `*` `n_experts` times, with
-#' repetition.
+#' * _one point elicitation_: the best estimate of each expert is repeated
+#' `n_votes` `*` `n_experts` number of times.
 #'
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
@@ -267,11 +266,11 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
 #' @returns A numeric vector with the sampled data.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 get_sample <- function(estimates, n_samp, e, elic_type) {
 
   if (elic_type == "1p") {
-    samp <- sample(estimates, n_samp[[e]], replace = TRUE)
+    samp <- rep(estimates[e], n_samp[[e]])
   } else if (anyNA(c(estimates[[1]][[e]],
                      estimates[[2]][[e]],
                      estimates[[3]][[e]]))) {

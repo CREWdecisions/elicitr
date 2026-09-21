@@ -72,6 +72,10 @@ test_that("Info", {
   expect_identical(attr(out, "round"), 1)
   expect_identical(nrow(out), as.integer(obj[["experts"]] * 50))
   expect_identical(as.vector(table(out[["id"]])), rep(50L, 6))
+  # Each sampled value must match the estimate of its expert
+  original <- obj[["data"]][["round_1"]]
+  expected <- original[["var1_best"]][match(out[["id"]], original[["id"]])]
+  expect_equal(out[["value"]], expected)
 
   # Two variable
   expect_snapshot(out <- cont_sample_data(obj,
@@ -140,4 +144,15 @@ test_that("Output", {
   n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
+})
+
+test_that("one-point sampling preserves a single estimate", {
+  out <- get_sample(
+    estimates = 10,
+    n_samp = 20,
+    e = 1,
+    elic_type = "1p"
+  )
+
+  expect_equal(out, rep(10, 20))
 })
