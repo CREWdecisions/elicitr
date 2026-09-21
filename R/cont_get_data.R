@@ -88,7 +88,7 @@ cont_get_data <- function(x,
     check_arg_types(var_types, type = "var")
     check_value_in_element(x, element = "var_types", value = var_types)
 
-    idx <- match(var_types, x[["var_types"]])
+    idx <- which(x[["var_types"]] %in% var_types)
     var <- x[["var_names"]][idx]
   } else if (arg == "elic_types") {
     # Split and check elicitation types
@@ -96,7 +96,7 @@ cont_get_data <- function(x,
     check_arg_types(elic_types, type = "elic")
     check_value_in_element(x, element = "elic_types", value = elic_types)
 
-    idx <- match(elic_types, x[["elic_types"]])
+    idx <- which(x[["elic_types"]] %in% elic_types)
     var <- x[["var_names"]][idx]
   }
 
