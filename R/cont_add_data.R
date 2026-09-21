@@ -306,12 +306,8 @@ fix_var_order <- function(x,
   vars <- var_names[idx_vars]
 
   for (i in seq_along(vars)) {
-    idx_cols <- grepl(vars[i], colnames(x))
-
-    # The confidence value should not be reordered
-    if (sum(idx_cols) == 4) {
-      idx_cols[which(idx_cols)[length(which(idx_cols))]] <- FALSE
-    }
+    expected_cols <- paste0(vars[i], c("_min", "_max", "_best"))
+    idx_cols <- names(x) %in% expected_cols
 
     idx_rows <- apply(x[, idx_cols], 1, is_not_min_max_best)
 
@@ -638,9 +634,12 @@ check_data_types <- function(x, data) {
 
   for (i in seq_along(var_names)) {
 
-    idx <- grepl(var_names[[i]], colnames(data))
+    expected_cols <- paste0(var_names[[i]],
+                            "_",
+                            var_labels[[elic_types[[i]]]])
 
-    df <- unlist(data[, idx])
+    idx <- names(data) %in% expected_cols
+    df <- unlist(data[, idx, drop = FALSE])
 
     check_na_blocks(df = df, var_name = var_names[[i]])
 

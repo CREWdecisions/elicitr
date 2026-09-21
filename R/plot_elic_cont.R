@@ -127,7 +127,13 @@ plot.elic_cont <- function(x,
   data <- cont_get_data(x, round = round, var = var) |>
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
-  colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+  prefix <- paste0(var, "_")
+  cols <- names(data)
+
+  idx <- startsWith(cols, prefix) & cols != "id"
+  cols[idx] <- substring(cols[idx], nchar(prefix) + 1L)
+
+  names(data) <- cols
 
   if (!is.null(expert_names)) {
     data <- cont_rename_experts(x,

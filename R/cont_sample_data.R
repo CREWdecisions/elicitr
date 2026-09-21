@@ -62,7 +62,7 @@
 #'
 #' @family cont data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -134,7 +134,13 @@ cont_sample_data <- function(x,
     var_type <- get_type(x, v, "var")
 
     data <- cont_get_data(x, round = round, var = v)
-    colnames(data) <- gsub(paste0(v, "_"), "", colnames(data))
+    prefix <- paste0(v, "_")
+    cols <- names(data)
+
+    idx <- startsWith(cols, prefix) & cols != "id"
+    cols[idx] <- substring(cols[idx], nchar(prefix) + 1L)
+
+    names(data) <- cols
 
     if (elic_type == "4p") {
       if (sum(weights) == n_experts) {

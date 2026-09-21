@@ -28,7 +28,7 @@
 #'
 #' @family cont data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -100,17 +100,19 @@ cont_get_data <- function(x,
     var <- x[["var_names"]][idx]
   }
 
-  if (length(var) == 1) {
+  # Identify all requested variables in their original order
+  selected <- x[["var_names"]] %in% var
 
-    pattern <- var
+  # Construct their exact column names, including "id"
+  expected_cols <- get_col_names(
+    var_names = x[["var_names"]][selected],
+    elic_types = x[["elic_types"]][selected]
+  )
 
-  } else {
-    pattern <- paste(var, collapse = "|")
-  }
+  data <- x[["data"]][[round]]
+  idx <- names(data) %in% expected_cols
 
-  idx <- c(TRUE, grepl(pattern, colnames(x[["data"]][[round]][, -1])))
-
-  x[["data"]][[round]][, idx]
+  data[, idx, drop = FALSE]
 }
 
 # Checkers----
