@@ -11,7 +11,7 @@ cont_sample_data(
   method = "basic",
   var = "all",
   n_votes = 1000,
-  weights = 1,
+  weights = NULL,
   verbose = TRUE
 )
 }
@@ -50,10 +50,11 @@ an additional class \code{cont_sample} used to implement the plotting method.
 }
 \section{Weights}{
 
-To provide a different number of votes to each expert, use the \code{weights}
-argument. The length of the vector must be equal to the number of experts. If
-provided when the elicitation type is the \emph{four points elicitation}, their
-values overwrite the confidence estimates.
+To provide a different number of votes to each expert in a
+\emph{three-point elicitation}, use the \code{weights} argument. The length of the
+vector must be equal to the number of experts. If provided when the
+elicitation type is the \emph{four points elicitation}, their values overwrite the
+confidence estimates.
 }
 
 \section{Method}{
@@ -67,10 +68,14 @@ different elicitation types:
 \item \emph{three points elicitation}: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The \code{weights} argument can be used to weight the
-estimates of each expert.
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.
 \item \emph{four points elicitation}: the minimum, best, and maximum estimates of
 each expert are rescaled according to their confidence and used as scaling
 parameters of the PERT distribution from which the data are sampled.
+Furthermore, their confidence is used as the \code{weights} argument to weight the
+estimates of each expert (give a number of vote to each expert) in
+the overall distribution.
 }
 }
 

@@ -15,10 +15,11 @@
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Weights:
-#' To provide a different number of votes to each expert, use the `weights`
-#' argument. The length of the vector must be equal to the number of experts. If
-#' provided when the elicitation type is the _four points elicitation_, their
-#' values overwrite the confidence estimates.
+#' To provide a different number of votes to each expert in a
+#' _three-point elicitation_, use the `weights` argument. The length of the
+#' vector must be equal to the number of experts. If provided when the
+#' elicitation type is the _four points elicitation_, their values overwrite the
+#' confidence estimates.
 #'
 #' @section Method:
 #' The function samples the data using the basic method. The basic method
@@ -31,11 +32,15 @@
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
 #' which the data are sampled. The `weights` argument can be used to weight the
-#' estimates of each expert.
+#' estimates of each expert (give a certain number of vote to each expert) in
+#' the overall distribution.
 #'
 #' * _four points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are rescaled according to their confidence and used as scaling
 #' parameters of the PERT distribution from which the data are sampled.
+#' Furthermore, their confidence is used as the `weights` argument to weight the
+#' estimates of each expert (give a number of vote to each expert) in
+#' the overall distribution.
 #'
 #'
 #' @section scale_conf:
@@ -95,7 +100,7 @@ cont_sample_data <- function(x,
                              method = "basic",
                              var = "all",
                              n_votes = 1000,
-                             weights = 1,
+                             weights = NULL,
                              verbose = TRUE) {
 
   # # Check if the object is of class elic_cont
@@ -121,10 +126,12 @@ cont_sample_data <- function(x,
   all_vars <- vector(mode = "list", length = length(vars))
 
   # Check weights argument
-  check_weights(weights, n_experts)
+  if (!is.null(weights)) {
+    check_weights(weights, n_experts)
 
-  if (length(weights) == 1) {
-    weights <- rep(weights, n_experts)
+    if (length(weights) == 1) {
+      weights <- rep(weights, n_experts)
+    }
   }
 
   for (v in vars) {
@@ -142,7 +149,7 @@ cont_sample_data <- function(x,
     names(data) <- cols
 
     if (elic_type == "4p") {
-      if (sum(weights) == n_experts) {
+      if (is.null(weights)) {
         weights_conf <- data[, 5, drop = TRUE] / 100
         n_samp <- get_boostrap_n_sample(experts, n_votes, weights_conf)
       } else {
@@ -151,7 +158,12 @@ cont_sample_data <- function(x,
         n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
       }
     } else {
-      n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
+      if (!is.null(weights)) {
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
+      } else {
+        weights_fill <- rep(1, n_experts)
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
+      }
     }
 
     estimates <- get_est(data, v, n_experts, var_type, elic_type, verbose)
