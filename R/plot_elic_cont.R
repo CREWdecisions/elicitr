@@ -159,6 +159,10 @@ plot.elic_cont <- function(x,
   if (!is.null(truth)) {
 
     ids <- c(ids, "Truth")
+    if (elic_type == "4p" & !"conf" %in% names(truth)) {
+      truth$conf <- 100
+    }
+
     check_truth(truth, elic_type)
     data <- add_truth_data(data, truth, elic_type)
   }
@@ -362,7 +366,7 @@ check_var_in_obj <- function(x, var) {
 #' elements.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_truth <- function(x, elic_type) {
 
   n <- length(x)
@@ -389,21 +393,22 @@ check_truth <- function(x, elic_type) {
                   but should have {.val {3}} elements named {.val min}, \
                   {.val max} and {.val best}."
       } else if (!all(c("min", "max", "best") %in% names(x))) {
-        error <- "The name of the element in {.arg truth} should be \\
+        error <- "The name of the elements in {.arg truth} should be \\
                   {.val min}, {.val max}, and {.val best} and not \\
                   {.val {names(x)}}."
       }
 
     } else if (elic_type == "4p") {
 
-      if (n != 4) {
+      if (!n %in% c(3, 4)) {
         error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
-                  but should have {.val {4}} elements named {.val min}, \
-                  {.val max}, {.val best} and {.val conf}."
+                  but should have {.val {3}} or {.val {4}} elements named \
+                  {.val min}, {.val max}, {.val best} and optionally \
+                  {.val conf}."
       } else if (!all(c("min", "max", "best", "conf") %in% names(x))) {
-        error <- "The name of the element in {.arg truth} should be \\
-                  {.val min}, {.val max}, {.val best}, and {.val conf} and \\
-                  not {.val {names(x)}}."
+        error <- "The name of the elements in {.arg truth} should be \\
+                  {.val min}, {.val max}, {.val best}, and optionally \\
+                  {.val conf} and not {.val {names(x)}}."
       }
     }
   } else {

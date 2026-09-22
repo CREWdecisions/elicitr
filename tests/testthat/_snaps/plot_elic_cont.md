@@ -75,7 +75,7 @@
     Condition
       Error in `plot()`:
       ! Incorrect value for `truth`:
-      x The name of the element in `truth` should be "min", "max", and "best" and not "min", "beast", and "max".
+      x The name of the elements in `truth` should be "min", "max", and "best" and not "min", "beast", and "max".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---
@@ -85,7 +85,7 @@
     Condition
       Error in `plot()`:
       ! Incorrect value for `truth`:
-      x Argument `truth` is a list with 2 elements but should have 4 elements named "min", "max", "best" and "conf".
+      x The name of the elements in `truth` should be "min", "max", "best", and optionally "conf" and not "min", "max", and "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---
@@ -96,7 +96,7 @@
     Condition
       Error in `plot()`:
       ! Incorrect value for `truth`:
-      x The name of the element in `truth` should be "min", "max", "best", and "conf" and not "min", "beast", "max", and "conf".
+      x The name of the elements in `truth` should be "min", "max", "best", and optionally "conf" and not "min", "beast", "max", and "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---
