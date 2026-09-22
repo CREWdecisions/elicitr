@@ -6,9 +6,22 @@
 #' `cat_add_data()` adds data to an [elic_cat] object from different sources.
 #'
 #' @param x an object of class [elic_cat].
+#' @param data_source either a [`data.frame`][base::data.frame] or
+#' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
+#' or anything accepted by the [read_sheet][googlesheets4::read_sheet] function.
 #' @param topic character string that indicates the mechanism to which the data
 #' belongs.
-#' @inheritParams cont_add_data
+#' @param ... Unused arguments, included only for future extensions of the
+#' function.
+#' @param sep character used as field separator, used only when data_source is a
+#' path to a csv file.
+#' @param sheet integer or character to select the sheet. The sheet can be
+#' referenced by its position with a number or by its name with a string. Used
+#' only when data_source is a path to a xlsx file or when data are imported from
+#' Google Sheets.
+#' @param verbose logical, if TRUE it prints informative messages.
+#' @param anonymise logical, if TRUE expert names are anonymised before adding
+#' the data to the [elic_cat] object.
 #'
 #' @section Data format:
 #'
@@ -171,7 +184,6 @@ cat_add_data <- function(x,
                          ...,
                          sep = ",",
                          sheet = 1,
-                         overwrite = FALSE,
                          verbose = TRUE,
                          anonymise = TRUE) {
 
