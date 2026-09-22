@@ -393,7 +393,7 @@ check_option <- function(x, option) {
 check_weights <- function(x, n) {
 
 
-  if ((length(x) == 1 && x != 1) || (length(x) != 1 && length(x) != n)) {
+  if ((length(x) != n)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 

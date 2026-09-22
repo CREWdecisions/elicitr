@@ -742,7 +742,7 @@ check_is_negative_integer <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
-  if (!all(x %% 1 == 0) || any(x>= 0)) {
+  if (!all(x %% 1 == 0) || any(x >= 0)) {
 
     error <- "Variable {.val {v}} contains some non negative integer numbers."
 

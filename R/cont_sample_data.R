@@ -27,7 +27,8 @@
 #' different elicitation types:
 #'
 #' * _one point elicitation_: the best estimate of each expert is repeated
-#' `n_votes` `*` `n_experts` number of times.
+#' `n_votes` number of times. `n_votes` can be the same for all or different for
+#' each expert.
 #'
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
@@ -127,11 +128,11 @@ cont_sample_data <- function(x,
 
   # Check weights argument
   if (!is.null(weights)) {
-    check_weights(weights, n_experts)
-
     if (length(weights) == 1) {
       weights <- rep(weights, n_experts)
     }
+
+    check_weights(weights, n_experts)
   }
 
   for (v in vars) {
@@ -157,13 +158,11 @@ cont_sample_data <- function(x,
                              estimates")
         n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
       }
+    } else if (!is.null(weights)) {
+      n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
     } else {
-      if (!is.null(weights)) {
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-      } else {
-        weights_fill <- rep(1, n_experts)
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
-      }
+      weights_fill <- rep(1, n_experts)
+      n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
     }
 
     estimates <- get_est(data, v, n_experts, var_type, elic_type, verbose)

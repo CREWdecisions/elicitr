@@ -64,7 +64,8 @@ samples the data based on the expert estimates with differences between the
 different elicitation types:
 \itemize{
 \item \emph{one point elicitation}: the best estimate of each expert is repeated
-\code{n_votes} \code{*} \code{n_experts} number of times.
+\code{n_votes} number of times. \code{n_votes} can be the same for all or different for
+each expert.
 \item \emph{three points elicitation}: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The \code{weights} argument can be used to weight the
