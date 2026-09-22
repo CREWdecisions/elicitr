@@ -85,7 +85,7 @@
     Condition
       Error in `plot()`:
       ! Incorrect value for `truth`:
-      x The name of the elements in `truth` should be "min", "max", "best", and optionally "conf" and not "min", "max", and "conf".
+      x Argument `truth` is a list with 2 elements but should have 3 or 4 elements named "min", "max", "best" and optionally "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---

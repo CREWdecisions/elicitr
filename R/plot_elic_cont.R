@@ -159,11 +159,13 @@ plot.elic_cont <- function(x,
   if (!is.null(truth)) {
 
     ids <- c(ids, "Truth")
-    if (elic_type == "4p" & !"conf" %in% names(truth)) {
+    miss_conf <- FALSE
+    if (elic_type == "4p" && !"conf" %in% names(truth)) {
       truth$conf <- 100
+      miss_conf <- TRUE
     }
 
-    check_truth(truth, elic_type)
+    check_truth(truth, elic_type, miss_conf)
     data <- add_truth_data(data, truth, elic_type)
   }
 
@@ -367,7 +369,7 @@ check_var_in_obj <- function(x, var) {
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-check_truth <- function(x, elic_type) {
+check_truth <- function(x, elic_type, miss_conf) {
 
   n <- length(x)
   error <- ""
@@ -399,6 +401,10 @@ check_truth <- function(x, elic_type) {
       }
 
     } else if (elic_type == "4p") {
+
+      if (isTRUE(miss_conf)) {
+        n <- n-1
+      }
 
       if (!n %in% c(3, 4)) {
         error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
