@@ -12,6 +12,7 @@ cont_sample_data(
   var = "all",
   n_votes = 1000,
   weights = NULL,
+  scale_conf = 100,
   verbose = TRUE
 )
 }
@@ -35,6 +36,8 @@ for all variables.}
 
 \item{weights}{numeric vector with the weights to apply to the estimates. If
 equal to \code{1}, each experts get \code{n_votes} votes, see Weights below.}
+
+\item{scale_conf}{numeric, the scale factor for the confidence interval.}
 
 \item{verbose}{logical, if TRUE it prints informative messages.}
 }

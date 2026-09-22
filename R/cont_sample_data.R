@@ -7,6 +7,7 @@
 #' [`elic_cont`] object.
 #'
 #' @inheritParams cont_get_data
+#' @param scale_conf numeric, the scale factor for the confidence interval.
 #' @param method character string with the name of the method to sample the
 #' data, only the _basic_ is implemented, see Method below.
 #' @param n_votes numeric indicating the number of votes to consider.
@@ -102,6 +103,7 @@ cont_sample_data <- function(x,
                              var = "all",
                              n_votes = 1000,
                              weights = NULL,
+                             scale_conf = 100,
                              verbose = TRUE) {
 
   # # Check if the object is of class elic_cont
@@ -165,7 +167,8 @@ cont_sample_data <- function(x,
       n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
     }
 
-    estimates <- get_est(data, v, n_experts, var_type, elic_type, verbose)
+    estimates <- get_est(data, v, n_experts, var_type,
+                         elic_type, verbose, scale_conf)
 
     for (e in seq_along(experts)) {
 
@@ -224,7 +227,8 @@ cont_sample_data <- function(x,
 #' @noRd
 #'
 #' @author Sergio Vignali
-get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
+get_est <- function(data, v, n_experts, var_type,
+                    elic_type, verbose, scale_conf) {
 
   if (elic_type == "1p") {
     # One point elicitation
@@ -236,7 +240,7 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
     if (elic_type == "4p") {
 
       # Rescale min and max
-      data <- rescale_data(data)
+      data <- rescale_data(data, scale_conf)
       needs_resc <- any(data[["min"]] < 0,
                         na.rm = TRUE) || any(data[["max"]] > 1,
                                              na.rm = TRUE)
