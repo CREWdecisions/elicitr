@@ -147,27 +147,11 @@ plot.elic_cont <- function(x,
   var_type <- get_type(x, var, "var")
   idx <- seq_len(x[["experts"]])
 
-  if (group) {
+  grouptruth <- check_grouptruth(group, ids, elic_type, data, truth)
 
-    ids <- c(ids, "Group")
-    if (elic_type == "1p") {
-      data_ci <- add_ci(data, elic_type)
-    }
-    data <- add_group_data(data, elic_type)
-  }
-
-  if (!is.null(truth)) {
-
-    ids <- c(ids, "Truth")
-    miss_conf <- FALSE
-    if (elic_type == "4p" && !"conf" %in% names(truth)) {
-      truth$conf <- 100
-      miss_conf <- TRUE
-    }
-
-    check_truth(truth, elic_type, miss_conf)
-    data <- add_truth_data(data, truth, elic_type)
-  }
+  data <- grouptruth$data
+  ids <- grouptruth$ids
+  data_ci <- grouptruth$data_ci
 
   data <- data |>
     mutate("id" = factor(.data[["id"]], levels = ids))
@@ -403,7 +387,7 @@ check_truth <- function(x, elic_type, miss_conf) {
     } else if (elic_type == "4p") {
 
       if (isTRUE(miss_conf)) {
-        n <- n-1
+        n <- n - 1
       }
 
       if (!n %in% c(3, 4)) {
@@ -585,4 +569,48 @@ plot_addons <- function(p,
   }
 
   p
+}
+
+#' Verify if group or truth are called
+#'
+#' Check if group or truth are called and make all necessary checks.
+#'
+#' @param group logical if group should be plotted.
+#' @param ids the names of experts
+#' @param elic_type character string with the elicitation type.
+#' @param data tibble with the elicitation data.
+#' @param truth logical if truth should be plotted.
+#'
+#' @return a list with the object with added group and truth, thenew ids and the
+#' potential CIs.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_grouptruth <- function(group, ids, elic_type, data, truth) {
+  data_ci <- NULL
+
+  if (group) {
+
+    ids <- c(ids, "Group")
+    if (elic_type == "1p") {
+      data_ci <- add_ci(data, elic_type)
+    }
+    data <- add_group_data(data, elic_type)
+  }
+
+  if (!is.null(truth)) {
+
+    ids <- c(ids, "Truth")
+    miss_conf <- FALSE
+    if (elic_type == "4p" && !"conf" %in% names(truth)) {
+      truth$conf <- 100
+      miss_conf <- TRUE
+    }
+
+    check_truth(truth, elic_type, miss_conf)
+    data <- add_truth_data(data, truth, elic_type)
+  }
+  list(data_ci = data_ci,
+       data = data,
+       ids = ids)
 }
