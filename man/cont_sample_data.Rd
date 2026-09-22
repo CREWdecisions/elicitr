@@ -11,7 +11,8 @@ cont_sample_data(
   method = "basic",
   var = "all",
   n_votes = 1000,
-  weights = 1,
+  weights = NULL,
+  scale_conf = 100,
   verbose = TRUE
 )
 }
@@ -36,6 +37,8 @@ for all variables.}
 \item{weights}{numeric vector with the weights to apply to the estimates. If
 equal to \code{1}, each experts get \code{n_votes} votes, see Weights below.}
 
+\item{scale_conf}{numeric, the scale factor for the confidence interval.}
+
 \item{verbose}{logical, if TRUE it prints informative messages.}
 }
 \value{
@@ -50,10 +53,11 @@ an additional class \code{cont_sample} used to implement the plotting method.
 }
 \section{Weights}{
 
-To provide a different number of votes to each expert, use the \code{weights}
-argument. The length of the vector must be equal to the number of experts. If
-provided when the elicitation type is the \emph{four points elicitation}, their
-values overwrite the confidence estimates.
+To provide a different number of votes to each expert in a
+\emph{three-point elicitation}, use the \code{weights} argument. The length of the
+vector must be equal to the number of experts. If provided when the
+elicitation type is the \emph{four points elicitation}, their values overwrite the
+confidence estimates.
 }
 
 \section{Method}{
@@ -62,16 +66,20 @@ The function samples the data using the basic method. The basic method
 samples the data based on the expert estimates with differences between the
 different elicitation types:
 \itemize{
-\item \emph{one point elicitation}: the best estimate of each expert represent the
-pool of values that are sampled \code{n_votes} \code{*} \code{n_experts} times, with
-repetition.
+\item \emph{one point elicitation}: the best estimate of each expert is repeated
+\code{n_votes} number of times. \code{n_votes} can be the same for all or different for
+each expert.
 \item \emph{three points elicitation}: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The \code{weights} argument can be used to weight the
-estimates of each expert.
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.
 \item \emph{four points elicitation}: the minimum, best, and maximum estimates of
 each expert are rescaled according to their confidence and used as scaling
 parameters of the PERT distribution from which the data are sampled.
+Furthermore, their confidence is used as the \code{weights} argument to weight the
+estimates of each expert (give a number of vote to each expert) in
+the overall distribution.
 }
 }
 
@@ -129,6 +137,6 @@ Other cont data helpers:
 \code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cont data helpers}

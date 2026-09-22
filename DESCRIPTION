@@ -1,5 +1,5 @@
 Package: elicitr
-Title: A user friendly interface to aggregate elicitation data
+Title: Processing and Aggregation of Expert Elicitation Data
 Version: 0.1.0
 Authors@R: c(
     person("Sergio", "Vignali", email = "crewdecisions@gmail.com",
@@ -10,10 +10,16 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-0932-826X")),
     person("University of Bern", role = c("fnd"))
     )
-Description: Elicitr is an R package, used to aggregate elicitation data. The 
-    package is in active development and implements functions based on two
-    formal elicitation methods. You provide the data, and elicitr transforms
-    them into easily readable graphics.
+Description: Provides tools to import, validate, visualise and aggregate
+    expert estimates for continuous and categorical variables. Analysis of
+    continuous variables supports one-, three- and four-point, confidence-based
+    rescaling and sampling from PERT. Analysis of categorical variables supports
+    Dirichlet distributions, and weighted aggregation. You provide the data, 
+    and elicitr transforms them into easily readable graphics.Implements 
+    workflows adapted from the IDEA protocol described by Hemming et al. (2018) 
+    <doi:10.1111/2041-210X.12857> and categorical elicitation described by
+    Vernet et al. (2024)
+    <doi:10.1007/s10530-024-03341-2>. 
 License: GPL (>= 3)
 URL: https://crewdecisions.github.io/elicitr/
 BugReports: https://github.com/CREWdecisions/elicitr/issues
@@ -23,9 +29,9 @@ Roxygen: list(markdown = TRUE)
 Imports:
     cli,
     digest,
-    dplyr,
+    dplyr (>= 1.0.0),
     extraDistr,
-    ggplot2,
+    ggplot2 (>= 4.0.0),
     googlesheets4,
     mc2d,
     miceadds,
@@ -33,7 +39,7 @@ Imports:
     rlang,
     scales,
     stats,
-    stringr,
+    stringr (>= 1.5.0),
     tibble,
     tidyr,
     tools,

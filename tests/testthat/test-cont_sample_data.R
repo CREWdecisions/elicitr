@@ -23,10 +23,6 @@ test_that("Errors", {
   expect_snapshot(cont_sample_data(obj, round = 1, var = c("var4", "var5")),
                   error = TRUE)
 
-  # When weights is not 1 and not a vector
-  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1", weights = 2),
-                  error = TRUE)
-
   # When weights is a vector of the wrong length
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
                                    weights = c(1, 2)),
@@ -72,6 +68,10 @@ test_that("Info", {
   expect_identical(attr(out, "round"), 1)
   expect_identical(nrow(out), as.integer(obj[["experts"]] * 50))
   expect_identical(as.vector(table(out[["id"]])), rep(50L, 6))
+  # Each sampled value must match the estimate of its expert
+  original <- obj[["data"]][["round_1"]]
+  expected <- original[["var1_best"]][match(out[["id"]], original[["id"]])]
+  expect_identical(out[["value"]], expected)
 
   # Two variable
   expect_snapshot(out <- cont_sample_data(obj,
@@ -140,4 +140,30 @@ test_that("Output", {
   n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
+})
+
+test_that("one weight supplied for all experts", {
+  obj <- create_cont_obj()
+
+  out <- cont_sample_data(obj, round = 2,
+                          var = "var1",
+                          weights = 10,
+                          verbose = FALSE)
+  expect_identical(nrow(out), 6000L)
+  experts <- unique(obj[["data"]][["round_1"]][["id"]])
+  n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
+    as.vector()
+  n_samp_expected <- get_boostrap_n_sample(experts, 1000, rep(10, 6)) |>
+    as.integer()
+  expect_identical(n_samp_actual, n_samp_expected)
+
+})
+
+test_that("one-point sampling preserves a single estimate", {
+  out <- get_sample(estimates = 10,
+                    n_samp = 20,
+                    e = 1,
+                    elic_type = "1p")
+
+  expect_identical(out, rep(10, 20))
 })

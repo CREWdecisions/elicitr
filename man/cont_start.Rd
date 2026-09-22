@@ -58,15 +58,15 @@ Valid short codes are:
 \item \code{Z}: \emph{integers}, when the estimate must be an integer number in the
 interval (-Inf, Inf).
 \item \code{N}: \emph{positive integers}, when the estimate must be an integer number in
-the interval (0, Inf).
+the interval [0, Inf).
 \item \code{z}: \emph{negative integers}, when the estimate must be an integer number in
-the interval (-Inf, 0].
+the interval (-Inf, 0).
 \item \code{R}: \emph{reals}, when the estimate must be a real number in the interval
 (-Inf, Inf).
 \item \code{s}: \emph{positive reals}, when the estimate must be a real number in the
-interval (0, Inf).
+interval [0, Inf).
 \item \code{r}: \emph{negative reals}, when the estimate must be a real number in the
-interval (-Inf, ].
+interval (-Inf, 0).
 \item \code{p}: \emph{probability}, when the estimate must be a real number in the interval
 (0, 1).
 }

@@ -61,16 +61,6 @@
 ---
 
     Code
-      cont_sample_data(obj, round = 1, var = "var1", weights = 2)
-    Condition
-      Error in `cont_sample_data()`:
-      ! Invalid value for argument `weights:`
-      x Argument `weights` must be 1 or a vector of length 6, same as the number of experts.
-      i See `elicitr::cont_sample_data()` for more information.
-
----
-
-    Code
       cont_sample_data(obj, round = 1, var = "var1", weights = c(1, 2))
     Condition
       Error in `cont_sample_data()`:

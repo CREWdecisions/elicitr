@@ -11,7 +11,6 @@ cat_add_data(
   ...,
   sep = ",",
   sheet = 1,
-  overwrite = FALSE,
   verbose = TRUE,
   anonymise = TRUE
 )
@@ -29,21 +28,18 @@ belongs.}
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 
-\item{sep}{character used as field separator, used only when \code{data_source} is
-a path to a \emph{csv} file.}
+\item{sep}{character used as field separator, used only when data_source is a
+path to a csv file.}
 
 \item{sheet}{integer or character to select the sheet. The sheet can be
 referenced by its position with a number or by its name with a string. Used
-only when \code{data_source} is a path to a \emph{xlsx} file or when data are imported
-from \emph{Google Sheets}.}
+only when data_source is a path to a xlsx file or when data are imported from
+Google Sheets.}
 
-\item{overwrite}{logical, whether to overwrite existing data already added to
-the \link{elic_cont} object.}
+\item{verbose}{logical, if TRUE it prints informative messages.}
 
-\item{verbose}{logical, if \code{TRUE} it prints informative messages.}
-
-\item{anonymise}{logical, if \code{TRUE} expert names are anonymised before adding
-the data to the \link{elic_cont} object.}
+\item{anonymise}{logical, if TRUE expert names are anonymised before adding
+the data to the \link{elic_cat} object.}
 }
 \value{
 The provided object of class \link{elic_cat} updated with the data.

@@ -4,11 +4,11 @@
 \name{elicitr-package}
 \alias{elicitr}
 \alias{elicitr-package}
-\title{elicitr: A user friendly interface to aggregate elicitation data}
+\title{elicitr: Processing and Aggregation of Expert Elicitation Data}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Elicitr is an R package, used to aggregate elicitation data. The package is in active development and implements functions based on two formal elicitation methods. You provide the data, and elicitr transforms them into easily readable graphics.
+Provides tools to import, validate, visualise and aggregate expert estimates for continuous and categorical variables. Analysis of continuous variables supports one-, three- and four-point, confidence-based rescaling and sampling from PERT. Analysis of categorical variables supports Dirichlet distributions, and weighted aggregation. You provide the data, and elicitr transforms them into easily readable graphics.Implements workflows adapted from the IDEA protocol described by Hemming et al. (2018) \doi{10.1111/2041-210X.12857} and categorical elicitation described by Vernet et al. (2024) \doi{10.1007/s10530-024-03341-2}.
 }
 \seealso{
 Useful links:
