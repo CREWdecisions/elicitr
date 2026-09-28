@@ -80,3 +80,17 @@
       x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
       i Please provide different names for the experts.
 
+# violin plot rendered if type is not violin and elic_type = 1p
+
+    Code
+      p <- plot(samp, var = "var1", type = "beeswarm")
+    Message
+      i Replacing `type` with "violin" as "var1" is a one-point variable.
+
+---
+
+    Code
+      p <- plot(samp, var = "var1", type = "density")
+    Message
+      i Replacing `type` with "violin" as "var1" is a one-point variable.
+

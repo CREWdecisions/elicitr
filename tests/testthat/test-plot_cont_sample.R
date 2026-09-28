@@ -195,4 +195,37 @@ test_that("Output", {
   }
 })
 
+test_that("violin plot rendered if type is not violin and elic_type = 1p", {
+  withr::local_pdf(NULL)
+  obj <- create_cont_obj()
+  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  #beeswarm
+  expect_snapshot(p <- plot(samp, var = "var1", type = "beeswarm"))
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(names(p[["layers"]]), c("geom_violin", "stat_summary"))
+
+  #density
+  expect_snapshot(p <- plot(samp, var = "var1", type = "density"))
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(names(p[["layers"]]), c("geom_violin", "stat_summary"))
+
+  #still density if group
+  #beeswarm
+  p <- plot(samp, var = "var1", type = "beeswarm", group = TRUE)
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(names(p[["layers"]]), c("geom_beeswarm", "stat_summary"))
+
+  #density
+  p <- plot(samp, var = "var1", type = "density", group = TRUE)
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 1)
+  expect_identical(names(p[["layers"]]), c("stat_density"))
+})
 })

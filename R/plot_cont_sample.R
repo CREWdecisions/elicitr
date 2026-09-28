@@ -95,6 +95,28 @@ plot.cont_sample <- function(x,
   check_length(var, "var", 1)
   check_var_in_sample(x, var)
 
+  if (!type %in% c("density", "violin", "beeswarm")) {
+    info <- "Available types are {.val beeswarm}, {.val violin} and \\
+    {.val density}."
+    cli::cli_abort(c("Invalid value for argument {.arg type}:",
+                     "x" = "Type {.val {type}} is not implemented.",
+                     "i" = info))
+  }
+
+  #check if all experts have one value in var (aka is a 1p variable)
+  if (any(!is.na(x[["value"]][x[["var"]] == var])) &&
+          all(x[x[["var"]] == var, ] |>
+              dplyr::group_by(.data[["id"]]) |>
+              dplyr::summarise(all_same =
+                               dplyr::n_distinct(.data[["value"]]) == 1) |>
+              dplyr::pull("all_same")) &&
+          type != "violin" &&
+          group == FALSE) {
+    type <- "violin"
+    cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
+                        {.val {var}} is a one-point variable.")
+  }
+
   # Avoid overwrite dplyr variable
   vars <- var
   x <- x |>
