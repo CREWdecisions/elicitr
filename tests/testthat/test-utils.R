@@ -10,3 +10,12 @@ test_that("split_short_codes() works", {
   expect_type(x, "character")
   expect_identical(x, c("1p", "3p", "4p"))
 })
+
+test_that("get_boostrap_n_sample() rejects negative weights", {
+  #negative weights
+  weights <- c(-1, 3)
+  expect_snapshot(get_boostrap_n_sample(experts = c("A", "B"),
+                                        n_votes = 10,
+                                        conf = weights),
+                  error = TRUE)
+})

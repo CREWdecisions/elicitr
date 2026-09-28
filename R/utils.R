@@ -727,6 +727,10 @@ rescale_data <- function(x, s = 100) {
 #' @author Sergio Vignali and Maude Vernet
 get_boostrap_n_sample <- function(experts, n_votes, conf) {
 
+  if (any(conf < 0, na.rm = TRUE)) {
+    cli::cli_abort("Some weights are negative.")
+  }
+
   if (anyNA(conf)) {
     position <- which(is.na(conf))
     conf[is.na(conf)] <- 0
