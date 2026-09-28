@@ -66,7 +66,7 @@
 #'      colours = c("steelblue4", "darkcyan", "chocolate1",
 #'                  "chocolate3", "orangered4", "royalblue1"))
 plot.cont_sample <- function(x,
-                             var,
+                             var = NULL,
                              ...,
                              group = FALSE,
                              type = "violin",
@@ -85,6 +85,10 @@ plot.cont_sample <- function(x,
     x <- cont_rename_experts(x = x,
                              data = x,
                              expert_names)
+  }
+
+  if (length(unique(x[["var"]])) == 1) {
+    var <- unique(x[["var"]])
   }
 
   # Check if var is available

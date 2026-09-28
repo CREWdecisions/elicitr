@@ -169,4 +169,30 @@ test_that("Output", {
             verbose = FALSE)
   expect_identical(levels(p[["data"]][["id"]]),
                    new_names)
+
+  #Test no variable input when only one variable in sampled data
+  samp <- list(samp1 = cont_sample_data(obj, round = 2, var = "var1",
+                           method = "basic", verbose = FALSE), #1p
+               samp3 = cont_sample_data(obj, round = 2, var = "var2",
+                            method = "basic", verbose = FALSE), #2p
+               samp4 = cont_sample_data(obj, round = 2, var = "var3",
+                            method = "basic", verbose = FALSE)) #3p
+
+  for (i in 1:3) {
+    p <- plot(samp[[i]], verbose = FALSE)
+    ld1 <- ggplot2::layer_data(p, i = 1L)
+    expect_true(ggplot2::is_ggplot(p))
+    expect_length(p[["layers"]], 2)
+    expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+    expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+    expect_identical(ncol(p[["data"]]), 5L)
+    expect_identical(colnames(p[["data"]]), c("id", "var", "value",
+                                              "missing", "violin_value"))
+    expect_s3_class(p[["data"]][["id"]], "factor")
+    expect_identical(levels(p[["data"]][["id"]]), unique(samp[[i]][["id"]]))
+    expect_length(unique(ld1[["fill"]]), 6L)
+    expect_identical(p[["theme"]][["legend.position"]], "none")
+  }
+})
+
 })

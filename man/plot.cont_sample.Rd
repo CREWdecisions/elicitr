@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{cont_sample}(
   x,
-  var,
+  var = NULL,
   ...,
   group = FALSE,
   type = "violin",
