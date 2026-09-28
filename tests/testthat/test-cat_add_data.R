@@ -135,7 +135,7 @@ test_that("Errors", {
 
   # When the column with the confidence values is malformed
   y <- topic_1
-  y[1:5, 4] <- 1:5
+  y[1:5, 4] <- 61:65
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),
@@ -152,6 +152,14 @@ test_that("Errors", {
   # When estimates don't sum to 1 or 100 for more experts and options
   y[19, 5] <- 0.99
   y[120, 5] <- 0.99
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  #When the confidence is not in (50,100]
+  y <- topic_1
+  y[1, 4] <- 49
   expect_snapshot(cat_add_data(x,
                                data_source = y,
                                topic = "topic_1"),

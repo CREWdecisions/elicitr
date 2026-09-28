@@ -184,7 +184,7 @@
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
       x Estimates of one expert and one option don't sum to 1 or 100.
-      * Check id "5ac97e0" for option "option_1": sum 1.91
+      * Check id "5ac97e0" for option "option_1": sum 1.42
 
 ---
 
@@ -194,9 +194,17 @@
       Error in `cat_add_data()`:
       ! Invalid value for `estimate`:
       x Estimates of one/some experts for one/some options don't sum to 1 or 100.
-      * Check id "5ac97e0" for option "option_1": sum 1.91
-      * Check id "5ac97e0" for option "option_4": sum 1.94
-      * Check id "3d32ab9" for option "option_4": sum 1.97
+      * Check id "5ac97e0" for option "option_1": sum 1.42
+      * Check id "5ac97e0" for option "option_4": sum 1.59
+      * Check id "3d32ab9" for option "option_4": sum 1.99
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `check_cat_values()`:
+      ! Confidence must be greater than 50 and at most 100.
 
 # Accepts all estimates summing to 100
 

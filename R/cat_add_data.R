@@ -210,6 +210,7 @@ cat_add_data <- function(x,
   # Check columns type
   check_columns_type(data[1:3], "character")
   check_columns_type(data[4:5], c("numeric", "integer"))
+  check_cat_values(data)
 
   # First check that names, categories and options are as expected
   # Check that unique names are <= expected experts
@@ -409,6 +410,7 @@ check_sum_1 <- function(x) {
     dplyr::group_by(.data[["id"]], .data[["option"]]) |>
     dplyr::summarise(sum = sum(.data[["estimate"]]),
                      sum_NA = sum(.data[["estimate"]], na.rm = TRUE),
+                     all_missing = all(is.na(.data[["estimate"]])),
                      .groups = "drop")
   sums_vector <- dplyr::pull(sums, #pull is basically the same as $
                              "sum")
@@ -417,11 +419,13 @@ check_sum_1 <- function(x) {
                                 "sum_NA")
 
   na_options <- is.na(sums_vector)
+  all_missing <- sums[["all_missing"]]
+  partial_missing <- na_options & !all_missing
 
-  if (sum(na_options) > 0 && any(sums_vector_na[which(na_options)] != 0)) {
+  if (any(partial_missing)) {
 
-    error <- "Expert {.val {sums[na_options,]$id[1]}} gave estimates for only \\
-    part of an option."
+    error <- "Expert {.val {sums[partial_missing, ]$id[1]}} gave estimates \\
+    for only part of an option."
 
     cli::cli_abort(c("Invalid raw data:",
                      "x" = error,
@@ -431,18 +435,17 @@ check_sum_1 <- function(x) {
 
   tol <- 1.5e-8
   #in case estimates were given in proportions
-  bad_1 <- sums_vector_na > 1 + tol | sums_vector_na < 1 - tol
+  good_1 <- abs(sums_vector_na - 1) <= tol
   #in case estimates were given in percents
-  bad_100 <- sums_vector_na > 100 + tol | sums_vector_na < 100 - tol
-  #NA
-  zeros <- sums_vector_na == 0
+  good_100 <- abs(sums_vector_na - 100) <= tol
 
-  total <- sum(bad_1 & bad_100) - sum(zeros)
+  invalid_sum <- !all_missing & !good_1 & !good_100
+  total <- sum(invalid_sum)
   #if both are bad, then the sum is wrong
 
   if (total > 0) {
 
-    idx <- which(bad_1 & bad_100)
+    idx <- which(invalid_sum)
     wrong_data <- sums[idx, ]
 
     if (total == 1) {
@@ -465,11 +468,10 @@ check_sum_1 <- function(x) {
   } else {
 
     #in case estimates were given in proportions
-    good_1 <- abs(sums_vector_na - 1) < tol
     has_1 <- any(good_1)
 
     #in case estimates were given in percents
-    has_100 <- any(abs(sums_vector_na - 100) < tol)
+    has_100 <- any(good_100)
 
     if (has_1) {
 
@@ -527,5 +529,39 @@ check_na <- function(x) {
                      "x" = error,
                      "i" = "Check raw data."),
                    call = rlang::caller_env(n = 2))
+  }
+}
+
+#' Check positive estimates and confidence
+#'
+#' Check that all estimates are positive and not higher than 100, and check that
+#' confidence levels are higher than 50 and max 100.
+#'
+#' @param data data.frame with the data to be checked.
+#'
+#' @return An error if some values are not conform.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_cat_values <- function(data) {
+
+  estimates <- data[["estimate"]]
+  confidence <- data[["confidence"]]
+
+  # Missing values are checked separately.
+  estimates <- estimates[!is.na(estimates)]
+  confidence <- confidence[!is.na(confidence)]
+
+  if (any(!is.finite(estimates) |
+          estimates < 0 |
+          estimates > 100)) {
+    cli::cli_abort("Estimates must be nonnegative probabilities or \\
+                   percentages. Each expert/option block must sum to 1 or 100.")
+  }
+
+  if (any(!is.finite(confidence) |
+          confidence <= 50 |
+          confidence > 100)) {
+    cli::cli_abort("Confidence must be greater than 50 and at most 100.")
   }
 }
