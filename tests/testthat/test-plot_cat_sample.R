@@ -12,6 +12,67 @@ test_that("Errors", {
 
   #When type is not valid
   expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
+
+  #When only NAs are present in the estimates
+  obj[["data"]][["topic_1"]][["confidence"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  expect_snapshot(plot(samp, option = "option_1", type = "beeswarm"),
+                  error = TRUE)
+})
+
+test_that("Warning when only NA for an option", {
+  obj <- create_cat_obj()
+  obj[["data"]][["topic_1"]][["confidence"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+
+  #one option
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  p <- plot(samp, type = "violin")
+  expect_snapshot(p <- plot(samp, type = "violin"))
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
+  expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
+  expect_identical(unique(p[["data"]][["option"]]),
+                   unique(samp[["option"]])[-1])
+
+  #multiple options
+  obj[["data"]][["topic_1"]][["confidence"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_2"] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_2"] <- NA
+  obj[["data"]][["topic_1"]][["confidence"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_4"] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][
+    obj[["data"]][["topic_1"]][["option"]] == "option_4"] <- NA
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  p <- plot(samp, type = "violin")
+  expect_snapshot(p <- plot(samp, type = "violin"))
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
+  expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
+  expect_identical(unique(p[["data"]][["option"]]),
+                   unique(samp[["option"]])[3])
 })
 
 test_that("Output", {

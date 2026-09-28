@@ -80,6 +80,46 @@
       x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
       i Please provide different names for the experts.
 
+---
+
+    Code
+      plot(samp, var = "var1", type = "beeswarm")
+    Condition
+      Error in `plot()`:
+      ! All data provided is empty.
+      x Only NA available in `var`
+      i Experts did not provide any estimate for variable "var1".
+
+---
+
+    Code
+      plot(samp, type = "beeswarm")
+    Condition
+      Error in `plot()`:
+      ! All data provided is empty.
+      x Only NA available in `var`
+      i Experts did not provide any estimate for variable "var1".
+
+---
+
+    Code
+      plot(samp, var = "var2", type = "beeswarm")
+    Condition
+      Error in `plot()`:
+      ! All data provided is empty.
+      x Only NA available in `var`
+      i Experts did not provide any estimate for variable "var2".
+
+---
+
+    Code
+      plot(samp, var = "var3", type = "beeswarm")
+    Condition
+      Error in `plot()`:
+      ! All data provided is empty.
+      x Only NA available in `var`
+      i Experts did not provide any estimate for variable "var3".
+
 # violin plot rendered if type is not violin and elic_type = 1p
 
     Code

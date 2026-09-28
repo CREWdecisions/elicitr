@@ -28,3 +28,27 @@
       x Type "boxplot" is not implemented.
       i Available types are "beeswarm" and "violin".
 
+---
+
+    Code
+      plot(samp, option = "option_1", type = "beeswarm")
+    Condition
+      Error in `plot()`:
+      ! All data provided is empty.
+      x Only NA available in the data
+      i Experts did not provide any estimate.
+
+# Warning when only NA for an option
+
+    Code
+      p <- plot(samp, type = "violin")
+    Message
+      i No data rendered for "option_1" as no estimate was provided.
+
+---
+
+    Code
+      p <- plot(samp, type = "violin")
+    Message
+      i No data rendered for "option_1", "option_2", and "option_4" as no estimate was provided.
+

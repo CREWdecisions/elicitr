@@ -117,6 +117,14 @@ plot.cont_sample <- function(x,
                         {.val {var}} is a one-point variable.")
   }
 
+  x[["missing"]] <- NA
+  x[["violin_value"]] <- x[["value"]]
+  mean_value <- mean(x[["violin_value"]][x[["var"]] == var], na.rm = TRUE)
+  if (any(is.na(x[["value"]]))) {
+    x[["missing"]][is.na(x[["value"]])] <- "no data"
+    x[["violin_value"]][is.na(x[["violin_value"]])] <- mean_value
+  }
+
   # Avoid overwrite dplyr variable
   vars <- var
   x <- x |>
@@ -155,6 +163,13 @@ plot.cont_sample <- function(x,
       cont_sample_theme(type = type, group = group)
   }
 
+  if (all(is.na(x[["value"]][x[["var"]] == var]))) {
+    info <- "Experts did not provide any estimate for variable {.val {var}}."
+    cli::cli_abort(c("All data provided is empty.",
+                     "x" = "Only NA available in {.arg var}",
+                     "i" = info))
+  }
+
   if (type == "violin") {
     p <- ggplot2::ggplot(x) +
       ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[[x_var]],
@@ -166,9 +181,10 @@ plot.cont_sample <- function(x,
                            linewidth = 0.2,
                            quantiles = c(0.25, 0.75),
                            quantile.linetype = 1L,
-                           key_glyph = "dotplot") +
+                           key_glyph = "dotplot",
+                           na.rm = TRUE) +
       ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["value"]]),
+                                                   y = .data[["violin_value"]]),
                             fun = mean,
                             geom = "point",
                             colour = "black",
@@ -179,7 +195,8 @@ plot.cont_sample <- function(x,
                                                    colour = .data[[x_var]]),
                             geom = "line",
                             position = "identity",
-                            linewidth = line_width) +
+                            linewidth = line_width,
+                            na.rm = TRUE) +
       ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
   } else if (type == "beeswarm") {
     p <- ggplot2::ggplot(x) +
@@ -188,24 +205,40 @@ plot.cont_sample <- function(x,
                                                        colour = .data[[x_var]]),
                                 cex = beeswarm_cex,
                                 size = 1,
-                                corral = beeswarm_corral) +
+                                corral = beeswarm_corral,
+                                na.rm = TRUE) +
       ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["value"]]),
+                                                   y = .data[["violin_value"]]),
                             fun = mean,
                             geom = "point",
                             colour = "black",
                             size = 0.8)
-  } else {
+  }
 
-    info <- "Available types are {.val beeswarm}, {.val violin} and \\
-    {.val density}."
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info))
+  subtitle <- ggplot2::waiver()
+  if (!all(is.na(x[["missing"]])) && !isTRUE(group)) {
+    if (type %in% c("violin", "beeswarm")) {
+      p <- p + ggplot2::geom_label(aes(x = .data[[x_var]],
+                                       y = .data[["violin_value"]],
+                                       label = .data[["missing"]]),
+                                   na.rm = TRUE)
+    }
+    n_na <- length(x[["id"]][is.na(x[["value"]])])
+    experts_na <- paste0(x[["id"]][is.na(x[["value"]])], " ")
+    ifelse(length(x[["id"]][is.na(x[["value"]])]) > 1,
+           subtitle <- paste("No answer from expert",
+                             paste0(x[["id"]][is.na(x[["value"]])][2:n_na],
+                                    collapse = ", "),
+                             "and",
+                             x[["id"]][is.na(x[["value"]])][1],
+                             sep = " "),
+           subtitle <- paste0("No answer from expert ",
+                              x[["id"]][is.na(x[["value"]])]))
   }
 
   p <- p +
     ggplot2::labs(title = title,
+                  subtitle = subtitle,
                   x = xlab,
                   y = ylab)
 

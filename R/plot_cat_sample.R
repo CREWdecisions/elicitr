@@ -125,6 +125,35 @@ plot.cat_sample <- function(x,
       cat_sample_theme()
   }
 
+  if (all(is.na(x["prob"]))) {
+    info <- "Experts did not provide any estimate."
+    cli::cli_abort(c("All data provided is empty.",
+                     "x" = "Only NA available in the data",
+                     "i" = info))
+  }
+
+  pot_na <- x|>
+    dplyr::group_by(.data[["option"]]) |>
+    dplyr::summarise(all_na = ifelse(all(is.na(.data[["prob"]])), 1, 0)) |>
+    dplyr::pull("all_na")
+
+  subtitle <- ggplot2::waiver()
+    if(sum(pot_na) != 0) {
+    option_na <- unique(x[["option"]])[pot_na == 1]
+    x <- x[!x[["option"]] %in% option_na, ]
+    cli::cli_inform(c("i" = "No data rendered for {.val {option_na}} as no \\
+                      estimate was provided."))
+    ifelse(length(option_na) > 1,
+           subtitle <- paste("No estimate for",
+                             paste0(option_na[2:length(option_na)],
+                                    collapse = ", "),
+                             "and",
+                             option_na[1],
+                             sep = " "),
+           subtitle <- paste0("No estimate for ",
+                              option_na))
+  }
+
   if (type == "violin") {
     p <- ggplot2::ggplot(x) +
       ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
@@ -136,7 +165,8 @@ plot.cat_sample <- function(x,
                            linewidth = 0.2,
                            quantiles = c(0.25, 0.75),
                            quantile.linetype = 1L,
-                           key_glyph = "dotplot")
+                           key_glyph = "dotplot",
+                           na.rm = TRUE)
   } else if (type == "beeswarm") {
     p <- ggplot2::ggplot(x) +
       ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[["category"]],
@@ -145,7 +175,8 @@ plot.cat_sample <- function(x,
                                                          .data[["category"]]),
                                 cex = beeswarm_cex,
                                 size = 1,
-                                corral = beeswarm_corral)
+                                corral = beeswarm_corral,
+                                na.rm = TRUE)
   } else {
 
     info <- "Available types are {.val beeswarm} and {.val violin}."
@@ -160,8 +191,10 @@ plot.cat_sample <- function(x,
                           fun = mean,
                           geom = "point",
                           colour = "black",
-                          size = 0.8) +
+                          size = 0.8,
+                          na.rm = TRUE) +
     ggplot2::labs(title = title,
+                  subtitle = subtitle,
                   y = ylab) +
     ggplot2::facet_wrap("option") +
     ggplot2::scale_fill_manual(values = colours) +
