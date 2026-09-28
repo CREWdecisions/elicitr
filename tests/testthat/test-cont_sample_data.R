@@ -46,16 +46,90 @@ test_that("Warnings", {
   expect_identical(n_samp_actual, n_samp_expected)
 })
 
-test_that("accepts NAs", {
+test_that("Accepts NAs from one expert", {
+  #1p variable
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][1, 2] <- NA
+  out <- cont_sample_data(obj,
+                          round = 1,
+                          var = c("var1", "var2"),
+                          verbose = FALSE)
+  expect_length(which(out[["id"]][out[["var"]] == "var1"] ==
+                        unique(out[["id"]])[1]),
+                1)
+  expect_length(which(out[["id"]][out[["var"]] != "var1"] ==
+                        unique(out[["id"]])[1]),
+                1000)
+  expect_true(is.na(out[["value"]][out[["var"]] == "var1"][1]))
+
+  #3p variable
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][1, 3:5] <- NA
+  out <- cont_sample_data(obj,
+                          round = 1,
+                          var = c("var2", "var1"),
+                          verbose = FALSE)
+  expect_length(which(out[["id"]][out[["var"]] == "var2"] ==
+                        unique(out[["id"]])[1]),
+                1)
+  expect_length(which(out[["id"]][out[["var"]] != "var2"] ==
+                        unique(out[["id"]])[1]),
+                1000)
+  expect_true(is.na(out[["value"]][out[["var"]] == "var2"][1]))
+
+  #4p variable
   obj <- create_cont_obj()
   obj[["data"]][["round_1"]][1, 6:9] <- NA
   expect_snapshot(out <- cont_sample_data(obj,
                                           round = 1,
+                                          var = c("var3", "var2"),
+                                          verbose = FALSE))
+  expect_length(which(out[["id"]][out[["var"]] == "var3"] ==
+                        unique(out[["id"]])[1]),
+                1)
+  expect_length(which(out[["id"]][out[["var"]] != "var3"] ==
+                        unique(out[["id"]])[1]),
+                1000)
+  expect_true(is.na(out[["value"]][out[["var"]] == "var3"][1]))
+})
+
+test_that("Accepts NAs from all experts for one variable", {
+  #1p variable
+  obj <- create_cont_obj()
+  experts <- obj[["data"]][["round_1"]][["id"]]
+  obj[["data"]][["round_1"]][, 2] <- NA
+  out <- cont_sample_data(obj,
+                          round = 1,
+                          var = "var1",
+                          verbose = FALSE)
+  expect_length(which(out[["id"]] %in% unique(out[["id"]])), length(experts))
+  expect_identical(nrow(out), length(experts))
+  expect_true(all(is.na(out[["value"]])))
+  expect_length(out[["value"]], length(experts))
+
+  #3p variable
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][, 3:5] <- NA
+  out <- cont_sample_data(obj,
+                          round = 1,
+                          var = "var2",
+                          verbose = FALSE)
+  expect_length(which(out[["id"]] %in% unique(out[["id"]])), length(experts))
+  expect_identical(nrow(out), length(experts))
+  expect_true(all(is.na(out[["value"]])))
+  expect_length(out[["value"]], length(experts))
+
+  #4p variable
+  obj <- create_cont_obj()
+  obj[["data"]][["round_1"]][, 6:9] <- NA
+  expect_snapshot(out <- cont_sample_data(obj,
+                                          round = 1,
                                           var = "var3",
                                           verbose = FALSE))
-  expect_length(which(out[["id"]] == unique(out[["id"]])[1]),
-                1)
-  expect_identical(out[["value"]][1], NA_real_)
+  expect_length(which(out[["id"]] %in% unique(out[["id"]])), length(experts))
+  expect_identical(nrow(out), length(experts))
+  expect_true(all(is.na(out[["value"]])))
+  expect_length(out[["value"]], length(experts))
 })
 
 test_that("Info", {

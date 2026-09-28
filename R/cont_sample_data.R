@@ -160,13 +160,21 @@ cont_sample_data <- function(x,
                              estimates")
         n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
       }
-    } else if (!is.null(weights)) {
-      n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-    } else {
-      weights_fill <- rep(1, n_experts)
-      n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
-    }
 
+    } else if (elic_type %in% c("1p", "3p")) {
+      position <- NULL
+      if (any(is.na(data))) {
+        position <- which(is.na(data[, 2]))
+      }
+      if (!is.null(weights)) {
+        weights[position] <- NA
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
+      } else {
+        weights_fill <- rep(1, n_experts)
+        weights_fill[position] <- NA
+        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
+      }
+    }
     estimates <- get_est(data, v, n_experts, var_type,
                          elic_type, verbose, scale_conf)
 

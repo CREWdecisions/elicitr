@@ -76,13 +76,18 @@
       Warning:
       ! Some values have been constrained to be between 0 and 1.
 
-# accepts NAs
+# Accepts NAs from one expert
 
     Code
-      out <- cont_sample_data(obj, round = 1, var = "var3", verbose = FALSE)
+      out <- cont_sample_data(obj, round = 1, var = c("var3", "var2"), verbose = FALSE)
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+
+# Accepts NAs from all experts for one variable
+
+    Code
+      out <- cont_sample_data(obj, round = 1, var = "var3", verbose = FALSE)
 
 # Info
 

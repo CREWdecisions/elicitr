@@ -731,6 +731,12 @@ get_boostrap_n_sample <- function(experts, n_votes, conf) {
     cli::cli_abort("Some weights are negative.")
   }
 
+  # if all experts don't answer an option
+  if(sum(conf, na.rm = TRUE) == 0) {
+    n_samp <- rep(1, length(experts))
+  }
+
+  # if some experts don't answer an option
   if (anyNA(conf)) {
     position <- which(is.na(conf))
     conf[is.na(conf)] <- 0
