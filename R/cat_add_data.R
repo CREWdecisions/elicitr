@@ -552,11 +552,10 @@ check_cat_values <- function(data) {
   estimates <- estimates[!is.na(estimates)]
   confidence <- confidence[!is.na(confidence)]
 
-  if (any(!is.finite(estimates) |
-          estimates < 0 |
+  if (any(estimates < 0 |
           estimates > 100)) {
     cli::cli_abort("Estimates must be nonnegative probabilities or \\
-                   percentages. Each expert/option block must sum to 1 or 100.")
+                   percentages.")
   }
 
   if (any(!is.finite(confidence) |

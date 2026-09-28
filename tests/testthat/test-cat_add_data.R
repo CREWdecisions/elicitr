@@ -157,6 +157,26 @@ test_that("Errors", {
                                topic = "topic_1"),
                   error = TRUE)
 
+  #When an estimate is not between 0 and 100
+  y <- topic_1
+  y[1, 5] <- 150
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+  y <- topic_1
+  y[1, 5] <- -2
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+  y <- topic_1
+  y[c(10, 12, 60, 79, 80), 5] <- c(-2, -40, 7150, 450, -300)
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+
   #When the confidence is not in (50,100]
   y <- topic_1
   y[1, 4] <- 49

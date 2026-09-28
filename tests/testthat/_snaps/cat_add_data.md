@@ -204,6 +204,30 @@
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
       Error in `check_cat_values()`:
+      ! Estimates must be nonnegative probabilities or percentages.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `check_cat_values()`:
+      ! Estimates must be nonnegative probabilities or percentages.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `check_cat_values()`:
+      ! Estimates must be nonnegative probabilities or percentages.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `check_cat_values()`:
       ! Confidence must be greater than 50 and at most 100.
 
 # Accepts all estimates summing to 100
