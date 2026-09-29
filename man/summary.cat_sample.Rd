@@ -4,19 +4,20 @@
 \alias{summary.cat_sample}
 \title{Summarise samples of categorical data}
 \usage{
-\method{summary}{cat_sample}(object, option, ...)
+\method{summary}{cat_sample}(object, option = "all", ...)
 }
 \arguments{
 \item{object}{an object of class \code{cat_sample} created by the function
 \link{cat_sample_data}.}
 
-\item{option}{character string with the name of the option.}
+\item{option}{character string with the name of the option(s). If
+\code{option = "all"}, all options are summarised.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble}} with the summary statistics.
+A \link{table} with the summary statistics.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

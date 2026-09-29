@@ -365,7 +365,7 @@ check_method <- function(x, method) {
 #' @author Sergio Vignali
 check_option <- function(x, option) {
 
-  available_options <- unique(x[["option"]])
+  available_options <- c(unique(x[["option"]]), "all")
   diff <- setdiff(option, available_options)
 
   if (length(diff) > 0) {

@@ -6,7 +6,7 @@
       Error in `plot()`:
       ! Invalid value for argument `option`:
       x Option "option_7" not available in the sampled data.
-      i Available options: "option_1", "option_2", "option_3", and "option_4".
+      i Available options: "option_1", "option_2", "option_3", "option_4", and "all".
 
 ---
 

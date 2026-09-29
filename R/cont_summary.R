@@ -53,18 +53,42 @@ summary.cont_sample <- function(object,
     vars <- var
   }
 
+  all_na_var <-   object |>
+    dplyr::filter(.data[["var"]] %in% vars) |>
+    dplyr::select(!"id") |>
+    dplyr::group_by(.data[["var"]]) |>
+    dplyr::summarise(all_na = all(is.na(.data[["value"]])))
+
+  if(sum(all_na_var[["all_na"]]) > 0) {
+    na_vars <- all_na_var[["var"]][all_na_var[["all_na"]] != 0]
+    if (sum(all_na_var[["all_na"]]) != length(vars)) {
+      object <- object |>
+        dplyr::filter(!.data[["var"]] %in% na_vars)
+      cli::cli_alert("Results were dropped for {.val {na_vars}} as no \\
+                     estimate was provided.")
+    } else {
+      info <- "No data provided in {.val {na_vars}}."
+      cli::cli_abort(c("No estimate provided",
+                       "x" = "the provided data only holds NAs",
+                       "i" = info))
+    }
+  }
+
   object |>
     dplyr::filter(.data[["var"]] %in% vars) |>
     dplyr::select(!"id") |>
     dplyr::group_by(.data[["var"]]) |>
-    dplyr::summarise("Min" = min(.data[["value"]]),
+    dplyr::summarise("Min" = min(.data[["value"]],
+                                 na.rm = TRUE),
                      "Q1" = stats::quantile(.data[["value"]], probs = 0.25,
                                             na.rm = TRUE),
-                     "Median" = median(.data[["value"]]),
+                     "Median" = median(.data[["value"]],
+                                       na.rm = TRUE),
                      "Mean" = mean(.data[["value"]],
                                    na.rm = TRUE),
                      "Q3" = stats::quantile(.data[["value"]], probs = 0.75,
                                             na.rm = TRUE),
-                     "Max" = max(.data[["value"]])) |>
+                     "Max" = max(.data[["value"]],
+                                 na.rm = TRUE)) |>
     dplyr::rename("Var" = "var")
 }
