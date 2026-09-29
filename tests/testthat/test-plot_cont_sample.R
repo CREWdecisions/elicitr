@@ -187,11 +187,11 @@ test_that("Output", {
             family = "serif")
   ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_identical(unique(ld1[["fill"]]), cols)
-  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["labels"]][["title"]],
                    "title")
-  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["xlab"]],
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["labels"]][["x"]],
                    "xlab")
-  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["labels"]][["y"]],
                    "ylab")
   expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
   expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
@@ -284,7 +284,7 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 2 NA, violin
@@ -294,7 +294,7 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 2 NA, density
@@ -302,7 +302,7 @@ test_that("Deals with NAs correctly", {
   expect_length(p[["layers"]], 3L)
   expect_named(p[["layers"]][1], "geom_violin")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
 
   #not 1p variable & 2 NA, beeswarm
   obj <- create_cont_obj()
@@ -317,7 +317,7 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 1 NA, beeswarm
@@ -331,7 +331,7 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 
   #1p variable & 1 NA, violin
@@ -341,7 +341,7 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 
   #1p variable & 1 NA, density
@@ -349,7 +349,7 @@ test_that("Deals with NAs correctly", {
   expect_length(p[["layers"]], 3L)
   expect_named(p[["layers"]][1], "geom_violin")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
 
   #not 1p variable & 1 NA, beeswarm
   obj <- create_cont_obj()
@@ -364,6 +364,6 @@ test_that("Deals with NAs correctly", {
   expect_named(p[["layers"]][2], "stat_summary")
   expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["labels"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 })

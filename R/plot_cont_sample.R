@@ -149,50 +149,7 @@ plot.cont_sample <- function(x,
                      "i" = info))
   }
 
-  if (type == "violin") {
-    p <- ggplot2::ggplot(x) +
-      ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                  y = .data[["value"]],
-                                                  fill = .data[[x_var]]),
-                           colour = "black",
-                           alpha = 0.8,
-                           scale = "width",
-                           linewidth = 0.2,
-                           quantiles = c(0.25, 0.75),
-                           quantile.linetype = 1L,
-                           key_glyph = "dotplot",
-                           na.rm = TRUE) +
-      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["violin_value"]]),
-                            fun = mean,
-                            geom = "point",
-                            colour = "black",
-                            size = 0.8)
-  } else if (type == "density") {
-    p <- ggplot2::ggplot(x) +
-      ggplot2::stat_density(mapping = ggplot2::aes(x = .data[["value"]],
-                                                   colour = .data[[x_var]]),
-                            geom = "line",
-                            position = "identity",
-                            linewidth = line_width,
-                            na.rm = TRUE) +
-      ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
-  } else if (type == "beeswarm") {
-    p <- ggplot2::ggplot(x) +
-      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                       y = .data[["value"]],
-                                                       colour = .data[[x_var]]),
-                                cex = beeswarm_cex,
-                                size = 1,
-                                corral = beeswarm_corral,
-                                na.rm = TRUE) +
-      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["violin_value"]]),
-                            fun = mean,
-                            geom = "point",
-                            colour = "black",
-                            size = 0.8)
-  }
+  p <- make_base_plot(type, x, x_var, line_width, beeswarm_cex, beeswarm_corral)
 
   subtitle <- ggplot2::waiver()
   if (!all(is.na(x[["missing"]])) && !isTRUE(group)) {
@@ -322,4 +279,70 @@ check_type <- function(type, x, var, group) {
                         {.val {var}} is a one-point variable.")
   }
   type
+}
+
+#' Make base plot
+#'
+#' Make the baseline plot depending on the type of plot needed
+#' @param type character, the type of plot wanted
+#' @param x the data to plot
+#' @param x_var character, the data to plot on the x axis
+#' @param line_width numeric, the linewidth to use in the density plot
+#' @param beeswarm_cex character, the cex for the beeswarm plot
+#' @param beeswarm_coral character, the coral for the beeswarm plot
+#' @return The plot
+#' @noRd
+#'
+#' @author Maude Vernet
+make_base_plot <- function(type,
+                           x,
+                           x_var,
+                           line_width,
+                           beeswarm_cex,
+                           beeswarm_corral) {
+  if (type == "violin") {
+    p <- ggplot2::ggplot(x) +
+      ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                  y = .data[["value"]],
+                                                  fill = .data[[x_var]]),
+                           colour = "black",
+                           alpha = 0.8,
+                           scale = "width",
+                           linewidth = 0.2,
+                           quantiles = c(0.25, 0.75),
+                           quantile.linetype = 1L,
+                           key_glyph = "dotplot",
+                           na.rm = TRUE) +
+      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                   y = .data[["violin_value"]]),
+                            fun = mean,
+                            geom = "point",
+                            colour = "black",
+                            size = 0.8)
+  } else if (type == "density") {
+    p <- ggplot2::ggplot(x) +
+      ggplot2::stat_density(mapping = ggplot2::aes(x = .data[["value"]],
+                                                   colour = .data[[x_var]]),
+                            geom = "line",
+                            position = "identity",
+                            linewidth = line_width,
+                            na.rm = TRUE) +
+      ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
+  } else if (type == "beeswarm") {
+    p <- ggplot2::ggplot(x) +
+      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                       y = .data[["value"]],
+                                                       colour = .data[[x_var]]),
+                                cex = beeswarm_cex,
+                                size = 1,
+                                corral = beeswarm_corral,
+                                na.rm = TRUE) +
+      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                   y = .data[["violin_value"]]),
+                            fun = mean,
+                            geom = "point",
+                            colour = "black",
+                            size = 0.8)
+  }
+  p
 }
