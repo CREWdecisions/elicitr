@@ -214,11 +214,11 @@ test_that("Output", {
 
   #Test no variable input when only one variable in sampled data
   samp <- list(samp1 = cont_sample_data(obj, round = 2, var = "var1",
-                           method = "basic", verbose = FALSE), #1p
+                                        method = "basic", verbose = FALSE), #1p
                samp3 = cont_sample_data(obj, round = 2, var = "var2",
-                            method = "basic", verbose = FALSE), #2p
+                                        method = "basic", verbose = FALSE), #2p
                samp4 = cont_sample_data(obj, round = 2, var = "var3",
-                            method = "basic", verbose = FALSE)) #3p
+                                        method = "basic", verbose = FALSE)) #3p
 
   for (i in 1:3) {
     p <- plot(samp[[i]], verbose = FALSE)
@@ -246,14 +246,14 @@ test_that("violin plot rendered if type is not violin and elic_type = 1p", {
   ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(names(p[["layers"]]), c("geom_violin", "stat_summary"))
+  expect_named(p[["layers"]], c("geom_violin", "stat_summary"))
 
   #density
   expect_snapshot(p <- plot(samp, var = "var1", type = "density"))
   ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(names(p[["layers"]]), c("geom_violin", "stat_summary"))
+  expect_named(p[["layers"]], c("geom_violin", "stat_summary"))
 
   #still density if group
   #beeswarm
@@ -261,14 +261,14 @@ test_that("violin plot rendered if type is not violin and elic_type = 1p", {
   ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 2)
-  expect_identical(names(p[["layers"]]), c("geom_beeswarm", "stat_summary"))
+  expect_named(p[["layers"]], c("geom_beeswarm", "stat_summary"))
 
   #density
   p <- plot(samp, var = "var1", type = "density", group = TRUE)
   ld1 <- ggplot2::layer_data(p, i = 1L)
   expect_true(ggplot2::is_ggplot(p))
   expect_length(p[["layers"]], 1)
-  expect_identical(names(p[["layers"]]), c("stat_density"))
+  expect_named(p[["layers"]], "stat_density")
 })
 
 test_that("Deals with NAs correctly", {
@@ -280,29 +280,29 @@ test_that("Deals with NAs correctly", {
 
   p <- plot(samp, var = "var1", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_violin")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 2 NA, violin
   p <- plot(samp, var = "var1", type = "violin")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_violin")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 2 NA, density
   p <- plot(samp, var = "var1", type = "density")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
+  expect_named(p[["layers"]][1], "geom_violin")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
 
   #not 1p variable & 2 NA, beeswarm
   obj <- create_cont_obj()
@@ -313,11 +313,11 @@ test_that("Deals with NAs correctly", {
 
   p <- plot(samp, var = "var2", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_beeswarm")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_beeswarm")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 2L)
 
   #1p variable & 1 NA, beeswarm
@@ -327,29 +327,29 @@ test_that("Deals with NAs correctly", {
 
   p <- plot(samp, var = "var1", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_violin")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 
   #1p variable & 1 NA, violin
   p <- plot(samp, var = "var1", type = "violin")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_violin")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 
   #1p variable & 1 NA, density
   p <- plot(samp, var = "var1", type = "density")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_violin")
+  expect_named(p[["layers"]][1], "geom_violin")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
 
   #not 1p variable & 1 NA, beeswarm
   obj <- create_cont_obj()
@@ -360,10 +360,10 @@ test_that("Deals with NAs correctly", {
 
   p <- plot(samp, var = "var2", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
-  expect_identical(names(p[["layers"]])[1], "geom_beeswarm")
-  expect_identical(names(p[["layers"]])[2], "stat_summary")
-  expect_identical(names(p[["layers"]])[3], "geom_label")
+  expect_named(p[["layers"]][1], "geom_beeswarm")
+  expect_named(p[["layers"]][2], "stat_summary")
+  expect_named(p[["layers"]][3], "geom_label")
   p_data <- ggplot2::ggplot_build(p)
-  expect_true(!is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
+  expect_false(is.null(p_data[["plot"]][["plot_env"]][["subtitle"]]))
   expect_length(which(!is.na(p_data[["data"]][[3]][["label"]])), 1L)
 })

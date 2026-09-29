@@ -314,9 +314,9 @@ check_type <- function(type, x, var, group) {
     dplyr::pull("all_same")
   #check if all experts have one value in var (aka is a 1p variable)
   if (!all(is.na(x[["value"]][x[["var"]] == var])) &&
-      all(same_vars) &&
-      type != "violin" &&
-      !group) {
+        all(same_vars) &&
+        type != "violin" &&
+        !group) {
     type <- "violin"
     cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
                         {.val {var}} is a one-point variable.")
