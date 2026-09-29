@@ -553,14 +553,14 @@ check_cat_values <- function(data) {
   confidence <- confidence[!is.na(confidence)]
 
   if (any(estimates < 0 |
-          estimates > 100)) {
+            estimates > 100)) {
     cli::cli_abort("Estimates must be nonnegative probabilities or \\
                    percentages.")
   }
 
   if (any(!is.finite(confidence) |
-          confidence <= 50 |
-          confidence > 100)) {
+            confidence <= 50 |
+            confidence > 100)) {
     cli::cli_abort("Confidence must be greater than 50 and at most 100.")
   }
 }

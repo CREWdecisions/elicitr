@@ -40,8 +40,12 @@ test_that("Warnings", {
   experts <- unique(obj[["data"]][["round_1"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  conf <- obj[["data"]][["round_1"]][, 9, drop = TRUE] / 100
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
+  data <- obj[["data"]][["round_1"]][c(1, 6:9)]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = NULL,
+                                           elic_type = "4p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 })
@@ -166,8 +170,12 @@ test_that("Info", {
   experts <- unique(obj[["data"]][["round_2"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  conf <- obj[["data"]][["round_2"]][, 9, drop = TRUE] / 100
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
+  data <- obj[["data"]][["round_2"]][c(1, 6:9)]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = NULL,
+                                           elic_type = "4p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected + 2000L)
 
@@ -180,7 +188,12 @@ test_that("Info", {
   experts <- unique(obj[["data"]][["round_1"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, w) |>
+  data <- obj[["data"]][["round_2"]][c(1, 6:9)]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = w,
+                                           elic_type = "4p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 })
@@ -198,7 +211,12 @@ test_that("Output", {
   experts <- unique(obj[["data"]][["round_1"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, w) |>
+  data <- obj[["data"]][["round_1"]][c(1, 3:5)]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = w,
+                                           elic_type = "3p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 
@@ -210,8 +228,12 @@ test_that("Output", {
   experts <- unique(obj[["data"]][["round_2"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  conf <- obj[["data"]][["round_2"]][, 9, drop = TRUE] / 100
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, conf) |>
+  data <- obj[["data"]][["round_2"]][c(1, 6:9)]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = NULL,
+                                           elic_type = "4p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 })
@@ -227,7 +249,12 @@ test_that("one weight supplied for all experts", {
   experts <- unique(obj[["data"]][["round_1"]][["id"]])
   n_samp_actual <- table(factor(out[["id"]], levels = unique(out[["id"]]))) |>
     as.vector()
-  n_samp_expected <- get_boostrap_n_sample(experts, 1000, rep(10, 6)) |>
+  data <- obj[["data"]][["round_1"]][1:2]
+  n_samp_expected <- get_boostrap_n_sample(experts,
+                                           n_votes = 1000,
+                                           weights = rep(10, 6),
+                                           elic_type = "1p",
+                                           data = data) |>
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 

@@ -16,6 +16,6 @@ test_that("get_boostrap_n_sample() rejects negative weights", {
   weights <- c(-1, 3)
   expect_snapshot(get_boostrap_n_sample(experts = c("A", "B"),
                                         n_votes = 10,
-                                        conf = weights),
+                                        weights = weights),
                   error = TRUE)
 })

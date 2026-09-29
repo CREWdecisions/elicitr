@@ -132,21 +132,20 @@ plot.cat_sample <- function(x,
                      "i" = info))
   }
 
-  pot_na <- x|>
+  pot_na <- x |>
     dplyr::group_by(.data[["option"]]) |>
-    dplyr::summarise(all_na = ifelse(all(is.na(.data[["prob"]])), 1, 0)) |>
+    dplyr::summarise(all_na = all(is.na(.data[["prob"]]))) |>
     dplyr::pull("all_na")
 
   subtitle <- ggplot2::waiver()
-    if(sum(pot_na) != 0) {
-    option_na <- unique(x[["option"]])[pot_na == 1]
+  if (sum(pot_na) != 0) {
+    option_na <- unique(x[["option"]])[which(pot_na == 1)]
     x <- x[!x[["option"]] %in% option_na, ]
     cli::cli_inform(c("i" = "No data rendered for {.val {option_na}} as no \\
                       estimate was provided."))
     ifelse(length(option_na) > 1,
            subtitle <- paste("No estimate for",
-                             paste0(option_na[2:length(option_na)],
-                                    collapse = ", "),
+                             toString(option_na[2:length(option_na)]),
                              "and",
                              option_na[1],
                              sep = " "),

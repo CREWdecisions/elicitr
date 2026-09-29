@@ -151,30 +151,8 @@ cont_sample_data <- function(x,
 
     names(data) <- cols
 
-    if (elic_type == "4p") {
-      if (is.null(weights)) {
-        weights_conf <- data[, 5, drop = TRUE] / 100
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_conf)
-      } else {
-        cli::cli_alert_info("Provided weights used instead of confidence \\
-                             estimates")
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-      }
-
-    } else if (elic_type %in% c("1p", "3p")) {
-      position <- NULL
-      if (any(is.na(data))) {
-        position <- which(is.na(data[, 2]))
-      }
-      if (!is.null(weights)) {
-        weights[position] <- NA
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-      } else {
-        weights_fill <- rep(1, n_experts)
-        weights_fill[position] <- NA
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_fill)
-      }
-    }
+    n_samp <- get_boostrap_n_sample(experts, n_votes, weights,
+                                    elic_type, data)
     estimates <- get_est(data, v, n_experts, var_type,
                          elic_type, verbose, scale_conf)
 

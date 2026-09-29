@@ -94,33 +94,12 @@ plot.cont_sample <- function(x,
   # Check if var is available
   check_length(var, "var", 1)
   check_var_in_sample(x, var)
-
-  if (!type %in% c("density", "violin", "beeswarm")) {
-    info <- "Available types are {.val beeswarm}, {.val violin} and \\
-    {.val density}."
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info))
-  }
-
-  #check if all experts have one value in var (aka is a 1p variable)
-  if (any(!is.na(x[["value"]][x[["var"]] == var])) &&
-          all(x[x[["var"]] == var, ] |>
-              dplyr::group_by(.data[["id"]]) |>
-              dplyr::summarise(all_same =
-                               dplyr::n_distinct(.data[["value"]]) == 1) |>
-              dplyr::pull("all_same")) &&
-          type != "violin" &&
-          group == FALSE) {
-    type <- "violin"
-    cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
-                        {.val {var}} is a one-point variable.")
-  }
+  type <- check_type(type, x, var, group)
 
   x[["missing"]] <- NA
   x[["violin_value"]] <- x[["value"]]
   mean_value <- mean(x[["violin_value"]][x[["var"]] == var], na.rm = TRUE)
-  if (any(is.na(x[["value"]]))) {
+  if (anyNA(x[["value"]])) {
     x[["missing"]][is.na(x[["value"]])] <- "no data"
     x[["violin_value"]][is.na(x[["violin_value"]])] <- mean_value
   }
@@ -227,8 +206,7 @@ plot.cont_sample <- function(x,
     experts_na <- paste0(x[["id"]][is.na(x[["value"]])], " ")
     ifelse(length(x[["id"]][is.na(x[["value"]])]) > 1,
            subtitle <- paste("No answer from expert",
-                             paste0(x[["id"]][is.na(x[["value"]])][2:n_na],
-                                    collapse = ", "),
+                             toString(x[["id"]][is.na(x[["value"]])][2:n_na]),
                              "and",
                              x[["id"]][is.na(x[["value"]])][1],
                              sep = " "),
@@ -307,4 +285,41 @@ cont_sample_theme <- function(type, group) {
   }
 
   th
+}
+
+#' Check type
+#'
+#' Check the imputed type and return an error or change it if needed.
+#' @param type a character string with the type of plot
+#' @param x the data being plotted
+#' @param var a character string the variable to plot
+#' @param group logical, whether data should be grouped or not
+#' @return The modified type
+#' @noRd
+#'
+#' @author Maude Vernet
+check_type <- function(type, x, var, group) {
+  if (!type %in% c("density", "violin", "beeswarm")) {
+    info <- "Available types are {.val beeswarm}, {.val violin} and \\
+    {.val density}."
+    cli::cli_abort(c("Invalid value for argument {.arg type}:",
+                     "x" = "Type {.val {type}} is not implemented.",
+                     "i" = info))
+  }
+
+  same_vars <- x[x[["var"]] == var, ] |>
+    dplyr::group_by(.data[["id"]]) |>
+    dplyr::summarise(all_same =
+                       dplyr::n_distinct(.data[["value"]]) == 1) |>
+    dplyr::pull("all_same")
+  #check if all experts have one value in var (aka is a 1p variable)
+  if (!all(is.na(x[["value"]][x[["var"]] == var])) &&
+      all(same_vars) &&
+      type != "violin" &&
+      !group) {
+    type <- "violin"
+    cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
+                        {.val {var}} is a one-point variable.")
+  }
+  type
 }

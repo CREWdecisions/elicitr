@@ -23,7 +23,7 @@
     Code
       plot(samp, var = "var1", type = "boxplot")
     Condition
-      Error in `plot()`:
+      Error in `check_type()`:
       ! Invalid value for argument `type`:
       x Type "boxplot" is not implemented.
       i Available types are "beeswarm", "violin" and "density".

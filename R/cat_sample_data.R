@@ -139,7 +139,7 @@ do_sampling <- function(x, method, n_votes) {
     if (method == "unweighted") {
       n_samp <- rep(n_votes, length(experts))
     } else {
-      n_samp <- get_boostrap_n_sample(experts, n_votes, conf)
+      n_samp <- get_boostrap_n_sample(experts, n_votes, weights = conf)
     }
 
     for (e in seq_along(experts)) {

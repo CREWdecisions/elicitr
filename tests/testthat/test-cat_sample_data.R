@@ -141,8 +141,8 @@ test_that("Accepts NAs from all experts for one option", {
 
   # Modify one option to have NAs for all categories and all experts
   obj_na <- obj
-  obj_na[["data"]][["topic_1"]][
-    obj_na[["data"]][["topic_1"]][, 2] == "option_1", 4:5] <- NA
+  position <- obj_na[["data"]][["topic_1"]][, 2] == "option_1"
+  obj_na[["data"]][["topic_1"]][position, 4:5] <- NA
 
   # unweighted method
   out_na <- cat_sample_data(obj_na,

@@ -14,10 +14,9 @@ test_that("Errors", {
   expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
 
   #When only NAs are present in the estimates
-  obj[["data"]][["topic_1"]][["confidence"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
-  obj[["data"]][["topic_1"]][["estimate"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+  position <- obj[["data"]][["topic_1"]][["option"]] == "option_1"
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
 
   samp <- cat_sample_data(obj, method = "weighted",
                           topic = "topic_1", verbose = FALSE)
@@ -27,10 +26,9 @@ test_that("Errors", {
 
 test_that("Warning when only NA for an option", {
   obj <- create_cat_obj()
-  obj[["data"]][["topic_1"]][["confidence"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
-  obj[["data"]][["topic_1"]][["estimate"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_1"] <- NA
+  position <- obj[["data"]][["topic_1"]][["option"]] == "option_1"
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
 
   #one option
   samp <- cat_sample_data(obj, method = "weighted",
@@ -50,14 +48,10 @@ test_that("Warning when only NA for an option", {
                    unique(samp[["option"]])[-1])
 
   #multiple options
-  obj[["data"]][["topic_1"]][["confidence"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_2"] <- NA
-  obj[["data"]][["topic_1"]][["estimate"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_2"] <- NA
-  obj[["data"]][["topic_1"]][["confidence"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_4"] <- NA
-  obj[["data"]][["topic_1"]][["estimate"]][
-    obj[["data"]][["topic_1"]][["option"]] == "option_4"] <- NA
+  position <- obj[["data"]][["topic_1"]][["option"]] %in% c("option_2",
+                                                            "option_4")
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
   samp <- cat_sample_data(obj, method = "weighted",
                           topic = "topic_1", verbose = FALSE)
   p <- plot(samp, type = "violin")
