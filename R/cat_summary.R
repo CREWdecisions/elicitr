@@ -57,7 +57,7 @@ summary.cat_sample <- function(object,
 
   object <- object |>
     dplyr::filter(.data[["option"]] %in% opt) |>
-    dplyr::select(-c("id")) |>
+    dplyr::select(-"id") |>
     dplyr::group_by(.data[["option"]]) |>
     dplyr::mutate(observation = dplyr::row_number()) |>
     dplyr::ungroup() |>
@@ -68,7 +68,7 @@ summary.cat_sample <- function(object,
                        values_from = value) |>
     dplyr::select(category, everything(), -observation)
 
-  na_option <- c()
+  na_option <- NULL
   for (i in colnames(object)[-1]){
     na_opt <- ifelse(all(is.na(object[[i]])), i, NA)
     na_option <- c(na_option, na_opt)

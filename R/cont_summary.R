@@ -59,11 +59,11 @@ summary.cont_sample <- function(object,
     dplyr::group_by(.data[["var"]]) |>
     dplyr::summarise(all_na = all(is.na(.data[["value"]])))
 
-  if(sum(all_na_var[["all_na"]]) > 0) {
+  if (sum(all_na_var[["all_na"]]) > 0) {
     na_vars <- all_na_var[["var"]][all_na_var[["all_na"]] != 0]
+
     if (sum(all_na_var[["all_na"]]) != length(vars)) {
-      object <- object |>
-        dplyr::filter(!.data[["var"]] %in% na_vars)
+      object <- dplyr::filter(!object[["var"]] %in% na_vars)
       cli::cli_alert("Results were dropped for {.val {na_vars}} as no \\
                      estimate was provided.")
     } else {
