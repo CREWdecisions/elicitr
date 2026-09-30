@@ -152,4 +152,55 @@ test_that("With NA", {
   expect_identical(out[["option_1"]][["category"]],
                    c("category_1", "category_2", "category_3",
                      "category_4", "category_5"))
+
+  # with one option being fully NA
+  option <- which(obj[["data"]][["topic_1"]][["option"]] == "option_1")
+  obj[["data"]][["topic_1"]][option, 4:5] <- NA
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
+                          verbose = FALSE)
+  expect_snapshot(out <- summary(samp, option = "all"))
+  expect_type(out, "list")
+  expect_length(out, 3L)
+  expect_named(out, c("option_2", "option_3", "option_4"))
+  expect_named(out[["option_2"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_named(out[["option_3"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_named(out[["option_4"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_identical(nrow(out[["option_2"]]), 5L)
+  expect_identical(nrow(out[["option_3"]]), 5L)
+  expect_identical(nrow(out[["option_4"]]), 5L)
+  expect_identical(out[["option_2"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+  expect_identical(out[["option_3"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+  expect_identical(out[["option_4"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+
+  # with multiple options being fully NA
+  option1 <- which(obj[["data"]][["topic_1"]][["option"]] == "option_1")
+  option2 <- which(obj[["data"]][["topic_1"]][["option"]] == "option_2")
+  obj[["data"]][["topic_1"]][c(option1, option2), 4:5] <- NA
+  samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
+                          verbose = FALSE)
+  expect_snapshot(out <- summary(samp, option = "all"))
+  expect_type(out, "list")
+  expect_length(out, 2L)
+  expect_named(out, c("option_3", "option_4"))
+  expect_named(out[["option_3"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_named(out[["option_4"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_identical(nrow(out[["option_3"]]), 5L)
+  expect_identical(nrow(out[["option_4"]]), 5L)
+  expect_identical(out[["option_3"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+  expect_identical(out[["option_4"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
 })

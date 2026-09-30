@@ -28,3 +28,17 @@
       x the provided data only holds NAs
       i No data provided in "option_1", "option_2", "option_3", and "option_4".
 
+# With NA
+
+    Code
+      out <- summary(samp, option = "all")
+    Message
+      > Results were dropped for "option_1" as no estimate was provided.
+
+---
+
+    Code
+      out <- summary(samp, option = "all")
+    Message
+      > Results were dropped for "option_1" and "option_2" as no estimate was provided.
+
