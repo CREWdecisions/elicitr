@@ -63,7 +63,7 @@ summary.cont_sample <- function(object,
     na_vars <- all_na_var[["var"]][all_na_var[["all_na"]] != 0]
 
     if (sum(all_na_var[["all_na"]]) != length(vars)) {
-      object <- dplyr::filter(!object[["var"]] %in% na_vars)
+      object <- dplyr::filter(object, !.data[["var"]] %in% na_vars)
       cli::cli_alert("Results were dropped for {.val {na_vars}} as no \\
                      estimate was provided.")
     } else {

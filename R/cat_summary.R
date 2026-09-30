@@ -61,12 +61,12 @@ summary.cat_sample <- function(object,
     dplyr::group_by(.data[["option"]]) |>
     dplyr::mutate(observation = dplyr::row_number()) |>
     dplyr::ungroup() |>
-    tidyr::pivot_longer(cols = -c(option, observation),
+    tidyr::pivot_longer(cols = -c("option", "observation"),
                         names_to = "category",
                         values_to = "value") |>
-    tidyr::pivot_wider(names_from = option,
-                       values_from = value) |>
-    dplyr::select(category, everything(), -observation)
+    tidyr::pivot_wider(names_from = "option",
+                       values_from = "value") |>
+    dplyr::select("category", everything(), -"observation")
 
   na_option <- NULL
   for (i in colnames(object)[-1]){
