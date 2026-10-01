@@ -50,7 +50,7 @@ check_round <- function(x) {
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
 
-  } else if (!x %in% c(1,2)) {
+  } else if (!x %in% c(1, 2)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
