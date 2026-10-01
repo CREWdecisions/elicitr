@@ -25,7 +25,7 @@ check_elic_obj <- function(x,
 
     cli::cli_abort(c("Invalid value for {.arg x}:",
                      "x" = error,
-                     "y" = "See {.fn elicitr::{fn}}."),
+                     "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
 }
@@ -177,7 +177,7 @@ check_experts_arg <- function(x) {
 
     cli::cli_abort(c("Incorrect value for {.arg experts}:",
                      "x" = error,
-                     "y" = "See {.fn elicitr::{fn}}."),
+                     "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
 }

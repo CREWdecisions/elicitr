@@ -40,7 +40,7 @@
       Error in `cat_start()`:
       ! Incorrect value for `experts`:
       x Argument `experts` must be <numeric> not <character>.
-      See `elicitr::cat_start()`.
+      i See `elicitr::cat_start()`.
 
 ---
 
@@ -51,7 +51,7 @@
       Error in `cat_start()`:
       ! Incorrect value for `experts`:
       x Argument `experts` must be a single number not a vector of length 3.
-      See `elicitr::cat_start()`.
+      i See `elicitr::cat_start()`.
 
 # Info
 

@@ -6,7 +6,7 @@
       Error in `cont_get_data()`:
       ! Invalid value for `x`:
       x Argument `x` must be an object of class <elic_cont> and not of class <character>.
-      See `elicitr::cont_get_data()`.
+      i See `elicitr::cont_get_data()`.
 
 ---
 
