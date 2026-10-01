@@ -50,7 +50,7 @@ check_round <- function(x) {
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
 
-  } else if (x > 2 || x <= 0) {
+  } else if (!x %in% c(1,2)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
@@ -339,7 +339,7 @@ check_method <- function(x, method) {
     methods <- c("unweighted", "weighted")
     data_type <- "categorical"
   } else {
-    methods <- "basic"
+    methods <- "PERT"
     data_type <- "continuous"
   }
 

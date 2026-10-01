@@ -1,6 +1,6 @@
 test_that("Errors", {
   obj <- create_cont_obj()
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   # When var is of length > 1
   expect_snapshot(plot(samp, var = c("var1", "var2")),
@@ -38,14 +38,14 @@ test_that("Errors", {
 
   #When only NAs are present in the estimates (1p variable)
   obj[["data"]][["round_2"]][["var1_best"]] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   expect_snapshot(plot(samp, var = "var1", type = "beeswarm"),
                   error = TRUE)
 
   #When only NAs are present in the estimates (no variable provided)
   samp <- cont_sample_data(obj, var = "var1", round = 2,
-                           method = "basic", verbose = FALSE)
+                           method = "PERT", verbose = FALSE)
 
   expect_snapshot(plot(samp, type = "beeswarm"),
                   error = TRUE)
@@ -55,7 +55,7 @@ test_that("Errors", {
   obj[["data"]][["round_2"]][["var2_min"]] <- NA
   obj[["data"]][["round_2"]][["var2_max"]] <- NA
   obj[["data"]][["round_2"]][["var2_best"]] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   expect_snapshot(plot(samp, var = "var2", type = "beeswarm"),
                   error = TRUE)
@@ -66,7 +66,7 @@ test_that("Errors", {
   obj[["data"]][["round_2"]][["var3_max"]] <- NA
   obj[["data"]][["round_2"]][["var3_best"]] <- NA
   obj[["data"]][["round_2"]][["var3_conf"]] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   expect_snapshot(plot(samp, var = "var3", type = "beeswarm"),
                   error = TRUE)
@@ -74,7 +74,7 @@ test_that("Errors", {
 
 test_that("Output", {
   obj <- create_cont_obj()
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   # Violin plot without group
   p <- plot(samp, var = "var1", type = "violin")
@@ -214,11 +214,11 @@ test_that("Output", {
 
   #Test no variable input when only one variable in sampled data
   samp <- list(samp1 = cont_sample_data(obj, round = 2, var = "var1",
-                                        method = "basic", verbose = FALSE), #1p
+                                        method = "PERT", verbose = FALSE), #1p
                samp3 = cont_sample_data(obj, round = 2, var = "var2",
-                                        method = "basic", verbose = FALSE), #2p
+                                        method = "PERT", verbose = FALSE), #2p
                samp4 = cont_sample_data(obj, round = 2, var = "var3",
-                                        method = "basic", verbose = FALSE)) #3p
+                                        method = "PERT", verbose = FALSE)) #3p
 
   for (i in 1:3) {
     p <- plot(samp[[i]], verbose = FALSE)
@@ -240,7 +240,7 @@ test_that("Output", {
 test_that("violin plot rendered if type is not violin and elic_type = 1p", {
   withr::local_pdf(NULL)
   obj <- create_cont_obj()
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
   #beeswarm
   expect_snapshot(p <- plot(samp, var = "var1", type = "beeswarm"))
   ld1 <- ggplot2::layer_data(p, i = 1L)
@@ -276,7 +276,7 @@ test_that("Deals with NAs correctly", {
   #1p variable & 2 NA, beeswarm
   obj <- create_cont_obj()
   obj[["data"]][["round_2"]][["var1_best"]][c(1, 3)] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   p <- plot(samp, var = "var1", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
@@ -309,7 +309,7 @@ test_that("Deals with NAs correctly", {
   obj[["data"]][["round_2"]][["var2_min"]][c(1, 3)] <- NA
   obj[["data"]][["round_2"]][["var2_max"]][c(1, 3)] <- NA
   obj[["data"]][["round_2"]][["var2_best"]][c(1, 3)] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   p <- plot(samp, var = "var2", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
@@ -323,7 +323,7 @@ test_that("Deals with NAs correctly", {
   #1p variable & 1 NA, beeswarm
   obj <- create_cont_obj()
   obj[["data"]][["round_2"]][["var1_best"]][3] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   p <- plot(samp, var = "var1", type = "beeswarm")
   expect_length(p[["layers"]], 3L)
@@ -356,7 +356,7 @@ test_that("Deals with NAs correctly", {
   obj[["data"]][["round_2"]][["var2_min"]][3] <- NA
   obj[["data"]][["round_2"]][["var2_max"]][3] <- NA
   obj[["data"]][["round_2"]][["var2_best"]][3] <- NA
-  samp <- cont_sample_data(obj, round = 2, method = "basic", verbose = FALSE)
+  samp <- cont_sample_data(obj, round = 2, method = "PERT", verbose = FALSE)
 
   p <- plot(samp, var = "var2", type = "beeswarm")
   expect_length(p[["layers"]], 3L)

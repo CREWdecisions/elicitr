@@ -9,7 +9,7 @@
 #' @inheritParams cont_get_data
 #' @param scale_conf numeric, the scale factor for the confidence interval.
 #' @param method character string with the name of the method to sample the
-#' data, only the _basic_ is implemented, see Method below.
+#' data, only the _PERT_ Method is implemented, see Method below.
 #' @param n_votes numeric indicating the number of votes to consider.
 #' @param weights numeric vector with the weights to apply to the estimates. If
 #' equal to `1`, each experts get `n_votes` votes, see Weights below.
@@ -23,9 +23,7 @@
 #' confidence estimates.
 #'
 #' @section Method:
-#' The function samples the data using the basic method. The basic method
-#' samples the data based on the expert estimates with differences between the
-#' different elicitation types:
+#' The function samples the data differently depending on the elicitation type:
 #'
 #' * _one point elicitation_: the best estimate of each expert is repeated
 #' `n_votes` number of times. `n_votes` can be the same for all or different for
@@ -77,7 +75,7 @@
 #'                         var_types = "ZNp",
 #'                         elic_types = "134",
 #'                         experts = 6) |>
-#'   cont_add_data(x, data_source = round_1, round = 1) |>
+#'   cont_add_data(data_source = round_1, round = 1) |>
 #'   cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Sample data for the second round for all variables
@@ -89,7 +87,7 @@
 #'
 #' # Sample data for the second round for the variable `var3`. Notice that the
 #' # data are rescaled using the expert confidence before sampling.
-#' samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
+#' samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
 #'
 #' # Sample data for the first round for the variable `var3` providing the
 #' # weights. Notice that the weights overwrite the confidence estimates and
@@ -99,7 +97,7 @@
 cont_sample_data <- function(x,
                              round,
                              ...,
-                             method = "basic",
+                             method = "PERT",
                              var = "all",
                              n_votes = 1000,
                              weights = NULL,

@@ -8,7 +8,7 @@ cont_sample_data(
   x,
   round,
   ...,
-  method = "basic",
+  method = "PERT",
   var = "all",
   n_votes = 1000,
   weights = NULL,
@@ -26,7 +26,7 @@ elicitation round.}
 function.}
 
 \item{method}{character string with the name of the method to sample the
-data, only the \emph{basic} is implemented, see Method below.}
+data, only the \emph{PERT} Method is implemented, see Method below.}
 
 \item{var}{character string with the name of the variable or character vector
 with more variable names that you want to extract from the data. Use \code{all}
@@ -62,9 +62,7 @@ confidence estimates.
 
 \section{Method}{
 
-The function samples the data using the basic method. The basic method
-samples the data based on the expert estimates with differences between the
-different elicitation types:
+The function samples the data differently depending on the elicitation type:
 \itemize{
 \item \emph{one point elicitation}: the best estimate of each expert is repeated
 \code{n_votes} number of times. \code{n_votes} can be the same for all or different for
@@ -109,7 +107,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  cont_add_data(x, data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_1, round = 1) |>
   cont_add_data(data_source = round_2, round = 2)
 
 # Sample data for the second round for all variables
@@ -121,7 +119,7 @@ samp <- cont_sample_data(my_elicit, round = 1, var = c("var1", "var2"))
 
 # Sample data for the second round for the variable `var3`. Notice that the
 # data are rescaled using the expert confidence before sampling.
-samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
+samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
 
 # Sample data for the first round for the variable `var3` providing the
 # weights. Notice that the weights overwrite the confidence estimates and

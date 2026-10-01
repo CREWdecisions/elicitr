@@ -19,7 +19,8 @@
 #' @param ylab character, the title of the y axis.
 #' @param expert_names numeric or character, the labels for the experts.
 #' @param family character, the font family.
-#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' theme.
 #' @inheritParams cont_add_data
 #'
@@ -56,7 +57,7 @@
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
 #'
-#' @return Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @return A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers

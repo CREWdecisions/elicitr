@@ -49,8 +49,8 @@
 #' The name of the columns is not important, `cat_add_data()` will overwrite
 #' them according to the following convention:
 #'
-#' The first column will be renamed `id`, the second column `category`, the
-#' third column `option`, the fourth column `confidence`, and the fifth column
+#' The first column will be renamed `id`, the second column `option`, the
+#' third column `category`, the fourth column `confidence`, and the fifth column
 #' `estimate`.
 #'
 #' Here is an example of data correctly formatted for an elicitation with five

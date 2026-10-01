@@ -15,8 +15,8 @@
 #' @param ylab character string with the label of the y-axis.
 #' @param colours vector of colours to use for the categories.
 #' @param family character string with the font family to use in the plot.
-#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
-#' theme.
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
 #' @param beeswarm_corral character string, the wrapping corral for the beeswarm
 #' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
@@ -24,7 +24,7 @@
 #'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
-#' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @returns A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers

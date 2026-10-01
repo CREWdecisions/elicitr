@@ -59,7 +59,7 @@ my_elicitation
 
 This elicitation process is for a categorical variables with 5 categories estimated for four options and three topics by six experts.
 
-As we did for continuous variables, we can load the data with the function `cat_load()`:
+As we did for continuous variables, we can load the data with the function `cat_add_data()`:
 
 ```{r cat-add-data}
 my_elicitation <- cat_add_data(my_elicitation,
@@ -123,7 +123,7 @@ Contrary to continuous variables, there is not yet a function for plotting the r
 
 ### Sample data
 
-Data can be sampled using the function `cat_sample()` (see the variable documentation for the explanation of the sampling methods). Here we sample 100 values for each option:
+Data can be sampled using the function `cat_sample_data()` (see the variable documentation for the explanation of the sampling methods). Here we sample 100 values for each option:
 
 ```{r sample}
 samp <- cat_sample_data(my_elicitation,

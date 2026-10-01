@@ -19,7 +19,8 @@
 #' @param line_width numeric with the width of the lines in the density plot.
 #' @param family character string with the font family to be used in the plot.
 #' @param expert_names numeric or character, the labels for the experts.
-#' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
 #' @param beeswarm_corral character string, the wrapping corral for the beeswarm
 #' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
@@ -28,7 +29,7 @@
 #'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
-#' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @returns A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers

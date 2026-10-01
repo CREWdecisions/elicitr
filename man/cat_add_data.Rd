@@ -78,8 +78,8 @@ category. These estimates should sum up to 1 (probabilities) (or 100
 The name of the columns is not important, \code{cat_add_data()} will overwrite
 them according to the following convention:
 
-The first column will be renamed \code{id}, the second column \code{category}, the
-third column \code{option}, the fourth column \code{confidence}, and the fifth column
+The first column will be renamed \code{id}, the second column \code{option}, the
+third column \code{category}, the fourth column \code{confidence}, and the fifth column
 \code{estimate}.
 
 Here is an example of data correctly formatted for an elicitation with five

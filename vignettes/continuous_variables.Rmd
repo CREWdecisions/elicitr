@@ -118,7 +118,7 @@ Now that the data has been loaded in R, it can be analysed. First let's plot the
 plot(my_elicitation, round = 1, var = "var1")
 ```
 
-When the variable has been collected with a _three_ or _four points_ elicitation process, the plot shows the error of the estimates:
+When the variable has been collected with a _three_ or _four points_ elicitation process, the plot shows the range of the estimates (from the minimum estimated value to the maximum estimated value, with the best guess estimate represented by a point):
 
 ```{r plot-data-var2}
 #| fig.alt: >
@@ -127,7 +127,7 @@ When the variable has been collected with a _three_ or _four points_ elicitation
 plot(my_elicitation, round = 1, var = "var2")
 ```
 
-And when the variable has been collected with a _four points_ elicitation process, the estimates are rescaled to the [0, 1] interval:
+When the variable has been collected with a _four points_ elicitation process, the estimates are rescaled based on the confidence provided by the expert. If the estimates are probabilities, the rescaled values are the constrained to the [0, 1] interval:
 
 ```{r plot-data-var3}
 #| fig.alt: >
@@ -135,7 +135,7 @@ And when the variable has been collected with a _four points_ elicitation proces
 plot(my_elicitation, round = 2, var = "var3")
 ```
 
-Finally, the group mean can be added to the plot:
+Finally, the group mean and 2.5th–97.5th percentile interval of expert estimates can be added to the plot:
 
 ```{r plot-data-var3-group}
 #| fig.alt: >
@@ -144,7 +144,7 @@ Finally, the group mean can be added to the plot:
 plot(my_elicitation, round = 2, var = "var3", group = TRUE)
 ```
 
-When the elicitation process is part of a workshop and is used for demonstration, it can be useful to show a truth argumenton the plot. This argument can be added as a list of estimates.
+When the elicitation process is part of a workshop and is used for demonstration, it can be useful to show a truth argument on the plot. This argument can be added as a list of estimates.
 
 ```{r plot-data-var3-truth}
 #| fig.alt: >
@@ -155,7 +155,7 @@ plot(my_elicitation, round = 1, var = "var2",
      truth = list(min = 10, max = 20, best = 15))
 ```
 
-Expert names identifiers can also be changed on the plot:
+Expert names or identifiers can also be changed on the plot:
 
 ```{r plot-data-var3-custom-id}
 #| fig.alt: >
@@ -169,7 +169,7 @@ plot(my_elicitation, round = 1, var = "var2",
 
 ### Sample data
 
-Data can be sampled using the function `cont_sample()` (see the variable documentation for the explanation of the sampling methods). Here we sample 1000 values for each variable:
+Data can be sampled using the function `cont_sample_data()` (see the variable documentation for the explanation of the sampling methods). Here we sample 1000 values for each variable:
 
 ```{r sample}
 samp <- cont_sample_data(my_elicitation, round = 2)
