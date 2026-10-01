@@ -25,7 +25,7 @@
 #'
 #' @details
 #' If a 1-point elicitation is plotted, the `group` argument will show the
-#' mean and 95\% CIs of the group estimates.
+#' mean and 2.5th–97.5th percentile interval of expert estimates.
 #'
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
@@ -243,14 +243,14 @@ add_group_data <- function(data, elic_type) {
   data
 }
 
-#' Add group ci for 1-point elicitation
+#' Add 2.5th–97.5th percentile interval for 1-point elicitation
 #'
 #' Add summary statistics (mean and 95\% CI) around the group mean value in a
 #' 1-point elicitation plot.
 #' @param data tibble with the elicitation data.
 #' @param elic_type character string with the elicitation type.
 #'
-#' @return A tible with the CI data.
+#' @return A tible with the 2.5th–97.5th percentile interval of estimates.
 #' @noRd
 #' @author Maude Vernet
 
