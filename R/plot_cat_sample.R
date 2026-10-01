@@ -195,8 +195,14 @@ plot.cat_sample <- function(x,
     ggplot2::labs(title = title,
                   subtitle = subtitle,
                   y = ylab) +
-    ggplot2::facet_wrap("option") +
-    ggplot2::scale_fill_manual(values = colours) +
+    ggplot2::facet_wrap("option")
+
+  if (type == "violin") {
+    p <- p + ggplot2::scale_fill_manual(values = colours)
+  } else {
+    p <- p + ggplot2::scale_colour_manual(values = colours)
+  }
+  p <- p +
     ggplot2::scale_y_continuous(limits = c(0, 1),
                                 expand = ggplot2::expansion(mult = c(0,
                                                                      0.04))) +

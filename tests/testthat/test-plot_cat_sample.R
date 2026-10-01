@@ -70,6 +70,7 @@ test_that("Warning when only NA for an option", {
 })
 
 test_that("Output", {
+  withr::local_pdf(NULL)
   obj <- create_cat_obj()
   samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
@@ -101,14 +102,35 @@ test_that("Output", {
   expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
 
   # Colours and and other plot elements
+  #violin
   p <- plot(samp,
             colours = c("red", "blue", "green", "yellow", "purple"),
             title = "Title",
             ylab = "Y-axis",
-            family = "serif")
+            family = "serif",
+            type = "violin")
   ld1 <- ggplot2::layer_data(p, i = 1L)
 
   expect_identical(unique(ld1[["fill"]]),
+                   c("red", "blue", "green", "yellow", "purple"))
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
+                   "Title")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
+                   "Y-axis")
+  expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["legend.position"]], "bottom")
+
+  #beeswarm
+  p <- plot(samp,
+            colours = c("red", "blue", "green", "yellow", "purple"),
+            title = "Title",
+            ylab = "Y-axis",
+            family = "serif",
+            type = "beeswarm")
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+
+  expect_identical(unique(ld1[["colour"]]),
                    c("red", "blue", "green", "yellow", "purple"))
   expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
                    "Title")
