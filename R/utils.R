@@ -722,7 +722,6 @@ rescale_data <- function(x, s = 100) {
 #' @param weights numeric vector with the weight values.
 #' @param elic_type the type of elicitation.
 #' @param data the data to be sampled.
-#' @param n_experts the number of experts.
 #'
 #' @returns A vector with the number of samples to take for each expert.
 #' @noRd
@@ -734,19 +733,17 @@ get_boostrap_n_sample <- function(experts,
                                   elic_type = "other",
                                   data = NULL) {
   if (elic_type == "4p") {
+    position <- which(is.na(data[, 5, drop = TRUE]))
     if (is.null(weights)) {
       weights_conf <- data[, 5, drop = TRUE] / 100
     } else {
+      weights[position] <- NA
+      weights_conf <- weights
       cli::cli_alert_info("Provided weights used instead of confidence \\
                          estimates")
-      weights_conf <- weights
     }
-
   } else if (elic_type %in% c("1p", "3p")) {
-    position <- NULL
-    if (anyNA(data)) {
-      position <- which(is.na(data[, 2]))
-    }
+    position <- which(is.na(data[, 2]))
     if (!is.null(weights)) {
       weights[position] <- NA
       weights_conf <- weights
@@ -755,7 +752,9 @@ get_boostrap_n_sample <- function(experts,
       weights_fill[position] <- NA
       weights_conf <- weights_fill
     }
-  } else if (elic_type == "other") {
+  } else if (elic_type == "weighted") {
+    weights_conf <- weights
+  } else if (elic_type %in% c("unweighted", "other")) {
     weights_conf <- weights
   }
 
@@ -763,21 +762,25 @@ get_boostrap_n_sample <- function(experts,
     cli::cli_abort("Some weights are negative.")
   }
 
-  # if all experts don't answer an option
-  if (sum(weights_conf, na.rm = TRUE) == 0) {
-    n_samp <- rep(1, length(experts))
-  }
-
-  # if some experts don't answer an option
+  # if some or all experts don't answer an option
+  position <- NULL
   if (anyNA(weights_conf)) {
     position <- which(is.na(weights_conf))
     weights_conf[is.na(weights_conf)] <- 0
   }
 
-  n_samp <- (length(experts) * n_votes * weights_conf / sum(weights_conf)) |>
-    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  if (sum(weights_conf, na.rm = TRUE) != 0) {
+    n_samp <- (length(experts) * n_votes * weights_conf / sum(weights_conf)) |>
+      miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  } else {
+    n_samp <- rep(1, length(experts))
+  }
 
-  if (exists("position")) {
+  if (elic_type == "unweighted") {
+    n_samp <- rep(n_votes, length(experts))
+  }
+
+  if (!is.null(position)) {
     n_samp[position] <- 1
   }
 

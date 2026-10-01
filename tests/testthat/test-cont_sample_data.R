@@ -179,7 +179,7 @@ test_that("Info", {
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected + 2000L)
 
-  # One variable with 3p and weights
+  # One variable with 4p and weights
   w <- c(0.8, 0.7, 0.9, 0.7, 0.6, 0.9)
   expect_snapshot(out <- cont_sample_data(obj, round = 2,
                                           var = "var3",
@@ -220,7 +220,7 @@ test_that("Output", {
     as.integer()
   expect_identical(n_samp_actual, n_samp_expected)
 
-  # One variable with 3p without weights
+  # One variable with 4p without weights
   out <- cont_sample_data(obj, round = 2,
                           var = "var3",
                           verbose = FALSE)
