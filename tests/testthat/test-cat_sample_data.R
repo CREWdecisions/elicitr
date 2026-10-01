@@ -54,7 +54,7 @@ test_that("output all", {
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
   expect_true(all(unique(out[["option"]]) == c("option_1", "option_2",
-                                           "option_3", "option_4")))
+                                               "option_3", "option_4")))
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -79,7 +79,7 @@ test_that("output all", {
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
   expect_true(all(unique(out[["option"]]) == c("option_1", "option_2",
-                                           "option_3", "option_4")))
+                                               "option_3", "option_4")))
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -98,9 +98,9 @@ test_that("output all", {
     # Determine n sample of each expert
     conf <- get_conf(obj[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -122,7 +122,7 @@ test_that("output 1 option", {
                          verbose = FALSE)
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
-  expect_true(unique(out[["option"]]) == "option_1")
+  expect_identical(unique(out[["option"]]),"option_1")
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -147,7 +147,7 @@ test_that("output 1 option", {
                          verbose = FALSE)
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
-  expect_true(unique(out[["option"]]) == "option_1")
+  expect_identical(unique(out[["option"]]),"option_1")
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -166,9 +166,9 @@ test_that("output 1 option", {
     # Determine n sample of each expert
     conf <- get_conf(obj[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -234,9 +234,9 @@ test_that("output multiple options", {
     # Determine n sample of each expert
     conf <- get_conf(obj[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -247,7 +247,7 @@ test_that("output multiple options", {
                    n_samp_expected)
 })
 
-test_that("Accepts 1/0 estimates", {
+test_that("Accepts 1vs0 estimates", {
   obj <- create_cat_obj()
 
   #One expert with estimate of 100 for one category for one option
@@ -260,7 +260,7 @@ test_that("Accepts 1/0 estimates", {
                          topic = "topic_1",
                          verbose = FALSE)
   option1_expert1 <- which(out[["option"]] == "option_1" &
-                              out[["id"]] == unique(out[["id"]])[1])
+                             out[["id"]] == unique(out[["id"]])[1])
   option1_expert26 <- which(out[["option"]] == "option_1" &
                               out[["id"]] %in% unique(out[["id"]])[-1])
   option1 <- which(out[["option"]] == "option_1")
@@ -338,9 +338,9 @@ test_that("Accepts 1/0 estimates", {
     # Determine n sample of each expert
     conf <- get_conf(obj[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -366,9 +366,9 @@ test_that("Accepts 1/0 estimates", {
     # Determine n sample of each expert
     conf <- get_conf(obj[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -454,8 +454,8 @@ test_that("Accepts NAs from one expert", {
   n_samp_actual <- NULL
   for (i in unique(out_na[["option"]])) {
     # Determine n sample of each expert
-    conf <- elicitr:::get_conf(obj_na[["data"]][["topic_1"]], i, 5)
-    n_samp <- elicitr:::get_boostrap_n_sample(experts,
+    conf <- get_conf(obj_na[["data"]][["topic_1"]], i, 5)
+    n_samp <- get_boostrap_n_sample(experts,
                                     n_votes = 100,
                                     weights = conf,
                                     elic_type = "weighted")
@@ -479,9 +479,9 @@ test_that("Accepts NAs from one expert", {
     # Determine n sample of each expert
     conf <- get_conf(obj_na[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out_na[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -561,9 +561,9 @@ test_that("Accepts NAs from all experts for one option", {
     # Determine n sample of each expert
     conf <- get_conf(obj_na[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out_na[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
@@ -584,9 +584,9 @@ test_that("Accepts NAs from all experts for one option", {
     # Determine n sample of each expert
     conf <- get_conf(obj_na[["data"]][["topic_1"]], i, 5)
     n_samp <- get_boostrap_n_sample(experts,
-                                              n_votes = 100,
-                                              weights = conf,
-                                              elic_type = "weighted")
+                                    n_votes = 100,
+                                    weights = conf,
+                                    elic_type = "weighted")
     n_samp_expected <- c(n_samp_expected, n_samp)
     option_i <- which(out_na[["option"]] == i)
     n_samp_actual <- c(n_samp_actual,
