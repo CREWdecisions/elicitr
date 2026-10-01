@@ -164,9 +164,9 @@ test_that("Handles some NAs correctly", {
 
   #1p, 3p with weights
   w <- c(2, 3, 4)
-  w_NA <- c(0, 3, 4)
+  w_na <- c(0, 3, 4)
   n <- 10
-  samp_expected <- (length(experts) * n * w_NA / sum(w_NA)) |>
+  samp_expected <- (length(experts) * n * w_na / sum(w_na)) |>
     miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
   expect_identical(get_boostrap_n_sample(experts,
                                          n_votes = n,
@@ -184,8 +184,8 @@ test_that("Handles some NAs correctly", {
   #4p
   conf <- data_4p[["conf"]]
   n <- 10
-  conf_NA <- c(1, data_4p[["conf"]][2:3])
-  samp_expected <- (length(experts) * n * conf_NA / sum(conf_NA)) |>
+  conf_na <- c(1, data_4p[["conf"]][2:3])
+  samp_expected <- (length(experts) * n * conf_na / sum(conf_na)) |>
     miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
   expect_identical(get_boostrap_n_sample(experts,
                                          n_votes = n,
@@ -196,9 +196,9 @@ test_that("Handles some NAs correctly", {
 
   #4p with weights
   w <- c(2, 3, 4)
-  w_NA <- c(0, 3, 4)
+  w_na <- c(0, 3, 4)
   n <- 10
-  samp_expected <- (length(experts) * n * w_NA / sum(w_NA)) |>
+  samp_expected <- (length(experts) * n * w_na / sum(w_na)) |>
     miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
   expect_identical(get_boostrap_n_sample(experts,
                                          n_votes = n,

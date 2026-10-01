@@ -122,7 +122,7 @@ test_that("output 1 option", {
                          verbose = FALSE)
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
-  expect_identical(unique(out[["option"]]),"option_1")
+  expect_identical(unique(out[["option"]]), "option_1")
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -147,7 +147,7 @@ test_that("output 1 option", {
                          verbose = FALSE)
   expect_named(out, c("id", "option", "category_1", "category_2",
                       "category_3", "category_4", "category_5"))
-  expect_identical(unique(out[["option"]]),"option_1")
+  expect_identical(unique(out[["option"]]), "option_1")
   expect_false(any(out[["category_1"]] == 1))
   expect_false(any(out[["category_2"]] == 1))
   expect_false(any(out[["category_3"]] == 1))
@@ -414,7 +414,7 @@ test_that("Accepts NAs from one expert", {
   experts <- unique(obj[["data"]][["topic_1"]][["id"]])
   expect_identical(as.double(table(factor(out_na[["id"]][option1],
                                           levels = experts))),
-                   as.double(c(1, rep(100L, length(experts)-1))))
+                   as.double(c(1, rep(100L, length(experts) - 1))))
   expect_false(anyNA(out_na[["category_1"]][-option1]))
   expect_false(anyNA(out_na[["category_2"]][-option1]))
   expect_false(anyNA(out_na[["category_3"]][-option1]))
