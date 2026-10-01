@@ -14,10 +14,11 @@ cont_sample_data(
   x,
   round,
   ...,
-  method = "basic",
+  method = "PERT",
   var = "all",
   n_votes = 1000,
-  weights = 1,
+  weights = NULL,
+  scale_conf = 100,
   verbose = TRUE
 )
 ```
@@ -41,7 +42,7 @@ cont_sample_data(
 - method:
 
   character string with the name of the method to sample the data, only
-  the *basic* is implemented, see Method below.
+  the *PERT* Method is implemented, see Method below.
 
 - var:
 
@@ -58,6 +59,10 @@ cont_sample_data(
   numeric vector with the weights to apply to the estimates. If equal to
   `1`, each experts get `n_votes` votes, see Weights below.
 
+- scale_conf:
+
+  numeric, the scale factor for the confidence interval.
+
 - verbose:
 
   logical, if TRUE it prints informative messages.
@@ -70,30 +75,33 @@ to implement the plotting method.
 
 ## Weights
 
-To provide a different number of votes to each expert, use the `weights`
-argument. The length of the vector must be equal to the number of
-experts. If provided when the elicitation type is the *four points
-elicitation*, their values overwrite the confidence estimates.
+To provide a different number of votes to each expert in a *three-point
+elicitation*, use the `weights` argument. The length of the vector must
+be equal to the number of experts. If provided when the elicitation type
+is the *four points elicitation*, their values overwrite the confidence
+estimates.
 
 ## Method
 
-The function samples the data using the basic method. The basic method
-samples the data based on the expert estimates with differences between
-the different elicitation types:
+The function samples the data differently depending on the elicitation
+type:
 
-- *one point elicitation*: the best estimate of each expert represent
-  the pool of values that are sampled `n_votes` `*` `n_experts` times,
-  with repetition.
+- *one point elicitation*: the best estimate of each expert is repeated
+  `n_votes` number of times. `n_votes` can be the same for all or
+  different for each expert.
 
 - *three points elicitation*: the minimum, best, and maximum estimates
   of each expert are used as scaling parameters of the PERT distribution
   from which the data are sampled. The `weights` argument can be used to
-  weight the estimates of each expert.
+  weight the estimates of each expert (give a certain number of vote to
+  each expert) in the overall distribution.
 
 - *four points elicitation*: the minimum, best, and maximum estimates of
   each expert are rescaled according to their confidence and used as
   scaling parameters of the PERT distribution from which the data are
-  sampled.
+  sampled. Furthermore, their confidence is used as the `weights`
+  argument to weight the estimates of each expert (give a number of vote
+  to each expert) in the overall distribution.
 
 ## scale_conf
 
@@ -122,7 +130,7 @@ Other cont data helpers:
 
 ## Author
 
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 
 ## Examples
 
@@ -133,7 +141,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  cont_add_data(x, data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_1, round = 1) |>
   cont_add_data(data_source = round_2, round = 2)
 #> ✔ <elic_cont> object for "Elicitation" correctly initialised
 #> ✔ Data added to "Round 1" from "data.frame"
@@ -142,31 +150,32 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 # Sample data for the second round for all variables
 samp <- cont_sample_data(my_elicit, round = 2)
 #> ✔ Rescaled min and max for variable "var3".
-#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
+#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 samp
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1      1
-#>  2 5ac97e0 var1      1
-#>  3 5ac97e0 var1      1
-#>  4 5ac97e0 var1     -2
-#>  5 5ac97e0 var1      1
-#>  6 5ac97e0 var1     -2
-#>  7 5ac97e0 var1     -2
-#>  8 5ac97e0 var1      1
+#>  1 5ac97e0 var1      0
+#>  2 5ac97e0 var1      0
+#>  3 5ac97e0 var1      0
+#>  4 5ac97e0 var1      0
+#>  5 5ac97e0 var1      0
+#>  6 5ac97e0 var1      0
+#>  7 5ac97e0 var1      0
+#>  8 5ac97e0 var1      0
 #>  9 5ac97e0 var1      0
-#> 10 5ac97e0 var1      1
+#> 10 5ac97e0 var1      0
 #> # ℹ 17,990 more rows
 
 # Sample data for the first round for the variable `var1` and `var2`
 samp <- cont_sample_data(my_elicit, round = 1, var = c("var1", "var2"))
-#> ✔ Data for "var1" and "var2" sampled successfully using the "basic" method.
+#> ✔ Data for "var1" and "var2" sampled successfully using the "PERT" method.
 
 # Sample data for the second round for the variable `var3`. Notice that the
 # data are rescaled using the expert confidence before sampling.
-samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
-#> ✔ Data for "var1" sampled successfully using the "basic" method.
+samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
+#> ✔ Rescaled min and max for variable "var3".
+#> ✔ Data for "var3" sampled successfully using the "PERT" method.
 
 # Sample data for the first round for the variable `var3` providing the
 # weights. Notice that the weights overwrite the confidence estimates and
@@ -176,5 +185,5 @@ samp <- cont_sample_data(my_elicit, round = 1, var = "var3",
 #> ℹ Provided weights used instead of confidence estimates
 #> Warning: ! Some values have been constrained to be between 0 and 1.
 #> ✔ Rescaled min and max for variable "var3".
-#> ✔ Data for "var3" sampled successfully using the "basic" method.
+#> ✔ Data for "var3" sampled successfully using the "PERT" method.
 ```

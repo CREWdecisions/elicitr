@@ -16,7 +16,6 @@ cat_add_data(
   ...,
   sep = ",",
   sheet = 1,
-  overwrite = FALSE,
   verbose = TRUE,
   anonymise = TRUE
 )
@@ -49,31 +48,25 @@ cat_add_data(
 
 - sep:
 
-  character used as field separator, used only when `data_source` is a
-  path to a *csv* file.
+  character used as field separator, used only when data_source is a
+  path to a csv file.
 
 - sheet:
 
   integer or character to select the sheet. The sheet can be referenced
   by its position with a number or by its name with a string. Used only
-  when `data_source` is a path to a *xlsx* file or when data are
-  imported from *Google Sheets*.
-
-- overwrite:
-
-  logical, whether to overwrite existing data already added to the
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
-  object.
+  when data_source is a path to a xlsx file or when data are imported
+  from Google Sheets.
 
 - verbose:
 
-  logical, if `TRUE` it prints informative messages.
+  logical, if TRUE it prints informative messages.
 
 - anonymise:
 
-  logical, if `TRUE` expert names are anonymised before adding the data
-  to the
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+  logical, if TRUE expert names are anonymised before adding the data to
+  the
+  [elic_cat](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)
   object.
 
 ## Value
@@ -115,8 +108,8 @@ follows:
 The name of the columns is not important, `cat_add_data()` will
 overwrite them according to the following convention:
 
-The first column will be renamed `id`, the second column `category`, the
-third column `option`, the fourth column `confidence`, and the fifth
+The first column will be renamed `id`, the second column `option`, the
+third column `category`, the fourth column `confidence`, and the fifth
 column `estimate`.
 
 Here is an example of data correctly formatted for an elicitation with

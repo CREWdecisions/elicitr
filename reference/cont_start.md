@@ -75,19 +75,19 @@ Valid short codes are:
   interval (-Inf, Inf).
 
 - `N`: *positive integers*, when the estimate must be an integer number
-  in the interval (0, Inf).
+  in the interval \[0, Inf).
 
 - `z`: *negative integers*, when the estimate must be an integer number
-  in the interval (-Inf, 0\].
+  in the interval (-Inf, 0).
 
 - `R`: *reals*, when the estimate must be a real number in the interval
   (-Inf, Inf).
 
 - `s`: *positive reals*, when the estimate must be a real number in the
-  interval (0, Inf).
+  interval \[0, Inf).
 
 - `r`: *negative reals*, when the estimate must be a real number in the
-  interval (-Inf, \].
+  interval (-Inf, 0).
 
 - `p`: *probability*, when the estimate must be a real number in the
   interval (0, 1).

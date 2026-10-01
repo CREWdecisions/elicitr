@@ -14,14 +14,14 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/v0.1.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/main/DESCRIPTION)
 
-Vignali S, Vernet M, Canessa S (2026). *elicitr: A user friendly
-interface to aggregate elicitation data*. R package version 0.1.0,
+Vignali S, Vernet M, Canessa S (2026). *elicitr: Processing and
+Aggregation of Expert Elicitation Data*. R package version 0.1.0,
 <https://crewdecisions.github.io/elicitr/>.
 
     @Manual{,
-      title = {elicitr: A user friendly interface to aggregate elicitation data},
+      title = {elicitr: Processing and Aggregation of Expert Elicitation Data},
       author = {Sergio Vignali and Maude Vernet and Stefano Canessa},
       year = {2026},
       note = {R package version 0.1.0},

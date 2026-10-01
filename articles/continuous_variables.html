@@ -83,7 +83,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Continuous variables</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/v0.1.1/vignettes/continuous_variables.Rmd" class="external-link"><code>vignettes/continuous_variables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/main/vignettes/continuous_variables.Rmd" class="external-link"><code>vignettes/continuous_variables.Rmd</code></a></small>
       <div class="d-none name"><code>continuous_variables.Rmd</code></div>
     </div>
 
@@ -292,32 +292,35 @@ let’s plot the data for the first round and the first variable:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var1-1.png" class="r-plt" alt="Estimates of variable 1 collected with a one point elicitation process." width="700"></p>
 <p>When the variable has been collected with a <em>three</em> or
-<em>four points</em> elicitation process, the plot shows the error of
-the estimates:</p>
+<em>four points</em> elicitation process, the plot shows the range of
+the estimates (from the minimum estimated value to the maximum estimated
+value, with the best guess estimate represented by a point):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var2"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var2-1.png" class="r-plt" alt="Estimates of variable 2 collected with a three points elicitation process. The error bars represent the range of the estimates." width="700"></p>
-<p>And when the variable has been collected with a <em>four points</em>
-elicitation process, the estimates are rescaled to the [0, 1]
-interval:</p>
+<p>When the variable has been collected with a <em>four points</em>
+elicitation process, the estimates are rescaled based on the confidence
+provided by the expert. If the estimates are probabilities, the rescaled
+values are the constrained to the [0, 1] interval:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var3"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var3-1.png" class="r-plt" alt="Estimates of variable 3 collected with a four points elicitation process." width="700"></p>
-<p>Finally, the group mean can be added to the plot:</p>
+<p>Finally, the group mean and 2.5th–97.5th percentile interval of
+expert estimates can be added to the plot:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var3"</span>, group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var3-group-1.png" class="r-plt" alt="Estimates of variable 3 collected with a four points elicitation process with group mean." width="700"></p>
 <p>When the elicitation process is part of a workshop and is used for
-demonstration, it can be useful to show a truth argumenton the plot.
+demonstration, it can be useful to show a truth argument on the plot.
 This argument can be added as a list of estimates.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var2"</span>,</span>
 <span>     group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>     truth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">10</span>, max <span class="op">=</span> <span class="fl">20</span>, best <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var3-truth-1.png" class="r-plt" alt="Estimates of variable 3 collected with a four points elicitation process with group mean and truth." width="700"></p>
-<p>Expert names identifiers can also be changed on the plot:</p>
+<p>Expert names or identifiers can also be changed on the plot:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var2"</span>,</span>
 <span>     group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -328,27 +331,28 @@ This argument can be added as a list of estimates.</p>
 <div class="section level3">
 <h3 id="sample-data">Sample data<a class="anchor" aria-label="anchor" href="#sample-data"></a>
 </h3>
-<p>Data can be sampled using the function <code>cont_sample()</code>
-(see the variable documentation for the explanation of the sampling
-methods). Here we sample 1000 values for each variable:</p>
+<p>Data can be sampled using the function
+<code><a href="../reference/cont_sample_data.html">cont_sample_data()</a></code> (see the variable documentation for the
+explanation of the sampling methods). Here we sample 1000 values for
+each variable:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cont_sample_data.html">cont_sample_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"basic"</span> method.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span></span>
 <span><span class="va">samp</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18,000 × 3</span></span></span>
 <span><span class="co">#&gt;    id      var   value</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5ac97e0 var1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5ac97e0 var1     -<span style="color: #BB0000;">4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 5ac97e0 var1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 5ac97e0 var1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 5ac97e0 var1     -<span style="color: #BB0000;">4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 5ac97e0 var1      1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 5ac97e0 var1      0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 5ac97e0 var1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 5ac97e0 var1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 5ac97e0 var1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 5ac97e0 var1      1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 5ac97e0 var1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 5ac97e0 var1      0</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 17,990 more rows</span></span></span></code></pre></div>
 <p>Sampled data can be summarised:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -356,9 +360,9 @@ methods). Here we sample 1000 values for each variable:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
 <span><span class="co">#&gt;   Var      Min     Q1 Median   Mean     Q3    Max</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> var1  -<span style="color: #BB0000;">4</span>     -<span style="color: #BB0000;">2</span>      0     -<span style="color: #BB0000;">0.960</span>  1      1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> var2  11.0   14.4   16.3   16.3   18.3   22.9  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> var3   0.507  0.672  0.718  0.716  0.763  0.876</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> var1  -<span style="color: #BB0000;">4</span>     -<span style="color: #BB0000;">2</span>     -<span style="color: #BB0000;">1</span>     -<span style="color: #BB0000;">1</span>      1      1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> var2  11.0   14.5   16.3   16.3   18.4   22.6  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> var3   0.500  0.671  0.717  0.715  0.760  0.868</span></span></code></pre></div>
 <p>Plotted as violin plots:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">samp</span>, var <span class="op">=</span> <span class="st">"var2"</span>, type <span class="op">=</span> <span class="st">"violin"</span><span class="op">)</span></span></code></pre></div>

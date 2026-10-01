@@ -32,16 +32,16 @@ topic_1
 #> # A tibble: 120 × 5
 #>    name            option   category   confidence estimate
 #>    <chr>           <chr>    <chr>           <dbl>    <dbl>
-#>  1 Derek Maclellan option_1 category_1         15     0.08
-#>  2 Derek Maclellan option_1 category_2         15     0   
-#>  3 Derek Maclellan option_1 category_3         15     0.85
-#>  4 Derek Maclellan option_1 category_4         15     0.02
-#>  5 Derek Maclellan option_1 category_5         15     0.05
-#>  6 Derek Maclellan option_2 category_1         35     0.02
-#>  7 Derek Maclellan option_2 category_2         35     0.11
-#>  8 Derek Maclellan option_2 category_3         35     0.18
-#>  9 Derek Maclellan option_2 category_4         35     0.02
-#> 10 Derek Maclellan option_2 category_5         35     0.67
+#>  1 Derek Maclellan option_1 category_1         66     0.57
+#>  2 Derek Maclellan option_1 category_2         66     0.18
+#>  3 Derek Maclellan option_1 category_3         66     0.02
+#>  4 Derek Maclellan option_1 category_4         66     0.02
+#>  5 Derek Maclellan option_1 category_5         66     0.21
+#>  6 Derek Maclellan option_2 category_1         86     0.06
+#>  7 Derek Maclellan option_2 category_2         86     0.04
+#>  8 Derek Maclellan option_2 category_3         86     0.12
+#>  9 Derek Maclellan option_2 category_4         86     0.42
+#> 10 Derek Maclellan option_2 category_5         86     0.36
 #> # ℹ 110 more rows
 ```
 
@@ -51,16 +51,16 @@ topic_2
 #> # A tibble: 100 × 5
 #>    name              option   category   confidence estimate
 #>    <chr>             <chr>    <chr>           <dbl>    <dbl>
-#>  1 Christopher Felix option_1 category_1        100     0.09
-#>  2 Christopher Felix option_1 category_2        100     0.21
-#>  3 Christopher Felix option_1 category_3        100     0.11
-#>  4 Christopher Felix option_1 category_4        100     0.59
-#>  5 Christopher Felix option_1 category_5        100     0   
-#>  6 Christopher Felix option_2 category_1         20     0.09
-#>  7 Christopher Felix option_2 category_2         20     0.05
-#>  8 Christopher Felix option_2 category_3         20     0.33
-#>  9 Christopher Felix option_2 category_4         20     0.24
-#> 10 Christopher Felix option_2 category_5         20     0.29
+#>  1 Christopher Felix option_1 category_1         86     0.28
+#>  2 Christopher Felix option_1 category_2         86     0.13
+#>  3 Christopher Felix option_1 category_3         86     0.55
+#>  4 Christopher Felix option_1 category_4         86     0.04
+#>  5 Christopher Felix option_1 category_5         86     0   
+#>  6 Christopher Felix option_2 category_1         81     0.06
+#>  7 Christopher Felix option_2 category_2         81     0.26
+#>  8 Christopher Felix option_2 category_3         81     0.02
+#>  9 Christopher Felix option_2 category_4         81     0.47
+#> 10 Christopher Felix option_2 category_5         81     0.19
 #> # ℹ 90 more rows
 ```
 
@@ -70,16 +70,16 @@ topic_3
 #> # A tibble: 90 × 5
 #>    name            option   category   confidence estimate
 #>    <chr>           <chr>    <chr>           <dbl>    <dbl>
-#>  1 Derek Maclellan option_1 category_1         80     0.02
-#>  2 Derek Maclellan option_1 category_2         80     0.02
-#>  3 Derek Maclellan option_1 category_3         80     0.01
-#>  4 Derek Maclellan option_1 category_4         80     0.87
-#>  5 Derek Maclellan option_1 category_5         80     0.08
-#>  6 Derek Maclellan option_2 category_1         50     0.11
-#>  7 Derek Maclellan option_2 category_2         50     0.09
-#>  8 Derek Maclellan option_2 category_3         50     0.17
-#>  9 Derek Maclellan option_2 category_4         50     0.09
-#> 10 Derek Maclellan option_2 category_5         50     0.54
+#>  1 Derek Maclellan option_1 category_1         61     0.12
+#>  2 Derek Maclellan option_1 category_2         61     0.5 
+#>  3 Derek Maclellan option_1 category_3         61     0.16
+#>  4 Derek Maclellan option_1 category_4         61     0.02
+#>  5 Derek Maclellan option_1 category_5         61     0.2 
+#>  6 Derek Maclellan option_2 category_1         91     0.02
+#>  7 Derek Maclellan option_2 category_2         91     0.76
+#>  8 Derek Maclellan option_2 category_3         91     0.15
+#>  9 Derek Maclellan option_2 category_4         91     0.06
+#> 10 Derek Maclellan option_2 category_5         91     0.01
 #> # ℹ 80 more rows
 ```
 
@@ -127,7 +127,8 @@ This elicitation process is for a categorical variables with 5
 categories estimated for four options and three topics by six experts.
 
 As we did for continuous variables, we can load the data with the
-function `cat_load()`:
+function
+[`cat_add_data()`](https://crewdecisions.github.io/elicitr/reference/cat_add_data.md):
 
 ``` r
 
@@ -204,16 +205,16 @@ cat_get_data(my_elicitation, topic = "topic_1")
 #> # A tibble: 120 × 5
 #>    id              option   category   confidence estimate
 #>    <chr>           <chr>    <chr>           <dbl>    <dbl>
-#>  1 Derek Maclellan option_1 category_1         15        8
-#>  2 Derek Maclellan option_1 category_2         15        0
-#>  3 Derek Maclellan option_1 category_3         15       85
-#>  4 Derek Maclellan option_1 category_4         15        2
-#>  5 Derek Maclellan option_1 category_5         15        5
-#>  6 Derek Maclellan option_2 category_1         35        2
-#>  7 Derek Maclellan option_2 category_2         35       11
-#>  8 Derek Maclellan option_2 category_3         35       18
-#>  9 Derek Maclellan option_2 category_4         35        2
-#> 10 Derek Maclellan option_2 category_5         35       67
+#>  1 Derek Maclellan option_1 category_1         66       57
+#>  2 Derek Maclellan option_1 category_2         66       18
+#>  3 Derek Maclellan option_1 category_3         66        2
+#>  4 Derek Maclellan option_1 category_4         66        2
+#>  5 Derek Maclellan option_1 category_5         66       21
+#>  6 Derek Maclellan option_2 category_1         86        6
+#>  7 Derek Maclellan option_2 category_2         86        4
+#>  8 Derek Maclellan option_2 category_3         86       12
+#>  9 Derek Maclellan option_2 category_4         86       42
+#> 10 Derek Maclellan option_2 category_5         86       36
 #> # ℹ 110 more rows
 ```
 
@@ -228,16 +229,16 @@ cat_get_data(my_elicitation, topic = "topic_2", option = "option_1")
 #> # A tibble: 25 × 5
 #>    id      option   category   confidence estimate
 #>    <chr>   <chr>    <chr>           <dbl>    <dbl>
-#>  1 e51202e option_1 category_1        100        9
-#>  2 e51202e option_1 category_2        100       21
-#>  3 e51202e option_1 category_3        100       11
-#>  4 e51202e option_1 category_4        100       59
-#>  5 e51202e option_1 category_5        100        0
-#>  6 e78cbf4 option_1 category_1         75       31
-#>  7 e78cbf4 option_1 category_2         75       27
-#>  8 e78cbf4 option_1 category_3         75        9
-#>  9 e78cbf4 option_1 category_4         75       17
-#> 10 e78cbf4 option_1 category_5         75       16
+#>  1 e51202e option_1 category_1         86       28
+#>  2 e51202e option_1 category_2         86       13
+#>  3 e51202e option_1 category_3         86       55
+#>  4 e51202e option_1 category_4         86        4
+#>  5 e51202e option_1 category_5         86        0
+#>  6 e78cbf4 option_1 category_1         71        5
+#>  7 e78cbf4 option_1 category_2         71       20
+#>  8 e78cbf4 option_1 category_3         71        7
+#>  9 e78cbf4 option_1 category_4         71       47
+#> 10 e78cbf4 option_1 category_5         71       21
 #> # ℹ 15 more rows
 ```
 
@@ -252,9 +253,10 @@ sampled data.
 
 ### Sample data
 
-Data can be sampled using the function `cat_sample()` (see the variable
-documentation for the explanation of the sampling methods). Here we
-sample 100 values for each option:
+Data can be sampled using the function
+[`cat_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cat_sample_data.md)
+(see the variable documentation for the explanation of the sampling
+methods). Here we sample 100 values for each option:
 
 ``` r
 
@@ -267,16 +269,16 @@ samp
 #> # A tibble: 2,400 × 7
 #>    id              option category_1 category_2 category_3 category_4 category_5
 #>    <chr>           <chr>       <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 Derek Maclellan optio…     0.0476          0      0.864   0.0171       0.0712
-#>  2 Derek Maclellan optio…     0.0567          0      0.904   0.00235      0.0374
-#>  3 Derek Maclellan optio…     0.0661          0      0.869   0.0268       0.0377
-#>  4 Derek Maclellan optio…     0.0648          0      0.882   0.00612      0.0467
-#>  5 Derek Maclellan optio…     0.0376          0      0.929   0.0101       0.0236
-#>  6 Derek Maclellan optio…     0.0925          0      0.851   0.0102       0.0463
-#>  7 Derek Maclellan optio…     0.0717          0      0.877   0.0144       0.0370
-#>  8 Derek Maclellan optio…     0.0779          0      0.875   0.0125       0.0348
-#>  9 Derek Maclellan optio…     0.118           0      0.769   0.0674       0.0457
-#> 10 Derek Maclellan optio…     0.0904          0      0.844   0.000713     0.0650
+#>  1 Derek Maclellan optio…      0.577      0.168     0.0185   0.0317        0.205
+#>  2 Derek Maclellan optio…      0.669      0.143     0.0110   0.00777       0.169
+#>  3 Derek Maclellan optio…      0.618      0.149     0.0147   0.0427        0.176
+#>  4 Derek Maclellan optio…      0.623      0.131     0.0606   0.0123        0.173
+#>  5 Derek Maclellan optio…      0.585      0.187     0.0101   0.0161        0.202
+#>  6 Derek Maclellan optio…      0.635      0.165     0.0123   0.0128        0.175
+#>  7 Derek Maclellan optio…      0.501      0.138     0.0342   0.00630       0.321
+#>  8 Derek Maclellan optio…      0.550      0.194     0.0160   0.000700      0.239
+#>  9 Derek Maclellan optio…      0.607      0.210     0.0184   0.0269        0.137
+#> 10 Derek Maclellan optio…      0.522      0.192     0.0180   0.0158        0.252
 #> # ℹ 2,390 more rows
 ```
 
@@ -285,14 +287,15 @@ Sampled data can be summarised for any option:
 ``` r
 
 summary(samp, option = "option_1")
+#> $option_1
 #> # A tibble: 5 × 7
-#>   Category        Min      Q1  Median   Mean     Q3   Max
-#>   <chr>         <dbl>   <dbl>   <dbl>  <dbl>  <dbl> <dbl>
-#> 1 category_1 0.0109   0.0832  0.122   0.126  0.166  0.269
-#> 2 category_2 0        0.00208 0.00969 0.0551 0.0915 0.338
-#> 3 category_3 0.0411   0.136   0.238   0.359  0.585  0.929
-#> 4 category_4 0.000152 0.00925 0.111   0.153  0.291  0.428
-#> 5 category_5 0.0123   0.0579  0.308   0.307  0.474  0.748
+#>   category        Min     Q1 Median  Mean    Q3   Max
+#>   <chr>         <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>
+#> 1 category_1 0.0738   0.175   0.374 0.383 0.563 0.777
+#> 2 category_2 0        0.0571  0.116 0.118 0.175 0.354
+#> 3 category_3 0.000827 0.0506  0.103 0.131 0.191 0.415
+#> 4 category_4 0.000700 0.0474  0.229 0.220 0.313 0.610
+#> 5 category_5 0.00987  0.0913  0.147 0.148 0.195 0.348
 ```
 
 And plotted as violin plot:

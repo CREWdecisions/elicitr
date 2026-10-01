@@ -64,8 +64,9 @@ plot(
 
 - theme:
 
-  a [`theme`](https://ggplot2.tidyverse.org/reference/theme.html)
-  function to overwrite the default theme.
+  a [theme object](https://ggplot2.tidyverse.org/reference/theme.html)
+  to use in the plot, such as
+  [`ggplot2::theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
 
 - beeswarm_cex:
 
@@ -80,8 +81,8 @@ plot(
 
 ## Value
 
-Invisibly a
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
+object.
 
 ## Details
 
@@ -132,26 +133,22 @@ plot(samp)
 
 
 # Plot the sampled data as beeswarm plot
-
-if (FALSE) { # \dontrun{
 plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
-} # }
 
-if (FALSE) { # \dontrun{
+
 # Plot the sampled data for option 1
 plot(samp, option = "option_1")
-} # }
-if (FALSE) { # \dontrun{
+
+
 # Plot the sampled data for option 1 and 3
 plot(samp, option = c("option_1", "option_3"))
-} # }
-if (FALSE) { # \dontrun{
+
+
 # Provide custom colours
 plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
                        "chocolate3", "orangered4"))
-} # }
-if (FALSE) { # \dontrun{
+
 # Overwrite the default theme
 plot(samp, theme = ggplot2::theme_minimal())
-} # }
+
 ```

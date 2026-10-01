@@ -47,7 +47,7 @@ cat_add_data() adds data to an elic_cat object from different sources."><meta pr
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Add data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/v0.1.1/R/cat_add_data.R" class="external-link"><code>R/cat_add_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/main/R/cat_add_data.R" class="external-link"><code>R/cat_add_data.R</code></a></small>
       <div class="d-none name"><code>cat_add_data.Rd</code></div>
     </div>
 
@@ -65,7 +65,6 @@ cat_add_data() adds data to an elic_cat object from different sources."><meta pr
 <span>  <span class="va">...</span>,</span>
 <span>  sep <span class="op">=</span> <span class="st">","</span>,</span>
 <span>  sheet <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  anonymise <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -96,29 +95,24 @@ function.</p></dd>
 
 
 <dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>
-<dd><p>character used as field separator, used only when <code>data_source</code> is
-a path to a <em>csv</em> file.</p></dd>
+<dd><p>character used as field separator, used only when data_source is a
+path to a csv file.</p></dd>
 
 
 <dt id="arg-sheet">sheet<a class="anchor" aria-label="anchor" href="#arg-sheet"></a></dt>
 <dd><p>integer or character to select the sheet. The sheet can be
 referenced by its position with a number or by its name with a string. Used
-only when <code>data_source</code> is a path to a <em>xlsx</em> file or when data are imported
-from <em>Google Sheets</em>.</p></dd>
-
-
-<dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p>logical, whether to overwrite existing data already added to
-the <a href="elic_cont.html">elic_cont</a> object.</p></dd>
+only when data_source is a path to a xlsx file or when data are imported from
+Google Sheets.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>logical, if <code>TRUE</code> it prints informative messages.</p></dd>
+<dd><p>logical, if TRUE it prints informative messages.</p></dd>
 
 
 <dt id="arg-anonymise">anonymise<a class="anchor" aria-label="anchor" href="#arg-anonymise"></a></dt>
-<dd><p>logical, if <code>TRUE</code> expert names are anonymised before adding
-the data to the <a href="elic_cont.html">elic_cont</a> object.</p></dd>
+<dd><p>logical, if TRUE expert names are anonymised before adding
+the data to the <a href="elic_cat.html">elic_cat</a> object.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -151,8 +145,8 @@ category. These estimates should sum up to 1 (probabilities) (or 100
 (percentages)) for each expert and option.</p></li>
 </ul><p>The name of the columns is not important, <code>cat_add_data()</code> will overwrite
 them according to the following convention:</p>
-<p>The first column will be renamed <code>id</code>, the second column <code>category</code>, the
-third column <code>option</code>, the fourth column <code>confidence</code>, and the fifth column
+<p>The first column will be renamed <code>id</code>, the second column <code>option</code>, the
+third column <code>category</code>, the fourth column <code>confidence</code>, and the fifth column
 <code>estimate</code>.</p>
 <p>Here is an example of data correctly formatted for an elicitation with five
 categories and two options (only one expert is shown):</p>

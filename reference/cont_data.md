@@ -26,15 +26,19 @@ A data frame with 6 rows and 9 columns:
 
 - var2_min, var2_max, var2_best:
 
-  Minimum, maximum, and best estimates of `var2`. The estimates contain
-  positive integer numbers referring to the three points elicitation
-  method.
-
-- var3_min, var3_max, var3_best, var3_conf:
-
-  Minimum, maximum, best, and confidence estimates of `var3`. The
-  estimates contain probabilities referring to the four points
+  Minimum, maximum, and best guess estimates of `var2`. The estimates
+  contain positive integer numbers referring to the three points
   elicitation method.
+
+- var3_min, var3_max, var3_best:
+
+  Minimum, maximum and best guess estimates of `var3`. The estimates
+  contain probabilities referring to the four points elicitation method.
+
+- var3_conf:
+
+  Expert confidence for `var3`, expressed as a percentage higher than
+  50%.
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with 6
 rows and 9 columns.

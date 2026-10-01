@@ -232,7 +232,9 @@ plot(my_elicitation, round = 1, var = "var1")
 process.](continuous_variables_files/figure-html/plot-data-var1-1.png)
 
 When the variable has been collected with a *three* or *four points*
-elicitation process, the plot shows the error of the estimates:
+elicitation process, the plot shows the range of the estimates (from the
+minimum estimated value to the maximum estimated value, with the best
+guess estimate represented by a point):
 
 ``` r
 
@@ -243,9 +245,10 @@ plot(my_elicitation, round = 1, var = "var2")
 process. The error bars represent the range of the
 estimates.](continuous_variables_files/figure-html/plot-data-var2-1.png)
 
-And when the variable has been collected with a *four points*
-elicitation process, the estimates are rescaled to the \[0, 1\]
-interval:
+When the variable has been collected with a *four points* elicitation
+process, the estimates are rescaled based on the confidence provided by
+the expert. If the estimates are probabilities, the rescaled values are
+the constrained to the \[0, 1\] interval:
 
 ``` r
 
@@ -256,7 +259,8 @@ plot(my_elicitation, round = 2, var = "var3")
 ![Estimates of variable 3 collected with a four points elicitation
 process.](continuous_variables_files/figure-html/plot-data-var3-1.png)
 
-Finally, the group mean can be added to the plot:
+Finally, the group mean and 2.5th–97.5th percentile interval of expert
+estimates can be added to the plot:
 
 ``` r
 
@@ -269,7 +273,7 @@ process with group
 mean.](continuous_variables_files/figure-html/plot-data-var3-group-1.png)
 
 When the elicitation process is part of a workshop and is used for
-demonstration, it can be useful to show a truth argumenton the plot.
+demonstration, it can be useful to show a truth argument on the plot.
 This argument can be added as a list of estimates.
 
 ``` r
@@ -283,7 +287,7 @@ plot(my_elicitation, round = 1, var = "var2",
 process with group mean and
 truth.](continuous_variables_files/figure-html/plot-data-var3-truth-1.png)
 
-Expert names identifiers can also be changed on the plot:
+Expert names or identifiers can also be changed on the plot:
 
 ``` r
 
@@ -299,29 +303,30 @@ identifiers.](continuous_variables_files/figure-html/plot-data-var3-custom-id-1.
 
 ### Sample data
 
-Data can be sampled using the function `cont_sample()` (see the variable
-documentation for the explanation of the sampling methods). Here we
-sample 1000 values for each variable:
+Data can be sampled using the function
+[`cont_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cont_sample_data.md)
+(see the variable documentation for the explanation of the sampling
+methods). Here we sample 1000 values for each variable:
 
 ``` r
 
 samp <- cont_sample_data(my_elicitation, round = 2)
 #> ✔ Rescaled min and max for variable "var3".
-#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
+#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 samp
 #> # A tibble: 18,000 × 3
 #>    id      var   value
 #>    <chr>   <chr> <dbl>
-#>  1 5ac97e0 var1      1
-#>  2 5ac97e0 var1     -4
-#>  3 5ac97e0 var1      1
-#>  4 5ac97e0 var1      1
-#>  5 5ac97e0 var1     -4
-#>  6 5ac97e0 var1      1
+#>  1 5ac97e0 var1      0
+#>  2 5ac97e0 var1      0
+#>  3 5ac97e0 var1      0
+#>  4 5ac97e0 var1      0
+#>  5 5ac97e0 var1      0
+#>  6 5ac97e0 var1      0
 #>  7 5ac97e0 var1      0
-#>  8 5ac97e0 var1      1
-#>  9 5ac97e0 var1      1
-#> 10 5ac97e0 var1      1
+#>  8 5ac97e0 var1      0
+#>  9 5ac97e0 var1      0
+#> 10 5ac97e0 var1      0
 #> # ℹ 17,990 more rows
 ```
 
@@ -333,9 +338,9 @@ summary(samp)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 var1  -4     -2      0     -0.960  1      1    
-#> 2 var2  11.0   14.4   16.3   16.3   18.3   22.9  
-#> 3 var3   0.507  0.672  0.718  0.716  0.763  0.876
+#> 1 var1  -4     -2     -1     -1      1      1    
+#> 2 var2  11.0   14.5   16.3   16.3   18.4   22.6  
+#> 3 var3   0.500  0.671  0.717  0.715  0.760  0.868
 ```
 
 Plotted as violin plots:

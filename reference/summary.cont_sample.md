@@ -64,29 +64,29 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 # Sample data for the second round for all variables
 samp <- cont_sample_data(my_elicit, round = 2)
 #> ✔ Rescaled min and max for variable "var3".
-#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
+#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 
 # Summarise the sampled data for all variables
 summary(samp)
 #> # A tibble: 3 × 7
 #>   Var      Min     Q1 Median   Mean     Q3    Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 var1  -4     -2     -2     -1.02   1      1    
-#> 2 var2  11.0   14.5   16.3   16.3   18.3   22.7  
-#> 3 var3   0.468  0.672  0.716  0.715  0.760  0.872
+#> 1 var1  -4     -2     -1     -1      1      1    
+#> 2 var2  11.1   14.5   16.3   16.3   18.3   22.7  
+#> 3 var3   0.486  0.670  0.716  0.714  0.760  0.871
 
 # Summarise the sampled data for the variable "var1"
 summary(samp, var = "var1")
 #> # A tibble: 1 × 7
 #>   Var     Min    Q1 Median  Mean    Q3   Max
 #>   <chr> <dbl> <dbl>  <dbl> <dbl> <dbl> <dbl>
-#> 1 var1     -4    -2     -2 -1.02     1     1
+#> 1 var1     -4    -2     -1    -1     1     1
 
 # Summarise the sampled data for the variables "var1" and "var3"
 summary(samp, var = c("var1", "var3"))
 #> # A tibble: 2 × 7
 #>   Var      Min     Q1 Median   Mean    Q3   Max
 #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl> <dbl> <dbl>
-#> 1 var1  -4     -2     -2     -1.02  1     1    
-#> 2 var3   0.468  0.672  0.716  0.715 0.760 0.872
+#> 1 var1  -4     -2     -1     -1     1     1    
+#> 2 var3   0.486  0.670  0.716  0.714 0.760 0.871
 ```

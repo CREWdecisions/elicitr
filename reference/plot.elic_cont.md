@@ -106,8 +106,10 @@ plot(
 
 - theme:
 
-  a [`theme`](https://ggplot2.tidyverse.org/reference/theme.html)
-  function to overwrite the default theme.
+  a [theme object](https://ggplot2.tidyverse.org/reference/theme.html)
+  to use in the plot, such as
+  [`ggplot2::theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+  theme.
 
 - verbose:
 
@@ -115,13 +117,13 @@ plot(
 
 ## Value
 
-Invisibly a
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
+object.
 
 ## Details
 
 If a 1-point elicitation is plotted, the `group` argument will show the
-mean and 95\\
+mean and 2.5th–97.5th percentile interval of expert estimates.
 
 The `truth` argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is

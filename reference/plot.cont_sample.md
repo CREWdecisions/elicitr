@@ -11,7 +11,7 @@ plots continuous samples as violin or density plot.
 # S3 method for class 'cont_sample'
 plot(
   x,
-  var,
+  var = NULL,
   ...,
   group = FALSE,
   type = "violin",
@@ -82,8 +82,9 @@ plot(
 
 - theme:
 
-  [`theme`](https://ggplot2.tidyverse.org/reference/theme.html) function
-  to be used in the plot.
+  a [theme object](https://ggplot2.tidyverse.org/reference/theme.html)
+  to use in the plot, such as
+  [`ggplot2::theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
 
 - beeswarm_cex:
 
@@ -98,8 +99,8 @@ plot(
 
 ## Value
 
-Invisibly a
-[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
+object.
 
 ## Details
 
@@ -134,7 +135,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 samp <- cont_sample_data(my_elicit, round = 1)
 #> Warning: ! Some values have been constrained to be between 0 and 1.
 #> ✔ Rescaled min and max for variable "var3".
-#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
+#> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 
 # Plot the sampled data for the variable `var3` as violin plot
 plot(samp, var = "var3", type = "violin")
@@ -142,6 +143,7 @@ plot(samp, var = "var3", type = "violin")
 
 # Plot the sampled data for the variable `var1` as beeswarm plot
 plot(samp, var = "var1", type = "beeswarm")
+#> ℹ Replacing `type` with "violin" as "var1" is a one-point variable.
 
 
 # Plot the sampled data for the variable `var2` as density plot

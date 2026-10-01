@@ -10,7 +10,7 @@ third quartile, and maximum values for each category.
 
 ``` r
 # S3 method for class 'cat_sample'
-summary(object, option, ...)
+summary(object, option = "all", ...)
 ```
 
 ## Arguments
@@ -22,7 +22,8 @@ summary(object, option, ...)
 
 - option:
 
-  character string with the name of the option.
+  character string with the name of the option(s). If `option = "all"`,
+  all options are summarised.
 
 - ...:
 
@@ -30,8 +31,8 @@ summary(object, option, ...)
 
 ## Value
 
-A [`tibble`](https://tibble.tidyverse.org/reference/tibble.html) with
-the summary statistics.
+A [table](https://rdrr.io/r/base/table.html) with the summary
+statistics.
 
 ## See also
 
@@ -77,12 +78,14 @@ samp <- cat_sample_data(my_elicit,
 
 # Summarise the sampled data
 summary(samp, option = "option_1")
+#> $option_1
 #> # A tibble: 5 × 7
-#>   Category         Min      Q1 Median   Mean     Q3   Max
-#>   <chr>          <dbl>   <dbl>  <dbl>  <dbl>  <dbl> <dbl>
-#> 1 category_1 0.0178    0.0870  0.127  0.129  0.169  0.283
-#> 2 category_2 0         0.00195 0.0108 0.0536 0.0908 0.323
-#> 3 category_3 0.0390    0.136   0.243  0.358  0.576  0.924
-#> 4 category_4 0.0000120 0.00964 0.0946 0.152  0.290  0.454
-#> 5 category_5 0.00920   0.0556  0.317  0.308  0.480  0.746
+#>   category       Min     Q1 Median  Mean    Q3   Max
+#>   <chr>        <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>
+#> 1 category_1 0.0691  0.168   0.375 0.383 0.570 0.790
+#> 2 category_2 0       0.0624  0.116 0.121 0.184 0.322
+#> 3 category_3 0.00192 0.0448  0.104 0.130 0.189 0.504
+#> 4 category_4 0.00158 0.0508  0.232 0.221 0.317 0.579
+#> 5 category_5 0.0152  0.0907  0.145 0.144 0.192 0.346
+#> 
 ```

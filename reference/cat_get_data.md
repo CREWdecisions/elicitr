@@ -80,16 +80,16 @@ cat_get_data(my_elicit, topic = "topic_1")
 #> # A tibble: 120 × 5
 #>    id      option   category   confidence estimate
 #>    <chr>   <chr>    <chr>           <dbl>    <dbl>
-#>  1 5ac97e0 option_1 category_1         15        8
-#>  2 5ac97e0 option_1 category_2         15        0
-#>  3 5ac97e0 option_1 category_3         15       85
-#>  4 5ac97e0 option_1 category_4         15        2
-#>  5 5ac97e0 option_1 category_5         15        5
-#>  6 5ac97e0 option_2 category_1         35        2
-#>  7 5ac97e0 option_2 category_2         35       11
-#>  8 5ac97e0 option_2 category_3         35       18
-#>  9 5ac97e0 option_2 category_4         35        2
-#> 10 5ac97e0 option_2 category_5         35       67
+#>  1 5ac97e0 option_1 category_1         66       57
+#>  2 5ac97e0 option_1 category_2         66       18
+#>  3 5ac97e0 option_1 category_3         66        2
+#>  4 5ac97e0 option_1 category_4         66        2
+#>  5 5ac97e0 option_1 category_5         66       21
+#>  6 5ac97e0 option_2 category_1         86        6
+#>  7 5ac97e0 option_2 category_2         86        4
+#>  8 5ac97e0 option_2 category_3         86       12
+#>  9 5ac97e0 option_2 category_4         86       42
+#> 10 5ac97e0 option_2 category_5         86       36
 #> # ℹ 110 more rows
 
 # Get data by option name----
@@ -98,16 +98,16 @@ cat_get_data(my_elicit, topic = "topic_2", option = "option_1")
 #> # A tibble: 25 × 5
 #>    id      option   category   confidence estimate
 #>    <chr>   <chr>    <chr>           <dbl>    <dbl>
-#>  1 e51202e option_1 category_1        100        9
-#>  2 e51202e option_1 category_2        100       21
-#>  3 e51202e option_1 category_3        100       11
-#>  4 e51202e option_1 category_4        100       59
-#>  5 e51202e option_1 category_5        100        0
-#>  6 e78cbf4 option_1 category_1         75       31
-#>  7 e78cbf4 option_1 category_2         75       27
-#>  8 e78cbf4 option_1 category_3         75        9
-#>  9 e78cbf4 option_1 category_4         75       17
-#> 10 e78cbf4 option_1 category_5         75       16
+#>  1 e51202e option_1 category_1         86       28
+#>  2 e51202e option_1 category_2         86       13
+#>  3 e51202e option_1 category_3         86       55
+#>  4 e51202e option_1 category_4         86        4
+#>  5 e51202e option_1 category_5         86        0
+#>  6 e78cbf4 option_1 category_1         71        5
+#>  7 e78cbf4 option_1 category_2         71       20
+#>  8 e78cbf4 option_1 category_3         71        7
+#>  9 e78cbf4 option_1 category_4         71       47
+#> 10 e78cbf4 option_1 category_5         71       21
 #> # ℹ 15 more rows
 
 # Get data for option_1 and option_3 from Topic 3
@@ -117,15 +117,15 @@ cat_get_data(my_elicit,
 #> # A tibble: 60 × 5
 #>    id      option   category   confidence estimate
 #>    <chr>   <chr>    <chr>           <dbl>    <dbl>
-#>  1 5ac97e0 option_1 category_1         80        2
-#>  2 5ac97e0 option_1 category_2         80        2
-#>  3 5ac97e0 option_1 category_3         80        1
-#>  4 5ac97e0 option_1 category_4         80       87
-#>  5 5ac97e0 option_1 category_5         80        8
-#>  6 5ac97e0 option_3 category_1         15       59
-#>  7 5ac97e0 option_3 category_2         15        8
-#>  8 5ac97e0 option_3 category_3         15       11
-#>  9 5ac97e0 option_3 category_4         15        0
-#> 10 5ac97e0 option_3 category_5         15       22
+#>  1 5ac97e0 option_1 category_1         61       12
+#>  2 5ac97e0 option_1 category_2         61       50
+#>  3 5ac97e0 option_1 category_3         61       16
+#>  4 5ac97e0 option_1 category_4         61        2
+#>  5 5ac97e0 option_1 category_5         61       20
+#>  6 5ac97e0 option_3 category_1         91       59
+#>  7 5ac97e0 option_3 category_2         91        1
+#>  8 5ac97e0 option_3 category_3         91        1
+#>  9 5ac97e0 option_3 category_4         91       28
+#> 10 5ac97e0 option_3 category_5         91       11
 #> # ℹ 50 more rows
 ```

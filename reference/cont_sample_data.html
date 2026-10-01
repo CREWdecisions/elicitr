@@ -49,7 +49,7 @@ elic_cont object."><meta property="og:image" content="https://crewdecisions.gith
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Sample continuous data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/v0.1.1/R/cont_sample_data.R" class="external-link"><code>R/cont_sample_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/main/R/cont_sample_data.R" class="external-link"><code>R/cont_sample_data.R</code></a></small>
       <div class="d-none name"><code>cont_sample_data.Rd</code></div>
     </div>
 
@@ -65,10 +65,11 @@ elic_cont object."><meta property="og:image" content="https://crewdecisions.gith
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">round</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"basic"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"PERT"</span>,</span>
 <span>  var <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  n_votes <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  weights <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  scale_conf <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,7 +94,7 @@ function.</p></dd>
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>character string with the name of the method to sample the
-data, only the <em>basic</em> is implemented, see Method below.</p></dd>
+data, only the <em>PERT</em> Method is implemented, see Method below.</p></dd>
 
 
 <dt id="arg-var">var<a class="anchor" aria-label="anchor" href="#arg-var"></a></dt>
@@ -111,6 +112,10 @@ for all variables.</p></dd>
 equal to <code>1</code>, each experts get <code>n_votes</code> votes, see Weights below.</p></dd>
 
 
+<dt id="arg-scale-conf">scale_conf<a class="anchor" aria-label="anchor" href="#arg-scale-conf"></a></dt>
+<dd><p>numeric, the scale factor for the confidence interval.</p></dd>
+
+
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>logical, if TRUE it prints informative messages.</p></dd>
 
@@ -124,27 +129,30 @@ an additional class <code>cont_sample</code> used to implement the plotting meth
     <h2 id="weights">Weights<a class="anchor" aria-label="anchor" href="#weights"></a></h2>
 
 
-<p>To provide a different number of votes to each expert, use the <code>weights</code>
-argument. The length of the vector must be equal to the number of experts. If
-provided when the elicitation type is the <em>four points elicitation</em>, their
-values overwrite the confidence estimates.</p>
+<p>To provide a different number of votes to each expert in a
+<em>three-point elicitation</em>, use the <code>weights</code> argument. The length of the
+vector must be equal to the number of experts. If provided when the
+elicitation type is the <em>four points elicitation</em>, their values overwrite the
+confidence estimates.</p>
     </div>
     <div class="section level2">
     <h2 id="method">Method<a class="anchor" aria-label="anchor" href="#method"></a></h2>
 
 
-<p>The function samples the data using the basic method. The basic method
-samples the data based on the expert estimates with differences between the
-different elicitation types:</p><ul><li><p><em>one point elicitation</em>: the best estimate of each expert represent the
-pool of values that are sampled <code>n_votes</code> <code>*</code> <code>n_experts</code> times, with
-repetition.</p></li>
+<p>The function samples the data differently depending on the elicitation type:</p><ul><li><p><em>one point elicitation</em>: the best estimate of each expert is repeated
+<code>n_votes</code> number of times. <code>n_votes</code> can be the same for all or different for
+each expert.</p></li>
 <li><p><em>three points elicitation</em>: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The <code>weights</code> argument can be used to weight the
-estimates of each expert.</p></li>
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.</p></li>
 <li><p><em>four points elicitation</em>: the minimum, best, and maximum estimates of
 each expert are rescaled according to their confidence and used as scaling
-parameters of the PERT distribution from which the data are sampled.</p></li>
+parameters of the PERT distribution from which the data are sampled.
+Furthermore, their confidence is used as the <code>weights</code> argument to weight the
+estimates of each expert (give a number of vote to each expert) in
+the overall distribution.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="scale-conf">scale_conf<a class="anchor" aria-label="anchor" href="#scale-conf"></a></h2>
@@ -173,7 +181,7 @@ value of 100 is used for scale_conf.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Sergio Vignali</p>
+    <p>Sergio Vignali and Maude Vernet</p>
     </div>
 
     <div class="section level2">
@@ -184,7 +192,7 @@ value of 100 is used for scale_conf.</p>
 <span class="r-in"><span>                        var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span></span>
 <span class="r-in"><span>                        elic_types <span class="op">=</span> <span class="st">"134"</span>,</span></span>
 <span class="r-in"><span>                        experts <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="cont_add_data.html">cont_add_data</a></span><span class="op">(</span><span class="va">x</span>, data_source <span class="op">=</span> <span class="va">round_1</span>, round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="cont_add_data.html">cont_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">round_1</span>, round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="cont_add_data.html">cont_add_data</a></span><span class="op">(</span>data_source <span class="op">=</span> <span class="va">round_2</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">&lt;elic_cont&gt;</span> object for <span style="color: #0000BB;">"Elicitation"</span> correctly initialised</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data added to <span style="color: #0000BB;">"Round 1"</span> from <span style="color: #0000BB;">"data.frame"</span></span>
@@ -193,31 +201,32 @@ value of 100 is used for scale_conf.</p>
 <span class="r-in"><span><span class="co"># Sample data for the second round for all variables</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"basic"</span> method.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 <span class="r-in"><span><span class="va">samp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 18,000 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    id      var   value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 var1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 var1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 var1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 var1     -<span style="color: #BB0000;">2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 var1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 var1     -<span style="color: #BB0000;">2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 var1     -<span style="color: #BB0000;">2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 var1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 5ac97e0 var1      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 5ac97e0 var1      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 5ac97e0 var1      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 var1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5ac97e0 var1      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17,990 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample data for the first round for the variable `var1` and `var2`</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span> and <span style="color: #0000BB;">"var2"</span> sampled successfully using the <span style="color: #0000BB;">"basic"</span> method.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span> and <span style="color: #0000BB;">"var2"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample data for the second round for the variable `var3`. Notice that the</span></span></span>
 <span class="r-in"><span><span class="co"># data are rescaled using the expert confidence before sampling.</span></span></span>
-<span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var1"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span> sampled successfully using the <span style="color: #0000BB;">"basic"</span> method.</span>
+<span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var3"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample data for the first round for the variable `var3` providing the</span></span></span>
 <span class="r-in"><span><span class="co"># weights. Notice that the weights overwrite the confidence estimates and</span></span></span>
@@ -227,7 +236,7 @@ value of 100 is used for scale_conf.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provided weights used instead of confidence estimates</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> Some values have been constrained to be between <span style="color: #0000BB;">0</span> and <span style="color: #0000BB;">1</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"basic"</span> method.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

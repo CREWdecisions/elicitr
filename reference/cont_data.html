@@ -47,7 +47,7 @@ estimating three variables with three different elicitation types."><meta proper
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Elicitation data for continuous variables</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/v0.1.1/R/cont_data.R" class="external-link"><code>R/cont_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/main/R/cont_data.R" class="external-link"><code>R/cont_data.R</code></a></small>
       <div class="d-none name"><code>cont_data.Rd</code></div>
     </div>
 
@@ -73,14 +73,18 @@ estimating three variables with three different elicitation types.</p>
 numbers referring to the one point elicitation method.</p></dd>
 
 <dt>var2_min, var2_max, var2_best</dt>
-<dd><p>Minimum, maximum, and best estimates
-of <code>var2</code>. The estimates contain positive integer numbers referring
-to the three points elicitation method.</p></dd>
+<dd><p>Minimum, maximum, and best guess
+estimates of <code>var2</code>. The estimates contain positive integer numbers
+referring to the three points elicitation method.</p></dd>
 
-<dt>var3_min, var3_max, var3_best, var3_conf</dt>
-<dd><p>Minimum, maximum, best, and
-confidence estimates of <code>var3</code>. The estimates contain probabilities
-referring to the four points elicitation method.</p></dd>
+<dt>var3_min, var3_max, var3_best</dt>
+<dd><p>Minimum, maximum and best guess
+estimates of <code>var3</code>. The estimates contain probabilities referring to
+the four points elicitation method.</p></dd>
+
+<dt>var3_conf</dt>
+<dd><p>Expert confidence for <code>var3</code>, expressed as a percentage
+higher than 50%.</p></dd>
 
 
 </dl><p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 6 rows and 9 columns.</p>
