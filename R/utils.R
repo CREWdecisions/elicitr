@@ -50,7 +50,7 @@ check_round <- function(x) {
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
 
-  } else if (x > 2 || x <= 0) {
+  } else if (!x %in% c(1, 2)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
@@ -339,7 +339,7 @@ check_method <- function(x, method) {
     methods <- c("unweighted", "weighted")
     data_type <- "categorical"
   } else {
-    methods <- "basic"
+    methods <- "PERT"
     data_type <- "continuous"
   }
 
@@ -365,7 +365,7 @@ check_method <- function(x, method) {
 #' @author Sergio Vignali
 check_option <- function(x, option) {
 
-  available_options <- unique(x[["option"]])
+  available_options <- c(unique(x[["option"]]), "all")
   diff <- setdiff(option, available_options)
 
   if (length(diff) > 0) {
@@ -393,7 +393,7 @@ check_option <- function(x, option) {
 check_weights <- function(x, n) {
 
 
-  if ((length(x) == 1 && x != 1) || (length(x) != 1 && length(x) != n)) {
+  if ((length(x) != n)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
@@ -719,23 +719,68 @@ rescale_data <- function(x, s = 100) {
 #' @param experts character vector with the expert ids.
 #' @param n_votes numeric indicating the number of votes to consider for each
 #' expert.
-#' @param conf numeric vector with the confidence values.
+#' @param weights numeric vector with the weight values.
+#' @param elic_type the type of elicitation.
+#' @param data the data to be sampled.
 #'
 #' @returns A vector with the number of samples to take for each expert.
 #' @noRd
 #'
 #' @author Sergio Vignali and Maude Vernet
-get_boostrap_n_sample <- function(experts, n_votes, conf) {
-
-  if (anyNA(conf)) {
-    position <- which(is.na(conf))
-    conf[is.na(conf)] <- 0
+get_boostrap_n_sample <- function(experts,
+                                  n_votes,
+                                  weights,
+                                  elic_type = "other",
+                                  data = NULL) {
+  if (elic_type == "4p") {
+    position <- which(is.na(data[, 5, drop = TRUE]))
+    if (is.null(weights)) {
+      weights_conf <- data[, 5, drop = TRUE] / 100
+    } else {
+      weights[position] <- NA
+      weights_conf <- weights
+      cli::cli_alert_info("Provided weights used instead of confidence \\
+                         estimates")
+    }
+  } else if (elic_type %in% c("1p", "3p")) {
+    position <- which(is.na(data[, 2]))
+    if (!is.null(weights)) {
+      weights[position] <- NA
+      weights_conf <- weights
+    } else {
+      weights_fill <- rep(1, length(experts))
+      weights_fill[position] <- NA
+      weights_conf <- weights_fill
+    }
+  } else if (elic_type == "weighted") {
+    weights_conf <- weights
+  } else if (elic_type %in% c("unweighted", "other")) {
+    weights_conf <- weights
   }
 
-  n_samp <- (length(experts) * n_votes * conf / sum(conf)) |>
-    miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  if (any(weights_conf < 0, na.rm = TRUE)) {
+    cli::cli_abort("Some weights are negative.")
+  }
 
-  if (exists("position")) {
+  # if some or all experts don't answer an option
+  position <- NULL
+  if (anyNA(weights_conf)) {
+    position <- which(is.na(weights_conf))
+    weights_conf[is.na(weights_conf)] <- 0
+  }
+
+  if (sum(weights_conf, na.rm = TRUE) != 0) {
+    n_samp <- (length(experts) * n_votes * weights_conf / sum(weights_conf)) |>
+      miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+  } else {
+    n_samp <- rep(1, length(experts))
+  }
+
+  if (elic_type == "unweighted") {
+    n_samp <- rep(n_votes, length(experts))
+  }
+
+  if (!is.null(position)) {
     n_samp[position] <- 1
   }
 

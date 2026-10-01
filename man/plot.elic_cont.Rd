@@ -63,13 +63,14 @@ function.}
 
 \item{expert_names}{numeric or character, the labels for the experts.}
 
-\item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
+\item{theme}{a \link[ggplot2:theme]{theme object} to use in the plot,
+such as \code{ggplot2::theme_minimal()}.
 theme.}
 
 \item{verbose}{logical, if \code{TRUE} it prints informative messages.}
 }
 \value{
-Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
+A \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -78,7 +79,7 @@ Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \details{
 If a 1-point elicitation is plotted, the \code{group} argument will show the
-mean and 95\\% CIs of the group estimates.
+mean and 2.5th–97.5th percentile interval of expert estimates.
 
 The \code{truth} argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is known

@@ -32,19 +32,19 @@
 #' interval (-Inf, Inf).
 #'
 #' * `N`: _positive integers_, when the estimate must be an integer number in
-#' the interval (0, Inf).
+#' the interval [0, Inf).
 #'
 #' * `z`: _negative integers_, when the estimate must be an integer number in
-#' the interval (-Inf, 0].
+#' the interval (-Inf, 0).
 #'
 #' * `R`: _reals_, when the estimate must be a real number in the interval
 #' (-Inf, Inf).
 #'
 #' * `s`: _positive reals_, when the estimate must be a real number in the
-#' interval (0, Inf).
+#' interval [0, Inf).
 #'
 #' * `r`: _negative reals_, when the estimate must be a real number in the
-#' interval (-Inf, ].
+#' interval (-Inf, 0).
 #'
 #' * `p`: _probability_, when the estimate must be a real number in the interval
 #' (0, 1).

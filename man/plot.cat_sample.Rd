@@ -41,8 +41,8 @@ title will be the topic name.}
 
 \item{family}{character string with the font family to use in the plot.}
 
-\item{theme}{a \code{\link[ggplot2:theme]{theme}} function to overwrite the default
-theme.}
+\item{theme}{a \link[ggplot2:theme]{theme object} to use in the plot,
+such as \code{ggplot2::theme_minimal()}.}
 
 \item{beeswarm_cex}{numeric, the space between points in the beeswarm plot.}
 
@@ -51,7 +51,7 @@ plot. Anything accepted by the \link[ggbeeswarm:geom_beeswarm]{geom_beeswarm}
 function.}
 }
 \value{
-Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
+A \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -85,28 +85,20 @@ samp <- cat_sample_data(my_elicit,
 plot(samp)
 
 # Plot the sampled data as beeswarm plot
-
-\dontrun{
 plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
-}
 
-\dontrun{
 # Plot the sampled data for option 1
 plot(samp, option = "option_1")
-}
-\dontrun{
+
 # Plot the sampled data for option 1 and 3
 plot(samp, option = c("option_1", "option_3"))
-}
-\dontrun{
+
 # Provide custom colours
 plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
                        "chocolate3", "orangered4"))
-}
-\dontrun{
 # Overwrite the default theme
 plot(samp, theme = ggplot2::theme_minimal())
-}
+
 }
 \seealso{
 Other plot helpers:

@@ -19,7 +19,8 @@
 #' @param line_width numeric with the width of the lines in the density plot.
 #' @param family character string with the font family to be used in the plot.
 #' @param expert_names numeric or character, the labels for the experts.
-#' @param theme [`theme`][`ggplot2::theme`] function to be used in the plot.
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
 #' @param beeswarm_corral character string, the wrapping corral for the beeswarm
 #' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
@@ -28,7 +29,7 @@
 #'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
-#' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @returns A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers
@@ -66,7 +67,7 @@
 #'      colours = c("steelblue4", "darkcyan", "chocolate1",
 #'                  "chocolate3", "orangered4", "royalblue1"))
 plot.cont_sample <- function(x,
-                             var,
+                             var = NULL,
                              ...,
                              group = FALSE,
                              type = "violin",
@@ -87,9 +88,22 @@ plot.cont_sample <- function(x,
                              expert_names)
   }
 
+  if (length(unique(x[["var"]])) == 1) {
+    var <- unique(x[["var"]])
+  }
+
   # Check if var is available
   check_length(var, "var", 1)
   check_var_in_sample(x, var)
+  type <- check_type(type, x, var, group)
+
+  x[["missing"]] <- NA
+  x[["violin_value"]] <- x[["value"]]
+  mean_value <- mean(x[["violin_value"]][x[["var"]] == var], na.rm = TRUE)
+  if (anyNA(x[["value"]])) {
+    x[["missing"]][is.na(x[["value"]])] <- "no data"
+    x[["violin_value"]][is.na(x[["violin_value"]])] <- mean_value
+  }
 
   # Avoid overwrite dplyr variable
   vars <- var
@@ -129,57 +143,38 @@ plot.cont_sample <- function(x,
       cont_sample_theme(type = type, group = group)
   }
 
-  if (type == "violin") {
-    p <- ggplot2::ggplot(x) +
-      ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                  y = .data[["value"]],
-                                                  fill = .data[[x_var]]),
-                           colour = "black",
-                           alpha = 0.8,
-                           scale = "width",
-                           linewidth = 0.2,
-                           quantiles = c(0.25, 0.75),
-                           quantile.linetype = 1L,
-                           key_glyph = "dotplot") +
-      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["value"]]),
-                            fun = mean,
-                            geom = "point",
-                            colour = "black",
-                            size = 0.8)
-  } else if (type == "density") {
-    p <- ggplot2::ggplot(x) +
-      ggplot2::stat_density(mapping = ggplot2::aes(x = .data[["value"]],
-                                                   colour = .data[[x_var]]),
-                            geom = "line",
-                            position = "identity",
-                            linewidth = line_width) +
-      ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
-  } else if (type == "beeswarm") {
-    p <- ggplot2::ggplot(x) +
-      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                       y = .data[["value"]],
-                                                       colour = .data[[x_var]]),
-                                cex = beeswarm_cex,
-                                size = 1,
-                                corral = beeswarm_corral) +
-      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
-                                                   y = .data[["value"]]),
-                            fun = mean,
-                            geom = "point",
-                            colour = "black",
-                            size = 0.8)
-  } else {
-
-    info <- "Available types are {.val beeswarm}, {.val violin} and \\
-    {.val density}."
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
+  if (all(is.na(x[["value"]][x[["var"]] == var]))) {
+    info <- "Experts did not provide any estimate for variable {.val {var}}."
+    cli::cli_abort(c("All data provided is empty.",
+                     "x" = "Only NA available in {.arg var}",
                      "i" = info))
+  }
+
+  p <- make_base_plot(type, x, x_var, line_width, beeswarm_cex, beeswarm_corral)
+
+  subtitle <- ggplot2::waiver()
+  if (!all(is.na(x[["missing"]])) && !isTRUE(group)) {
+    if (type %in% c("violin", "beeswarm")) {
+      p <- p + ggplot2::geom_label(aes(x = .data[[x_var]],
+                                       y = .data[["violin_value"]],
+                                       label = .data[["missing"]]),
+                                   na.rm = TRUE)
+    }
+    n_na <- length(x[["id"]][is.na(x[["value"]])])
+    experts_na <- paste0(x[["id"]][is.na(x[["value"]])], " ")
+    ifelse(length(x[["id"]][is.na(x[["value"]])]) > 1,
+           subtitle <- paste("No answer from expert",
+                             toString(x[["id"]][is.na(x[["value"]])][2:n_na]),
+                             "and",
+                             x[["id"]][is.na(x[["value"]])][1],
+                             sep = " "),
+           subtitle <- paste0("No answer from expert ",
+                              x[["id"]][is.na(x[["value"]])]))
   }
 
   p <- p +
     ggplot2::labs(title = title,
+                  subtitle = subtitle,
                   x = xlab,
                   y = ylab)
 
@@ -248,4 +243,107 @@ cont_sample_theme <- function(type, group) {
   }
 
   th
+}
+
+#' Check type
+#'
+#' Check the imputed type and return an error or change it if needed.
+#' @param type a character string with the type of plot
+#' @param x the data being plotted
+#' @param var a character string the variable to plot
+#' @param group logical, whether data should be grouped or not
+#' @return The modified type
+#' @noRd
+#'
+#' @author Maude Vernet
+check_type <- function(type, x, var, group) {
+  if (!type %in% c("density", "violin", "beeswarm")) {
+    info <- "Available types are {.val beeswarm}, {.val violin} and \\
+    {.val density}."
+    cli::cli_abort(c("Invalid value for argument {.arg type}:",
+                     "x" = "Type {.val {type}} is not implemented.",
+                     "i" = info))
+  }
+
+  same_vars <- x[x[["var"]] == var, ] |>
+    dplyr::group_by(.data[["id"]]) |>
+    dplyr::summarise(all_same =
+                       dplyr::n_distinct(.data[["value"]]) == 1) |>
+    dplyr::pull("all_same")
+  #check if all experts have one value in var (aka is a 1p variable)
+  if (!all(is.na(x[["value"]][x[["var"]] == var])) &&
+        all(same_vars) &&
+        type != "violin" &&
+        !group) {
+    type <- "violin"
+    cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
+                        {.val {var}} is a one-point variable.")
+  }
+  type
+}
+
+#' Make base plot
+#'
+#' Make the baseline plot depending on the type of plot needed
+#' @param type character, the type of plot wanted
+#' @param x the data to plot
+#' @param x_var character, the data to plot on the x axis
+#' @param line_width numeric, the linewidth to use in the density plot
+#' @param beeswarm_cex character, the cex for the beeswarm plot
+#' @param beeswarm_coral character, the coral for the beeswarm plot
+#' @return The plot
+#' @noRd
+#'
+#' @author Maude Vernet
+make_base_plot <- function(type,
+                           x,
+                           x_var,
+                           line_width,
+                           beeswarm_cex,
+                           beeswarm_corral) {
+  if (type == "violin") {
+    p <- ggplot2::ggplot(x) +
+      ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                  y = .data[["value"]],
+                                                  fill = .data[[x_var]]),
+                           colour = "black",
+                           alpha = 0.8,
+                           scale = "width",
+                           linewidth = 0.2,
+                           quantiles = c(0.25, 0.75),
+                           quantile.linetype = 1L,
+                           key_glyph = "dotplot",
+                           na.rm = TRUE) +
+      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                   y = .data[["violin_value"]]),
+                            fun = mean,
+                            geom = "point",
+                            colour = "black",
+                            size = 0.8)
+  } else if (type == "density") {
+    p <- ggplot2::ggplot(x) +
+      ggplot2::stat_density(mapping = ggplot2::aes(x = .data[["value"]],
+                                                   colour = .data[[x_var]]),
+                            geom = "line",
+                            position = "identity",
+                            linewidth = line_width,
+                            na.rm = TRUE) +
+      ggplot2::guides(colour = ggplot2::guide_legend(nrow = 1))
+  } else if (type == "beeswarm") {
+    p <- ggplot2::ggplot(x) +
+      ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                       y = .data[["value"]],
+                                                       colour = .data[[x_var]]),
+                                cex = beeswarm_cex,
+                                size = 1,
+                                corral = beeswarm_corral,
+                                na.rm = TRUE) +
+      ggplot2::stat_summary(mapping = ggplot2::aes(x = .data[[x_var]],
+                                                   y = .data[["violin_value"]]),
+                            fun = mean,
+                            geom = "point",
+                            colour = "black",
+                            size = 0.8)
+  }
+  p
 }

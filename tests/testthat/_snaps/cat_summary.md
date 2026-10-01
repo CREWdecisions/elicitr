@@ -6,5 +6,39 @@
       Error in `summary()`:
       ! Invalid value for argument `option`:
       x Option "option_7" not available in the sampled data.
-      i Available options: "option_1", "option_2", "option_3", and "option_4".
+      i Available options: "option_1", "option_2", "option_3", "option_4", and "all".
+
+---
+
+    Code
+      summary(samp, option = "option_1")
+    Condition
+      Error in `summary()`:
+      ! No estimate provided
+      x the provided data only holds NAs
+      i No data provided in "option_1".
+
+---
+
+    Code
+      summary(samp)
+    Condition
+      Error in `summary()`:
+      ! No estimate provided
+      x the provided data only holds NAs
+      i No data provided in "option_1", "option_2", "option_3", and "option_4".
+
+# With NA
+
+    Code
+      out <- summary(samp, option = "all")
+    Message
+      > Results were dropped for "option_1" as no estimate was provided.
+
+---
+
+    Code
+      out <- summary(samp, option = "all")
+    Message
+      > Results were dropped for "option_1" and "option_2" as no estimate was provided.
 

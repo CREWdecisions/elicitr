@@ -8,11 +8,12 @@
 #'
 #' @param object an object of class `cat_sample` created by the function
 #' [cat_sample_data].
-#' @param option character string with the name of the option.
+#' @param option character string with the name of the option(s). If
+#' `option = "all"`, all options are summarised.
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #'
-#' @returns A [`tibble`][tibble::tibble] with the summary statistics.
+#' @returns A [table] with the summary statistics.
 #' @export
 #'
 #' @family cat data helpers
@@ -42,7 +43,7 @@
 #' # Summarise the sampled data
 #' summary(samp, option = "option_1")
 summary.cat_sample <- function(object,
-                               option,
+                               option = "all",
                                ...) {
 
   # Check if option is available
@@ -50,23 +51,60 @@ summary.cat_sample <- function(object,
 
   # Avoid overwriting dplyr variable
   opt <- option
+  if (option == "all") {
+    opt <- unique(object[["option"]])
+  }
 
   object <- object |>
-    dplyr::filter(.data[["option"]] == opt) |>
-    dplyr::select(-c("id", "option"))
+    dplyr::filter(.data[["option"]] %in% opt) |>
+    dplyr::select(-"id") |>
+    dplyr::group_by(.data[["option"]]) |>
+    dplyr::mutate(observation = dplyr::row_number()) |>
+    dplyr::ungroup() |>
+    tidyr::pivot_longer(cols = -c("option", "observation"),
+                        names_to = "category",
+                        values_to = "value") |>
+    tidyr::pivot_wider(names_from = "option",
+                       values_from = "value") |>
+    dplyr::select("category", everything(), -"observation")
 
-  out <- matrix(NA, nrow = ncol(object), ncol = 6)
+  na_option <- NULL
+  for (i in colnames(object)[-1]){
+    na_opt <- ifelse(all(is.na(object[[i]])), i, NA)
+    na_option <- c(na_option, na_opt)
+  }
 
-  out[, 1] <- sapply(object, min, na.rm = TRUE)
-  out[, 2] <- sapply(object, stats::quantile, probs = 0.25, na.rm = TRUE)
-  out[, 3] <- sapply(object, median, na.rm = TRUE)
-  out[, 4] <- sapply(object, mean, na.rm = TRUE)
-  out[, 5] <- sapply(object, stats::quantile, probs = 0.75, na.rm = TRUE)
-  out[, 6] <- sapply(object, max, na.rm = TRUE)
+  object <- object[, which(!colnames(object) %in% na_option)]
+  na_option <- stats::na.omit(na_option)
 
-  colnames(out) <- c("Min", "Q1", "Median", "Mean", "Q3", "Max")
+  if (length(na_option) != 0) {
+    if (ncol(object) == 1) {
+      cli::cli_abort(c("No estimate provided",
+                       "x" = "the provided data only holds NAs",
+                       "i" = "No data provided in {.val {na_option}}."))
+    } else {
+      cli::cli_alert("Results were dropped for {.val {na_option}} as no \\
+                          estimate was provided.")
+    }
+  }
 
-  out |>
-    tibble::as_tibble() |>
-    dplyr::mutate("Category" = colnames(object), .before = 1)
+  out <- list()
+  for (i in colnames(object)[-1]) {
+    out[[i]] <- object |>
+      dplyr::group_by(.data[["category"]]) |>
+      dplyr::summarise("Min" = min(.data[[i]],
+                                   na.rm = TRUE),
+                       "Q1" = stats::quantile(.data[[i]], probs = 0.25,
+                                              na.rm = TRUE),
+                       "Median" = median(.data[[i]],
+                                         na.rm = TRUE),
+                       "Mean" = mean(.data[[i]],
+                                     na.rm = TRUE),
+                       "Q3" = stats::quantile(.data[[i]], probs = 0.75,
+                                              na.rm = TRUE),
+                       "Max" = max(.data[[i]],
+                                   na.rm = TRUE))
+  }
+
+  out
 }

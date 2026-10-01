@@ -61,16 +61,6 @@
 ---
 
     Code
-      cont_sample_data(obj, round = 1, var = "var1", weights = 2)
-    Condition
-      Error in `cont_sample_data()`:
-      ! Invalid value for argument `weights:`
-      x Argument `weights` must be 1 or a vector of length 6, same as the number of experts.
-      i See `elicitr::cont_sample_data()` for more information.
-
----
-
-    Code
       cont_sample_data(obj, round = 1, var = "var1", weights = c(1, 2))
     Condition
       Error in `cont_sample_data()`:
@@ -86,27 +76,32 @@
       Warning:
       ! Some values have been constrained to be between 0 and 1.
 
-# accepts NAs
+# Accepts NAs from one expert
 
     Code
-      out <- cont_sample_data(obj, round = 1, var = "var3", verbose = FALSE)
+      out <- cont_sample_data(obj, round = 1, var = c("var3", "var2"), verbose = FALSE)
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+
+# Accepts NAs from all experts for one variable
+
+    Code
+      out <- cont_sample_data(obj, round = 1, var = "var3", verbose = FALSE)
 
 # Info
 
     Code
       out <- cont_sample_data(obj, round = 1, var = "var1", n_votes = 50)
     Message
-      v Data for "var1" sampled successfully using the "basic" method.
+      v Data for "var1" sampled successfully using the "PERT" method.
 
 ---
 
     Code
       out <- cont_sample_data(obj, round = 2, var = c("var1", "var2"), n_votes = 100)
     Message
-      v Data for "var1" and "var2" sampled successfully using the "basic" method.
+      v Data for "var1" and "var2" sampled successfully using the "PERT" method.
 
 ---
 
@@ -114,7 +109,7 @@
       out <- cont_sample_data(obj, round = 2)
     Message
       v Rescaled min and max for variable "var3".
-      v Data for "var1", "var2", and "var3" sampled successfully using the "basic" method.
+      v Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 
 ---
 
@@ -123,5 +118,5 @@
     Message
       i Provided weights used instead of confidence estimates
       v Rescaled min and max for variable "var3".
-      v Data for "var3" sampled successfully using the "basic" method.
+      v Data for "var3" sampled successfully using the "PERT" method.
 

@@ -28,7 +28,7 @@
 #'
 #' @family cont data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -88,7 +88,7 @@ cont_get_data <- function(x,
     check_arg_types(var_types, type = "var")
     check_value_in_element(x, element = "var_types", value = var_types)
 
-    idx <- match(var_types, x[["var_types"]])
+    idx <- which(x[["var_types"]] %in% var_types)
     var <- x[["var_names"]][idx]
   } else if (arg == "elic_types") {
     # Split and check elicitation types
@@ -96,21 +96,23 @@ cont_get_data <- function(x,
     check_arg_types(elic_types, type = "elic")
     check_value_in_element(x, element = "elic_types", value = elic_types)
 
-    idx <- match(elic_types, x[["elic_types"]])
+    idx <- which(x[["elic_types"]] %in% elic_types)
     var <- x[["var_names"]][idx]
   }
 
-  if (length(var) == 1) {
+  # Identify all requested variables in their original order
+  selected <- x[["var_names"]] %in% var
 
-    pattern <- var
+  # Construct their exact column names, including "id"
+  expected_cols <- get_col_names(
+    var_names = x[["var_names"]][selected],
+    elic_types = x[["elic_types"]][selected]
+  )
 
-  } else {
-    pattern <- paste(var, collapse = "|")
-  }
+  data <- x[["data"]][[round]]
+  idx <- names(data) %in% expected_cols
 
-  idx <- c(TRUE, grepl(pattern, colnames(x[["data"]][[round]][, -1])))
-
-  x[["data"]][[round]][, idx]
+  data[, idx, drop = FALSE]
 }
 
 # Checkers----

@@ -15,8 +15,8 @@
 #' @param ylab character string with the label of the y-axis.
 #' @param colours vector of colours to use for the categories.
 #' @param family character string with the font family to use in the plot.
-#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
-#' theme.
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' @param beeswarm_cex numeric, the space between points in the beeswarm plot.
 #' @param beeswarm_corral character string, the wrapping corral for the beeswarm
 #' plot. Anything accepted by the [geom_beeswarm][ggbeeswarm::geom_beeswarm]
@@ -24,7 +24,7 @@
 #'
 #' @details If a `theme` is provided, the `family` argument is ignored.
 #'
-#' @returns Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @returns A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers
@@ -55,28 +55,20 @@
 #' plot(samp)
 #'
 #' # Plot the sampled data as beeswarm plot
-#'
-#' \dontrun{
 #' plot(samp, type = "beeswarm", beeswarm_corral = "wrap")
-#' }
 #'
-#'\dontrun{
 #' # Plot the sampled data for option 1
 #' plot(samp, option = "option_1")
-#'}
-#'\dontrun{
+#'
 #' # Plot the sampled data for option 1 and 3
 #' plot(samp, option = c("option_1", "option_3"))
-#'}
-#'\dontrun{
+#'
 #' # Provide custom colours
 #' plot(samp, colours = c("steelblue4", "darkcyan", "chocolate1",
 #'                        "chocolate3", "orangered4"))
-#'}
-#'\dontrun{
 #' # Overwrite the default theme
 #' plot(samp, theme = ggplot2::theme_minimal())
-#' }
+#'
 plot.cat_sample <- function(x,
                             type = "violin",
                             ...,
@@ -133,6 +125,34 @@ plot.cat_sample <- function(x,
       cat_sample_theme()
   }
 
+  if (all(is.na(x["prob"]))) {
+    info <- "Experts did not provide any estimate."
+    cli::cli_abort(c("All data provided is empty.",
+                     "x" = "Only NA available in the data",
+                     "i" = info))
+  }
+
+  pot_na <- x |>
+    dplyr::group_by(.data[["option"]]) |>
+    dplyr::summarise(all_na = all(is.na(.data[["prob"]]))) |>
+    dplyr::pull("all_na")
+
+  subtitle <- ggplot2::waiver()
+  if (sum(pot_na) != 0) {
+    option_na <- unique(x[["option"]])[which(pot_na == 1)]
+    x <- x[!x[["option"]] %in% option_na, ]
+    cli::cli_inform(c("i" = "No data rendered for {.val {option_na}} as no \\
+                      estimate was provided."))
+    ifelse(length(option_na) > 1,
+           subtitle <- paste("No estimate for",
+                             toString(option_na[2:length(option_na)]),
+                             "and",
+                             option_na[1],
+                             sep = " "),
+           subtitle <- paste0("No estimate for ",
+                              option_na))
+  }
+
   if (type == "violin") {
     p <- ggplot2::ggplot(x) +
       ggplot2::geom_violin(mapping = ggplot2::aes(x = .data[["category"]],
@@ -144,7 +164,8 @@ plot.cat_sample <- function(x,
                            linewidth = 0.2,
                            quantiles = c(0.25, 0.75),
                            quantile.linetype = 1L,
-                           key_glyph = "dotplot")
+                           key_glyph = "dotplot",
+                           na.rm = TRUE)
   } else if (type == "beeswarm") {
     p <- ggplot2::ggplot(x) +
       ggbeeswarm::geom_beeswarm(mapping = ggplot2::aes(x = .data[["category"]],
@@ -153,7 +174,8 @@ plot.cat_sample <- function(x,
                                                          .data[["category"]]),
                                 cex = beeswarm_cex,
                                 size = 1,
-                                corral = beeswarm_corral)
+                                corral = beeswarm_corral,
+                                na.rm = TRUE)
   } else {
 
     info <- "Available types are {.val beeswarm} and {.val violin}."
@@ -168,11 +190,19 @@ plot.cat_sample <- function(x,
                           fun = mean,
                           geom = "point",
                           colour = "black",
-                          size = 0.8) +
+                          size = 0.8,
+                          na.rm = TRUE) +
     ggplot2::labs(title = title,
+                  subtitle = subtitle,
                   y = ylab) +
-    ggplot2::facet_wrap("option") +
-    ggplot2::scale_fill_manual(values = colours) +
+    ggplot2::facet_wrap("option")
+
+  if (type == "violin") {
+    p <- p + ggplot2::scale_fill_manual(values = colours)
+  } else {
+    p <- p + ggplot2::scale_colour_manual(values = colours)
+  }
+  p <- p +
     ggplot2::scale_y_continuous(limits = c(0, 1),
                                 expand = ggplot2::expansion(mult = c(0,
                                                                      0.04))) +

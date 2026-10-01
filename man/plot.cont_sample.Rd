@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{cont_sample}(
   x,
-  var,
+  var = NULL,
   ...,
   group = FALSE,
   type = "violin",
@@ -50,7 +50,8 @@ function.}
 
 \item{expert_names}{numeric or character, the labels for the experts.}
 
-\item{theme}{\code{\link[ggplot2:theme]{theme}} function to be used in the plot.}
+\item{theme}{a \link[ggplot2:theme]{theme object} to use in the plot,
+such as \code{ggplot2::theme_minimal()}.}
 
 \item{beeswarm_cex}{numeric, the space between points in the beeswarm plot.}
 
@@ -59,7 +60,7 @@ plot. Anything accepted by the \link[ggbeeswarm:geom_beeswarm]{geom_beeswarm}
 function.}
 }
 \value{
-Invisibly a \code{\link[ggplot2:ggplot]{ggplot}} object.
+A \code{\link[ggplot2:ggplot]{ggplot}} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

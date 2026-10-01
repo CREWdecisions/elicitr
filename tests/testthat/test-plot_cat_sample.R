@@ -12,9 +12,65 @@ test_that("Errors", {
 
   #When type is not valid
   expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
+
+  #When only NAs are present in the estimates
+  position <- obj[["data"]][["topic_1"]][["option"]] == "option_1"
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
+
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  expect_snapshot(plot(samp, option = "option_1", type = "beeswarm"),
+                  error = TRUE)
+})
+
+test_that("Warning when only NA for an option", {
+  obj <- create_cat_obj()
+  position <- obj[["data"]][["topic_1"]][["option"]] == "option_1"
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
+
+  #one option
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  p <- plot(samp, type = "violin")
+  expect_snapshot(p <- plot(samp, type = "violin"))
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
+  expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
+  expect_identical(unique(p[["data"]][["option"]]),
+                   unique(samp[["option"]])[-1])
+
+  #multiple options
+  position <- obj[["data"]][["topic_1"]][["option"]] %in% c("option_2",
+                                                            "option_4")
+  obj[["data"]][["topic_1"]][["confidence"]][position] <- NA
+  obj[["data"]][["topic_1"]][["estimate"]][position] <- NA
+  samp <- cat_sample_data(obj, method = "weighted",
+                          topic = "topic_1", verbose = FALSE)
+  p <- plot(samp, type = "violin")
+  expect_snapshot(p <- plot(samp, type = "violin"))
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[2]], "Geom")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(ncol(p[["data"]]), 4L)
+  expect_identical(colnames(p[["data"]]), c("id", "option", "category", "prob"))
+  expect_s3_class(p[["data"]][["category"]], "factor")
+  expect_identical(levels(p[["data"]][["category"]]), colnames(samp)[-(1:2)])
+  expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
+  expect_identical(unique(p[["data"]][["option"]]),
+                   unique(samp[["option"]])[3])
 })
 
 test_that("Output", {
+  withr::local_pdf(NULL)
   obj <- create_cat_obj()
   samp <- cat_sample_data(obj, method = "unweighted", topic = "topic_1",
                           verbose = FALSE)
@@ -46,14 +102,35 @@ test_that("Output", {
   expect_identical(ggplot2::layer_scales(p)[["y"]][["limits"]], c(0, 1))
 
   # Colours and and other plot elements
+  #violin
   p <- plot(samp,
             colours = c("red", "blue", "green", "yellow", "purple"),
             title = "Title",
             ylab = "Y-axis",
-            family = "serif")
+            family = "serif",
+            type = "violin")
   ld1 <- ggplot2::layer_data(p, i = 1L)
 
   expect_identical(unique(ld1[["fill"]]),
+                   c("red", "blue", "green", "yellow", "purple"))
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
+                   "Title")
+  expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["ylab"]],
+                   "Y-axis")
+  expect_identical(p[["theme"]][["axis.title.y"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["axis.text"]][["family"]], "serif")
+  expect_identical(p[["theme"]][["legend.position"]], "bottom")
+
+  #beeswarm
+  p <- plot(samp,
+            colours = c("red", "blue", "green", "yellow", "purple"),
+            title = "Title",
+            ylab = "Y-axis",
+            family = "serif",
+            type = "beeswarm")
+  ld1 <- ggplot2::layer_data(p, i = 1L)
+
+  expect_identical(unique(ld1[["colour"]]),
                    c("red", "blue", "green", "yellow", "purple"))
   expect_identical(ggplot2::ggplot_build(p)[["plot"]][["plot_env"]][["title"]],
                    "Title")

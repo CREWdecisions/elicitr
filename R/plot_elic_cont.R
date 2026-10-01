@@ -19,13 +19,14 @@
 #' @param ylab character, the title of the y axis.
 #' @param expert_names numeric or character, the labels for the experts.
 #' @param family character, the font family.
-#' @param theme a [`theme`][`ggplot2::theme`] function to overwrite the default
+#' @param theme a [theme object][ggplot2::theme] to use in the plot,
+#' such as `ggplot2::theme_minimal()`.
 #' theme.
 #' @inheritParams cont_add_data
 #'
 #' @details
 #' If a 1-point elicitation is plotted, the `group` argument will show the
-#' mean and 95\% CIs of the group estimates.
+#' mean and 2.5th–97.5th percentile interval of expert estimates.
 #'
 #' The `truth` argument is useful when the elicitation process is part of a
 #' workshop and is used for demonstration. In this case the true value is known
@@ -56,7 +57,7 @@
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
 #'
-#' @return Invisibly a [`ggplot`][`ggplot2::ggplot`] object.
+#' @return A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
 #'
 #' @family plot helpers
@@ -127,7 +128,13 @@ plot.elic_cont <- function(x,
   data <- cont_get_data(x, round = round, var = var) |>
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na)) |>
     dplyr::mutate(col = "experts")
-  colnames(data) <- gsub(paste0(var, "_"), "", colnames(data))
+  prefix <- paste0(var, "_")
+  cols <- names(data)
+
+  idx <- startsWith(cols, prefix) & cols != "id"
+  cols[idx] <- substring(cols[idx], nchar(prefix) + 1L)
+
+  names(data) <- cols
 
   if (!is.null(expert_names)) {
     data <- cont_rename_experts(x,
@@ -141,21 +148,11 @@ plot.elic_cont <- function(x,
   var_type <- get_type(x, var, "var")
   idx <- seq_len(x[["experts"]])
 
-  if (group) {
+  grouptruth <- check_grouptruth(group, ids, elic_type, data, truth)
 
-    ids <- c(ids, "Group")
-    if (elic_type == "1p") {
-      data_ci <- add_ci(data, elic_type)
-    }
-    data <- add_group_data(data, elic_type)
-  }
-
-  if (!is.null(truth)) {
-
-    ids <- c(ids, "Truth")
-    check_truth(truth, elic_type)
-    data <- add_truth_data(data, truth, elic_type)
-  }
+  data <- grouptruth$data
+  ids <- grouptruth$ids
+  data_ci <- grouptruth$data_ci
 
   data <- data |>
     mutate("id" = factor(.data[["id"]], levels = ids))
@@ -247,14 +244,14 @@ add_group_data <- function(data, elic_type) {
   data
 }
 
-#' Add group ci for 1-point elicitation
+#' Add 2.5th–97.5th percentile interval for 1-point elicitation
 #'
 #' Add summary statistics (mean and 95\% CI) around the group mean value in a
 #' 1-point elicitation plot.
 #' @param data tibble with the elicitation data.
 #' @param elic_type character string with the elicitation type.
 #'
-#' @return A tible with the CI data.
+#' @return A tible with the 2.5th–97.5th percentile interval of estimates.
 #' @noRd
 #' @author Maude Vernet
 
@@ -356,8 +353,8 @@ check_var_in_obj <- function(x, var) {
 #' elements.
 #' @noRd
 #'
-#' @author Sergio Vignali
-check_truth <- function(x, elic_type) {
+#' @author Sergio Vignali and Maude Vernet
+check_truth <- function(x, elic_type, miss_conf) {
 
   n <- length(x)
   error <- ""
@@ -383,21 +380,26 @@ check_truth <- function(x, elic_type) {
                   but should have {.val {3}} elements named {.val min}, \
                   {.val max} and {.val best}."
       } else if (!all(c("min", "max", "best") %in% names(x))) {
-        error <- "The name of the element in {.arg truth} should be \\
+        error <- "The name of the elements in {.arg truth} should be \\
                   {.val min}, {.val max}, and {.val best} and not \\
                   {.val {names(x)}}."
       }
 
     } else if (elic_type == "4p") {
 
-      if (n != 4) {
+      if (isTRUE(miss_conf)) {
+        n <- n - 1
+      }
+
+      if (!n %in% c(3, 4)) {
         error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
-                  but should have {.val {4}} elements named {.val min}, \
-                  {.val max}, {.val best} and {.val conf}."
+                  but should have {.val {3}} or {.val {4}} elements named \
+                  {.val min}, {.val max}, {.val best} and optionally \
+                  {.val conf}."
       } else if (!all(c("min", "max", "best", "conf") %in% names(x))) {
-        error <- "The name of the element in {.arg truth} should be \\
-                  {.val min}, {.val max}, {.val best}, and {.val conf} and \\
-                  not {.val {names(x)}}."
+        error <- "The name of the elements in {.arg truth} should be \\
+                  {.val min}, {.val max}, {.val best}, and optionally \\
+                  {.val conf} and not {.val {names(x)}}."
       }
     }
   } else {
@@ -568,4 +570,48 @@ plot_addons <- function(p,
   }
 
   p
+}
+
+#' Verify if group or truth are called
+#'
+#' Check if group or truth are called and make all necessary checks.
+#'
+#' @param group logical if group should be plotted.
+#' @param ids the names of experts
+#' @param elic_type character string with the elicitation type.
+#' @param data tibble with the elicitation data.
+#' @param truth logical if truth should be plotted.
+#'
+#' @return a list with the object with added group and truth, thenew ids and the
+#' potential CIs.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_grouptruth <- function(group, ids, elic_type, data, truth) {
+  data_ci <- NULL
+
+  if (group) {
+
+    ids <- c(ids, "Group")
+    if (elic_type == "1p") {
+      data_ci <- add_ci(data, elic_type)
+    }
+    data <- add_group_data(data, elic_type)
+  }
+
+  if (!is.null(truth)) {
+
+    ids <- c(ids, "Truth")
+    miss_conf <- FALSE
+    if (elic_type == "4p" && !"conf" %in% names(truth)) {
+      truth$conf <- 100
+      miss_conf <- TRUE
+    }
+
+    check_truth(truth, elic_type, miss_conf)
+    data <- add_truth_data(data, truth, elic_type)
+  }
+  list(data_ci = data_ci,
+       data = data,
+       ids = ids)
 }

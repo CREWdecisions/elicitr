@@ -7,36 +7,40 @@
 #' [`elic_cont`] object.
 #'
 #' @inheritParams cont_get_data
+#' @param scale_conf numeric, the scale factor for the confidence interval.
 #' @param method character string with the name of the method to sample the
-#' data, only the _basic_ is implemented, see Method below.
+#' data, only the _PERT_ Method is implemented, see Method below.
 #' @param n_votes numeric indicating the number of votes to consider.
 #' @param weights numeric vector with the weights to apply to the estimates. If
 #' equal to `1`, each experts get `n_votes` votes, see Weights below.
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Weights:
-#' To provide a different number of votes to each expert, use the `weights`
-#' argument. The length of the vector must be equal to the number of experts. If
-#' provided when the elicitation type is the _four points elicitation_, their
-#' values overwrite the confidence estimates.
+#' To provide a different number of votes to each expert in a
+#' _three-point elicitation_, use the `weights` argument. The length of the
+#' vector must be equal to the number of experts. If provided when the
+#' elicitation type is the _four points elicitation_, their values overwrite the
+#' confidence estimates.
 #'
 #' @section Method:
-#' The function samples the data using the basic method. The basic method
-#' samples the data based on the expert estimates with differences between the
-#' different elicitation types:
+#' The function samples the data differently depending on the elicitation type:
 #'
-#' * _one point elicitation_: the best estimate of each expert represent the
-#' pool of values that are sampled `n_votes` `*` `n_experts` times, with
-#' repetition.
+#' * _one point elicitation_: the best estimate of each expert is repeated
+#' `n_votes` number of times. `n_votes` can be the same for all or different for
+#' each expert.
 #'
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
 #' which the data are sampled. The `weights` argument can be used to weight the
-#' estimates of each expert.
+#' estimates of each expert (give a certain number of vote to each expert) in
+#' the overall distribution.
 #'
 #' * _four points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are rescaled according to their confidence and used as scaling
 #' parameters of the PERT distribution from which the data are sampled.
+#' Furthermore, their confidence is used as the `weights` argument to weight the
+#' estimates of each expert (give a number of vote to each expert) in
+#' the overall distribution.
 #'
 #'
 #' @section scale_conf:
@@ -62,7 +66,7 @@
 #'
 #' @family cont data helpers
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 #'
 #' @examples
 #' # Create the elict object and add data for the first and second round from a
@@ -71,7 +75,7 @@
 #'                         var_types = "ZNp",
 #'                         elic_types = "134",
 #'                         experts = 6) |>
-#'   cont_add_data(x, data_source = round_1, round = 1) |>
+#'   cont_add_data(data_source = round_1, round = 1) |>
 #'   cont_add_data(data_source = round_2, round = 2)
 #'
 #' # Sample data for the second round for all variables
@@ -83,7 +87,7 @@
 #'
 #' # Sample data for the second round for the variable `var3`. Notice that the
 #' # data are rescaled using the expert confidence before sampling.
-#' samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
+#' samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
 #'
 #' # Sample data for the first round for the variable `var3` providing the
 #' # weights. Notice that the weights overwrite the confidence estimates and
@@ -93,10 +97,11 @@
 cont_sample_data <- function(x,
                              round,
                              ...,
-                             method = "basic",
+                             method = "PERT",
                              var = "all",
                              n_votes = 1000,
-                             weights = 1,
+                             weights = NULL,
+                             scale_conf = 100,
                              verbose = TRUE) {
 
   # # Check if the object is of class elic_cont
@@ -122,10 +127,12 @@ cont_sample_data <- function(x,
   all_vars <- vector(mode = "list", length = length(vars))
 
   # Check weights argument
-  check_weights(weights, n_experts)
+  if (!is.null(weights)) {
+    if (length(weights) == 1) {
+      weights <- rep(weights, n_experts)
+    }
 
-  if (length(weights) == 1) {
-    weights <- rep(weights, n_experts)
+    check_weights(weights, n_experts)
   }
 
   for (v in vars) {
@@ -134,22 +141,18 @@ cont_sample_data <- function(x,
     var_type <- get_type(x, v, "var")
 
     data <- cont_get_data(x, round = round, var = v)
-    colnames(data) <- gsub(paste0(v, "_"), "", colnames(data))
+    prefix <- paste0(v, "_")
+    cols <- names(data)
 
-    if (elic_type == "4p") {
-      if (sum(weights) == n_experts) {
-        weights_conf <- data[, 5, drop = TRUE] / 100
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights_conf)
-      } else {
-        cli::cli_alert_info("Provided weights used instead of confidence \\
-                             estimates")
-        n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-      }
-    } else {
-      n_samp <- get_boostrap_n_sample(experts, n_votes, weights)
-    }
+    idx <- startsWith(cols, prefix) & cols != "id"
+    cols[idx] <- substring(cols[idx], nchar(prefix) + 1L)
 
-    estimates <- get_est(data, v, n_experts, var_type, elic_type, verbose)
+    names(data) <- cols
+
+    n_samp <- get_boostrap_n_sample(experts, n_votes, weights,
+                                    elic_type, data)
+    estimates <- get_est(data, v, n_experts, var_type,
+                         elic_type, verbose, scale_conf)
 
     for (e in seq_along(experts)) {
 
@@ -208,7 +211,8 @@ cont_sample_data <- function(x,
 #' @noRd
 #'
 #' @author Sergio Vignali
-get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
+get_est <- function(data, v, n_experts, var_type,
+                    elic_type, verbose, scale_conf) {
 
   if (elic_type == "1p") {
     # One point elicitation
@@ -220,7 +224,7 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
     if (elic_type == "4p") {
 
       # Rescale min and max
-      data <- rescale_data(data)
+      data <- rescale_data(data, scale_conf)
       needs_resc <- any(data[["min"]] < 0,
                         na.rm = TRUE) || any(data[["max"]] > 1,
                                              na.rm = TRUE)
@@ -261,11 +265,11 @@ get_est <- function(data, v, n_experts, var_type, elic_type, verbose) {
 #' @returns A numeric vector with the sampled data.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 get_sample <- function(estimates, n_samp, e, elic_type) {
 
   if (elic_type == "1p") {
-    samp <- sample(estimates, n_samp[[e]], replace = TRUE)
+    samp <- rep(estimates[e], n_samp[[e]])
   } else if (anyNA(c(estimates[[1]][[e]],
                      estimates[[2]][[e]],
                      estimates[[3]][[e]]))) {

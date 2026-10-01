@@ -33,7 +33,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = 0.8)
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is of class <numeric> but it should be a named <list>.
       i See `elicitr::plot.elic_cont()`.
@@ -43,7 +43,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is a list with 2 elements but it should have only 1 element named "best".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -53,7 +53,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = list(beast = 0.8))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
       x The name of the element in `truth` should be "best" and not "beast".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -63,7 +63,7 @@
     Code
       plot(obj, round = 2, var = "var2", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is a list with 2 elements but should have 3 elements named "min", "max" and "best".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -73,9 +73,9 @@
     Code
       plot(obj, round = 2, var = "var2", truth = list(min = 0.7, beast = 0.8, max = 0.9))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
-      x The name of the element in `truth` should be "min", "max", and "best" and not "min", "beast", and "max".
+      x The name of the elements in `truth` should be "min", "max", and "best" and not "min", "beast", and "max".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---
@@ -83,9 +83,9 @@
     Code
       plot(obj, round = 2, var = "var3", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
-      x Argument `truth` is a list with 2 elements but should have 4 elements named "min", "max", "best" and "conf".
+      x Argument `truth` is a list with 2 elements but should have 3 or 4 elements named "min", "max", "best" and optionally "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---
@@ -94,9 +94,9 @@
       plot(obj, round = 2, var = "var3", truth = list(min = 0.7, beast = 0.8, max = 0.9,
         conf = 100))
     Condition
-      Error in `plot()`:
+      Error in `check_grouptruth()`:
       ! Incorrect value for `truth`:
-      x The name of the element in `truth` should be "min", "max", "best", and "conf" and not "min", "beast", "max", and "conf".
+      x The name of the elements in `truth` should be "min", "max", "best", and optionally "conf" and not "min", "beast", "max", and "conf".
       i See Details in `elicitr::plot.elic_cont()`.
 
 ---

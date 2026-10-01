@@ -8,10 +8,11 @@ cont_sample_data(
   x,
   round,
   ...,
-  method = "basic",
+  method = "PERT",
   var = "all",
   n_votes = 1000,
-  weights = 1,
+  weights = NULL,
+  scale_conf = 100,
   verbose = TRUE
 )
 }
@@ -25,7 +26,7 @@ elicitation round.}
 function.}
 
 \item{method}{character string with the name of the method to sample the
-data, only the \emph{basic} is implemented, see Method below.}
+data, only the \emph{PERT} Method is implemented, see Method below.}
 
 \item{var}{character string with the name of the variable or character vector
 with more variable names that you want to extract from the data. Use \code{all}
@@ -35,6 +36,8 @@ for all variables.}
 
 \item{weights}{numeric vector with the weights to apply to the estimates. If
 equal to \code{1}, each experts get \code{n_votes} votes, see Weights below.}
+
+\item{scale_conf}{numeric, the scale factor for the confidence interval.}
 
 \item{verbose}{logical, if TRUE it prints informative messages.}
 }
@@ -50,28 +53,31 @@ an additional class \code{cont_sample} used to implement the plotting method.
 }
 \section{Weights}{
 
-To provide a different number of votes to each expert, use the \code{weights}
-argument. The length of the vector must be equal to the number of experts. If
-provided when the elicitation type is the \emph{four points elicitation}, their
-values overwrite the confidence estimates.
+To provide a different number of votes to each expert in a
+\emph{three-point elicitation}, use the \code{weights} argument. The length of the
+vector must be equal to the number of experts. If provided when the
+elicitation type is the \emph{four points elicitation}, their values overwrite the
+confidence estimates.
 }
 
 \section{Method}{
 
-The function samples the data using the basic method. The basic method
-samples the data based on the expert estimates with differences between the
-different elicitation types:
+The function samples the data differently depending on the elicitation type:
 \itemize{
-\item \emph{one point elicitation}: the best estimate of each expert represent the
-pool of values that are sampled \code{n_votes} \code{*} \code{n_experts} times, with
-repetition.
+\item \emph{one point elicitation}: the best estimate of each expert is repeated
+\code{n_votes} number of times. \code{n_votes} can be the same for all or different for
+each expert.
 \item \emph{three points elicitation}: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The \code{weights} argument can be used to weight the
-estimates of each expert.
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.
 \item \emph{four points elicitation}: the minimum, best, and maximum estimates of
 each expert are rescaled according to their confidence and used as scaling
 parameters of the PERT distribution from which the data are sampled.
+Furthermore, their confidence is used as the \code{weights} argument to weight the
+estimates of each expert (give a number of vote to each expert) in
+the overall distribution.
 }
 }
 
@@ -101,7 +107,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  cont_add_data(x, data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_1, round = 1) |>
   cont_add_data(data_source = round_2, round = 2)
 
 # Sample data for the second round for all variables
@@ -113,7 +119,7 @@ samp <- cont_sample_data(my_elicit, round = 1, var = c("var1", "var2"))
 
 # Sample data for the second round for the variable `var3`. Notice that the
 # data are rescaled using the expert confidence before sampling.
-samp <- cont_sample_data(my_elicit, round = 2, var = "var1")
+samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
 
 # Sample data for the first round for the variable `var3` providing the
 # weights. Notice that the weights overwrite the confidence estimates and
@@ -129,6 +135,6 @@ Other cont data helpers:
 \code{\link[=summary.cont_sample]{summary.cont_sample()}}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cont data helpers}

@@ -136,11 +136,8 @@ do_sampling <- function(x, method, n_votes) {
     conf <- get_conf(x, s, length(categories))
 
     # Determine n sample of each expert
-    if (method == "unweighted") {
-      n_samp <- rep(n_votes, length(experts))
-    } else {
-      n_samp <- get_boostrap_n_sample(experts, n_votes, conf)
-    }
+    n_samp <- get_boostrap_n_sample(experts, n_votes, weights = conf,
+                                    elic_type = method)
 
     for (e in seq_along(experts)) {
 

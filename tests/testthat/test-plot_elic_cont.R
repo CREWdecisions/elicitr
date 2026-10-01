@@ -284,6 +284,30 @@ test_that("Output", {
   expect_identical(p[["data"]][7, 2:5],
                    truth_data_rescaled,
                    ignore_attr = TRUE)
+  # Plot for a variable with 4 points elicitation and truth but no confidence
+  truth_data <- list(min = 0.7, max = 0.9, best = 0.8)
+  truth_conf <- list(conf = 100)
+  truth_data_rescaled <- rescale_data(c(truth_data, truth_conf), s = 90)
+  p <- plot(obj, round = 2, var = "var3", scale_conf = 90,
+            truth = truth_data, verbose = FALSE)
+  expect_true(ggplot2::is_ggplot(p))
+  expect_length(p[["layers"]], 2)
+  expect_identical(class(p[["layers"]][[1]][["geom"]])[[1]], "GeomPoint")
+  expect_identical(class(p[["layers"]][[2]][["geom"]])[[1]], "GeomErrorbar")
+  expect_identical(ncol(p[["data"]]), 6L)
+  expect_identical(colnames(p[["data"]]),
+                   c("id", "min", "max", "best", "conf", "col"))
+  expect_identical(unique(p[["data"]][["col"]]), c("experts", "truth"))
+  expect_s3_class(p[["data"]][["id"]], "factor")
+  expect_identical(levels(p[["data"]][["id"]]),
+                   c(obj[["data"]][["round_2"]][["id"]], "Truth"))
+  # The mean function converts the column to double
+  expect_equal(p[["data"]][-7, 2:5],
+               rescaled_data,
+               ignore_attr = TRUE)
+  expect_identical(p[["data"]][7, 2:5],
+                   truth_data_rescaled,
+                   ignore_attr = TRUE)
 
   # Plot for a variable with 4 points elicitation, group and truth
   p <- plot(obj, round = 2, var = "var3", scale_conf = 90,
