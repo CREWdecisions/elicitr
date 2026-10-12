@@ -415,7 +415,7 @@ omogenise_datasets <- function(x, data) {
     if (all(stats::na.omit(round_1_ids) %in% round_2_ids)) {
 
       data_all <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
-                                 by = "id")
+                                     by = "id")
       data <- data_all[rowSums(is.na(data_all)) != ncol(data_all), ]
 
       r1_na_idx <- which(is.na(round_1_ids))
@@ -442,7 +442,7 @@ omogenise_datasets <- function(x, data) {
 
       if (r1_nas >= length(r1_diff_ids)) {
         data_all <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
-                                   by = "id")
+                                       by = "id")
         data <- data_all[rowSums(is.na(data_all)) != ncol(data_all), ]
 
         selection <- r1_na_idx[seq_along(r1_diff_ids)]
@@ -863,7 +863,7 @@ check_conf <- function(x, v) {
 #'
 #' @author Maude Vernet
 check_na_blocks <- function(data, var_name) {
-  for (i in 1:nrow(data)) {
+  for (i in seq_len(nrow(data))) {
     if (anyNA(data[i, ])) {
       if (all(is.na(data[i, ]))) {
         warn <- "Some expert(s) did not report estimates for all variables"

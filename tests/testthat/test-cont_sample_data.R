@@ -50,7 +50,7 @@ test_that("Errors", {
 
   # n_votes is longer than 1
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
-                                   n_votes = c(1,2,4,5,3,6)),
+                                   n_votes = c(1, 2, 4, 5, 3, 6)),
                   error = TRUE)
 
   # n_votes is NA

@@ -135,16 +135,7 @@ cont_sample_data <- function(x,
   }
 
   #remove placeholders with only NAs (might have been added in cat_add_data)
-  all_na <- NULL
-  for (i in 1:nrow(x[["data"]][[round]])) {
-    if (all(is.na(x[["data"]][[round]][i, ]))) {
-
-      all_na <- c(i, all_na)
-    }
-  }
-  if (!is.null(all_na)) {
-    x[["data"]][[round]] <- x[["data"]][[round]][-all_na, ]
-  }
+  x[["data"]][[round]] <- remove_placeholders(x, round)
 
   experts <- x[["data"]][[round]][["id"]]
   n_experts <- length(experts)
@@ -307,4 +298,30 @@ get_sample <- function(estimates, n_samp, e, elic_type) {
   }
 
   samp
+}
+
+#' Remove placeholders
+#'
+#' Remove placeholders with only NAs (might have been added in cat_add_data)
+#'
+#' @param x the data to sample
+#' @param round teh round being sampled
+#'
+#' @returns The data without the potential placeholders row(s)
+#' @noRd
+#'
+#' @author Maude Vernet
+remove_placeholders <- function(x, round) {
+  all_na <- NULL
+  for (i in seq_len(nrow(x[["data"]][[round]]))) {
+    if (all(is.na(x[["data"]][[round]][i, ]))) {
+
+      all_na <- c(i, all_na)
+    }
+  }
+  if (!is.null(all_na)) {
+    x[["data"]][[round]] <- x[["data"]][[round]][-all_na, ]
+  }
+
+  x[["data"]][[round]]
 }
