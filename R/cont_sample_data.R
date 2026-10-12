@@ -1,7 +1,7 @@
 #' Sample continuous data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `cont_sample_data()` samples data based on expert estimates stored in the
 #' [`elic_cont`] object.

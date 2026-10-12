@@ -1,7 +1,7 @@
 #' Add data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `cat_add_data()` adds data to an [elic_cat] object from different sources.
 #'

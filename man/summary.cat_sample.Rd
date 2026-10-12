@@ -20,7 +20,7 @@ function.}
 A \code{\link[tibble:tibble]{tibble}} with the summary statistics.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 \code{summary()} summarises the sampled data and provides the minimum, first
 quartile, median, mean, third quartile, and maximum values for each category.

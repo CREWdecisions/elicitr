@@ -1,7 +1,7 @@
 #' Start elicitation
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `cont_start()` initialises an [elic_cont] object which stores important
 #' metadata for the data collected during the elicitation process of continuous

@@ -1,7 +1,7 @@
 #' Get data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `cont_get_data()` gets data from an [elic_cont] object.
 #'

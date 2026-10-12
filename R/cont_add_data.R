@@ -6,7 +6,7 @@ var_labels <- list("1p" = "best",
 #' Add data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `cont_add_data()` adds data to an [elic_cont] object from different sources.
 #'

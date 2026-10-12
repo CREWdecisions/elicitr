@@ -1,7 +1,7 @@
 #' Summarise samples of categorical data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `summary()` summarises the sampled data and provides the minimum, first
 #' quartile, median, mean, third quartile, and maximum values for each category.

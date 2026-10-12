@@ -1,7 +1,7 @@
 #' Plot continuous samples
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `plot()` aggregates and plots continuous samples as violin or density plot.
 #'
