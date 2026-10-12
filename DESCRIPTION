@@ -1,6 +1,6 @@
 Package: elicitr
 Title: Processing and Aggregation of Expert Elicitation Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Sergio", "Vignali", email = "crewdecisions@gmail.com",
            role = "aut", comment = c(ORCID = "0000-0002-3390-5442")),
