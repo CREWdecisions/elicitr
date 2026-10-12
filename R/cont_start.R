@@ -118,6 +118,17 @@ cont_start <- function(var_names,
   # Check that the argument `experts` is a number
   check_experts_arg(experts)
 
+  if (any(grepl("_conf[0-9]+$", var_names))) {
+    varname_conf <- var_names[grepl("_conf[0-9]+$", var_names)]
+    pb <- "conf"
+
+    error <- "Variable names cannot contain the characters {.val {pb}} \\
+    followed by a number."
+    cli::cli_abort(c("Invalid variable name in {.arg var_names}",
+                     x = error,
+                     "i" = "change the name of variable {.val {varname_conf}}"))
+  }
+
   n_vars <- length(var_names)
 
   # Split variable and elicitation types
