@@ -860,7 +860,7 @@ elic_theme <- function(family = "sans") {
 #'
 #' @author Maude Vernet
 check_n_votes <- function(n_votes) {
-  if (anyNA(n_votes) | length(n_votes) != 1 | any(n_votes < 0)) {
+  if (anyNA(n_votes) || length(n_votes) != 1 || any(n_votes < 0)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
