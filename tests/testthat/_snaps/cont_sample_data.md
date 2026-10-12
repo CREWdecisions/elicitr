@@ -180,3 +180,19 @@
       v Rescaled min and max for variable "var3".
       v Data for "var3" sampled successfully using the "PERT" method.
 
+# cont_sample_data ignores completely empty placeholder rows
+
+    Code
+      expected <- cont_sample_data(obj, round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
+
+---
+
+    Code
+      actual <- cont_sample_data(x_placeholders, round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
+

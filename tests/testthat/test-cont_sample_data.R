@@ -298,3 +298,27 @@ test_that("one-point sampling preserves a single estimate", {
 
   expect_identical(out, rep(10, 20))
 })
+
+test_that("cont_sample_data ignores completely empty placeholder rows", {
+  obj <- create_cont_obj()
+
+  x_placeholders <- obj
+
+  placeholders <- obj[["data"]][["round_1"]][1, ]
+  placeholders[, ] <- NA
+
+  x_placeholders[["data"]][["round_1"]] <- rbind(placeholders,
+                                                 obj[["data"]][["round_1"]],
+                                                 placeholders)
+  set.seed(123)
+  expect_snapshot(expected <- cont_sample_data(obj,
+                                               round = 1,
+                                               verbose = FALSE))
+
+  set.seed(123)
+  expect_snapshot(actual <- cont_sample_data(x_placeholders,
+                                             round = 1,
+                                             verbose = FALSE))
+
+  expect_identical(actual, expected)
+})
