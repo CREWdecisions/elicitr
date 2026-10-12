@@ -803,8 +803,16 @@ get_boostrap_n_sample <- function(experts,
   }
 
   if (sum(weights_conf, na.rm = TRUE) != 0) {
-    n_samp <- (length(experts) * n_votes * weights_conf / sum(weights_conf)) |>
-      miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+    n_samp_pre <- (length(experts) * n_votes * weights_conf / sum(weights_conf))
+    n_samp <- floor(n_samp_pre)
+    n_extra <- as.integer(round(sum(n_samp_pre)) - sum(n_samp))
+
+    if (n_extra > 0) {
+      #find places that lost the largest fractional part by rounding down
+      indices <- order(n_samp_pre - n_samp, decreasing = TRUE)[seq_len(n_extra)]
+      #add 1 to those
+      n_samp[indices] <- n_samp[indices] + 1
+    }
   } else {
     n_samp <- rep(1, length(experts))
   }
