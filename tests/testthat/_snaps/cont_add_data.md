@@ -481,3 +481,71 @@
       * Number of experts: 6
       * Number of rounds: 2
 
+# Round harmonisation preserves missing estimates
+
+    Code
+      out <- cont_add_data(obj, y, round = 1, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! The dataset for "Round 1" has 5 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+
+---
+
+    Code
+      out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+    Message
+      i The dataset in "Round 2" has 1 <id> not present in "Round 1". This <id> has been added to "Round 1" with NA values.
+
+---
+
+    Code
+      out <- cont_add_data(obj, y, round = 1, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! The dataset for "Round 1" has 5 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+
+---
+
+    Code
+      out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Warning:
+      ! The dataset for "Round 2" has 5 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Warning:
+      The dataset in "Round 2" has 1 <id> not present in "Round 1". This <id> has been added to "Round 1" with "NA" values but could be typo in the raw data.
+      i Check raw data and if you want to update the dataset in "Round 2" use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+
+# All experts absent from Round 2 receive missing estimates
+
+    Code
+      out <- cont_add_data(obj, y, round = 1, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! The dataset for "Round 1" has 5 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+
+---
+
+    Code
+      out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some expert(s) did not report estimates for all variables
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Warning:
+      ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
+      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Warning:
+      The dataset in "Round 2" has 1 <id> not present in "Round 1". This <id> has been added to "Round 1" with "NA" values but could be typo in the raw data.
+      i Check raw data and if you want to update the dataset in "Round 2" use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+

@@ -124,7 +124,19 @@ cont_sample_data <- function(x,
     vars <- var
   }
 
-  experts <- unique(x[["data"]][[round]][["id"]])
+  #remove placeholders with only NAs (might have been added in cat_add_data)
+  all_na <- NULL
+  for (i in 1:nrow(x[["data"]][[round]])) {
+    if (all(is.na(x[["data"]][[round]][i, ]))) {
+
+      all_na <- c(i, all_na)
+    }
+  }
+  if (!is.null(all_na)) {
+    x[["data"]][[round]] <- x[["data"]][[round]][-all_na, ]
+  }
+
+  experts <- x[["data"]][[round]][["id"]]
   n_experts <- length(experts)
   all_sp <- vector(mode = "list", length = n_experts)
   all_vars <- vector(mode = "list", length = length(vars))

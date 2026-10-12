@@ -414,9 +414,9 @@ omogenise_datasets <- function(x, data) {
     # Check if all non NA id in round 1 are also in round 2
     if (all(stats::na.omit(round_1_ids) %in% round_2_ids)) {
 
-      data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
-                                 by = "id") |>
-        stats::na.omit()
+      data_all <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
+                                 by = "id")
+      data <- data_all[rowSums(is.na(data_all)) != ncol(data_all), ]
 
       r1_na_idx <- which(is.na(round_1_ids))
       selection <- r1_na_idx[seq_along(r1_diff_ids)]
@@ -441,14 +441,14 @@ omogenise_datasets <- function(x, data) {
       r1_nas <- sum(is.na(round_1_ids))
 
       if (r1_nas >= length(r1_diff_ids)) {
-        data <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
-                                   by = "id") |>
-          stats::na.omit()
+        data_all <- dplyr::rows_upsert(x[["data"]][["round_1"]], data,
+                                   by = "id")
+        data <- data_all[rowSums(is.na(data_all)) != ncol(data_all), ]
 
         selection <- r1_na_idx[seq_along(r1_diff_ids)]
         x[["data"]][["round_1"]][["id"]][selection] <- r1_diff_ids
         r2_na_idx <- which(is.na(round_2_ids))
-        data[data[["id"]] == r2_diff_ids, -1] <- NA
+        data[data[["id"]] %in% r2_diff_ids, -1] <- NA
         data <- add_nas_rows(data,
                              x[["experts"]])
 
@@ -625,7 +625,7 @@ check_round_data <- function(data, experts, round) {
 #' @returns An error if the data types are not correct.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali, Maude Vernet
 check_data_types <- function(x, data) {
 
   var_names <- x[["var_names"]]
@@ -639,9 +639,12 @@ check_data_types <- function(x, data) {
                             var_labels[[elic_types[[i]]]])
 
     idx <- names(data) %in% expected_cols
-    df <- unlist(data[, idx, drop = FALSE])
 
-    check_na_blocks(df = df, var_name = var_names[[i]])
+
+    check_na_blocks(data = data[, idx, drop = FALSE],
+                    var_name = var_names[[i]])
+
+    df <- unlist(data[, idx, drop = FALSE])
 
     if (var_types[i] == "Z") {
 
@@ -686,7 +689,7 @@ check_data_types <- function(x, data) {
 #' @author Sergio Vignali
 check_is_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -712,7 +715,7 @@ check_is_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_positive_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -738,7 +741,7 @@ check_is_positive_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_negative_integer <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -764,7 +767,7 @@ check_is_negative_integer <- function(x, v) {
 #' @author Sergio Vignali
 check_is_positive_real <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -790,7 +793,7 @@ check_is_positive_real <- function(x, v) {
 #' @author Sergio Vignali
 check_is_negative_real <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -816,7 +819,7 @@ check_is_negative_real <- function(x, v) {
 #' @author Sergio Vignali
 check_is_probability <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
@@ -833,7 +836,7 @@ check_is_probability <- function(x, v) {
 
 check_conf <- function(x, v) {
 
-  idx <- grepl("conf", names(x), fixed = TRUE)
+  idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[idx]
   x <- x[!is.na(x)]
 
@@ -851,38 +854,23 @@ check_conf <- function(x, v) {
 
 #' Check NA blocks
 #'
-#' @param df the df to be checked.
+#' @param data the data of the variable to be checked.
 #' @param var_name character string with the name of the variable to be checked.
 #'
-#' @returns An error if `df` contains some partial NAs for a variable and a
+#' @returns An error if `data` contains some partial NAs for a variable and a
 #' warning if some experts did not provide estimates for all variables.
 #' @noRd
 #'
 #' @author Maude Vernet
-check_na_blocks <- function(df, var_name) {
-  if (anyNA(df)) {
-    nm <- names(df)
-    i_na <- which(is.na(df))
-
-    for (j in seq_along(i_na)) {
-      current_name <- nm[i_na[j]]
-
-      # Extract prefix (variable name) and index (number of the expert)
-      m <- regexec("^(.*)_(best|min|max|conf)([0-9]+)$", current_name)
-      parts <- regmatches(current_name, m)[[1]]
-      prefix <- parts[2]
-      number <- parts[4]
-
-      # Build pattern to extract all values for the current variable and
-      pat  <- paste0("^", prefix, "_(best|min|max|conf)", number, "$")
-
-      # Extract all values for the current variable and expert
-      vals <- df[grepl(pat, nm)]
-
-      some_nas <- FALSE
-
-      if (all(is.na(vals))) {
-        some_nas <- TRUE
+check_na_blocks <- function(data, var_name) {
+  for (i in 1:nrow(data)) {
+    if (anyNA(data[i, ])) {
+      if (all(is.na(data[i, ]))) {
+        warn <- "Some expert(s) did not report estimates for all variables"
+        info <- "Check raw data and if you want to update the dataset use \\
+               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
+        cli::cli_warn(c("!" = warn,
+                        "i" = info))
       } else {
         error <- "Variable {.val {var_name}} contains {.val NA} values."
 
@@ -891,13 +879,6 @@ check_na_blocks <- function(df, var_name) {
                          "i" = "Check raw data."),
                        call = rlang::caller_env(n = 2))
       }
-    }
-    if (some_nas) {
-      warn <- "Some expert(s) did not report estimates for all variables"
-      info <- "Check raw data and if you want to update the dataset use \\
-               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
-      cli::cli_warn(c("!" = warn,
-                      "i" = info))
     }
   }
 }
