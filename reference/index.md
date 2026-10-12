@@ -5,36 +5,36 @@
 Functions for handling and plotting continuous variables.
 
 - [`cont_start()`](https://crewdecisions.github.io/elicitr/reference/cont_start.md)
-  **\[experimental\]** : Start elicitation
+  **\[stable\]** : Start elicitation
 - [`cont_add_data()`](https://crewdecisions.github.io/elicitr/reference/cont_add_data.md)
-  **\[experimental\]** : Add data
+  **\[stable\]** : Add data
 - [`cont_get_data()`](https://crewdecisions.github.io/elicitr/reference/cont_get_data.md)
-  **\[experimental\]** : Get data
+  **\[stable\]** : Get data
 - [`plot(`*`<elic_cont>`*`)`](https://crewdecisions.github.io/elicitr/reference/plot.elic_cont.md)
-  **\[experimental\]** : Plot elicitation data
+  **\[stable\]** : Plot elicitation data
 - [`cont_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cont_sample_data.md)
-  **\[experimental\]** : Sample continuous data
+  **\[stable\]** : Sample continuous data
 - [`summary(`*`<cont_sample>`*`)`](https://crewdecisions.github.io/elicitr/reference/summary.cont_sample.md)
-  **\[experimental\]** : Summarise samples of continuous data
+  **\[stable\]** : Summarise samples of continuous data
 - [`plot(`*`<cont_sample>`*`)`](https://crewdecisions.github.io/elicitr/reference/plot.cont_sample.md)
-  **\[experimental\]** : Plot continuous samples
+  **\[stable\]** : Plot continuous samples
 
 ## Elicitation of categorical data
 
 Functions for handling and plotting categorical data.
 
 - [`cat_start()`](https://crewdecisions.github.io/elicitr/reference/cat_start.md)
-  **\[experimental\]** : Start elicitation
+  **\[stable\]** : Start elicitation
 - [`cat_add_data()`](https://crewdecisions.github.io/elicitr/reference/cat_add_data.md)
-  **\[experimental\]** : Add data
+  **\[stable\]** : Add data
 - [`cat_get_data()`](https://crewdecisions.github.io/elicitr/reference/cat_get_data.md)
-  **\[experimental\]** : Get data
+  **\[stable\]** : Get data
 - [`cat_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cat_sample_data.md)
-  **\[experimental\]** : Sample categorical data
+  **\[stable\]** : Sample categorical data
 - [`summary(`*`<cat_sample>`*`)`](https://crewdecisions.github.io/elicitr/reference/summary.cat_sample.md)
-  **\[experimental\]** : Summarise samples of categorical data
+  **\[stable\]** : Summarise samples of categorical data
 - [`plot(`*`<cat_sample>`*`)`](https://crewdecisions.github.io/elicitr/reference/plot.cat_sample.md)
-  **\[experimental\]** : Plot categorical samples
+  **\[stable\]** : Plot categorical samples
 
 ## Classes
 

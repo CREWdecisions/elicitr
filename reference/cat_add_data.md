@@ -1,6 +1,6 @@
 # Add data
 
-**\[experimental\]**
+**\[stable\]**
 
 `cat_add_data()` adds data to an
 [elic_cat](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)
