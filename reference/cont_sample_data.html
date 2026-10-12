@@ -17,7 +17,7 @@ elic_cont object."><meta property="og:image" content="https://crewdecisions.gith
 
     <a class="navbar-brand me-2" href="../index.html">elicitr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,22 +126,32 @@ equal to <code>1</code>, each experts get <code>n_votes</code> votes, see Weight
 an additional class <code>cont_sample</code> used to implement the plotting method.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Weighted allocations distribute the full budget among answering experts.
+Thus, the number of row in the sampled data will n_experts * n_votes. If
+an expert doesn't provide data for the sampled variable, a placeholder row is
+added. In such case, row counts can exceed n_experts * n_votes.</p>
+    </div>
+    <div class="section level2">
     <h2 id="weights">Weights<a class="anchor" aria-label="anchor" href="#weights"></a></h2>
 
 
-<p>To provide a different number of votes to each expert in a
-<em>three-point elicitation</em>, use the <code>weights</code> argument. The length of the
-vector must be equal to the number of experts. If provided when the
-elicitation type is the <em>four points elicitation</em>, their values overwrite the
-confidence estimates.</p>
+
+<p>To provide a different number of votes to each expert use the <code>weights</code>
+argument. The length of the vector must be equal to the number of
+experts or have a length of one. Default is NULL, when no weight is provided.</p>
+<p>If provided when the elicitation type is a <em>four points elicitation</em>, the
+weight values overwrite the confidence estimates.</p>
     </div>
     <div class="section level2">
     <h2 id="method">Method<a class="anchor" aria-label="anchor" href="#method"></a></h2>
 
 
-<p>The function samples the data differently depending on the elicitation type:</p><ul><li><p><em>one point elicitation</em>: the best estimate of each expert is repeated
-<code>n_votes</code> number of times. <code>n_votes</code> can be the same for all or different for
-each expert.</p></li>
+
+<p>The function samples the data differently depending on the elicitation type:</p><ul><li><p><em>one point elicitation</em>: the estimate provided by each expert is repeated
+<code>n_votes</code> number of times. The <code>weights</code> argument can be used to weight the
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.</p></li>
 <li><p><em>three points elicitation</em>: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The <code>weights</code> argument can be used to weight the

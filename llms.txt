@@ -465,7 +465,7 @@ Functions for handling and plotting categorical data.
 - [`cat_add_data()`](https://crewdecisions.github.io/elicitr/reference/cat_add_data.md)
   **\[experimental\]** : Add data
 - [`cat_get_data()`](https://crewdecisions.github.io/elicitr/reference/cat_get_data.md)
-  **\[experimental\]** : \#' Get data
+  **\[experimental\]** : Get data
 - [`cat_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cat_sample_data.md)
   **\[experimental\]** : Sample categorical data
 - [`summary(`*`<cat_sample>`*`)`](https://crewdecisions.github.io/elicitr/reference/summary.cat_sample.md)

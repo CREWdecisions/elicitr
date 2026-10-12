@@ -31,8 +31,8 @@ summary(object, option = "all", ...)
 
 ## Value
 
-A [table](https://rdrr.io/r/base/table.html) with the summary
-statistics.
+A [`tibble`](https://tibble.tidyverse.org/reference/tibble.html) with
+the summary statistics.
 
 ## See also
 

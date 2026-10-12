@@ -264,8 +264,7 @@ estimates can be added to the plot:
 
 ``` r
 
-plot(my_elicitation, round = 2, var = "var3", group = TRUE)
-#> ✔ Rescaled min and max
+plot(my_elicitation, round = 2, var = "var1", group = TRUE)
 ```
 
 ![Estimates of variable 3 collected with a four points elicitation
@@ -304,9 +303,29 @@ identifiers.](continuous_variables_files/figure-html/plot-data-var3-custom-id-1.
 ### Sample data
 
 Data can be sampled using the function
-[`cont_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cont_sample_data.md)
-(see the variable documentation for the explanation of the sampling
-methods). Here we sample 1000 values for each variable:
+[`cont_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cont_sample_data.md).
+
+- one point elicitation: the estimate provided by each expert is
+  repeated `n_votes` number of times. The `weights` argument can be used
+  to weight the estimates of each expert (give a certain number of vote
+  to each expert) in the overall distribution.
+
+- three points elicitation: the minimum, best, and maximum estimates of
+  each expert are used as scaling parameters of the PERT distribution
+  from which the data are sampled. The `weights` argument can be used to
+  weight the estimates of each expert (give a certain number of vote to
+  each expert) in the overall distribution.
+
+- four points elicitation: the minimum, best, and maximum estimates of
+  each expert are rescaled according to their confidence and used as
+  scaling parameters of the PERT distribution from which the data are
+  sampled. Furthermore, their confidence is used as the `weights`
+  argument to weight the estimates of each expert (give a number of vote
+  to each expert) in the overall distribution. Weights can also be
+  provided to avoid this confidence scaling. See the function
+  documentation for the explanation of the sampling methods.
+
+Here we sample 1000 values for each variable:
 
 ``` r
 

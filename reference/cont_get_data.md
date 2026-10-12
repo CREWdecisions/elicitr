@@ -66,7 +66,7 @@ or `elic_types`.
 ## Variable types
 
 Variable types must be provided as a single string containing short
-codes, e.g. "pPN".
+codes, e.g. "pZN".
 
 Valid short codes are:
 
@@ -89,7 +89,7 @@ Valid short codes are:
   interval (-Inf, 0).
 
 - `p`: *probability*, when the estimate must be a real number in the
-  interval (0, 1).
+  interval `[0, 1]`.
 
 ## Elicitation types
 

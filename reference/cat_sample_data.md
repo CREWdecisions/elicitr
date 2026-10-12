@@ -61,6 +61,14 @@ An [`tibble`](https://tibble.tidyverse.org/reference/tibble.html) with
 the sampled data. This object has the additional class `cat_sample` used
 to implement the plotting method.
 
+## Details
+
+Weighted allocations distribute the full budget among answering experts.
+Thus, the number of row in the sampled data will n_experts \* n_votes.
+If an expert doesn't provide data for the sampled variable, a
+placeholder row is added. In such case, row counts can exceed n_experts
+\* n_votes.
+
 ## Methods
 
 Two methods are implemented. These methods are explained in Vernet et

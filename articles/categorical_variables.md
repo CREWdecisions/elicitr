@@ -183,12 +183,12 @@ metadata:
 ``` r
 
 malformed_data <- topic_1
-malformed_data[1, 2] <- "category_6"
+malformed_data[1, 3] <- "category_6"
 cat_add_data(my_elicitation,
              data_source = malformed_data,
              topic = "topic_1")
 #> Error in `cat_add_data()`:
-#> ! The column with the name of the options contains unexpected values:
+#> ! The column with the name of the categories contains unexpected values:
 #> ✖ The value "category_6" is not valid.
 #> ℹ Check the metadata in the <elic_cat> object.
 ```
@@ -256,7 +256,20 @@ sampled data.
 Data can be sampled using the function
 [`cat_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cat_sample_data.md)
 (see the variable documentation for the explanation of the sampling
-methods). Here we sample 100 values for each option:
+methods). Two sampling methods are available, which sample data from a
+Dirichlet distribution using the expert estimates as parameters. When
+only one estimate is provided, i.e. 100 % for one category, the method
+assigns 100 % to all votes for this category.
+
+- The unweighted method: This method samples data based on the expert
+  estimates without accounting for their confidence.
+
+- The weighted method: This method samples data based on the expert
+  estimates accounting for their confidence. The confidence is used to
+  weight the number of votes assigned to each expert.
+
+Here we sample 100 values for each expert in each option (all options in
+topic_1 are sampled). Each expert are basically given 100 votes.
 
 ``` r
 
@@ -282,6 +295,63 @@ samp
 #> # ℹ 2,390 more rows
 ```
 
+Here we sample 100 values for each expert in each option (all options in
+topic_1 are sampled). Each expert gets a portion of the total number of
+vote based on their self-expressed confidence level.
+
+``` r
+
+samp <- cat_sample_data(my_elicitation,
+                        method = "unweighted",
+                        topic = "topic_1",
+                        n_votes = 100)
+#> ✔ Data sampled successfully using "unweighted" method.
+samp
+#> # A tibble: 2,400 × 7
+#>    id              option category_1 category_2 category_3 category_4 category_5
+#>    <chr>           <chr>       <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
+#>  1 Derek Maclellan optio…      0.505      0.172    0.0176     0.0164       0.289
+#>  2 Derek Maclellan optio…      0.640      0.135    0.0113     0.00628      0.207
+#>  3 Derek Maclellan optio…      0.655      0.144    0.0164     0.00411      0.181
+#>  4 Derek Maclellan optio…      0.563      0.121    0.0205     0.0145       0.280
+#>  5 Derek Maclellan optio…      0.536      0.155    0.0158     0.0293       0.264
+#>  6 Derek Maclellan optio…      0.506      0.224    0.0320     0.0100       0.228
+#>  7 Derek Maclellan optio…      0.597      0.148    0.0326     0.0167       0.205
+#>  8 Derek Maclellan optio…      0.660      0.140    0.0403     0.0102       0.149
+#>  9 Derek Maclellan optio…      0.608      0.175    0.00576    0.00514      0.206
+#> 10 Derek Maclellan optio…      0.602      0.158    0.0505     0.00933      0.180
+#> # ℹ 2,390 more rows
+```
+
+Data can be sampled using the function
+[`cat_sample_data()`](https://crewdecisions.github.io/elicitr/reference/cat_sample_data.md)
+(see the variable documentation for the explanation of the sampling
+methods). Here we sample 100 values for each expert in each option:
+
+``` r
+
+samp <- cat_sample_data(my_elicitation,
+                        method = "unweighted",
+                        topic = "topic_1",
+                        n_votes = 100)
+#> ✔ Data sampled successfully using "unweighted" method.
+samp
+#> # A tibble: 2,400 × 7
+#>    id              option category_1 category_2 category_3 category_4 category_5
+#>    <chr>           <chr>       <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
+#>  1 Derek Maclellan optio…      0.519      0.219    0.0300     0.0311       0.201
+#>  2 Derek Maclellan optio…      0.571      0.224    0.00499    0.00483      0.195
+#>  3 Derek Maclellan optio…      0.630      0.153    0.00314    0.00676      0.207
+#>  4 Derek Maclellan optio…      0.606      0.145    0.0284     0.00263      0.219
+#>  5 Derek Maclellan optio…      0.416      0.190    0.0166     0.00607      0.371
+#>  6 Derek Maclellan optio…      0.700      0.111    0.00748    0.0586       0.123
+#>  7 Derek Maclellan optio…      0.523      0.160    0.00945    0.0188       0.289
+#>  8 Derek Maclellan optio…      0.536      0.221    0.00753    0.00250      0.233
+#>  9 Derek Maclellan optio…      0.583      0.144    0.0142     0.0295       0.230
+#> 10 Derek Maclellan optio…      0.577      0.191    0.00220    0.0160       0.214
+#> # ℹ 2,390 more rows
+```
+
 Sampled data can be summarised for any option:
 
 ``` r
@@ -291,11 +361,11 @@ summary(samp, option = "option_1")
 #> # A tibble: 5 × 7
 #>   category        Min     Q1 Median  Mean    Q3   Max
 #>   <chr>         <dbl>  <dbl>  <dbl> <dbl> <dbl> <dbl>
-#> 1 category_1 0.0738   0.175   0.374 0.383 0.563 0.777
-#> 2 category_2 0        0.0571  0.116 0.118 0.175 0.354
-#> 3 category_3 0.000827 0.0506  0.103 0.131 0.191 0.415
-#> 4 category_4 0.000700 0.0474  0.229 0.220 0.313 0.610
-#> 5 category_5 0.00987  0.0913  0.147 0.148 0.195 0.348
+#> 1 category_1 0.0517   0.172   0.380 0.384 0.561 0.788
+#> 2 category_2 0        0.0561  0.116 0.120 0.183 0.356
+#> 3 category_3 0.000408 0.0458  0.102 0.127 0.184 0.399
+#> 4 category_4 0.00250  0.0524  0.240 0.222 0.305 0.590
+#> 5 category_5 0.0165   0.0897  0.149 0.148 0.199 0.371
 ```
 
 And plotted as violin plot:

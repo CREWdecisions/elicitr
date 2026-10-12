@@ -17,7 +17,7 @@ elic_cat object."><meta property="og:image" content="https://crewdecisions.githu
 
     <a class="navbar-brand me-2" href="../index.html">elicitr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,6 +114,13 @@ all options.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> with the sampled data. This object has
 the additional class <code>cat_sample</code> used to implement the plotting method.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Weighted allocations distribute the full budget among answering experts.
+Thus, the number of row in the sampled data will n_experts * n_votes. If
+an expert doesn't provide data for the sampled variable, a placeholder row is
+added. In such case, row counts can exceed n_experts * n_votes.</p>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
