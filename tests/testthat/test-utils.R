@@ -1,3 +1,4 @@
+#####split_short_codes
 test_that("split_short_codes() works", {
   # For variable types
   x <- split_short_codes("abc")

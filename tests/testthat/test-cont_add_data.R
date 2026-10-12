@@ -508,3 +508,121 @@ test_that("Output is correct", {
   expect_true(is_not_min_max_best(c(0.9, 0.7, 0.5)))
   expect_false(is_not_min_max_best(c(0.5, 0.9, 0.7)))
 })
+
+test_that("Round harmonisation preserves missing estimates", {
+  obj <- cont_start(var_names = c("var1", "var2", "var3"),
+                    var_types = "ZNp",
+                    elic_types = "134",
+                    experts = 6,
+                    verbose = FALSE)
+  y <- round_1[-1, ]
+  z <- round_2
+  z[1, 3:5] <- NA
+
+  # an expert is absent in round 1.
+  # an expert skips a variable in round 2.
+  expect_snapshot(out <- cont_add_data(obj,
+                                       y,
+                                       round = 1,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  expect_snapshot(out <- cont_add_data(out,
+                                       z,
+                                       round = 2,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  data2 <- cont_get_data(out, round = 2)
+  data1 <- cont_get_data(out, round = 1)
+  expected_y <- z[!z[["name"]] %in% y[["name"]], ]
+  expected_y[, 2:9] <- NA
+  expected_y <- rbind(y, expected_y)
+  names(expected_y)[1] <- "id"
+  expected_z <- z
+  names(expected_z)[1] <- "id"
+  expected_z <- expected_z[match(expected_y[["id"]], expected_z[["id"]]), ]
+
+  expect_identical(data1, expected_y)
+  expect_identical(data2, expected_z)
+
+  # an expert is absent in round 1.
+  # another expert is absent in round 1.
+  # an expert skips a variable in round 2 for an id present in round 1.
+
+  y <- round_1[-1, ]
+  z <- round_2
+  z[round_2[["name"]] %in% y[["name"]], ][1, 3:5] <- NA
+  idy <- which(z[["name"]] %in% z[["name"]][round_2[["name"]] %in% y[["name"]]])
+  z <- z[-idy[2], ]
+
+  expect_snapshot(out <- cont_add_data(obj,
+                                       y,
+                                       round = 1,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  expect_snapshot(out <- cont_add_data(out,
+                                       z,
+                                       round = 2,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  data2 <- cont_get_data(out, round = 2)
+  data1 <- cont_get_data(out, round = 1)
+  expected_y <- z[!z[["name"]] %in% y[["name"]], ]
+  expected_y[, 2:9] <- NA
+  expected_y <- rbind(y, expected_y)
+  names(expected_y)[1] <- "id"
+  expected_z <- y[!y[["name"]] %in% z[["name"]], ]
+  expected_z[, 2:9] <- NA
+  expected_z <- rbind(z, expected_z)
+  names(expected_z)[1] <- "id"
+  expected_z <- expected_z[match(expected_y[["id"]], expected_z[["id"]]), ]
+
+  expect_identical(data1, expected_y)
+  expect_identical(data2, expected_z)
+})
+
+test_that("All experts absent from Round 2 receive missing estimates", {
+  obj <- cont_start(var_names = c("var1", "var2", "var3"),
+                    var_types = "ZNp",
+                    elic_types = "134",
+                    experts = 6,
+                    verbose = FALSE)
+
+  # 1 expert missing
+  y <- round_1[-1, ]
+  expect_snapshot(out <- cont_add_data(obj,
+                                       y,
+                                       round = 1,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  # 2 experts missing but not the same one as in round_1
+  z <- round_2
+  z[round_2[["name"]] %in% y[["name"]], ][1, 3:5] <- NA
+  idy <- which(z[["name"]] %in% z[["name"]][round_2[["name"]] %in% y[["name"]]])
+  z <- z[-idy[2:3], ]
+
+  expect_snapshot(out <- cont_add_data(out,
+                                       z,
+                                       round = 2,
+                                       anonymise = FALSE,
+                                       verbose = FALSE))
+
+  data2 <- cont_get_data(out, round = 2)
+  data1 <- cont_get_data(out, round = 1)
+  expected_y <- z[!z[["name"]] %in% y[["name"]], ]
+  expected_y[, 2:9] <- NA
+  expected_y <- rbind(y, expected_y)
+  names(expected_y)[1] <- "id"
+  expected_z <- y[!y[["name"]] %in% z[["name"]], ]
+  expected_z[, 2:9] <- NA
+  expected_z <- rbind(z, expected_z)
+  names(expected_z)[1] <- "id"
+  expected_z <- expected_z[match(expected_y[["id"]], expected_z[["id"]]), ]
+
+  expect_identical(data1, expected_y)
+  expect_identical(data2, expected_z)
+})

@@ -45,6 +45,12 @@ the additional class \code{cat_sample} used to implement the plotting method.
 \code{cat_sample_data()} samples data based on expert estimates stored in the
 \code{\link{elic_cat}} object.
 }
+\details{
+Weighted allocations distribute the full budget among answering experts.
+Thus, the number of row in the sampled data will n_experts * n_votes. If
+an expert doesn't provide data for the sampled variable, a placeholder row is
+added. In such case, row counts can exceed n_experts * n_votes.
+}
 \section{Methods}{
 
 Two methods are implemented. These methods are explained in Vernet et al.

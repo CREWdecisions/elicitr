@@ -180,6 +180,17 @@
       x Argument `experts` must be a single number not a vector of length 2.
       i See `elicitr::cont_start()`.
 
+---
+
+    Code
+      x <- cont_start(var_names = c("var1", "var2_conf1"), var_types = "pR",
+      elic_types = "43", experts = 3)
+    Condition
+      Error in `cont_start()`:
+      ! Invalid variable name in `var_names`
+      x Variable names cannot contain the characters "conf" followed by a number.
+      i change the name of variable "var2_conf1"
+
 # Info
 
     Code

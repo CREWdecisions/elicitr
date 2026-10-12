@@ -4,7 +4,7 @@ create_cont_obj <- function() {
              elic_types = "134",
              experts = 6,
              verbose = FALSE) |>
-    cont_add_data(x, data_source = round_1, round = 1, verbose = FALSE) |>
+    cont_add_data(data_source = round_1, round = 1, verbose = FALSE) |>
     cont_add_data(data_source = round_2, round = 2, verbose = FALSE)
 }
 

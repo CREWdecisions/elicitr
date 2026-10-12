@@ -30,6 +30,12 @@
 #' one estimate is provided, i.e. 100 % for one category, the method assigns 100
 #' % to all votes for this category.
 #'
+#' @details
+#' Weighted allocations distribute the full budget among answering experts.
+#' Thus, the number of row in the sampled data will n_experts * n_votes. If
+#' an expert doesn't provide data for the sampled variable, a placeholder row is
+#' added. In such case, row counts can exceed n_experts * n_votes.
+#'
 #' @return An [`tibble`][tibble::tibble] with the sampled data. This object has
 #' the additional class `cat_sample` used to implement the plotting method.
 #' @export
@@ -85,6 +91,9 @@ cat_sample_data <- function(x,
 
   # Check if method is available
   check_method(x, method)
+
+  # Check n_votes
+  check_n_votes(n_votes)
 
   # Get data
   data <- cat_get_data(x, topic = topic, option = option)

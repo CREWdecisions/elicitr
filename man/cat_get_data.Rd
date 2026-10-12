@@ -2,7 +2,7 @@
 % Please edit documentation in R/cat_get_data.R
 \name{cat_get_data}
 \alias{cat_get_data}
-\title{#' Get data}
+\title{Get data}
 \usage{
 cat_get_data(x, topic, ..., option = "all")
 }

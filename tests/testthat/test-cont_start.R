@@ -105,6 +105,13 @@ test_that("Errors", {
                              elic_types = "1",
                              experts = 1:2),
                   error = TRUE)
+
+  #When an option contains _confxx
+  expect_snapshot(x <- cont_start(var_names = c("var1", "var2_conf1"),
+                                  var_types = "pR",
+                                  elic_types = "43",
+                                  experts = 3),
+                  error = TRUE)
 })
 
 test_that("Info", {

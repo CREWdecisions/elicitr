@@ -13,7 +13,7 @@
 #' @param ... Unused arguments, included only for future extensions of the
 #' function.
 #'
-#' @returns A [table] with the summary statistics.
+#' @returns A [`tibble`][tibble::tibble] with the summary statistics.
 #' @export
 #'
 #' @family cat data helpers
@@ -51,7 +51,8 @@ summary.cat_sample <- function(object,
 
   # Avoid overwriting dplyr variable
   opt <- option
-  if (option == "all") {
+  if (length(option) == 1 &&
+        option == "all") {
     opt <- unique(object[["option"]])
   }
 

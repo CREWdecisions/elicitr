@@ -16,18 +16,22 @@
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Weights:
-#' To provide a different number of votes to each expert in a
-#' _three-point elicitation_, use the `weights` argument. The length of the
-#' vector must be equal to the number of experts. If provided when the
-#' elicitation type is the _four points elicitation_, their values overwrite the
-#' confidence estimates.
+#'
+#' To provide a different number of votes to each expert use the `weights`
+#' argument. The length of the vector must be equal to the number of
+#' experts or have a length of one. Default is NULL, when no weight is provided.
+#'
+#' If provided when the elicitation type is a _four points elicitation_, the
+#' weight values overwrite the confidence estimates.
 #'
 #' @section Method:
+#'
 #' The function samples the data differently depending on the elicitation type:
 #'
-#' * _one point elicitation_: the best estimate of each expert is repeated
-#' `n_votes` number of times. `n_votes` can be the same for all or different for
-#' each expert.
+#' * _one point elicitation_: the estimate provided by each expert is repeated
+#' `n_votes` number of times. The `weights` argument can be used to weight the
+#' estimates of each expert (give a certain number of vote to each expert) in
+#' the overall distribution.
 #'
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
@@ -59,6 +63,12 @@
 #'
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
+#'
+#' @details
+#' Weighted allocations distribute the full budget among answering experts.
+#' Thus, the number of row in the sampled data will n_experts * n_votes. If
+#' an expert doesn't provide data for the sampled variable, a placeholder row is
+#' added. In such case, row counts can exceed n_experts * n_votes.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data. This object has
 #' an additional class `cont_sample` used to implement the plotting method.
@@ -113,6 +123,9 @@ cont_sample_data <- function(x,
   # Check if method is available
   check_method(x, method)
 
+  # Check n_votes
+  check_n_votes(n_votes)
+
   if (length(var) == 1 && var == "all") {
     vars <- x[["var_names"]]
   } else {
@@ -121,7 +134,10 @@ cont_sample_data <- function(x,
     vars <- var
   }
 
-  experts <- unique(x[["data"]][[round]][["id"]])
+  #remove placeholders with only NAs (might have been added in cat_add_data)
+  x[["data"]][[round]] <- remove_placeholders(x, round)
+
+  experts <- x[["data"]][[round]][["id"]]
   n_experts <- length(experts)
   all_sp <- vector(mode = "list", length = n_experts)
   all_vars <- vector(mode = "list", length = length(vars))
@@ -282,4 +298,30 @@ get_sample <- function(estimates, n_samp, e, elic_type) {
   }
 
   samp
+}
+
+#' Remove placeholders
+#'
+#' Remove placeholders with only NAs (might have been added in cat_add_data)
+#'
+#' @param x the data to sample
+#' @param round teh round being sampled
+#'
+#' @returns The data without the potential placeholders row(s)
+#' @noRd
+#'
+#' @author Maude Vernet
+remove_placeholders <- function(x, round) {
+  all_na <- NULL
+  for (i in seq_len(nrow(x[["data"]][[round]]))) {
+    if (all(is.na(x[["data"]][[round]][i, ]))) {
+
+      all_na <- c(i, all_na)
+    }
+  }
+  if (!is.null(all_na)) {
+    x[["data"]][[round]] <- x[["data"]][[round]][-all_na, ]
+  }
+
+  x[["data"]][[round]]
 }

@@ -68,6 +68,66 @@
       x Argument `weights` must be 1 or a vector of length 6, same as the number of experts.
       i See `elicitr::cont_sample_data()` for more information.
 
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = rep(0, 6))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Argument `weights` cannot be 0 for all experts.
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = c(rep(0, 5), NA))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Weights cannot be "NA".
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = c(rep(0, 5), -1))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Weights cannot be negative.
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = -1)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = c(1, 2, 4, 5, 3, 6))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = NA)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
 # Warnings
 
     Code
@@ -119,4 +179,20 @@
       i Provided weights used instead of confidence estimates
       v Rescaled min and max for variable "var3".
       v Data for "var3" sampled successfully using the "PERT" method.
+
+# cont_sample_data ignores completely empty placeholder rows
+
+    Code
+      expected <- cont_sample_data(obj, round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
+
+---
+
+    Code
+      actual <- cont_sample_data(x_placeholders, round = 1, verbose = FALSE)
+    Condition
+      Warning:
+      ! Some values have been constrained to be between 0 and 1.
 

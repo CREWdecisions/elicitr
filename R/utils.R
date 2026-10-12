@@ -405,6 +405,39 @@ check_weights <- function(x, n) {
                      "i" = "See {.fn elicitr::{fn}} for more information."),
                    call = rlang::caller_env())
   }
+
+  if (anyNA(x)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Weights cannot be {.val NA}."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (all(x == 0)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg weights} cannot be 0 for all experts."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (any(x < 0)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Weights cannot be negative."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
 }
 
 #' Check if the variable is available in the sampled data
@@ -770,8 +803,16 @@ get_boostrap_n_sample <- function(experts,
   }
 
   if (sum(weights_conf, na.rm = TRUE) != 0) {
-    n_samp <- (length(experts) * n_votes * weights_conf / sum(weights_conf)) |>
-      miceadds::sumpreserving.rounding(digits = 0, preserve = TRUE)
+    n_samp_pre <- (length(experts) * n_votes * weights_conf / sum(weights_conf))
+    n_samp <- floor(n_samp_pre)
+    n_extra <- as.integer(round(sum(n_samp_pre)) - sum(n_samp))
+
+    if (n_extra > 0) {
+      #find places that lost the largest fractional part by rounding down
+      indices <- order(n_samp_pre - n_samp, decreasing = TRUE)[seq_len(n_extra)]
+      #add 1 to those
+      n_samp[indices] <- n_samp[indices] + 1
+    }
   } else {
     n_samp <- rep(1, length(experts))
   }
@@ -814,4 +855,28 @@ elic_theme <- function(family = "sans") {
                    axis.text = ggplot2::element_text(size = 14,
                                                      family = family),
                    plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
+}
+
+# check_n_votes----
+
+#' check_n_votes
+#'
+#' Verify that n_voets is correctly formed.
+#'
+#' @return an error with n_votes is wrong.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_n_votes <- function(n_votes) {
+  if (anyNA(n_votes) || length(n_votes) != 1 || any(n_votes < 0)) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg n_votes} must be a single positive integer."
+
+    cli::cli_abort(c("Invalid value for {.arg n_votes}:",
+                     "x" = error,
+                     "y" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
 }

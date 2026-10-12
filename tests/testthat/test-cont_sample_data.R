@@ -27,6 +27,36 @@ test_that("Errors", {
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
                                    weights = c(1, 2)),
                   error = TRUE)
+
+  # When weights are all 0
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = rep(0, 6)),
+                  error = TRUE)
+
+  # When some weights are NA
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = c(rep(0, 5), NA)),
+                  error = TRUE)
+
+  # When some weights are negative
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = c(rep(0, 5), -1)),
+                  error = TRUE)
+
+  # n_votes is negative
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   n_votes = -1),
+                  error = TRUE)
+
+  # n_votes is longer than 1
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   n_votes = c(1, 2, 4, 5, 3, 6)),
+                  error = TRUE)
+
+  # n_votes is NA
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   n_votes = NA),
+                  error = TRUE)
 })
 
 test_that("Warnings", {
@@ -267,4 +297,28 @@ test_that("one-point sampling preserves a single estimate", {
                     elic_type = "1p")
 
   expect_identical(out, rep(10, 20))
+})
+
+test_that("cont_sample_data ignores completely empty placeholder rows", {
+  obj <- create_cont_obj()
+
+  x_placeholders <- obj
+
+  placeholders <- obj[["data"]][["round_1"]][1, ]
+  placeholders[, ] <- NA
+
+  x_placeholders[["data"]][["round_1"]] <- rbind(placeholders,
+                                                 obj[["data"]][["round_1"]],
+                                                 placeholders)
+  set.seed(123)
+  expect_snapshot(expected <- cont_sample_data(obj,
+                                               round = 1,
+                                               verbose = FALSE))
+
+  set.seed(123)
+  expect_snapshot(actual <- cont_sample_data(x_placeholders,
+                                             round = 1,
+                                             verbose = FALSE))
+
+  expect_identical(actual, expected)
 })

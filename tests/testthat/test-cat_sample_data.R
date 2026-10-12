@@ -18,6 +18,25 @@ test_that("Errors", {
                                   method = "new_method",
                                   topic = "topic_1"),
                   error = TRUE)
+
+  # n_votes is negative
+  expect_snapshot(cat_sample_data(obj, round = 1, var = "var1",
+                                  n_votes = -1),
+                  error = TRUE)
+
+  # n_votes is longer than 1
+  expect_snapshot(cat_sample_data(obj,
+                                  method = "unweighted",
+                                  topic = "topic_1",
+                                  n_votes = c(1, 2, 4, 5, 3, 6)),
+                  error = TRUE)
+
+  # n_votes is NA
+  expect_snapshot(cat_sample_data(obj,
+                                  method = "unweighted",
+                                  topic = "topic_1",
+                                  n_votes = NA),
+                  error = TRUE)
 })
 
 test_that("Info", {

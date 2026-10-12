@@ -28,6 +28,35 @@
       x The method "new_method" is not available for categorical data.
       i See Methods in `elicitr::cat_sample_data()`.
 
+---
+
+    Code
+      cat_sample_data(obj, round = 1, var = "var1", n_votes = -1)
+    Condition
+      Error in `cat_sample_data()`:
+      ! argument "method" is missing, with no default
+
+---
+
+    Code
+      cat_sample_data(obj, method = "unweighted", topic = "topic_1", n_votes = c(1, 2,
+        4, 5, 3, 6))
+    Condition
+      Error in `cat_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cat_sample_data()`.
+
+---
+
+    Code
+      cat_sample_data(obj, method = "unweighted", topic = "topic_1", n_votes = NA)
+    Condition
+      Error in `cat_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cat_sample_data()`.
+
 # Info
 
     Code

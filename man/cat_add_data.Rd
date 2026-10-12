@@ -87,16 +87,16 @@ categories and two options (only one expert is shown):
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{name         option       category      confidence      estimate
 ----------------------------------------------------------------
-expert 1     option 1     category 1            15          0.08
-expert 1     option 1     category 2            15          0
-expert 1     option 1     category 3            15          0.84
-expert 1     option 1     category 4            15          0.02
-expert 1     option 1     category 5            15          0.06
-expert 1     option 2     category 1            35          0.02
-expert 1     option 2     category 2            35          0.11
-expert 1     option 2     category 3            35          0.19
-expert 1     option 2     category 4            35          0.02
-expert 1     option 2     category 5            35          0.66
+expert 1     option 1     category 1            55          0.08
+expert 1     option 1     category 2            55          0
+expert 1     option 1     category 3            55          0.84
+expert 1     option 1     category 4            55          0.02
+expert 1     option 1     category 5            55          0.06
+expert 1     option 2     category 1            75          0.02
+expert 1     option 2     category 2            75          0.11
+expert 1     option 2     category 3            75          0.19
+expert 1     option 2     category 4            75          0.02
+expert 1     option 2     category 5            75          0.66
 }\if{html}{\out{</div>}}
 }
 

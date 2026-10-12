@@ -41,6 +41,23 @@ test_that("Output", {
   expect_identical(out[["option_1"]][["category"]],
                    c("category_1", "category_2", "category_3",
                      "category_4", "category_5"))
+  # for multiple options
+  out <- summary(samp, option = c("option_1", "option_2"))
+  expect_type(out, "list")
+  expect_length(out, 2L)
+  expect_named(out, c("option_1", "option_2"))
+  expect_named(out[["option_1"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_named(out[["option_2"]], c("category", "Min", "Q1", "Median",
+                                    "Mean", "Q3", "Max"))
+  expect_identical(nrow(out[["option_1"]]), 5L)
+  expect_identical(nrow(out[["option_2"]]), 5L)
+  expect_identical(out[["option_1"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
+  expect_identical(out[["option_2"]][["category"]],
+                   c("category_1", "category_2", "category_3",
+                     "category_4", "category_5"))
 
   # for all options
   out <- summary(samp)
