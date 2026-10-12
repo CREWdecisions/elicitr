@@ -1,6 +1,6 @@
 # Start elicitation
 
-**\[stable\]**
+**\[experimental\]**
 
 `cont_start()` initialises an
 [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)

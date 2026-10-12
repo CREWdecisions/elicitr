@@ -1,6 +1,6 @@
 # Plot continuous samples
 
-**\[stable\]**
+**\[experimental\]**
 
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) aggregates and
 plots continuous samples as violin or density plot.

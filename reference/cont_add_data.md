@@ -1,6 +1,6 @@
 # Add data
 
-**\[stable\]**
+**\[experimental\]**
 
 `cont_add_data()` adds data to an
 [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)

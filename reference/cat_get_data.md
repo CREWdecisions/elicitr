@@ -1,6 +1,6 @@
 # Get data
 
-**\[stable\]**
+**\[experimental\]**
 
 Get data from an
 [elic_cat](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)

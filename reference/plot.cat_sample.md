@@ -1,6 +1,6 @@
 # Plot categorical samples
 
-**\[stable\]**
+**\[experimental\]**
 
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) aggregates and
 plots categorical samples as violin plot.
