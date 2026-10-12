@@ -68,6 +68,36 @@
       x Argument `weights` must be 1 or a vector of length 6, same as the number of experts.
       i See `elicitr::cont_sample_data()` for more information.
 
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = -1)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = c(1, 2, 4, 5, 3, 6))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", n_votes = NA)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cont_sample_data()`.
+
 # Warnings
 
     Code

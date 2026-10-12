@@ -815,3 +815,27 @@ elic_theme <- function(family = "sans") {
                                                      family = family),
                    plot.margin = ggplot2::unit(c(5, 10, 5, 5), units = "mm"))
 }
+
+# check_n_votes----
+
+#' check_n_votes
+#'
+#' Verify that n_voets is correctly formed.
+#'
+#' @return an error with n_votes is wrong.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_n_votes <- function(n_votes) {
+  if (anyNA(n_votes) | length(n_votes) != 1 | any(n_votes < 0)) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg n_votes} must be a single positive integer."
+
+    cli::cli_abort(c("Invalid value for {.arg n_votes}:",
+                     "x" = error,
+                     "y" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}

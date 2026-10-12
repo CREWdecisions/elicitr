@@ -113,6 +113,9 @@ cont_sample_data <- function(x,
   # Check if method is available
   check_method(x, method)
 
+  # Check n_votes
+  check_n_votes(n_votes)
+
   if (length(var) == 1 && var == "all") {
     vars <- x[["var_names"]]
   } else {
