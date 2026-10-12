@@ -405,6 +405,39 @@ check_weights <- function(x, n) {
                      "i" = "See {.fn elicitr::{fn}} for more information."),
                    call = rlang::caller_env())
   }
+
+  if (anyNA(x)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Weights cannot be {.val NA}."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (all(x == 0)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Argument {.arg weights} cannot be 0 for all experts."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (any(x < 0)) {
+    fn <- as.list(sys.call(-1))[[1]]
+
+    error <- "Weights cannot be negative."
+
+    cli::cli_abort(c("Invalid value for argument {.arg weights:}",
+                     "x" = error,
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
 }
 
 #' Check if the variable is available in the sampled data

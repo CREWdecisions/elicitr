@@ -27,6 +27,22 @@ test_that("Errors", {
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
                                    weights = c(1, 2)),
                   error = TRUE)
+
+  # When weights are all 0
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = rep(0, 6)),
+                  error = TRUE)
+
+  # When some weights are NA
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = c(rep(0, 5), NA)),
+                  error = TRUE)
+
+  # When some weights are negative
+  expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
+                                   weights = c(rep(0, 5), -1)),
+                  error = TRUE)
+
   # n_votes is negative
   expect_snapshot(cont_sample_data(obj, round = 1, var = "var1",
                                    n_votes = -1),

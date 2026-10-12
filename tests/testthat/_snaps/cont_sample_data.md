@@ -71,6 +71,36 @@
 ---
 
     Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = rep(0, 6))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Argument `weights` cannot be 0 for all experts.
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = c(rep(0, 5), NA))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Weights cannot be "NA".
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
+      cont_sample_data(obj, round = 1, var = "var1", weights = c(rep(0, 5), -1))
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for argument `weights:`
+      x Weights cannot be negative.
+      i See `elicitr::cont_sample_data()` for more information.
+
+---
+
+    Code
       cont_sample_data(obj, round = 1, var = "var1", n_votes = -1)
     Condition
       Error in `cont_sample_data()`:
