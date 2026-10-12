@@ -51,7 +51,8 @@ summary.cat_sample <- function(object,
 
   # Avoid overwriting dplyr variable
   opt <- option
-  if (option == "all") {
+  if (length(option) == 1 &&
+      option == "all") {
     opt <- unique(object[["option"]])
   }
 
