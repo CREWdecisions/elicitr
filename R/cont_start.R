@@ -24,7 +24,7 @@
 #' @section Variable types:
 #'
 #' Variable types must be provided as a single string containing short codes,
-#' e.g. "pPN".
+#' e.g. "pZN".
 #'
 #' Valid short codes are:
 #'
@@ -47,7 +47,7 @@
 #' interval (-Inf, 0).
 #'
 #' * `p`: _probability_, when the estimate must be a real number in the interval
-#' (0, 1).
+#' `[0, 1]`.
 #'
 #' @section Elicitation types:
 #'

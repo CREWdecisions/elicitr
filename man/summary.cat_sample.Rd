@@ -17,7 +17,7 @@
 function.}
 }
 \value{
-A \link{table} with the summary statistics.
+A \code{\link[tibble:tibble]{tibble}} with the summary statistics.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

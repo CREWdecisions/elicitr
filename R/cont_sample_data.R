@@ -16,18 +16,22 @@
 #' @param verbose logical, if TRUE it prints informative messages.
 #'
 #' @section Weights:
-#' To provide a different number of votes to each expert in a
-#' _three-point elicitation_, use the `weights` argument. The length of the
-#' vector must be equal to the number of experts. If provided when the
-#' elicitation type is the _four points elicitation_, their values overwrite the
-#' confidence estimates.
+#'
+#' To provide a different number of votes to each expert use the `weights`
+#' argument. The length of the vector must be equal to the number of
+#' experts or have a length of one. Default is NULL, when no weight is provided.
+#'
+#' If provided when the elicitation type is a _four points elicitation_, the
+#' weight values overwrite the confidence estimates.
 #'
 #' @section Method:
+#'
 #' The function samples the data differently depending on the elicitation type:
 #'
-#' * _one point elicitation_: the best estimate of each expert is repeated
-#' `n_votes` number of times. `n_votes` can be the same for all or different for
-#' each expert.
+#' * _one point elicitation_: the estimate provided by each expert is repeated
+#' `n_votes` number of times. The `weights` argument can be used to weight the
+#' estimates of each expert (give a certain number of vote to each expert) in
+#' the overall distribution.
 #'
 #' * _three points elicitation_: the minimum, best, and maximum estimates of
 #' each expert are used as scaling parameters of the PERT distribution from
@@ -59,6 +63,12 @@
 #'
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
+#'
+#' @details
+#' Weighted allocations distribute the full budget among answering experts.
+#' Thus, the number of row in the sampled data will n_experts * n_votes. If
+#' an expert doesn't provide data for the sampled variable, a placeholder row is
+#' added. In such case, row counts can exceed n_experts * n_votes.
 #'
 #' @returns A [`tibble`][tibble::tibble] with the sampled data. This object has
 #' an additional class `cont_sample` used to implement the plotting method.

@@ -51,22 +51,32 @@ an additional class \code{cont_sample} used to implement the plotting method.
 \code{cont_sample_data()} samples data based on expert estimates stored in the
 \code{\link{elic_cont}} object.
 }
+\details{
+Weighted allocations distribute the full budget among answering experts.
+Thus, the number of row in the sampled data will n_experts * n_votes. If
+an expert doesn't provide data for the sampled variable, a placeholder row is
+added. In such case, row counts can exceed n_experts * n_votes.
+}
 \section{Weights}{
 
-To provide a different number of votes to each expert in a
-\emph{three-point elicitation}, use the \code{weights} argument. The length of the
-vector must be equal to the number of experts. If provided when the
-elicitation type is the \emph{four points elicitation}, their values overwrite the
-confidence estimates.
+
+To provide a different number of votes to each expert use the \code{weights}
+argument. The length of the vector must be equal to the number of
+experts or have a length of one. Default is NULL, when no weight is provided.
+
+If provided when the elicitation type is a \emph{four points elicitation}, the
+weight values overwrite the confidence estimates.
 }
 
 \section{Method}{
 
+
 The function samples the data differently depending on the elicitation type:
 \itemize{
-\item \emph{one point elicitation}: the best estimate of each expert is repeated
-\code{n_votes} number of times. \code{n_votes} can be the same for all or different for
-each expert.
+\item \emph{one point elicitation}: the estimate provided by each expert is repeated
+\code{n_votes} number of times. The \code{weights} argument can be used to weight the
+estimates of each expert (give a certain number of vote to each expert) in
+the overall distribution.
 \item \emph{three points elicitation}: the minimum, best, and maximum estimates of
 each expert are used as scaling parameters of the PERT distribution from
 which the data are sampled. The \code{weights} argument can be used to weight the

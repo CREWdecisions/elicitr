@@ -1,4 +1,4 @@
-#' #' Get data
+#' Get data
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`

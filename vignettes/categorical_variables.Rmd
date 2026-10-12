@@ -93,7 +93,7 @@ Again, metadata are used to validate the data. If the data is not consistent wit
 
 ```{r error, error=TRUE}
 malformed_data <- topic_1
-malformed_data[1, 2] <- "category_6"
+malformed_data[1, 3] <- "category_6"
 cat_add_data(my_elicitation,
              data_source = malformed_data,
              topic = "topic_1")
@@ -123,7 +123,35 @@ Contrary to continuous variables, there is not yet a function for plotting the r
 
 ### Sample data
 
-Data can be sampled using the function `cat_sample_data()` (see the variable documentation for the explanation of the sampling methods). Here we sample 100 values for each option:
+Data can be sampled using the function `cat_sample_data()` (see the variable documentation for the explanation of the sampling methods). Two sampling methods are available, which sample data from a Dirichlet distribution using the expert estimates as parameters. When only one estimate is provided, i.e. 100 % for one category, the method assigns 100 % to all votes for this category.
+
+* The unweighted method: This method samples data based on the expert estimates without accounting for their confidence.
+
+* The weighted method: This method samples data based on the expert estimates accounting for their confidence. The confidence is used to weight the number of votes assigned to each expert. 
+
+Here we sample 100 values for each expert in each option (all options in topic_1 are sampled).
+Each expert are basically given 100 votes.
+
+```{r sample unweighted}
+samp <- cat_sample_data(my_elicitation,
+                        method = "unweighted",
+                        topic = "topic_1",
+                        n_votes = 100)
+samp
+```
+
+Here we sample 100 values for each expert in each option (all options in topic_1 are sampled).
+Each expert gets a portion of the total number of vote based on their self-expressed confidence level.
+
+```{r sample weighted}
+samp <- cat_sample_data(my_elicitation,
+                        method = "unweighted",
+                        topic = "topic_1",
+                        n_votes = 100)
+samp
+```
+
+Data can be sampled using the function `cat_sample_data()` (see the variable documentation for the explanation of the sampling methods). Here we sample 100 values for each expert in each option:
 
 ```{r sample}
 samp <- cat_sample_data(my_elicitation,

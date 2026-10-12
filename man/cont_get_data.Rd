@@ -49,7 +49,7 @@ first of the following will be used: \code{var}, \code{var_types}, or \code{elic
 
 
 Variable types must be provided as a single string containing short codes,
-e.g. "pPN".
+e.g. "pZN".
 
 Valid short codes are:
 \itemize{
@@ -66,7 +66,7 @@ interval [0, Inf).
 \item \code{r}: \emph{negative reals}, when the estimate must be a real number in the
 interval (-Inf, 0).
 \item \code{p}: \emph{probability}, when the estimate must be a real number in the interval
-(0, 1).
+\verb{[0, 1]}.
 }
 }
 

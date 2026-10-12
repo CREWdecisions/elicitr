@@ -77,7 +77,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "ZNp",
                         elic_types = "134",
                         experts = 6) |>
-  cont_add_data(x, data_source = round_1, round = 1) |>
+  cont_add_data(data_source = round_1, round = 1) |>
   cont_add_data(data_source = round_2, round = 2)
 
 # Sample data for the first round for all variables
