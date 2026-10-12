@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/v0.2.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CREWdecisions/elicitr/blob/main/DESCRIPTION)
 
 Vernet M, Vignali S, Canessa S (2026). *elicitr: Processing and
 Aggregation of Expert Elicitation Data*. R package version 0.2.0,

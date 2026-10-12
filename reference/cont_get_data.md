@@ -1,6 +1,6 @@
 # Get data
 
-**\[experimental\]**
+**\[stable\]**
 
 `cont_get_data()` gets data from an
 [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)

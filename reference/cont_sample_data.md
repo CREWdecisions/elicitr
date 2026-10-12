@@ -1,6 +1,6 @@
 # Sample continuous data
 
-**\[experimental\]**
+**\[stable\]**
 
 `cont_sample_data()` samples data based on expert estimates stored in
 the
