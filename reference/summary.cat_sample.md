@@ -1,6 +1,6 @@
 # Summarise samples of categorical data
 
-**\[stable\]**
+**\[experimental\]**
 
 [`summary()`](https://rdrr.io/r/base/summary.html) summarises the
 sampled data and provides the minimum, first quartile, median, mean,

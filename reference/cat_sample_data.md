@@ -1,6 +1,6 @@
 # Sample categorical data
 
-**\[stable\]**
+**\[experimental\]**
 
 `cat_sample_data()` samples data based on expert estimates stored in the
 [`elic_cat`](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)
