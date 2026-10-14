@@ -153,7 +153,11 @@ cont_add_data(my_elicitation,
 #> Error in `cont_add_data()`:
 #> ! Unexpected number of columns:
 #> ✖ The imported dataset has 5 columns but 9 are expected.
-#> ℹ See Data format in `elicitr::cont_add_data()`.
+#> ℹ The first column in the data should be the expert name, followed by the
+#>   elicited variables. One-point elicitation variables should each have 1
+#>   column, three-point elicitation variables should each have 2 columns and
+#>   four-point elicitation variables should each have 4 columns. See Data format
+#>   in `elicitr::cont_add_data()`.
 ```
 
 Or if we try to add data where the variable has an incorrect type:

@@ -83,7 +83,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Continuous variables</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/v0.2.0/vignettes/continuous_variables.Rmd" class="external-link"><code>vignettes/continuous_variables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CREWdecisions/elicitr/blob/main/vignettes/continuous_variables.Rmd" class="external-link"><code>vignettes/continuous_variables.Rmd</code></a></small>
       <div class="d-none name"><code>continuous_variables.Rmd</code></div>
     </div>
 
@@ -229,7 +229,11 @@ to add a data frame with a different number of columns:</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `cont_add_data()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Unexpected number of columns:</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> The imported dataset has <span style="color: #0000BB;">5</span> columns but <span style="color: #0000BB;">9</span> are expected.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> See Data format in `elicitr::cont_add_data()`.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The first column in the data should be the expert name, followed by the</span></span>
+<span><span class="co">#&gt;   elicited variables. One-point elicitation variables should each have 1</span></span>
+<span><span class="co">#&gt;   column, three-point elicitation variables should each have 2 columns and</span></span>
+<span><span class="co">#&gt;   four-point elicitation variables should each have 4 columns. See Data format</span></span>
+<span><span class="co">#&gt;   in `elicitr::cont_add_data()`.</span></span></code></pre></div>
 <p>Or if we try to add data where the variable has an incorrect
 type:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">

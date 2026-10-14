@@ -1,6 +1,6 @@
 # Start elicitation
 
-**\[experimental\]**
+**\[stable\]**
 
 `cat_start()` initialises an
 [elic_cat](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)

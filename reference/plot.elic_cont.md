@@ -1,6 +1,6 @@
 # Plot elicitation data
 
-**\[experimental\]**
+**\[stable\]**
 
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html) plots
 elicitation data for a specific round and variable.
