@@ -72,7 +72,7 @@
       Error in `cont_add_data()`:
       ! Invalid value for `x`:
       x Argument `x` must be an object of class <elic_cont> and not of class <character>.
-      See `elicitr::cont_add_data()`.
+      i See `elicitr::cont_add_data()`.
 
 ---
 

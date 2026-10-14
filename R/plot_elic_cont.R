@@ -1,7 +1,7 @@
 #' Plot elicitation data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `plot()` plots elicitation data for a specific round and variable.
 #'

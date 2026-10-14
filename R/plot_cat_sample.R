@@ -1,7 +1,7 @@
 #' Plot categorical samples
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' `plot()` aggregates and plots categorical samples as violin plot.
 #'

@@ -1,7 +1,7 @@
 #' Get data
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("stable")`
 #'
 #' Get data from an [elic_cat] object.
 #'

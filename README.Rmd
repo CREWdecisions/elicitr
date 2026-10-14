@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # elicitr <a href="#"><img src="man/figures/logo.png" height="138" align="right">
 <!-- badges: start -->
-[![Project Status](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/R-CMD-check.yaml)
 [![lint](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml/badge.svg)](https://github.com/CREWdecisions/elicitr/actions/workflows/lint.yaml)
 [![Codecov test coverage](https://codecov.io/gh/CREWdecisions/elicitr/graph/badge.svg)](https://app.codecov.io/gh/CREWdecisions/elicitr)
@@ -33,14 +33,7 @@ The package is in active development and will implement functions based on two f
 
 ## Installation
 
-You can install the development version of elicitr from GitHub with:
-
-```r
-# install.packages("pak")
-pak::pak("CREWdecisions/elicitr")
-```
-
-Or you can install form R universe using
+You can install the development version of elicitr from R universe using
 
 ```r
 install.packages("elicitr", 
