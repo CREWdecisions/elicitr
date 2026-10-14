@@ -416,7 +416,8 @@ test_that("Info", {
                  verbose = FALSE)
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = gs,
-                                      topic = "topic_1"))
+                                      topic = "topic_1") |>
+                    googlesheets4::with_gs4_quiet())
   # Test equal and not identical because when saved as file we loose precision
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())

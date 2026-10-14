@@ -366,7 +366,8 @@ test_that("Info", {
                   elic_types = "11",
                   experts = 6,
                   verbose = FALSE)
-  expect_snapshot(out <- cont_add_data(x, data_source = gs, round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = gs, round = 1) |>
+                    googlesheets4::with_gs4_quiet())
   # Double entry has been removed
   expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric

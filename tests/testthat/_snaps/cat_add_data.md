@@ -384,7 +384,7 @@
 ---
 
     Code
-      out <- cat_add_data(x, data_source = gs, topic = "topic_1")
+      out <- googlesheets4::with_gs4_quiet(cat_add_data(x, data_source = gs, topic = "topic_1"))
     Message
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "Google Sheets"

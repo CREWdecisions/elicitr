@@ -473,7 +473,7 @@
 ---
 
     Code
-      out <- cont_add_data(x, data_source = gs, round = 1)
+      out <- googlesheets4::with_gs4_quiet(cont_add_data(x, data_source = gs, round = 1))
     Message
       v Data added to "Round 1" from "Google Sheets"
 

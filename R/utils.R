@@ -510,7 +510,6 @@ read_data <- function(data_source,
       # tested).
       assign("src", "Google Sheets", envir = rlang::caller_env())
       data <- googlesheets4::read_sheet(data_source, sheet = sheet) |>
-        suppressMessages() |>
         clean_gs_data()
     }
   }
