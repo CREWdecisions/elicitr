@@ -182,6 +182,11 @@ test_that("Errors ", {
   y[1, 9] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
+
+  #When data is empty
+  y <- round_1[0, ]
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
 })
 
 test_that("Warnings", {

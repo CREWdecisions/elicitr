@@ -184,6 +184,13 @@ test_that("Errors", {
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
+
+  #When data is empty
+  y <- topic_1[0, ]
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
 })
 
 test_that("Accepts all estimates summing to 100", {

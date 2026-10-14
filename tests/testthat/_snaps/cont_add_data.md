@@ -344,6 +344,16 @@
       x Variable "var3" contains "NA" values.
       i Check raw data.
 
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Data is empty.
+      x Please add data
+      i To test whether the data is correctly formed, add a test response.
+
 # Warnings
 
     Code

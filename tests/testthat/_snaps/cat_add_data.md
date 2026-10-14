@@ -230,6 +230,16 @@
       Error in `check_cat_values()`:
       ! Confidence must be greater than 50 and at most 100.
 
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Data is empty.
+      x Please add data
+      i To test whether the data is correctly formed, add a test response.
+
 # Accepts all estimates summing to 100
 
     Code

@@ -175,6 +175,13 @@ cont_add_data <- function(x,
                     sep = sep,
                     sheet = sheet)
 
+  if(nrow(data) == 0) {
+    cli::cli_abort(c("Data is empty.",
+                     "x" = "Please add data",
+                     "i" = "To test whether the data is correctly formed, add \\
+                     a test response."))
+  }
+
   # Prepare column names and set them
   col_names <- get_col_names(x[["var_names"]],
                              x[["elic_types"]])
