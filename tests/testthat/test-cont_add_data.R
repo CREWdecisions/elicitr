@@ -26,7 +26,7 @@ test_that("Errors ", {
   expect_snapshot(cont_add_data(y, data_source = round_1, round = 1),
                   error = TRUE)
   # When the number of columns is different from expected
-  expect_snapshot(cont_add_data(x, data_source = round_1[, -1], round = 1),
+  expect_snapshot(cont_add_data(x, data_source = round_1[, -2], round = 1),
                   error = TRUE)
   # When there are less experts than number of rows in dataset for round 1
   expect_snapshot(cont_add_data(x, data_source = rbind(round_1, round_1),
@@ -182,6 +182,24 @@ test_that("Errors ", {
   y[1, 9] <- NA
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
+
+  #When data is empty
+  y <- round_1[0, ]
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+
+  #When the first column is not the expert names
+  y <- round_1[, -1]
+  y <- cbind(new_v = rep(3, nrow(y)), y)
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+
+  #When the expert names is not the first column
+  y <- round_1[, -1]
+  y <- cbind(y, round_1[, 1])
+  expect_snapshot(cont_add_data(x, data_source = y, round = 1),
+                  error = TRUE)
+
 })
 
 test_that("Warnings", {
@@ -361,7 +379,8 @@ test_that("Info", {
                   elic_types = "11",
                   experts = 6,
                   verbose = FALSE)
-  expect_snapshot(out <- cont_add_data(x, data_source = gs, round = 1))
+  expect_snapshot(out <- cont_add_data(x, data_source = gs, round = 1) |>
+                    googlesheets4::with_gs4_quiet())
   # Double entry has been removed
   expect_length(unique(out[["data"]][["round_1"]][["id"]]), 6L)
   # Commas have been replaced with periods and both columns are numeric

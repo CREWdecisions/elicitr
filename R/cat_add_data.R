@@ -203,8 +203,15 @@ cat_add_data <- function(x,
                     sep = sep,
                     sheet = sheet)
 
+  if (nrow(data) == 0) {
+    cli::cli_abort(c("Data is empty.",
+                     "x" = "Please add data",
+                     "i" = "To test whether the data is correctly formed, add \\
+                     a test response."))
+  }
+
   # Check if data has the correct number of columns
-  check_columns(data, 5)
+  check_columns(data, 5, type = "cat")
   colnames(data) <- c("id", "option", "category", "confidence", "estimate")
 
   # Check columns type

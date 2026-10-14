@@ -184,6 +184,20 @@ test_that("Errors", {
                                data_source = y,
                                topic = "topic_1"),
                   error = TRUE)
+
+  #When data is empty
+  y <- topic_1[0, ]
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  #When the first column is not the expert names
+  y <- topic_1[, -1]
+  expect_snapshot(cat_add_data(x,
+                               data_source = y,
+                               topic = "topic_1"),
+                  error = TRUE)
 })
 
 test_that("Accepts all estimates summing to 100", {
@@ -409,7 +423,8 @@ test_that("Info", {
                  verbose = FALSE)
   expect_snapshot(out <- cat_add_data(x,
                                       data_source = gs,
-                                      topic = "topic_1"))
+                                      topic = "topic_1") |>
+                    googlesheets4::with_gs4_quiet())
   # Test equal and not identical because when saved as file we loose precision
   expect_equal(out[["data"]][["topic_1"]][, -1], z[, -1],
                tolerance = testthat_tolerance())

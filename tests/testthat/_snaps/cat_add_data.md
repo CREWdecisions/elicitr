@@ -64,7 +64,7 @@
       Error in `cat_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
-      i See Data format in `elicitr::cat_add_data()`.
+      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
 
 ---
 
@@ -230,6 +230,26 @@
       Error in `check_cat_values()`:
       ! Confidence must be greater than 50 and at most 100.
 
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Data is empty.
+      x Please add data
+      i To test whether the data is correctly formed, add a test response.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Unexpected number of columns:
+      x The imported dataset has 4 columns but 5 are expected.
+      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
+
 # Accepts all estimates summing to 100
 
     Code
@@ -374,7 +394,7 @@
 ---
 
     Code
-      out <- cat_add_data(x, data_source = gs, topic = "topic_1")
+      out <- googlesheets4::with_gs4_quiet(cat_add_data(x, data_source = gs, topic = "topic_1"))
     Message
       i Estimates sum to 1. Rescaling to 100.
       v Data added to Topic "topic_1" from "Google Sheets"
