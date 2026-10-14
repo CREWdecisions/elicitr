@@ -211,7 +211,7 @@ cat_add_data <- function(x,
   }
 
   # Check if data has the correct number of columns
-  check_columns(data, 5)
+  check_columns(data, 5, type = "cat")
   colnames(data) <- c("id", "option", "category", "confidence", "estimate")
 
   # Check columns type

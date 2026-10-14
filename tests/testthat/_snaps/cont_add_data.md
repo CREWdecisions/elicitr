@@ -37,12 +37,12 @@
 ---
 
     Code
-      cont_add_data(x, data_source = round_1[, -1], round = 1)
+      cont_add_data(x, data_source = round_1[, -2], round = 1)
     Condition
       Error in `cont_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 8 columns but 9 are expected.
-      i See Data format in `elicitr::cont_add_data()`.
+      i The first column in the data should be the expert name, followed by the elicited variables. One-point elicitation variables should each have 1 column, three-point elicitation variables should each have 2 columns and four-point elicitation variables should each have 4 columns. See Data format in `elicitr::cont_add_data()`.
 
 ---
 
@@ -353,6 +353,26 @@
       ! Data is empty.
       x Please add data
       i To test whether the data is correctly formed, add a test response.
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Malformated data.
+      x The first column does not contain the expert IDs.
+      i See Data format in `elicitr::cont_add_data()`
+
+---
+
+    Code
+      cont_add_data(x, data_source = y, round = 1)
+    Condition
+      Error in `cont_add_data()`:
+      ! Malformated data.
+      x The first column does not contain the expert IDs.
+      i See Data format in `elicitr::cont_add_data()`
 
 # Warnings
 

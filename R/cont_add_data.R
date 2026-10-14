@@ -186,8 +186,16 @@ cont_add_data <- function(x,
   col_names <- get_col_names(x[["var_names"]],
                              x[["elic_types"]])
   # Check if data has the correct number of columns
-  check_columns(data, length(col_names))
+  check_columns(data, length(col_names), type = "cont")
+
   colnames(data) <- col_names
+
+  if(!is.character(data[["id"]])) {
+    fn <- as.list(sys.call())[[1]]
+    cli::cli_abort(c("Malformated data.",
+                     "x" = "The first column does not contain the expert IDs.",
+                     "i" = "See Data format in {.fn elicitr::{fn}}"))
+  }
 
   if (anonymise) {
     # Anonymise names

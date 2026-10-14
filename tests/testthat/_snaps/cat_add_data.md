@@ -64,7 +64,7 @@
       Error in `cat_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
-      i See Data format in `elicitr::cat_add_data()`.
+      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
 
 ---
 
@@ -239,6 +239,16 @@
       ! Data is empty.
       x Please add data
       i To test whether the data is correctly formed, add a test response.
+
+---
+
+    Code
+      cat_add_data(x, data_source = y, topic = "topic_1")
+    Condition
+      Error in `cat_add_data()`:
+      ! Unexpected number of columns:
+      x The imported dataset has 4 columns but 5 are expected.
+      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
 
 # Accepts all estimates summing to 100
 

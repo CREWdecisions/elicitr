@@ -216,12 +216,13 @@ check_length <- function(x,
 #'
 #' @param x data.frame or tibble with the imported data.
 #' @param col_names character vector with the expected column names.
+#' @param type the type of elicitation (continuous or categorical).
 #'
 #' @return An error if the number of columns is not as expected.
 #' @noRd
 #'
 #' @author Sergio Vignali
-check_columns <- function(x, y) {
+check_columns <- function(x, y, type) {
   # Check number of columns
   if (ncol(x) != y) {
 
@@ -229,7 +230,19 @@ check_columns <- function(x, y) {
 
     error <- "The imported dataset has {.val {ncol(x)}} column{?s} but \\
               {.val {y}} are expected."
-    info <- "See Data format in {.fn elicitr::{fn}}."
+    if (type == "cont") {
+      info <- "The first column in the data should be the expert name, \\
+      followed by the elicited variables. One-point elicitation variables \\
+      should each have 1 column, three-point elicitation variables should \\
+      each have 2 columns and four-point elicitation variables should each \\
+      have 4 columns."
+    } else if (type == "cat") {
+      info <-  "The columns in the data should be (1) the expert names, (2) \\
+    the options, (3) the categories, (4) the confidence and (5) the \\
+    estimates."
+    }
+
+    info <- paste0(info, " See Data format in {.fn elicitr::{fn}}.")
 
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
