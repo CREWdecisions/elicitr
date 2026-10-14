@@ -175,7 +175,7 @@ cont_add_data <- function(x,
                     sep = sep,
                     sheet = sheet)
 
-  if(nrow(data) == 0) {
+  if (nrow(data) == 0) {
     cli::cli_abort(c("Data is empty.",
                      "x" = "Please add data",
                      "i" = "To test whether the data is correctly formed, add \\
@@ -190,7 +190,7 @@ cont_add_data <- function(x,
 
   colnames(data) <- col_names
 
-  if(!is.character(data[["id"]])) {
+  if (!is.character(data[["id"]])) {
     fn <- as.list(sys.call())[[1]]
     cli::cli_abort(c("Malformated data.",
                      "x" = "The first column does not contain the expert IDs.",
