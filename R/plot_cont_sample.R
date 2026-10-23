@@ -133,9 +133,11 @@ plot.cont_sample <- function(x,
     colours <- scales::hue_pal()(n)
   } else if (length(colours) != n) {
 
+    fn <- as.list(sys.call())[[1]]
     cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                      "x" = error,
-                     "i" = info))
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."))
   }
 
   if (is.null(theme)) {
@@ -144,10 +146,17 @@ plot.cont_sample <- function(x,
   }
 
   if (all(is.na(x[["value"]][x[["var"]] == var]))) {
-    info <- "Experts did not provide any estimate for variable {.val {var}}."
-    cli::cli_abort(c("All data provided is empty.",
-                     "x" = "Only NA available in {.arg var}",
-                     "i" = info))
+    text <- "Experts did not provide any estimate for variable {.val {var}}."
+    error <- "Use {.fn elicitr::cont_get_data} with {.arg var} = \\
+                {.val {var}} to see the data in the \\
+                {.help elicitr::elic_cont} object."
+    info <- "If the resulting data is also only NA, review raw data. \\
+             Otherwise review the object parsed in {.arg x}}."
+    fn <- as.list(sys.call())[[1]]
+    cli::cli_abort(c(text,
+                     "x" = error,
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."))
   }
 
   p <- make_base_plot(type, x, x_var, line_width, beeswarm_cex, beeswarm_corral)
@@ -260,9 +269,12 @@ check_type <- function(type, x, var, group) {
   if (!type %in% c("density", "violin", "beeswarm")) {
     info <- "Available types are {.val beeswarm}, {.val violin} and \\
     {.val density}."
+    fn <- as.list(sys.call(-1))[[1]]
     cli::cli_abort(c("Invalid value for argument {.arg type}:",
                      "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info))
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
   }
 
   same_vars <- x[x[["var"]] == var, ] |>

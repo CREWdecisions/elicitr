@@ -5,7 +5,8 @@
     Condition
       Error in `cont_get_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be an object of class <elic_cont> and not of class <character>.
+      x Argument `x` must be a `?elicitr::elic_cont()` object with metadata and data loaded inside.
+        `x` should be of class <elic_cont> and not of class <character>.
       i See `elicitr::cont_get_data()`.
 
 ---
@@ -15,7 +16,7 @@
     Condition
       Error in `cont_get_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_get_data()`.
 
 ---
@@ -34,7 +35,8 @@
       Error in `cont_get_data()`:
       ! Invalid value for `var`:
       x Variable "var5" not present in the <elic_cont> object.
-      i Available variables are "var1", "var2", and "var3".
+      i Available `var_names` are "var1", "var2", and "var3".
+        See `elicitr::cont_get_data()` for more information.
 
 ---
 
@@ -44,7 +46,8 @@
       Error in `cont_get_data()`:
       ! Invalid value for `var`:
       x Variables "var5" and "var7" not present in the <elic_cont> object.
-      i Available variables are "var1", "var2", and "var3".
+      i Available `var_names` are "var1", "var2", and "var3".
+        See `elicitr::cont_get_data()` for more information.
 
 ---
 
@@ -95,6 +98,7 @@
       ! Invalid value for `var_types`:
       x "r" not present in the <elic_cont> object.
       i Available var types: "Z", "N", and "p".
+        See `elicitr::cont_get_data()` for more information.
 
 ---
 
@@ -105,6 +109,7 @@
       ! Invalid value for `var_types`:
       x "r" and "R" not present in the <elic_cont> object.
       i Available var types: "Z", "N", and "p".
+        See `elicitr::cont_get_data()` for more information.
 
 ---
 
@@ -115,6 +120,7 @@
       ! Invalid value for `elic_types`:
       x "3p" not present in the <elic_cont> object.
       i Available elic types: "1p" and "4p".
+        See `elicitr::cont_get_data()` for more information.
 
 ---
 
@@ -125,6 +131,7 @@
       ! Invalid value for `elic_types`:
       x "3p" and "4p" not present in the <elic_cont> object.
       i Available elic types: "1p".
+        See `elicitr::cont_get_data()` for more information.
 
 # Warnings
 

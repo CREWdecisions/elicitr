@@ -70,7 +70,7 @@ summary.cat_sample <- function(object,
     dplyr::select("category", everything(), -"observation")
 
   na_option <- NULL
-  for (i in colnames(object)[-1]){
+  for (i in colnames(object)[-1]) {
     na_opt <- ifelse(all(is.na(object[[i]])), i, NA)
     na_option <- c(na_option, na_opt)
   }
@@ -80,12 +80,18 @@ summary.cat_sample <- function(object,
 
   if (length(na_option) != 0) {
     if (ncol(object) == 1) {
-      cli::cli_abort(c("No estimate provided",
-                       "x" = "the provided data only holds NAs",
-                       "i" = "No data provided in {.val {na_option}}."))
+
+      text <- "The data in {.val {na_option}} only holds NAs."
+      error <- "Use {.fn elicitr::cont_get_data} to see the data in the \\
+                {.help elicitr::elic_cat} object."
+      cli::cli_abort(c(text,
+                       "x" = error,
+                       "i" = "If the resulting data is also only NA, review \\
+                              raw data. Otherwise review the object parsed in \\
+                              {.arg object}."))
     } else {
-      cli::cli_alert("Results were dropped for {.val {na_option}} as no \\
-                          estimate was provided.")
+      cli::cli_alert("Results were dropped for {.val {na_option}} \\
+                      as no estimate was provided.")
     }
   }
 

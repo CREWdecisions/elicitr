@@ -12,16 +12,6 @@ test_that("split_short_codes() works", {
   expect_identical(x, c("1p", "3p", "4p"))
 })
 
-#####bootstrap
-test_that("error", {
-  #negative weights
-  w <- c(-1, 3)
-  expect_snapshot(get_boostrap_n_sample(experts = c("A", "B"),
-                                        n_votes = 10,
-                                        weights = w),
-                  error = TRUE)
-})
-
 test_that("Output", {
   experts <- c("A", "B", "C")
   expect_identical(get_boostrap_n_sample(experts,

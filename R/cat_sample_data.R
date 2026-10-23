@@ -84,7 +84,7 @@ cat_sample_data <- function(x,
                             verbose = TRUE) {
 
   # Check if the object is of class elic_cat
-  check_elic_obj(x, type = "cat")
+  check_elic_obj(x, type = "cat", metadata = FALSE)
 
   # Check if method is a character string of length 1
   check_length(method, "method", 1)

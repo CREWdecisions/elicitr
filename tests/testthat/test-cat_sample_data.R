@@ -20,7 +20,9 @@ test_that("Errors", {
                   error = TRUE)
 
   # n_votes is negative
-  expect_snapshot(cat_sample_data(obj, round = 1, var = "var1",
+  expect_snapshot(cat_sample_data(obj,
+                                  method = "unweighted",
+                                  topic = "topic_1",
                                   n_votes = -1),
                   error = TRUE)
 

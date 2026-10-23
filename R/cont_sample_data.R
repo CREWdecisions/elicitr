@@ -64,6 +64,16 @@
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
 #'
+#' For probability variables (`var_types = "p"`), confidence scaling may
+#' extend the estimated minimum and maximum value below zero or above one.
+#' To keep the interval within the valid probability range, any scaled minimum
+#' below zero is set to zero, and any scaled maximum above one is set to one.
+#' A warning is issued when this adjustment is needed.
+#'
+#' The best estimate and the original responses stored in the elicitation object
+#' remain unchanged. The adjusted bounds are used to define the PERT
+#' distribution when sampling and the displayed intervals when plotting.
+#'
 #' @details
 #' Weighted allocations distribute the full budget among answering experts.
 #' Thus, the number of row in the sampled data will n_experts * n_votes. If
@@ -115,7 +125,7 @@ cont_sample_data <- function(x,
                              verbose = TRUE) {
 
   # # Check if the object is of class elic_cont
-  check_elic_obj(x, type = "cont")
+  check_elic_obj(x, type = "cont", metadata = FALSE)
 
   # Check round
   check_round(round)
@@ -167,6 +177,12 @@ cont_sample_data <- function(x,
 
     n_samp <- get_boostrap_n_sample(experts, n_votes, weights,
                                     elic_type, data)
+    if (elic_type == "4p" && !is.null(weights)) {
+      cli::cli_alert_info("Weights provided in argument {.arg weights} used \\
+                           instead of confidence estimates to calculate the \\
+                           number of vote attributed to each expert in \\
+                           variable {.val {v}}.")
+    }
     estimates <- get_est(data, v, n_experts, var_type,
                          elic_type, verbose, scale_conf)
 
@@ -249,13 +265,18 @@ get_est <- function(data, v, n_experts, var_type,
 
         data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
         data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
+        fn <- as.list(sys.call(-1))[[1]]
         warn <- "Some values have been constrained to be between {.val {0}} \\
                  and {.val {1}}."
-        cli::cli_warn(c("!" = warn))
+        cli::cli_warn(c("!" = warn,
+                        " " = "See the {.field scale_conf} section in the \\
+                               help page for {.fn elicitr::{fn}} for more \\
+                               information."))
       }
 
       if (verbose) {
-        cli::cli_alert_success("Rescaled min and max for variable {.val {v}}.")
+        cli::cli_alert_success("Rescaled min and max based on confidence \\
+                                estimates for variable {.val {v}}.")
       }
     }
 

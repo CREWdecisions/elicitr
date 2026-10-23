@@ -6,13 +6,15 @@
 #'
 #' @param x the object to be checked.
 #' @param type character, either _cont_ or _cat_.
+#' @param metadata logical, whether x should be a metadata or a loaded metadata.
 #'
 #' @return An error if `x` is not and [elic_cont]or an [elic_cat] object.
 #' @noRd
 #'
 #' @author Sergio Vignali
 check_elic_obj <- function(x,
-                           type) {
+                           type,
+                           metadata) {
 
   cl <- paste0("elic_", type)
 
@@ -20,11 +22,22 @@ check_elic_obj <- function(x,
 
     fn <- as.list(sys.call(-1))[[1]]
 
-    error <- "Argument {.arg x} must be an object of class {.cls {cl}} and \\
-              not of class {.cls {class(x)}}."
+    if (metadata) {
+      fn_start <- paste0(type, "_start")
+      error <- "{.help elicitr::{cl}} object loaded with metadata with
+                {.fn elicitr::{fn_start}}."
+    } else {
+      error <- "{.help elicitr::{cl}} object with metadata and data loaded
+                inside."
+    }
+
+    error <- paste0("Argument {.arg x} must be a ", error)
+    error2 <- "{.arg x} should be of class {.cls {cl}} and not of class \\
+               {.cls {class(x)}}."
 
     cli::cli_abort(c("Invalid value for {.arg x}:",
                      "x" = error,
+                     " " = error2,
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
@@ -41,23 +54,17 @@ check_elic_obj <- function(x,
 #'
 #' @author Sergio Vignali and Maude Vernet
 check_round <- function(x) {
-  if (length(x) > 1) {
+  if (length(x) > 1 || !x %in% c(1, 2)) {
 
     fn <- as.list(sys.call(-1))[[1]]
 
     cli::cli_abort(c("Incorrect value for {.arg round}:",
-                     "x" = "{.arg round} can only be {.val {1}} or {.val {2}}.",
+                     "x" = "Argument {.arg round} can only be equal to \\
+                            {.val {1}} (for {.val Round 1}) or to {.val {2}} \\
+                            (for {.val Round 2}).",
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
 
-  } else if (!x %in% c(1, 2)) {
-
-    fn <- as.list(sys.call(-1))[[1]]
-
-    cli::cli_abort(c("Incorrect value for {.arg round}:",
-                     "x" = "{.arg round} can only be {.val {1}} or {.val {2}}.",
-                     "i" = "See {.fn elicitr::{fn}}."),
-                   call = rlang::caller_env())
   }
 }
 
@@ -232,21 +239,23 @@ check_columns <- function(x, y, type) {
               {.val {y}} are expected."
     if (type == "cont") {
       info <- "The first column in the data should be the expert name, \\
-      followed by the elicited variables. One-point elicitation variables \\
-      should each have 1 column, three-point elicitation variables should \\
-      each have 2 columns and four-point elicitation variables should each \\
-      have 4 columns."
+      followed by the elicited variables as:"
+      info2 <- "One-point elicitation variables should each have 1 column, \\
+      three-point elicitation variables should each have 2 columns and \\
+      four-point elicitation variables should each have 4 columns."
     } else if (type == "cat") {
-      info <-  "The columns in the data should be (1) the expert names, (2) \\
-    the options, (3) the categories, (4) the confidence and (5) the \\
-    estimates."
+      info <-  "The columns in the data should be:"
+      info2 <- "(1) the expert names, (2) the options, (3) the categories, \\
+      (4) the confidence and (5) the estimates."
     }
 
-    info <- paste0(info, " See Data format in {.fn elicitr::{fn}}.")
+    info3 <- "See Data format in {.fn elicitr::{fn}}."
 
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
-                     "i" = info),
+                     " " = info,
+                     " " = info2,
+                     "i" = info3),
                    call = rlang::caller_env())
   }
 }
@@ -323,11 +332,14 @@ check_value_in_element <- function(x,
 
   if (length(diff) > 0) {
 
+    fn <- as.list(sys.call(-1))[[1]]
+
     error <- "{.val {diff}} not present in the {.cls {class(x)}} object."
     info <- "Available {info_element}: {.val {values}}."
     cli::cli_abort(c("Invalid value for {.arg {element}}:",
                      "x" = error,
-                     "i" = info),
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."),
                    call = rlang::caller_env())
   }
 }
@@ -382,11 +394,14 @@ check_option <- function(x, option) {
   diff <- setdiff(option, available_options)
 
   if (length(diff) > 0) {
+    fn <- as.list(sys.call(-1))[[1]]
     error <- "{cli::qty(diff)} Option{?s} {.val {diff}} not available in \\
                the sampled data."
-    info <- "Available option{?s}: {.val {available_options}}."
+    info <- "See {.fn elicitr::{fn}} for more information."
     cli::cli_abort(c("Invalid value for argument {.arg option}:",
                      "x" = error,
+                     " " = "{cli::qty(available_options)} Available \\
+                     option{?s}: {.val {available_options}}.",
                      "i" = info),
                    call = rlang::caller_env())
   }
@@ -402,7 +417,7 @@ check_option <- function(x, option) {
 #' @returns An error if the weights are not 1 or a vector of length `n`.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_weights <- function(x, n) {
 
 
@@ -422,7 +437,8 @@ check_weights <- function(x, n) {
   if (anyNA(x)) {
     fn <- as.list(sys.call(-1))[[1]]
 
-    error <- "Weights cannot be {.val NA}."
+    error <- "Weights cannot be {.val NA}. Set weights to default (NULL) to \\
+              avoid using this argument."
 
     cli::cli_abort(c("Invalid value for argument {.arg weights:}",
                      "x" = error,
@@ -461,7 +477,7 @@ check_weights <- function(x, n) {
 #' @returns An error if the variable is not available in the sampled data.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali, Maude Vernet
 check_var_in_sample <- function(x, var) {
 
   vars <- unique(x[["var"]])
@@ -470,11 +486,14 @@ check_var_in_sample <- function(x, var) {
 
     diff <- setdiff(var, vars)
 
+    fn <- as.list(sys.call(-1))[[1]]
     error <- "Variable{?s} {.val {diff}} {?is/are} not available in the \\
               sampled data."
     cli::cli_abort(c("Invalid value for argument {.arg var}:",
                      "x" = error,
-                     "i" = "Available variable{?s} {?is/are} {.val {vars}}."))
+                     "i" = "Available variable{?s} {?is/are} {.val {vars}}.",
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
   }
 }
 
@@ -551,7 +570,10 @@ read_file <- function(data_source,
 
   # Check if file exists
   if (!file.exists(data_source)) {
-    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!"),
+
+    fn <- as.list(sys.call(-2))[[1]]
+    cli::cli_abort(c("x" = "File {.file {data_source}} doesn't exist!",
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
                    call = rlang::caller_env(n = 2))
   }
 
@@ -784,8 +806,6 @@ get_boostrap_n_sample <- function(experts,
     } else {
       weights[position] <- NA
       weights_conf <- weights
-      cli::cli_alert_info("Provided weights used instead of confidence \\
-                         estimates")
     }
   } else if (elic_type %in% c("1p", "3p")) {
     position <- which(is.na(data[, 2]))
@@ -801,10 +821,6 @@ get_boostrap_n_sample <- function(experts,
     weights_conf <- weights
   } else if (elic_type %in% c("unweighted", "other")) {
     weights_conf <- weights
-  }
-
-  if (any(weights_conf < 0, na.rm = TRUE)) {
-    cli::cli_abort("Some weights are negative.")
   }
 
   # if some or all experts don't answer an option
@@ -892,3 +908,69 @@ check_n_votes <- function(n_votes) {
                    call = rlang::caller_env())
   }
 }
+
+# Rename experts----
+
+#' Rename experts
+#' Check if the new names vector is of the correct length
+#' Rename experts in elic_cont object
+#' @param x the object to be plotted
+#' @param data tibble with the elicitation data
+#' @param expert_names character vector with the new names for the experts
+#'
+#' @return the object with renamed experts
+#' @noRd
+#'
+#' @author Maude Vernet
+cont_rename_experts <- function(x,
+                                data,
+                                expert_names) {
+
+  n_experts <- length(unique(data[["id"]]))
+
+  if (length(expert_names) != n_experts) {
+    fn <- as.list(sys.call(-1))[[1]]
+    error <- "You provided {.val {length(expert_names)}} expert names but the \\
+              elicitation process has {.val {n_experts}} experts."
+    cli::cli_abort(c("Incorrect length of {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Provide a vector of length {.val {n_experts}}.",
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (anyDuplicated(expert_names) > 0) {
+    fn <- as.list(sys.call(-1))[[1]]
+    error <- "Multiple experts have the same name in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide unique names for each expert.",
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (any(expert_names == "Group") || any(expert_names == "Truth")) {
+    fn <- as.list(sys.call(-1))[[1]]
+    error <- "The names {.val Group} and {.val Truth} are reserved and cannot \\
+              be used in {.arg expert_names}."
+    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
+                     "x" = error,
+                     "i" = "Please provide different names for the experts.",
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+
+  if (class(x)[1] == "elic_cont") {
+    expert_names <- as.character(expert_names)
+    data[["id"]] <- expert_names
+  }
+
+  if (class(data)[1] == "cont_sample") {
+    names(expert_names) <- unique(data$id)
+    data$id <- expert_names[data$id]
+    data
+  }
+
+  data
+}
+

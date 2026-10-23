@@ -28,13 +28,13 @@
 #'
 #' Valid short codes are:
 #'
-#' * `Z`: _integers_, when the estimate must be an integer number in the
+#' * `Z`: _round numbers_, when the estimate must be an round number in the
 #' interval (-Inf, Inf).
 #'
-#' * `N`: _positive integers_, when the estimate must be an integer number in
+#' * `N`: _positive round numbers_, when the estimate must be a round number in
 #' the interval [0, Inf).
 #'
-#' * `z`: _negative integers_, when the estimate must be an integer number in
+#' * `z`: _negative round numbers_, when the estimate must be a round number in
 #' the interval (-Inf, 0).
 #'
 #' * `R`: _reals_, when the estimate must be a real number in the interval
@@ -78,9 +78,9 @@
 #'
 #' @examples
 #' # Create the elic_cont object for an elicitation process that estimates 3
-#' # variables, the first for a one point estimation of a positive integer, the
-#' # second for three points estimation of a negative real, and the last for a
-#' # four point estimation of a probability
+#' # variables, the first for a one point estimation of a positive round number,
+#' # the second for three points estimation of a negative real, and the last for
+#' # a four point estimation of a probability
 #' my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 #'                         var_types = "Nrp",
 #'                         elic_types = "134",
@@ -120,9 +120,8 @@ cont_start <- function(var_names,
 
   if (any(grepl("_conf[0-9]+$", var_names))) {
     varname_conf <- var_names[grepl("_conf[0-9]+$", var_names)]
-    pb <- "conf"
 
-    error <- "Variable names cannot contain the characters {.val {pb}} \\
+    error <- "Variable names cannot contain the characters {.val conf} \\
     followed by a number."
     cli::cli_abort(c("Invalid variable name in {.arg var_names}",
                      x = error,

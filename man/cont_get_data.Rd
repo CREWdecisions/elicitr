@@ -14,10 +14,11 @@ cont_get_data(
 )
 }
 \arguments{
-\item{x}{an object of class \link{elic_cont}.}
+\item{x}{an object of class \link{elic_cont} created with
+\link{cont_start}.}
 
-\item{round}{integer indicating if the data belongs to the first or second
-elicitation round.}
+\item{round}{integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -53,11 +54,11 @@ e.g. "pZN".
 
 Valid short codes are:
 \itemize{
-\item \code{Z}: \emph{integers}, when the estimate must be an integer number in the
+\item \code{Z}: \emph{round numbers}, when the estimate must be an round number in the
 interval (-Inf, Inf).
-\item \code{N}: \emph{positive integers}, when the estimate must be an integer number in
+\item \code{N}: \emph{positive round numbers}, when the estimate must be a round number in
 the interval [0, Inf).
-\item \code{z}: \emph{negative integers}, when the estimate must be an integer number in
+\item \code{z}: \emph{negative round numbers}, when the estimate must be a round number in
 the interval (-Inf, 0).
 \item \code{R}: \emph{reals}, when the estimate must be a real number in the interval
 (-Inf, Inf).

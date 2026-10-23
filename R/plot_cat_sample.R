@@ -113,10 +113,12 @@ plot.cat_sample <- function(x,
 
       error <- "The number of colours provided does not match the number \\
                 of categories."
+      fn <- as.list(sys.call())[[1]]
       cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                        "x" = error,
                        "i" = "Please provide a vector with {.val {n_cat}} \\
-                              colours."))
+                              colours.",
+                       " " = "See {.fn elicitr::{fn}} for more information."))
     }
   }
 
@@ -126,10 +128,13 @@ plot.cat_sample <- function(x,
   }
 
   if (all(is.na(x["prob"]))) {
-    info <- "Experts did not provide any estimate."
-    cli::cli_abort(c("All data provided is empty.",
-                     "x" = "Only NA available in the data",
-                     "i" = info))
+    error <- "Use {.fn elicitr::cont_get_data} to see the data in the \\
+                {.help elicitr::elic_cat} object."
+    cli::cli_abort(c("The data in {.val {option}} only holds NAs.",
+                     "x" = error,
+                     "i" = "If the resulting data is also only NA, review \\
+                            raw data. Otherwise review the object parsed in \\
+                            {.arg x}"))
   }
 
   option_na <- x |>
@@ -180,9 +185,11 @@ plot.cat_sample <- function(x,
   } else {
 
     info <- "Available types are {.val beeswarm} and {.val violin}."
+    fn <- as.list(sys.call())[[1]]
     cli::cli_abort(c("Invalid value for argument {.arg type}:",
                      "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info))
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."))
   }
 
   p <- p +

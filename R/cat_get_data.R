@@ -49,7 +49,7 @@ cat_get_data <- function(x,
                          option = "all") {
 
   # Check if the object is of class elic_cat
-  check_elic_obj(x, type = "cat")
+  check_elic_obj(x, type = "cat", metadata = FALSE)
 
   # Check if topic is a character string of length 1
   check_is_character(topic, "topic")

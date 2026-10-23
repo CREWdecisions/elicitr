@@ -5,7 +5,8 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be an object of class <elic_cat> and not of class <character>.
+      x Argument `x` must be a `?elicitr::elic_cat()` object loaded with metadata with `elicitr::cat_start()`.
+        `x` should be of class <elic_cat> and not of class <character>.
       i See `elicitr::cat_add_data()`.
 
 ---
@@ -15,6 +16,7 @@
     Condition
       Error in `cat_add_data()`:
       x File 'test.csv' doesn't exist!
+      i See `elicitr::cat_add_data()` for more information.
 
 ---
 
@@ -55,6 +57,7 @@
       ! Invalid value for `topic`:
       x "topic_3" not present in the <elic_cat> object.
       i Available topics: "topic_1" and "topic_2".
+        See `elicitr::cat_add_data()` for more information.
 
 ---
 
@@ -64,7 +67,9 @@
       Error in `cat_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
-      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
+        The columns in the data should be:
+        (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
+      i See Data format in `elicitr::cat_add_data()`.
 
 ---
 
@@ -203,32 +208,40 @@
     Code
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
-      Error in `check_cat_values()`:
-      ! Estimates must be nonnegative probabilities or percentages.
+      Error in `cat_add_data()`:
+      ! Invalid estimates
+      x Estimates must be nonnegative probabilities or percentages.
+      i See `elicitr::cat_add_data()` for more information.
 
 ---
 
     Code
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
-      Error in `check_cat_values()`:
-      ! Estimates must be nonnegative probabilities or percentages.
+      Error in `cat_add_data()`:
+      ! Invalid estimates
+      x Estimates must be nonnegative probabilities or percentages.
+      i See `elicitr::cat_add_data()` for more information.
 
 ---
 
     Code
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
-      Error in `check_cat_values()`:
-      ! Estimates must be nonnegative probabilities or percentages.
+      Error in `cat_add_data()`:
+      ! Invalid estimates
+      x Estimates must be nonnegative probabilities or percentages.
+      i See `elicitr::cat_add_data()` for more information.
 
 ---
 
     Code
       cat_add_data(x, data_source = y, topic = "topic_1")
     Condition
-      Error in `check_cat_values()`:
-      ! Confidence must be greater than 50 and at most 100.
+      Error in `cat_add_data()`:
+      ! Invalid confidence values
+      x Confidence must be greater than 50 and at most 100.
+      i See `elicitr::cat_add_data()` for more information.
 
 ---
 
@@ -248,7 +261,9 @@
       Error in `cat_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
-      i The columns in the data should be (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates. See Data format in `elicitr::cat_add_data()`.
+        The columns in the data should be:
+        (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
+      i See Data format in `elicitr::cat_add_data()`.
 
 # Accepts all estimates summing to 100
 
@@ -288,10 +303,10 @@
     Code
       cat_add_data(x, data_source = z, topic = "topic_1")
     Condition
-      Error:
+      Error in `cat_add_data()`:
       ! Invalid raw data:
       x Expert 5ac97e0 gave estimates for only part of an option.
-      i Check raw data.
+      i Check raw data. See `elicitr::cat_add_data()` for more information.
 
 ---
 
@@ -310,10 +325,10 @@
     Message
       i Estimates sum to 1. Rescaling to 100.
     Condition
-      Error:
+      Error in `cat_add_data()`:
       ! Invalid value for `confidence` or `estimate`:
       x Expert "5ac97e0" reported NA values for only part of an estimation.
-      i Check raw data.
+      i Check raw data. See `elicitr::cat_add_data()` for more information.
 
 ---
 
@@ -322,10 +337,10 @@
     Message
       i Estimates sum to 1. Rescaling to 100.
     Condition
-      Error:
+      Error in `cat_add_data()`:
       ! Invalid value for `confidence` or `estimate`:
       x Expert "5ac97e0" reported NA values for only part of an estimation.
-      i Check raw data.
+      i Check raw data. See `elicitr::cat_add_data()` for more information.
 
 ---
 

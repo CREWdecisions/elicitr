@@ -2,10 +2,22 @@
 % Please edit documentation in R/elic_cont.R
 \name{elic_cont}
 \alias{elic_cont}
-\title{elic_cont class}
+\title{The elic_cont class: storing continuous elicitation metadata and data}
 \description{
-The \code{elic_cont} class is a container for the elicitation data. It is used to
-store the data collected during the elicitation process and their matadata.
+An \code{elic_cont} object is an object of class \code{elic_cont}. It keeps the
+information about your elicitation and the experts' responses together. It
+acts as a folder for one elicitation project.
+}
+\details{
+The object holds two kinds of information:
+\itemize{
+\item *\emph{Metadata} describe the elicitation: what the experts are estimating (the
+names of the variables), the expected type of variables (which values are
+expected), the elicitation type of each variable (one-, three- or four-point
+elicitations) and how many experts are expected to participate.
+\item *\emph{Data} are the responses provided by the experts, stored separately in a
+maximum of two elicitation rounds (round 1 and round 2).
+}
 }
 \section{Object elements}{
 
@@ -26,5 +38,51 @@ respectively.
 }
 
 Moreover, the object has a \code{title} attribute that binds a name to the object.
+}
+
+\section{Creating the object and adding responses}{
+
+
+First, use \link[=cont_start]{cont_start()} to create the object by
+providing the metadata (aka the description of expected responses). Once this
+is done, the object describes your elicitation but contains no responses.
+Then use \link[=cont_add_data]{cont_add_data()} to add the responses for
+the first round. If your elicitation includes a second round, add those
+responses to the same object with another call to
+\link[=cont_add_data]{cont_add_data()}.
+
+Save the result of each call using \verb{<-}. For example,
+\code{my_elicitation <- cont_add_data(my_elicitation, responses, round = 1)}
+updates the round \code{1} of the \code{elic_cont} object called \code{my_elicitation} with
+the responses stored in the data file \code{responses}. Use these functions to
+create and update the object rather than editing its contents manually, so
+that the package can check the information.
+}
+
+\section{Why keep metadata and data together?}{
+
+
+The metadata tell the package what responses are expected for each variable.
+This allows \link{elicitr} to check whether data subsequently added in
+the \code{elic_cont} object fit the expectations. This way, data verification
+happens automatically instead of having to be done manually by the user.
+
+For example, if a variable is defined in the metadata as a probability
+four-point elicitation, \link{elicitr} knows that estimates must fall
+between zero for that variable and that minimum, maximum, best-guess and
+confidence estimates must be provided. \link{elicitr} will check that
+data loaded in the \code{elic_cont} object fit that description and provide errors
+or warnings if that is not the case.
+
+Keeping this information together means you do not need to enter it again
+for every analysis. You can pass the same object to
+\link[=cont_get_data]{cont_get_data()},
+\link[=plot.elic_cont]{plot()},
+\link[=cont_sample_data]{cont_sample_data()},
+\link[=cont_summary]{cont_summary()}, and
+\link[=plot.cont_sample]{plot()} to retrieve responses, plot raw data,
+generate samples, summarise results, and create plots. Keeping both rounds in
+the same object also helps you compare responses before and after experts
+have had an opportunity to review feedback and revise their estimates.
 }
 

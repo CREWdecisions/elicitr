@@ -24,22 +24,6 @@
 #' theme.
 #' @inheritParams cont_add_data
 #'
-#' @details
-#' If a 1-point elicitation is plotted, the `group` argument will show the
-#' mean and 2.5th–97.5th percentile interval of expert estimates.
-#'
-#' The `truth` argument is useful when the elicitation process is part of a
-#' workshop and is used for demonstration. In this case the true value is known
-#' and can be added to the plot. This argument must be a list with the following
-#' elements: `min`, `max`, `best`, and `conf`. When `var` refers to a
-#' _one point elicitation_ estimate, only the `best` element is required. When
-#' `var` refers to a  _three points elicitation_.estimate, the `min` and `max`
-#' elements are also required. Finally, when `var` refers to a
-#' _four points elicitation_ estimate, the `conf` element is also required. The
-#' `conf` element is used to rescale the `min` and `max` values.
-#'
-#' If a `theme` is provided, the `family` argument is ignored.
-#'
 #' @section scale_conf:
 #'
 #' If the variable plotted is the result of a four points elicitation where
@@ -56,6 +40,32 @@
 #'
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
+#'
+#' For probability variables (`var_types = "p"`), confidence scaling may
+#' extend the estimated minimum and maximum value below zero or above one.
+#' To keep the interval within the valid probability range, any scaled minimum
+#' below zero is set to zero, and any scaled maximum above one is set to one.
+#' A warning is issued when this adjustment is needed.
+#'
+#' The best estimate and the original responses stored in the elicitation object
+#' remain unchanged. The adjusted bounds are used to define the displayed
+#' intervals when plotting.
+#'
+#' @details
+#' If a one-point elicitation is plotted, the `group` argument will show the
+#' mean and 2.5th–97.5th percentile interval of expert estimates.
+#'
+#' The `truth` argument is useful when the elicitation process is part of a
+#' workshop and is used for demonstration. In this case the true value is known
+#' and can be added to the plot. This argument must be a list with the following
+#' elements: `min`, `max`, `best`, and `conf`. When `var` refers to a
+#' _one point elicitation_ estimate, only the `best` element is required. When
+#' `var` refers to a  _three points elicitation_.estimate, the `min` and `max`
+#' elements are also required. Finally, when `var` refers to a
+#' _four points elicitation_ estimate, the `conf` element is also required. The
+#' `conf` element is used to rescale the `min` and `max` values.
+#'
+#' If a `theme` is provided, the `family` argument is ignored.
 #'
 #' @return A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
@@ -170,13 +180,18 @@ plot.elic_cont <- function(x,
 
       data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
       data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
+      fn <- as.list(sys.call())[[1]]
       warn <- "Some values have been constrained to be between {.val {0}} \\
                  and {.val {1}}."
-      cli::cli_warn(c("!" = warn))
+      cli::cli_warn(c("!" = warn,
+                      " " = "See the {.field scale_conf} section in the \\
+                             help page for {.fn elicitr::{fn}} for more \\
+                             information."))
     }
 
     if (verbose) {
-      cli::cli_alert_success("Rescaled min and max")
+      cli::cli_alert_success("Rescaled min and max based on confidence \\
+                              estimates")
     }
   }
   if (elic_type %in% c("3p", "4p") && group) {
@@ -413,7 +428,7 @@ check_truth <- function(x, elic_type, miss_conf) {
     cli::cli_abort(c("Incorrect value for {.arg truth}:",
                      "x" = error,
                      "i" = info),
-                   call = rlang::caller_env())
+                   call = rlang::caller_env(n = 2))
   }
 }
 
@@ -434,65 +449,6 @@ cont_theme <- function() {
                  panel.grid.major.y = ggplot2::element_blank(),
                  axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
                  legend.position = "none")
-}
-
-# Rename experts----
-
-#' Rename experts
-#' Check if the new names vector is of the correct length
-#' Rename experts in elic_cont object
-#' @param x the object to be plotted
-#' @param data tibble with the elicitation data
-#' @param expert_names character vector with the new names for the experts
-#'
-#' @return the object with renamed experts
-#' @noRd
-#'
-#' @author Maude Vernet
-cont_rename_experts <- function(x,
-                                data,
-                                expert_names) {
-
-  n_experts <- length(unique(data[["id"]]))
-
-  if (length(expert_names) != n_experts) {
-    error <- "You provided {.val {length(expert_names)}} expert names but the \\
-              elicitation process has {.val {n_experts}} experts."
-    cli::cli_abort(c("Incorrect length of {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Provide a vector of length {.val {n_experts}}."),
-                   call = rlang::caller_env())
-  }
-
-  if (anyDuplicated(expert_names) > 0) {
-    error <- "Multiple experts have the same name in {.arg expert_names}."
-    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Please provide unique names for each expert."),
-                   call = rlang::caller_env())
-  }
-
-  if (any(expert_names == "Group") || any(expert_names == "Truth")) {
-    error <- "The names {.val Group} and {.val Truth} are reserved and cannot \\
-              be used in {.arg expert_names}."
-    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Please provide different names for the experts."),
-                   call = rlang::caller_env())
-  }
-
-  if (class(x)[1] == "elic_cont") {
-    expert_names <- as.character(expert_names)
-    data[["id"]] <- expert_names
-  }
-
-  if (class(data)[1] == "cont_sample") {
-    names(expert_names) <- unique(data$id)
-    data$id <- expert_names[data$id]
-    data
-  }
-
-  data
 }
 
 #' Check if rescaling needed and if NA present

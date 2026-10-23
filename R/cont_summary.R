@@ -67,10 +67,16 @@ summary.cont_sample <- function(object,
       cli::cli_alert("Results were dropped for {.val {na_vars}} as no \\
                      estimate was provided.")
     } else {
-      info <- "No data provided in {.val {na_vars}}."
-      cli::cli_abort(c("No estimate provided",
-                       "x" = "the provided data only holds NAs",
-                       "i" = info))
+      fn <- as.list(sys.call())[[1]]
+      text <- "{.val {na_vars}} only hold{?s} NAs."
+      error <- "Use {.fn elicitr::cont_get_data} with {.arg var} = \\
+                {.val {na_vars}} to see the data in the \\
+                {.help elicitr::elic_cont} object."
+      cli::cli_abort(c(text,
+                       "x" = error,
+                       "i" = "If the resulting data is also only NA, review \\
+                              raw data. Otherwise review the object \\
+                              {.val {substitute(object)}}."))
     }
   }
 

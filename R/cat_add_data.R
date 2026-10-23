@@ -188,7 +188,7 @@ cat_add_data <- function(x,
                          anonymise = TRUE) {
 
   # Check if the object is of class elic_cat
-  check_elic_obj(x, type = "cat")
+  check_elic_obj(x, type = "cat", metadata = TRUE)
 
   # Check if topic is a character string of length 1
   check_is_character(topic, "topic")
@@ -434,10 +434,13 @@ check_sum_1 <- function(x) {
     error <- "Expert {.val {sums[partial_missing, ]$id[1]}} gave estimates \\
     for only part of an option."
 
+    fn <- as.list(sys.call(-1))[[1]]
+
     cli::cli_abort(c("Invalid raw data:",
                      "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+                     "i" = "Check raw data. See {.fn elicitr::{fn}} for more \\
+                     information."),
+                   call = rlang::caller_env())
   }
 
   tol <- 1.5e-8
@@ -532,10 +535,13 @@ check_na <- function(x) {
     error <- "Expert {.val {unique(x$id[which(mismatch)])}} reported NA \\
               values for only part of an estimation."
 
+    fn <- as.list(sys.call(-1))[[1]]
+
     cli::cli_abort(c("Invalid value for {.arg confidence} or {.arg estimate}:",
                      "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+                     "i" = "Check raw data. See {.fn elicitr::{fn}} for more \\
+                     information."),
+                   call = rlang::caller_env())
   }
 }
 
@@ -559,15 +565,23 @@ check_cat_values <- function(data) {
   estimates <- estimates[!is.na(estimates)]
   confidence <- confidence[!is.na(confidence)]
 
+  fn <- as.list(sys.call(-1))[[1]]
   if (any(estimates < 0 |
             estimates > 100)) {
-    cli::cli_abort("Estimates must be nonnegative probabilities or \\
-                   percentages.")
+    cli::cli_abort(c("Invalid estimates",
+                     "x" = "Estimates must be nonnegative probabilities or \\
+                   percentages.",
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
   }
 
   if (any(!is.finite(confidence) |
             confidence <= 50 |
             confidence > 100)) {
-    cli::cli_abort("Confidence must be greater than 50 and at most 100.")
+    cli::cli_abort(c("Invalid confidence values",
+                     "x" = "Confidence must be greater than 50 and at most \\
+                     100.",
+                     "i" = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
   }
 }

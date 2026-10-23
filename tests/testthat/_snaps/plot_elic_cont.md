@@ -5,7 +5,7 @@
     Condition
       Error in `plot()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::plot.elic_cont()`.
 
 ---
@@ -33,7 +33,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = 0.8)
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is of class <numeric> but it should be a named <list>.
       i See `elicitr::plot.elic_cont()`.
@@ -43,7 +43,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is a list with 2 elements but it should have only 1 element named "best".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -53,7 +53,7 @@
     Code
       plot(obj, round = 1, var = "var1", truth = list(beast = 0.8))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x The name of the element in `truth` should be "best" and not "beast".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -63,7 +63,7 @@
     Code
       plot(obj, round = 2, var = "var2", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is a list with 2 elements but should have 3 elements named "min", "max" and "best".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -73,7 +73,7 @@
     Code
       plot(obj, round = 2, var = "var2", truth = list(min = 0.7, beast = 0.8, max = 0.9))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x The name of the elements in `truth` should be "min", "max", and "best" and not "min", "beast", and "max".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -83,7 +83,7 @@
     Code
       plot(obj, round = 2, var = "var3", truth = list(min = 0.7, max = 0.9))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x Argument `truth` is a list with 2 elements but should have 3 or 4 elements named "min", "max", "best" and optionally "conf".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -94,7 +94,7 @@
       plot(obj, round = 2, var = "var3", truth = list(min = 0.7, beast = 0.8, max = 0.9,
         conf = 100))
     Condition
-      Error in `check_grouptruth()`:
+      Error in `plot()`:
       ! Incorrect value for `truth`:
       x The name of the elements in `truth` should be "min", "max", "best", and optionally "conf" and not "min", "beast", "max", and "conf".
       i See Details in `elicitr::plot.elic_cont()`.
@@ -109,6 +109,7 @@
       ! Incorrect length of `expert_names`:
       x You provided 5 expert names but the elicitation process has 6 experts.
       i Provide a vector of length 6.
+        See `elicitr::plot.elic_cont()` for more information.
 
 ---
 
@@ -119,6 +120,7 @@
       ! Invalid value for `expert_names`:
       x Multiple experts have the same name in `expert_names`.
       i Please provide unique names for each expert.
+        See `elicitr::plot.elic_cont()` for more information.
 
 ---
 
@@ -130,6 +132,7 @@
       ! Invalid value for `expert_names`:
       x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
       i Please provide different names for the experts.
+        See `elicitr::plot.elic_cont()` for more information.
 
 ---
 
@@ -141,6 +144,7 @@
       ! Invalid value for `expert_names`:
       x The names "Group" and "Truth" are reserved and cannot be used in `expert_names`.
       i Please provide different names for the experts.
+        See `elicitr::plot.elic_cont()` for more information.
 
 # Warnings
 
@@ -149,13 +153,14 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::plot.elic_cont()` for more information.
 
 # Info
 
     Code
       p <- plot(obj, round = 2, var = "var3")
     Message
-      v Rescaled min and max
+      v Rescaled min and max based on confidence estimates
 
 # NAs are discarded correctly
 
@@ -174,4 +179,5 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::plot.elic_cont()` for more information.
 

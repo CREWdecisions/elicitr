@@ -68,7 +68,7 @@ cont_get_data <- function(x,
                           var_types = "all",
                           elic_types = "all") {
 
-  check_elic_obj(x, type = "cont")
+  check_elic_obj(x, type = "cont", metadata = FALSE)
   check_round(round)
   check_var(x, var)
 
@@ -134,12 +134,15 @@ check_var <- function(x, var) {
 
   vars <- x[["var_names"]]
   diff <- setdiff(var, c(vars, "all"))
+  fn <- as.list(sys.call(-1))[[1]]
 
   if (length(diff) > 0) {
     cli::cli_abort(c("Invalid value for {.arg var}:",
                      "x" = "Variable{?s} {.val {diff}} not present in the \\
                             {.cls elic_cont} object.",
-                     "i" = "Available variable{?s} {?is/are} {.val {vars}}."),
+                     "i" = "Available {.arg var_names} {?is/are} \\
+                            {.val {vars}}.",
+                     " " = "See {.fn elicitr::{fn}} for more information."),
                    call = rlang::caller_env())
   }
 }
