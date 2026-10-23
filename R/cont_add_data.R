@@ -5,106 +5,128 @@ var_labels <- list("1p" = "best",
 
 #' Add data
 #'
-#' @description
-#' `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
-#' `cont_add_data()` adds data to an [elic_cont] object from different sources.
+#' `cont_add_data()` adds data to an [elic_cont][elicitr::elic_cont] object from
+#' different sources.
 #'
-#' @param x an object of class [elic_cont].
+#' @param x an object of class [elic_cont][elicitr::elic_cont] created with
+#'   [cont_start][elicitr::cont_start].
 #' @param data_source either a [`data.frame`][base::data.frame] or
-#' [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_ file,
-#' or anything accepted by the [read_sheet][googlesheets4::read_sheet] function.
-#' @param round integer indicating if the data belongs to the first or second
-#' elicitation round.
+#'   [`tibble`][tibble::tibble], a string with the path to a _csv_ or _xlsx_
+#'   file, or anything accepted by the [read_sheet][googlesheets4::read_sheet]
+#'   function.
+#' @param round integer (1 or 2) indicating if the data belongs to the first or
+#'   second elicitation round. See section rounds for more detail.
 #' @param ... Unused arguments, included only for future extensions of the
-#' function.
+#'   function.
 #' @param sep character used as field separator, used only when `data_source` is
-#' a path to a _csv_ file.
+#'   a path to a _csv_ file.
 #' @param sheet integer or character to select the sheet. The sheet can be
-#' referenced by its position with a number or by its name with a string. Used
-#' only when `data_source` is a path to a _xlsx_ file or when data are imported
-#' from _Google Sheets_.
+#'   referenced by its position with a number or by its name with a string. Used
+#'   only when `data_source` is a path to a _xlsx_ file or when data are
+#'   imported from _Google Sheets_.
 #' @param overwrite logical, whether to overwrite existing data already added to
-#' the [elic_cont] object.
+#'   the [elic_cont][elicitr::elic_cont] object. See section rounds for more
+#'   detail.
 #' @param verbose logical, if `TRUE` it prints informative messages.
 #' @param anonymise logical, if `TRUE` expert names are anonymised before adding
-#' the data to the [elic_cont] object.
+#'   the data to the [elic_cont][elicitr::elic_cont] object.
+#'
+#' @section Rounds: [elicitr][elicitr] supports two elicitation rounds,
+#'   following approaches such as the Delphi and IDEA protocols. The idea behind
+#'   the two rounds is that experts first provide individual estimates, then
+#'   review feedback or discuss differences before submitting revised estimates
+#'   in a second round. This gives experts an opportunity to reconsider their
+#'   judgments while retaining both sets of responses for comparison.
+#'
+#'   When adding data to the [elic_cont][elicitr::elic_cont] object previously
+#'   created with [cont_start][elicitr::cont_start], [elicitr][elicitr] checks
+#'   that the number of responses matches the declared number of experts. When
+#'   adding round 2, it matches expert IDs across rounds and aligns their
+#'   responses. It also flags inconsistencies in expert IDs and can correct a
+#'   single differing ID as a presumed typo under specific conditions. Data must
+#'   be loaded in round 1 before a second elicitation round can be loaded in
+#'   round 2. To replace existing data, the argument *overwrite* must be set to
+#'   *TRUE* in [cont_add_data][elicitr::cont_add_data].
 #'
 #' @section Data format:
 #'
-#' Data are expected to have the name of the expert always as first column. The
-#' only exception is for data coming from _Google Sheet_ which can have an
-#' additional column with a timestamp. This column is automatically removed
-#' before the data are added to the [elic_cont] object (see "Data cleaning").
-#' After the name there should be one or more blocks which follow the
-#' specifications below:
+#'   Data are expected to have the name of the expert always as first column.
+#'   The only exception is for data coming from _Google Sheet_ which can have an
+#'   additional column with a timestamp. This column is automatically removed
+#'   before the data are added to the [elic_cont][elicitr::elic_cont] object
+#'   (see "Data cleaning"). After the name there should be one or more blocks
+#'   which follow the specifications below:
 #'
-#' _One point elicitation_:
+#'   _One point elicitation_:
 #'
 #' * `var_best`: best estimate for the variable
 #'
-#' _Three points elicitation_:
+#'   _Three points elicitation_:
 #'
 #' * `var_min`: minimum estimate for the variable
 #' * `var_max`: maximum estimate for the variable
 #' * `var_best`: best estimate for the variable
 #'
-#' _Four points elicitation_:
+#'   _Four points elicitation_:
 #'
 #' * `var_min`: minimum estimate for the variable
 #' * `var_max`: maximum estimate for the variable
 #' * `var_best`: best estimate for the variable
 #' * `var_conf`: confidence for the estimate
 #'
-#' The column with names is unique, the other columns are a block and can be
-#' repeated for each variable.
+#'   The column with names is unique, the other columns are a block and can be
+#'   repeated for each variable.
 #'
 #' @section Column and variable names:
 #'
-#' Moreover, the name of the columns is not important, `cont_add_data()` will
-#' overwrite it according to the following convention:
+#'   The name of the columns is not important, as long as they are different.
+#'   `cont_add_data()` will overwrite them according to the convention
+#' *variable_name*_*suffix* with _suffix_ being one of _min_, _max_, _best_, or
+#'   _conf_. The information to build the column names is taken from the
+#'   metadata available in the [elic_cont][elicitr::elic_cont] object.
 #'
-#' *variable_name*_*suffix*
-#'
-#' with _suffix_ being one of _min_, _max_, _best_, or _conf_. The information
-#' to build the column names is taken from the metadata available in the
-#' [elic_cont] object.
-#'
-#' `var_conf`, given as percentage, can be any number in the range (50, 100].
-#' Any value smaller or equal to 50 would imply that the accuracy of the
-#' estimates is only due to chance).
+#'   `var_conf`, given as percentage, can be any number in the range (50, 100].
+#'   This is because any value smaller or equal to 50 would imply that the
+#'   accuracy of the estimates is only due to chance).
 #'
 #' @section NAs:
 #'
-#' It is possible that some experts did not provide estimates for all variables.
-#' In this case, the missing values should be recorded as `NA`. However, experts
-#' should always answer completely or not at all. If estimates are only
-#' partially given for a  variable (example _min_ and _max_ provided but not
-#' _best_ for 3p elicitation), an error is raised.
+#'   Experts can decide to not provide estimates for all variables. In this
+#'   case, the missing values should be recorded as `NA`. However, experts
+#'   should always answer completely to a variable (aka provide values for all
+#'   aspect of the variable (minimum, maximum, best guess and confidence)) or
+#'   not at all. If estimates are only partially given for a  variable (example
+#'   _min_ and _max_ provided but not _best_ for a three-point elicitation), an
+#'   error is raised.
 #'
 #' @section Data cleaning:
 #'
-#' When data are added to the [elic_cont] object, first names are standardised
-#' by converting capital letters to lower case, and by removing any whitespaces
-#' and punctuation. Then, data are anonymised by converting names to short sha1
-#' hashes. In this way, sensible information collected during the elicitation
-#' process never reaches the [elic_cont] object. For three and four points
-#' elicitation processes, the order of the values is checked for each expert. If
-#' it is not _min-max-best_, the values are swapped accordingly and a
-#' informative warn is raised.
+#'   When data are added to the [elic_cont][elicitr::elic_cont] object, first
+#'   names are standardised by converting capital letters to lower case, and by
+#'   removing any whitespaces and punctuation. Then, data are anonymised by
+#'   converting names to short sha1 hashes. In this way, sensible information
+#'   collected during the elicitation process never reaches the
+#'   [elic_cont][elicitr::elic_cont] object. For three and four points
+#'   elicitation processes, the order of the values is checked for each expert.
+#'   If it is not _min-max-best_, the values are swapped accordingly and a
+#'   informative warn is raised.
 #'
-#' If the data are imported from _Google Sheets_, `cont_add_data()` performs
-#' additional data cleaning operations. This is relevant when data are collected
-#' with Google Forms because, for example, there could be multiple submission by
-#' the same expert or a different decimal separator could be used. When data are
-#' collected with Google Form, a column with the date and time is recorded.
-#' First, the function checks for multiple submissions and if present, only the
-#' last submission is retained. Second, the function removes the column with the
-#' timestamp. Then it checks for consistency of the decimal separator, i.e.
-#' commas _,_ are replaced with periods _._. Finally, all columns but the first
-#' one (which contains the names) are forced to numeric.
+#'   If the data are imported from _Google Sheets_, `cont_add_data()` performs
+#'   additional data cleaning operations. This is relevant when data are
+#'   collected with Google Forms because, for example, there could be multiple
+#'   submission by the same expert or a different decimal separator could be
+#'   used. When data are collected with Google Form, a column with the date and
+#'   time is recorded. First, the function checks for multiple submissions and
+#'   if present, only the last submission is retained. Second, the function
+#'   removes the column with the timestamp. Then it checks for consistency of
+#'   the decimal separator, i.e. commas _,_ are replaced with periods _._.
+#'   Finally, all columns but the first one (which contains the names) are
+#'   forced to numeric.
 #'
-#' @return The provided object of class [elic_cont] updated with the data.
+#' @return The provided object of class [elic_cont][elicitr::elic_cont] updated
+#'   with the data.
 #' @export
 #'
 #' @family cont data helpers
@@ -113,9 +135,9 @@ var_labels <- list("1p" = "best",
 #'
 #' @examples
 #' # Create the elic_cont object for an elicitation process that estimates 3
-#' # variables, the first for a one point estimation of a positive integer, the
-#' # second for three points estimation of a negative real, and the last for a
-#' # four point estimation of a probability
+#' # variables, the first for a one point estimation of a positive round number,
+#' # the second for three points estimation of a negative real, and the last for
+#' # a four point estimation of a probability
 #' x <- cont_start(var_names = c("var1", "var2", "var3"),
 #'                 var_types = "ZNp",
 #'                 elic_types = "134",
@@ -167,7 +189,7 @@ cont_add_data <- function(x,
                           verbose = TRUE,
                           anonymise = TRUE) {
 
-  check_elic_obj(x, type = "cont")
+  check_elic_obj(x, type = "cont", metadata = TRUE)
   check_round(round)
 
   # Read data
@@ -212,9 +234,13 @@ cont_add_data <- function(x,
   # Add data to the given round
   obj_data <- x[["data"]][[round]]
   if (round == 2 && is.null(x[["data"]][[1]])) {
-    cli::cli_abort(c("Data for {.val Round 1} are not present:",
-                     "i" = "Data for {.val Round 2} can be added only after \\
-                            those for {.val Round 1}."))
+
+    fn <- as.list(sys.call())[[1]]
+    cli::cli_abort(c("{.val Round 1} is empty.",
+                     "x" = "Wrong value provided for {.arg round}.",
+                     " " = "Data can only be loaded in {.val Round 2} after \\
+                     data was loaded in {.val Round 1}.",
+                     "i" = "See {.fn elicitr::{fn}} for more information."))
   } else if ((!is.null(obj_data) && overwrite) || is.null(obj_data)) {
 
     if (round == 1) {
@@ -230,9 +256,11 @@ cont_add_data <- function(x,
     }
 
   } else {
+    fn <- as.list(sys.call())[[1]]
     cli::cli_abort(c("Data for {.val Round {round}} already present:",
-                     "i" = "Set {.code overwrite = TRUE} if you want to \\
-                            overwrite them."))
+                     "x" = "Set {.code overwrite = TRUE} if you want to \\
+                            overwrite them.",
+                     "i" = "See {.fn elicitr::{fn}} for more information."))
   }
 
   if (verbose) {
@@ -399,7 +427,7 @@ add_nas_rows <- function(data, experts) {
 #'
 #' `omogenise_datasets()` is used to omogenise the data in Round 1 and Round 2.
 #'
-#' @param x [elic_cont] object containing data from Round 1.
+#' @param x [elic_cont][elicitr::elic_cont] object containing data from Round 1.
 #' @param data tibble containing data from Round 2.
 #'
 #' @return A list with two elemnts, one containing the omogenised data for Round
@@ -479,14 +507,24 @@ omogenise_datasets <- function(x, data) {
         list(round_1 = x[["data"]][["round_1"]],
              round_2 = data)
       } else {
+        total_experts <- length(round_1_ids) - r1_nas + n
         text <- "Impossible to combine {.val Round 1} and {.val Round 2} \\
                  datasets:"
         error <- "{.val Round 2} has {.val {n}} {.cls id} not present in \\
-                  {.val Round 1} which has only {.val {r1_nas}} {.val NA} \\
-                  row{?s}."
-        info <- "Check raw data and use {.fn elicitr::cont_add_data} to add \\
-                 the dataset after manual corrections."
-        cli::cli_abort(c(text, "x" = error, "i" = info),
+                  {.val Round 1}."
+        error2 <- "This brings the total number of expert to \\
+                   {.val {total_experts}} while {.arg experts} was set to \\
+                   {.val {experts}} in {.fn elicitr::cont_start}."
+        info <- "Check raw data. Either modify the metadata using \\
+                 {.fn elicitr::cont_start} with {.arg experts} = \\
+                 {.val {total_experts}} and reupload the data for both rounds,"
+        info2 <- "or modify the dataset manually and upload it again with \\
+                  {.fn elicitr::cont_add_data}."
+        cli::cli_abort(c(text,
+                         "x" = error,
+                         " " = error2,
+                         "i" = info,
+                         " " = info2),
                        call = rlang::caller_env())
       }
     }
@@ -521,13 +559,20 @@ omogenise_datasets <- function(x, data) {
       # an error
       if (length(mis_in_round_2) > 0 && n_diff > 0) {
 
+        fn <- as.list(sys.call(-1))[[1]]
+
         missing <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
-        text <- "Dataset for {.val Round 2} has {.val {1}} {.cls id} not \\
-                 present in {.val Round 1} and {.val {n_diff}} entries with \\
-                 NAs. Automatic match between the two datasets is not possible:"
-        error <- "The {.cls id} not present in {.val Round 1} {?is/are} \\
+        text <- "Automatic match between the dataset in {.val Round 1} and \\
+                 {.val Round 2} is not possible:"
+        error <- "{.val Round 2} has {.val {1}} {.cls id} not present in \\
+                  {.val Round 1} and {.val {n_diff}} entries with NAs."
+        error2 <- "The {.cls id} not present in {.val Round 1} {?is/are} \\
                   {.val {missing}}."
-        cli::cli_abort(c(text, "x" = error, "i" = "Check raw data."),
+        cli::cli_abort(c(text,
+                         "x" = error,
+                         " " = error2,
+                         "i" = "Check raw data. See {.fn elicitr::{fn}} for \\
+                                more information."),
                        call = rlang::caller_env())
       }
 
@@ -549,15 +594,20 @@ omogenise_datasets <- function(x, data) {
       list(round_1 = x[["data"]][["round_1"]],
            round_2 = data)
     } else {
+      fn <- as.list(sys.call(-1))[[1]]
       # More than 1 id present in Round 2 is not in Round 1 ==> Raise an error
       missing <- setdiff(data[["id"]], x[["data"]][["round_1"]][["id"]])
-      text <- "Dataset for {.val Round 2} has {.val {n}} {.cls id} not \\
-               present in {.val Round 1}. Automatic match between the two \\
-               datasets is not possible:"
-      error <- "The {.cls id} not present in {.val Round 1} are \\
+      text <- "Automatic match between the dataset in {.val Round 1} and \\
+                 {.val Round 2} is not possible:"
+      error <- "{.val Round 2} has {.val {n}} {.cls id} not present in \\
+                  {.val Round 1}."
+      error2 <- "The {.cls id} not present in {.val Round 1} are \\
                 {.val {missing}}."
-      info <- "Check raw data to identify the mismatch."
-      cli::cli_abort(c(text, "x" = error, "i" = info),
+      cli::cli_abort(c(text,
+                       "x" = error,
+                       " " = error2,
+                       "i" = "Check raw data. See {.fn elicitr::{fn}} for \\
+                                more information."),
                      call = rlang::caller_env())
     }
   }
@@ -588,22 +638,29 @@ check_round_data <- function(data, experts, round) {
     if (nrow(data) > experts) {
 
       # More data than experts ==> Raise error
-      error <- "The dataset for {.val Round {round}} contains \\
+      text <- "The dataset for {.val Round {round}} contains \\
                 {.val {nrow(data)}} rows but expects estimates from \\
                 {.val {experts}} experts."
 
       if (round == 1) {
         info <- "Check raw data or modify the {.cls elic_cont} object by \\
-                 setting the number of experts to {.val {nrow(data)}} with \\
-                 {.code obj$experts = {nrow(data)}}."
+                 setting the number of experts to {.val {nrow(data)}} in \\
+                 {.fn elicitr::cont_start} and load the data again."
       } else {
-        info <- "Check raw data."
+        info <- "Check raw data or modify the {.cls elic_cont} object by \\
+                 setting the number of experts to {.val {nrow(data)}} in \\
+                 {.fn elicitr::cont_start} and load the data for \\
+                 {.val Round 1} and {.val Round 2} again."
       }
 
+      fn <- as.list(sys.call(-1))[[1]]
+
+      info2 <- "See {.fn elicitr::{fn}} for more information."
 
       cli::cli_abort(c("Incorrect number of rows in dataset:",
-                       "x" = error,
-                       "i" = info),
+                       "x" = text,
+                       "i" = info,
+                       " " = info2),
                      call = rlang::caller_env())
     } else {
       # More experts than data ==> raise a warn
@@ -632,9 +689,9 @@ check_round_data <- function(data, experts, round) {
 #' Check data type
 #'
 #' Check if the data types are correct according to the metadata stored in the
-#' [elic_cont] object.
+#' [elic_cont][elicitr::elic_cont] object.
 #'
-#' @param x [elic_cont] object containing the metadata.
+#' @param x [elic_cont][elicitr::elic_cont] object containing the metadata.
 #' @param data [`tibble`][tibble::tibble] with the data to be checked.
 #'
 #' @returns An error if the data types are not correct.
@@ -647,6 +704,10 @@ check_data_types <- function(x, data) {
   var_types <- x[["var_types"]]
   elic_types <- x[["elic_types"]]
 
+  error_all_vartype <- character()
+  error_all_conf <- character()
+  error_all_na <- character()
+  warn_all_na <- character()
   for (i in seq_along(var_names)) {
 
     expected_cols <- paste0(var_names[[i]],
@@ -655,41 +716,133 @@ check_data_types <- function(x, data) {
 
     idx <- names(data) %in% expected_cols
 
+    error_na <- list(error = FALSE,
+                     warn = FALSE,
+                     message = NA)
+    error_na <- check_na_blocks(data = data[, idx, drop = FALSE],
+                                experts_idx = data[["id"]],
+                                var_name = var_names[[i]])
 
-    check_na_blocks(data = data[, idx, drop = FALSE],
-                    var_name = var_names[[i]])
+    if (isTRUE(error_na[["error"]])) {
+      error_all_na <- c(error_all_na, error_na[["message"]])
+    }
+
+    if (isTRUE(error_na[["warn"]])) {
+      warn_all_na <- c(warn_all_na, error_na[["message"]])
+    }
 
     df <- unlist(data[, idx, drop = FALSE])
 
+    error_z <- list(error = FALSE,
+                    message = NA)
+    error_n <- list(error = FALSE,
+                    message = NA)
+    error_zz <- list(error = FALSE,
+                     message = NA)
+    error_s <- list(error = FALSE,
+                    message = NA)
+    error_r <- list(error = FALSE,
+                    message = NA)
+    error_p <- list(error = FALSE,
+                    message = NA)
+    error_conf <- list(error = FALSE,
+                       message = NA)
+
     if (var_types[i] == "Z") {
 
-      check_is_integer(df, var_names[i])
+      error_z <- check_is_integer(df, var_names[i])
 
     } else if (var_types[i] == "N") {
 
-      check_is_positive_integer(df, var_names[i])
+      error_n <- check_is_positive_integer(df, var_names[i])
 
     } else if (var_types[i] == "z") {
 
-      check_is_negative_integer(df, var_names[i])
+      error_zz <- check_is_negative_integer(df, var_names[i])
 
     } else if (var_types[i] == "s") {
 
-      check_is_positive_real(df, var_names[i])
+      error_s <- check_is_positive_real(df, var_names[i])
 
     } else if (var_types[i] == "r") {
 
-      check_is_negative_real(df, var_names[i])
+      error_r <- check_is_negative_real(df, var_names[i])
 
     } else if (var_types[i] == "p") {
 
-      check_is_probability(df, var_names[i])
+      error_p <- check_is_probability(df, var_names[i])
 
+    }
+
+    for (j in list(error_z, error_n, error_zz, error_s, error_r, error_p)) {
+      if (isTRUE(j[["error"]])) {
+        error_all_vartype <- c(error_all_vartype, j[["message"]])
+      }
     }
 
     if (elic_types[i]  == "4p") {
-      check_conf(df, var_names[i])
+      error_conf <- check_conf(df, var_names[i])
     }
+
+    if (isTRUE(error_conf[["error"]])) {
+      error_all_conf <- c(error_all_conf, error_conf[["message"]])
+    }
+  }
+
+  #warn in na
+  if (length(warn_all_na) > 0) {
+    bullets_all_na_warn <- stats::setNames(warn_all_na,
+                                           rep("!", length(warn_all_na)))
+    info <- "If this is a mistake and you want to change and update the \\
+             dataset use {.fn elicitr::cont_add_data} with \\
+             {.code overwrite = TRUE}."
+    cli::cli_warn(c(bullets_all_na_warn,
+                    "i" = info),
+                  .verbatim = TRUE)
+  }
+
+  #error in na
+  if (length(error_all_na) > 0) {
+    bullets_all_na_error <- stats::setNames(error_all_na,
+                                            rep("x", length(error_all_na)))
+    info <- "Experts cannot report estimates for only part of a variable."
+    fn <- as.list(sys.call(-1))[[1]]
+    cli::cli_abort(c("Invalid raw data:",
+                     bullets_all_na_error,
+                     "i" = info,
+                     " " = "Fix raw data. For more information, see \\
+                            {.fn {fn}}."),
+                   .verbatim = TRUE,
+                   call = rlang::caller_env(n = 1))
+  }
+
+  #error in variable type
+  if (length(error_all_vartype) > 0) {
+    bullets_all_vartype <- stats::setNames(error_all_vartype,
+                                           rep("x", length(error_all_vartype)))
+    info <- "Check the raw data. If this is a mistake, recreate the \\
+           metadata  with {.fn elicitr::cont_start} (make sure to change \\
+           the argument {.arg var_types} accordingly), and reload the data."
+
+    cli::cli_abort(c("Incorrect {.arg var_types}:",
+                     bullets_all_vartype,
+                     "i" = info),
+                   .verbatim = TRUE,
+                   call = rlang::caller_env(n = 1))
+  }
+
+  #error in confidence
+  if (length(error_all_conf) > 0) {
+    bullets_all_conf <- stats::setNames(error_all_conf,
+                                        rep("x", length(error_all_conf)))
+    fn <- as.list(sys.call(-1))[[1]]
+    info <- "Check the raw data. For more information, see {.fn {fn}}."
+
+    cli::cli_abort(c("Incorrect confidence values:",
+                     bullets_all_conf,
+                     "i" = info),
+                   .verbatim = TRUE,
+                   call = rlang::caller_env(n = 1))
   }
 }
 
@@ -698,7 +851,7 @@ check_data_types <- function(x, data) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some non integer numbers.
+#' @returns A list with error if `x` contains some non integer numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -708,15 +861,18 @@ check_is_integer <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (!all(x %% 1 == 0)) {
+    fn <- as.list(sys.call(-2))[[1]]
 
-    error <- "Variable {.val {v}} contains some non integer numbers."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val Z} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not round numbers.")
   }
+  error
 }
 
 #' Check if the argument `x` is a positive integer
@@ -724,25 +880,28 @@ check_is_integer <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some non positive integer numbers.
+#' @returns A list with error if `x` contains some non positive integer numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali
 check_is_positive_integer <- function(x, v) {
 
+  error <- list(error = FALSE,
+                message = NA)
   idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[!idx]
   x <- x[!is.na(x)]
 
   if (!all(x %% 1 == 0) || any(x < 0)) {
 
-    error <- "Variable {.val {v}} contains some non positive integer numbers."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val N} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not positive round \\
+                        numbers or 0.")
   }
+  error
 }
 
 #' Check if the argument `x` is a negative integer
@@ -750,7 +909,7 @@ check_is_positive_integer <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some non negative integer numbers.
+#' @returns A list with error if `x` contains some non negative integer numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -760,15 +919,18 @@ check_is_negative_integer <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (!all(x %% 1 == 0) || any(x >= 0)) {
 
-    error <- "Variable {.val {v}} contains some non negative integer numbers."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val z} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not negative round \\
+                        numbers.")
   }
+  error
 }
 
 #' Check if the argument `x` is a positive real number
@@ -776,7 +938,7 @@ check_is_negative_integer <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some non positive numbers.
+#' @returns A list with error if `x` contains some non positive numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -786,15 +948,18 @@ check_is_positive_real <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (any(x < 0)) {
 
-    error <- "Variable {.val {v}} contains some non positive numbers."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val s} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not positive round \\
+                        numbers or 0.")
   }
+  error
 }
 
 #' Check if the argument `x` is a negative real number
@@ -802,7 +967,7 @@ check_is_positive_real <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some non negative numbers.
+#' @returns A list with error if `x` contains some non negative numbers.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -812,15 +977,18 @@ check_is_negative_real <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (any(x >= 0)) {
 
-    error <- "Variable {.val {v}} contains some non negative numbers."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val r} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not not strictly negative \\
+                        numbers.")
   }
+  error
 }
 
 #' Check if the argument `x` is a probability
@@ -828,7 +996,7 @@ check_is_negative_real <- function(x, v) {
 #' @param x numeric vector to be checked.
 #' @param v character string with the name of the variable to be checked.
 #'
-#' @returns An error if `x` contains some values not in the range 0, 1.
+#' @returns A list with error if `x` contains some values not in the range 0, 1.
 #' @noRd
 #'
 #' @author Sergio Vignali
@@ -838,62 +1006,89 @@ check_is_probability <- function(x, v) {
   x <- x[!idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (!all(x >= 0) || !all(x <= 1)) {
 
-    error <- "Variable {.val {v}} contains some values not in the range [0, 1]."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                        to {.val p} in the metadata but variable {.val {v}} \\
+                        contains estimates that are not in the range [0,1].")
   }
+  error
 }
 
+#' Check if the argument `x` has the correct confidence levels
+#'
+#' @param x numeric vector to be checked.
+#' @param v character string with the name of the variable to be checked.
+#'
+#' @returns An error if `x` contains some values not in the range 50, 100.
+#' @noRd
+#'
+#' @author Sergio Vignali
 check_conf <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
   x <- x[idx]
   x <- x[!is.na(x)]
 
+  error <- list(error = FALSE,
+                message = NA)
   if (!all(x > 50) || !all(x <= 100)) {
-
-    error <- "Variable {.val {v}} contains confidence estimates not in the \\
-              range (50, 100]."
-
-    cli::cli_abort(c("Invalid data type:",
-                     "x" = error,
-                     "i" = "Check raw data."),
-                   call = rlang::caller_env(n = 2))
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+      cli::format_inline("The variable {.val {v}} contains confidence \\
+                          estimates not in the range (50, 100].")
   }
+  error
 }
 
 #' Check NA blocks
 #'
 #' @param data the data of the variable to be checked.
 #' @param var_name character string with the name of the variable to be checked.
+#' @param experts_idx character vector with the name of the experts.
 #'
-#' @returns An error if `data` contains some partial NAs for a variable and a
-#' warning if some experts did not provide estimates for all variables.
+#' @returns a list with the relevant messages or errors.
 #' @noRd
 #'
 #' @author Maude Vernet
-check_na_blocks <- function(data, var_name) {
+check_na_blocks <- function(data, experts_idx, var_name) {
+
+  na_data_all <- c()
+  na_data_partial <- c()
+
   for (i in seq_len(nrow(data))) {
     if (anyNA(data[i, ])) {
       if (all(is.na(data[i, ]))) {
-        warn <- "Some expert(s) did not report estimates for all variables"
-        info <- "Check raw data and if you want to update the dataset use \\
-               {.fn elicitr::cont_add_data} with {.code overwrite = TRUE}."
-        cli::cli_warn(c("!" = warn,
-                        "i" = info))
+        na_data_all <- c(na_data_all, i)
       } else {
-        error <- "Variable {.val {var_name}} contains {.val NA} values."
-
-        cli::cli_abort(c("Invalid raw data:",
-                         "x" = error,
-                         "i" = "Check raw data."),
-                       call = rlang::caller_env(n = 2))
+        na_data_partial <- c(na_data_partial, i)
       }
     }
   }
+
+  error <- list(error = FALSE,
+                warn = FALSE,
+                message = NA)
+  if (!is.null(na_data_partial)) {
+    expert_na_partial <- experts_idx[na_data_partial]
+
+    error[["error"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("{cli::qty(length(na_data_partial))} Expert{?s} \\
+                        {.val {expert_na_partial}} replied to only one part \\
+                        of the variable {.val {var_name}}.")
+  } else if (!is.null(na_data_all)) {
+    expert_na_all <- experts_idx[na_data_all]
+
+    error[["warn"]] <- TRUE
+    error[["message"]] <-
+    cli::format_inline("{cli::qty(length(na_data_all))} Expert{?s} \\
+                 {.val {expert_na_all}} did not reply to variable \\
+                 {.val {var_name}}.")
+  }
+  error
 }
