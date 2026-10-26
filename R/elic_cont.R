@@ -67,7 +67,7 @@
 #' [cont_get_data()][elicitr::cont_get_data()],
 #' [plot()][elicitr::plot.elic_cont()],
 #' [cont_sample_data()][elicitr::cont_sample_data()],
-#' [cont_summary()][elicitr::cont_summary()], and
+#' [cont_summary()][elicitr::summary.cont_sample()], and
 #' [plot()][elicitr::plot.cont_sample()] to retrieve responses, plot raw data,
 #' generate samples, summarise results, and create plots. Keeping both rounds in
 #' the same object also helps you compare responses before and after experts

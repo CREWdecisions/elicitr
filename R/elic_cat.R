@@ -56,7 +56,7 @@
 #' for every analysis. You can pass the same object to
 #' [cat_get_data()][elicitr::cat_get_data()],
 #' [cat_sample_data()][elicitr::cat_sample_data()],
-#' [cat_summary()][elicitr::cat_summary()], and
+#' [cat_summary()][elicitr::summary.cat_sample()], and
 #' [plot()][elicitr::plot.cat_sample()] to retrieve responses, generate samples,
 #' summarise results, and create plots.
 #'

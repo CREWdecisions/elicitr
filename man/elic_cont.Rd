@@ -79,7 +79,7 @@ for every analysis. You can pass the same object to
 \link[=cont_get_data]{cont_get_data()},
 \link[=plot.elic_cont]{plot()},
 \link[=cont_sample_data]{cont_sample_data()},
-\link[=cont_summary]{cont_summary()}, and
+\link[=summary.cont_sample]{cont_summary()}, and
 \link[=plot.cont_sample]{plot()} to retrieve responses, plot raw data,
 generate samples, summarise results, and create plots. Keeping both rounds in
 the same object also helps you compare responses before and after experts

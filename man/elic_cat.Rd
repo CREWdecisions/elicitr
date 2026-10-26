@@ -68,7 +68,7 @@ Keeping this information together means you do not need to enter it again
 for every analysis. You can pass the same object to
 \link[=cat_get_data]{cat_get_data()},
 \link[=cat_sample_data]{cat_sample_data()},
-\link[=cat_summary]{cat_summary()}, and
+\link[=summary.cat_sample]{cat_summary()}, and
 \link[=plot.cat_sample]{plot()} to retrieve responses, generate samples,
 summarise results, and create plots.
 }
