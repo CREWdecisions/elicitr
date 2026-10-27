@@ -60,6 +60,9 @@ cat_get_data <- function(x,
                          element = "topic",
                          value = topic)
 
+  # Check if the object is of class elic_cat
+  check_empty_obj(x, type = "cat", round_topic = topic)
+
   if (length(option) == 1 && option == "all") {
     out <- x[["data"]][[topic]]
   } else {

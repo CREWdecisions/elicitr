@@ -130,6 +130,9 @@ cont_sample_data <- function(x,
   # Check round
   check_round(round)
 
+  # Check that the object is not empty
+  check_empty_obj(x, type = "cont", round_topic = round)
+
   # Check if method is available
   check_method(x, method)
 

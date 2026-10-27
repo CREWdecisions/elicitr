@@ -70,6 +70,7 @@ cont_get_data <- function(x,
 
   check_elic_obj(x, type = "cont", metadata = FALSE)
   check_round(round)
+  check_empty_obj(x, type = "cont", round_topic = round)
   check_var(x, var)
 
   # Check that variable and elicitation types are a single string
