@@ -55,6 +55,6 @@ Other cont data helpers:
 \code{\link[=cont_start]{cont_start()}}
 }
 \author{
-Sergio Vignali
+Sergio Vignali and Maude Vernet
 }
 \concept{cont data helpers}
