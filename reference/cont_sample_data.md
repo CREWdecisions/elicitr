@@ -28,12 +28,14 @@ cont_sample_data(
 - x:
 
   an object of class
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md).
+  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+  created with
+  [cont_start](https://crewdecisions.github.io/elicitr/reference/cont_start.md).
 
 - round:
 
-  integer indicating if the data belongs to the first or second
-  elicitation round.
+  integer (1 or 2) indicating if the data belongs to the first or second
+  elicitation round. See section rounds for more detail.
 
 - ...:
 
@@ -131,6 +133,16 @@ The scaled minimum and maximum values are obtained with:
 \\maximum = best\\ guess + (maximum - best\\ guess) \frac{scale\\conf}
 {confidence}\\
 
+For probability variables (`var_types = "p"`), confidence scaling may
+extend the estimated minimum and maximum value below zero or above one.
+To keep the interval within the valid probability range, any scaled
+minimum below zero is set to zero, and any scaled maximum above one is
+set to one. A warning is issued when this adjustment is needed.
+
+The best estimate and the original responses stored in the elicitation
+object remain unchanged. The adjusted bounds are used to define the PERT
+distribution when sampling and the displayed intervals when plotting.
+
 ## See also
 
 Other cont data helpers:
@@ -160,7 +172,7 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 
 # Sample data for the second round for all variables
 samp <- cont_sample_data(my_elicit, round = 2)
-#> ✔ Rescaled min and max for variable "var3".
+#> ✔ Rescaled min and max based on confidence estimates for variable "var3".
 #> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 samp
 #> # A tibble: 18,000 × 3
@@ -185,7 +197,7 @@ samp <- cont_sample_data(my_elicit, round = 1, var = c("var1", "var2"))
 # Sample data for the second round for the variable `var3`. Notice that the
 # data are rescaled using the expert confidence before sampling.
 samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
-#> ✔ Rescaled min and max for variable "var3".
+#> ✔ Rescaled min and max based on confidence estimates for variable "var3".
 #> ✔ Data for "var3" sampled successfully using the "PERT" method.
 
 # Sample data for the first round for the variable `var3` providing the
@@ -193,8 +205,10 @@ samp <- cont_sample_data(my_elicit, round = 2, var = "var3")
 # that some values are constrained to be between 0 and 1 after rescaling.
 samp <- cont_sample_data(my_elicit, round = 1, var = "var3",
                          weights = c(0.8, 0.7, 0.9, 0.7, 0.6, 0.9))
-#> ℹ Provided weights used instead of confidence estimates
+#> ℹ Weights provided in argument `weights` used instead of confidence estimates to calculate the number of vote attributed to each expert in variable "var3".
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max for variable "var3".
+#>   See the scale_conf section in the help page for `elicitr::cont_sample_data()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates for variable "var3".
 #> ✔ Data for "var3" sampled successfully using the "PERT" method.
 ```

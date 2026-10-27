@@ -79,12 +79,13 @@ elic_cont object."><meta property="og:image" content="https://crewdecisions.gith
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class <a href="elic_cont.html">elic_cont</a>.</p></dd>
+<dd><p>an object of class <a href="elic_cont.html">elic_cont</a> created with
+<a href="cont_start.html">cont_start</a>.</p></dd>
 
 
 <dt id="arg-round">round<a class="anchor" aria-label="anchor" href="#arg-round"></a></dt>
-<dd><p>integer indicating if the data belongs to the first or second
-elicitation round.</p></dd>
+<dd><p>integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -180,6 +181,14 @@ value of 100 is used for scale_conf.</p>
 {confidence}\)</p>
 <p>\(maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 {confidence}\)</p>
+<p>For probability variables (<code>var_types = "p"</code>), confidence scaling may
+extend the estimated minimum and maximum value below zero or above one.
+To keep the interval within the valid probability range, any scaled minimum
+below zero is set to zero, and any scaled maximum above one is set to one.
+A warning is issued when this adjustment is needed.</p>
+<p>The best estimate and the original responses stored in the elicitation object
+remain unchanged. The adjusted bounds are used to define the PERT
+distribution when sampling and the displayed intervals when plotting.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -210,7 +219,7 @@ value of 100 is used for scale_conf.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample data for the second round for all variables</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max based on confidence estimates for variable <span style="color: #0000BB;">"var3"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 <span class="r-in"><span><span class="va">samp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 18,000 × 3</span></span>
@@ -235,7 +244,7 @@ value of 100 is used for scale_conf.</p>
 <span class="r-in"><span><span class="co"># Sample data for the second round for the variable `var3`. Notice that the</span></span></span>
 <span class="r-in"><span><span class="co"># data are rescaled using the expert confidence before sampling.</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var3"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max based on confidence estimates for variable <span style="color: #0000BB;">"var3"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample data for the first round for the variable `var3` providing the</span></span></span>
@@ -243,9 +252,11 @@ value of 100 is used for scale_conf.</p>
 <span class="r-in"><span><span class="co"># that some values are constrained to be between 0 and 1 after rescaling.</span></span></span>
 <span class="r-in"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">cont_sample_data</span><span class="op">(</span><span class="va">my_elicit</span>, round <span class="op">=</span> <span class="fl">1</span>, var <span class="op">=</span> <span class="st">"var3"</span>,</span></span>
 <span class="r-in"><span>                         weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.7</span>, <span class="fl">0.9</span>, <span class="fl">0.7</span>, <span class="fl">0.6</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provided weights used instead of confidence estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Weights provided in argument `weights` used instead of confidence estimates to calculate the number of vote attributed to each expert in variable <span style="color: #0000BB;">"var3"</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> Some values have been constrained to be between <span style="color: #0000BB;">0</span> and <span style="color: #0000BB;">1</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   See the <span style="color: #00BB00;">scale_conf</span> section in the help page for `elicitr::cont_sample_data()`</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   for more information.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Rescaled min and max based on confidence estimates for variable <span style="color: #0000BB;">"var3"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span>
 </code></pre></div>
     </div>

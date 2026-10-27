@@ -41,9 +41,10 @@ Functions for handling and plotting categorical data.
 Description of the classes available in the package.
 
 - [`elic_cont`](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
-  : elic_cont class
+  : The elic_cont class: storing continuous elicitation metadata and
+  data
 - [`elic_cat`](https://crewdecisions.github.io/elicitr/reference/elic_cat.md)
-  : elic_cat class
+  : The elic_cat class: storing continuous elicitation metadata and data
 
 ## Simulated data
 

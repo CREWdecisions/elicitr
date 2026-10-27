@@ -24,12 +24,14 @@ cont_get_data(
 - x:
 
   an object of class
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md).
+  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+  created with
+  [cont_start](https://crewdecisions.github.io/elicitr/reference/cont_start.md).
 
 - round:
 
-  integer indicating if the data belongs to the first or second
-  elicitation round.
+  integer (1 or 2) indicating if the data belongs to the first or second
+  elicitation round. See section rounds for more detail.
 
 - ...:
 
@@ -70,14 +72,14 @@ codes, e.g. "pZN".
 
 Valid short codes are:
 
-- `Z`: *integers*, when the estimate must be an integer number in the
+- `Z`: *round numbers*, when the estimate must be an round number in the
   interval (-Inf, Inf).
 
-- `N`: *positive integers*, when the estimate must be an integer number
-  in the interval \[0, Inf).
+- `N`: *positive round numbers*, when the estimate must be a round
+  number in the interval \[0, Inf).
 
-- `z`: *negative integers*, when the estimate must be an integer number
-  in the interval (-Inf, 0).
+- `z`: *negative round numbers*, when the estimate must be a round
+  number in the interval (-Inf, 0).
 
 - `R`: *reals*, when the estimate must be a real number in the interval
   (-Inf, Inf).

@@ -126,11 +126,11 @@ the correctness of the provided data.</p>
 
 <p>Variable types must be provided as a single string containing short codes,
 e.g. "pZN".</p>
-<p>Valid short codes are:</p><ul><li><p><code>Z</code>: <em>integers</em>, when the estimate must be an integer number in the
+<p>Valid short codes are:</p><ul><li><p><code>Z</code>: <em>round numbers</em>, when the estimate must be an round number in the
 interval (-Inf, Inf).</p></li>
-<li><p><code>N</code>: <em>positive integers</em>, when the estimate must be an integer number in
+<li><p><code>N</code>: <em>positive round numbers</em>, when the estimate must be a round number in
 the interval [0, Inf).</p></li>
-<li><p><code>z</code>: <em>negative integers</em>, when the estimate must be an integer number in
+<li><p><code>z</code>: <em>negative round numbers</em>, when the estimate must be a round number in
 the interval (-Inf, 0).</p></li>
 <li><p><code>R</code>: <em>reals</em>, when the estimate must be a real number in the interval
 (-Inf, Inf).</p></li>
@@ -177,9 +177,9 @@ using the IDEA protocol. Methods in Ecology and Evolution, 9(1), 169–180.
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cont object for an elicitation process that estimates 3</span></span></span>
-<span class="r-in"><span><span class="co"># variables, the first for a one point estimation of a positive integer, the</span></span></span>
-<span class="r-in"><span><span class="co"># second for three points estimation of a negative real, and the last for a</span></span></span>
-<span class="r-in"><span><span class="co"># four point estimation of a probability</span></span></span>
+<span class="r-in"><span><span class="co"># variables, the first for a one point estimation of a positive round number,</span></span></span>
+<span class="r-in"><span><span class="co"># the second for three points estimation of a negative real, and the last for</span></span></span>
+<span class="r-in"><span><span class="co"># a four point estimation of a probability</span></span></span>
 <span class="r-in"><span><span class="va">my_elicit</span> <span class="op">&lt;-</span> <span class="fu">cont_start</span><span class="op">(</span>var_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        var_types <span class="op">=</span> <span class="st">"Nrp"</span>,</span></span>
 <span class="r-in"><span>                        elic_types <span class="op">=</span> <span class="st">"134"</span>,</span></span>

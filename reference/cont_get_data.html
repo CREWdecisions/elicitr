@@ -73,12 +73,13 @@ cont_get_data() gets data from an elic_cont object."><meta property="og:image" c
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class <a href="elic_cont.html">elic_cont</a>.</p></dd>
+<dd><p>an object of class <a href="elic_cont.html">elic_cont</a> created with
+<a href="cont_start.html">cont_start</a>.</p></dd>
 
 
 <dt id="arg-round">round<a class="anchor" aria-label="anchor" href="#arg-round"></a></dt>
-<dd><p>integer indicating if the data belongs to the first or second
-elicitation round.</p></dd>
+<dd><p>integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -119,11 +120,11 @@ first of the following will be used: <code>var</code>, <code>var_types</code>, o
 
 <p>Variable types must be provided as a single string containing short codes,
 e.g. "pZN".</p>
-<p>Valid short codes are:</p><ul><li><p><code>Z</code>: <em>integers</em>, when the estimate must be an integer number in the
+<p>Valid short codes are:</p><ul><li><p><code>Z</code>: <em>round numbers</em>, when the estimate must be an round number in the
 interval (-Inf, Inf).</p></li>
-<li><p><code>N</code>: <em>positive integers</em>, when the estimate must be an integer number in
+<li><p><code>N</code>: <em>positive round numbers</em>, when the estimate must be a round number in
 the interval [0, Inf).</p></li>
-<li><p><code>z</code>: <em>negative integers</em>, when the estimate must be an integer number in
+<li><p><code>z</code>: <em>negative round numbers</em>, when the estimate must be a round number in
 the interval (-Inf, 0).</p></li>
 <li><p><code>R</code>: <em>reals</em>, when the estimate must be a real number in the interval
 (-Inf, Inf).</p></li>

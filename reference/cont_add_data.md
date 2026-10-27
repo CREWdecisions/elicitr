@@ -27,7 +27,9 @@ cont_add_data(
 - x:
 
   an object of class
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md).
+  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+  created with
+  [cont_start](https://crewdecisions.github.io/elicitr/reference/cont_start.md).
 
 - data_source:
 
@@ -40,8 +42,8 @@ cont_add_data(
 
 - round:
 
-  integer indicating if the data belongs to the first or second
-  elicitation round.
+  integer (1 or 2) indicating if the data belongs to the first or second
+  elicitation round. See section rounds for more detail.
 
 - ...:
 
@@ -63,7 +65,7 @@ cont_add_data(
 
   logical, whether to overwrite existing data already added to the
   [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
-  object.
+  object. See section rounds for more detail.
 
 - verbose:
 
@@ -82,6 +84,29 @@ The provided object of class
 [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
 updated with the data.
 
+## Rounds
+
+[elicitr](https://crewdecisions.github.io/elicitr/reference/elicitr-package.md)
+supports two elicitation rounds, following approaches such as the Delphi
+and IDEA protocols. The idea behind the two rounds is that experts first
+provide individual estimates, then review feedback or discuss
+differences before submitting revised estimates in a second round. This
+gives experts an opportunity to reconsider their judgments while
+retaining both sets of responses for comparison.
+
+When adding data to the
+[elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+object previously created with
+[cont_start](https://crewdecisions.github.io/elicitr/reference/cont_start.md),
+[elicitr](https://crewdecisions.github.io/elicitr/reference/elicitr-package.md)
+checks that the number of responses matches the declared number of
+experts. When adding round 2, it matches expert IDs across rounds and
+aligns their responses. It also flags inconsistencies in expert IDs and
+can correct a single differing ID as a presumed typo under specific
+conditions. Data must be loaded in round 1 before a second elicitation
+round can be loaded in round 2. To replace existing data, the argument
+*overwrite* must be set to *TRUE* in cont_add_data.
+
 ## Data format
 
 Data are expected to have the name of the expert always as first column.
@@ -96,7 +121,7 @@ blocks which follow the specifications below:
 
 - `var_best`: best estimate for the variable
 
-*Three points elicitation*:
+  *Three points elicitation*:
 
 - `var_min`: minimum estimate for the variable
 
@@ -104,7 +129,7 @@ blocks which follow the specifications below:
 
 - `var_best`: best estimate for the variable
 
-*Four points elicitation*:
+  *Four points elicitation*:
 
 - `var_min`: minimum estimate for the variable
 
@@ -114,33 +139,32 @@ blocks which follow the specifications below:
 
 - `var_conf`: confidence for the estimate
 
-The column with names is unique, the other columns are a block and can
-be repeated for each variable.
+  The column with names is unique, the other columns are a block and can
+  be repeated for each variable.
 
 ## Column and variable names
 
-Moreover, the name of the columns is not important, `cont_add_data()`
-will overwrite it according to the following convention:
-
-*variable_name*\_*suffix*
-
-with *suffix* being one of *min*, *max*, *best*, or *conf*. The
-information to build the column names is taken from the metadata
-available in the
+The name of the columns is not important, as long as they are different.
+`cont_add_data()` will overwrite them according to the convention
+*variable_name*\_*suffix* with *suffix* being one of *min*, *max*,
+*best*, or *conf*. The information to build the column names is taken
+from the metadata available in the
 [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
 object.
 
 `var_conf`, given as percentage, can be any number in the range (50,
-100\]. Any value smaller or equal to 50 would imply that the accuracy of
-the estimates is only due to chance).
+100\]. This is because any value smaller or equal to 50 would imply that
+the accuracy of the estimates is only due to chance).
 
 ## NAs
 
-It is possible that some experts did not provide estimates for all
-variables. In this case, the missing values should be recorded as `NA`.
-However, experts should always answer completely or not at all. If
-estimates are only partially given for a variable (example *min* and
-*max* provided but not *best* for 3p elicitation), an error is raised.
+Experts can decide to not provide estimates for all variables. In this
+case, the missing values should be recorded as `NA`. However, experts
+should always answer completely to a variable (aka provide values for
+all aspect of the variable (minimum, maximum, best guess and
+confidence)) or not at all. If estimates are only partially given for a
+variable (example *min* and *max* provided but not *best* for a
+three-point elicitation), an error is raised.
 
 ## Data cleaning
 
@@ -184,9 +208,9 @@ Sergio Vignali and Maude Vernet
 
 ``` r
 # Create the elic_cont object for an elicitation process that estimates 3
-# variables, the first for a one point estimation of a positive integer, the
-# second for three points estimation of a negative real, and the last for a
-# four point estimation of a probability
+# variables, the first for a one point estimation of a positive round number,
+# the second for three points estimation of a negative real, and the last for
+# a four point estimation of a probability
 x <- cont_start(var_names = c("var1", "var2", "var3"),
                 var_types = "ZNp",
                 elic_types = "134",

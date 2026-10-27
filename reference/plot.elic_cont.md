@@ -37,12 +37,14 @@ plot(
 - x:
 
   an object of class
-  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md).
+  [elic_cont](https://crewdecisions.github.io/elicitr/reference/elic_cont.md)
+  created with
+  [cont_start](https://crewdecisions.github.io/elicitr/reference/cont_start.md).
 
 - round:
 
-  integer indicating if the data belongs to the first or second
-  elicitation round.
+  integer (1 or 2) indicating if the data belongs to the first or second
+  elicitation round. See section rounds for more detail.
 
 - var:
 
@@ -122,8 +124,8 @@ object.
 
 ## Details
 
-If a 1-point elicitation is plotted, the `group` argument will show the
-mean and 2.5th–97.5th percentile interval of expert estimates.
+If a one-point elicitation is plotted, the `group` argument will show
+the mean and 2.5th–97.5th percentile interval of expert estimates.
 
 The `truth` argument is useful when the elicitation process is part of a
 workshop and is used for demonstration. In this case the true value is
@@ -154,6 +156,16 @@ The scaled minimum and maximum values are obtained with:
 
 \\maximum = best\\ guess + (maximum - best\\ guess) \frac{scale\\conf}
 {confidence}\\
+
+For probability variables (`var_types = "p"`), confidence scaling may
+extend the estimated minimum and maximum value below zero or above one.
+To keep the interval within the valid probability range, any scaled
+minimum below zero is set to zero, and any scaled maximum above one is
+set to one. A warning is issued when this adjustment is needed.
+
+The best estimate and the original responses stored in the elicitation
+object remain unchanged. The adjusted bounds are used to define the
+displayed intervals when plotting.
 
 ## See also
 
@@ -194,25 +206,33 @@ plot(my_elicit, round = 1, var = "var2")
 # estimate with min and max errors rescaled to the confidence value)
 plot(my_elicit, round = 1, var = "var3")
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max
+#>   See the scale_conf section in the help page for `elicitr::plot.elic_cont()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates
 
 
 # Add the group mean
 plot(my_elicit, round = 1, var = "var3", group = TRUE)
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max
+#>   See the scale_conf section in the help page for `elicitr::plot.elic_cont()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates
 
 
 # Add the true value
 plot(my_elicit, round = 1, var = "var3",
           truth = list(min = 0.6, max = 0.85, best = 0.75, conf = 100))
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max
+#>   See the scale_conf section in the help page for `elicitr::plot.elic_cont()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates
 
 
 # Overwrite the default theme
 plot(my_elicit, round = 1, var = "var3",
           theme = ggplot2::theme_classic())
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max
+#>   See the scale_conf section in the help page for `elicitr::plot.elic_cont()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates
 ```

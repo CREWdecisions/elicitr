@@ -134,7 +134,9 @@ my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 # Sample data for the first round for all variables
 samp <- cont_sample_data(my_elicit, round = 1)
 #> Warning: ! Some values have been constrained to be between 0 and 1.
-#> ✔ Rescaled min and max for variable "var3".
+#>   See the scale_conf section in the help page for `elicitr::cont_sample_data()`
+#>   for more information.
+#> ✔ Rescaled min and max based on confidence estimates for variable "var3".
 #> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 
 # Plot the sampled data for the variable `var3` as violin plot

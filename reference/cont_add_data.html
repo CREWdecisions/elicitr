@@ -6,8 +6,10 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Add data — cont_add_data"><meta name="description" content="
-cont_add_data() adds data to an elic_cont object from different sources."><meta property="og:description" content="
-cont_add_data() adds data to an elic_cont object from different sources."><meta property="og:image" content="https://crewdecisions.github.io/elicitr/logo.png"></head><body>
+cont_add_data() adds data to an elic_cont object from
+different sources."><meta property="og:description" content="
+cont_add_data() adds data to an elic_cont object from
+different sources."><meta property="og:image" content="https://crewdecisions.github.io/elicitr/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -53,7 +55,8 @@ cont_add_data() adds data to an elic_cont object from different sources."><meta 
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p><code>cont_add_data()</code> adds data to an <a href="elic_cont.html">elic_cont</a> object from different sources.</p>
+<p><code>cont_add_data()</code> adds data to an <a href="elic_cont.html">elic_cont</a> object from
+different sources.</p>
     </div>
 
     <div class="section level2">
@@ -76,18 +79,20 @@ cont_add_data() adds data to an elic_cont object from different sources."><meta 
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class <a href="elic_cont.html">elic_cont</a>.</p></dd>
+<dd><p>an object of class <a href="elic_cont.html">elic_cont</a> created with
+<a href="cont_start.html">cont_start</a>.</p></dd>
 
 
 <dt id="arg-data-source">data_source<a class="anchor" aria-label="anchor" href="#arg-data-source"></a></dt>
 <dd><p>either a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> or
-<code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code>, a string with the path to a <em>csv</em> or <em>xlsx</em> file,
-or anything accepted by the <a href="https://googlesheets4.tidyverse.org/reference/range_read.html" class="external-link">read_sheet</a> function.</p></dd>
+<code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code>, a string with the path to a <em>csv</em> or <em>xlsx</em>
+file, or anything accepted by the <a href="https://googlesheets4.tidyverse.org/reference/range_read.html" class="external-link">read_sheet</a>
+function.</p></dd>
 
 
 <dt id="arg-round">round<a class="anchor" aria-label="anchor" href="#arg-round"></a></dt>
-<dd><p>integer indicating if the data belongs to the first or second
-elicitation round.</p></dd>
+<dd><p>integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -103,13 +108,14 @@ a path to a <em>csv</em> file.</p></dd>
 <dt id="arg-sheet">sheet<a class="anchor" aria-label="anchor" href="#arg-sheet"></a></dt>
 <dd><p>integer or character to select the sheet. The sheet can be
 referenced by its position with a number or by its name with a string. Used
-only when <code>data_source</code> is a path to a <em>xlsx</em> file or when data are imported
-from <em>Google Sheets</em>.</p></dd>
+only when <code>data_source</code> is a path to a <em>xlsx</em> file or when data are
+imported from <em>Google Sheets</em>.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
 <dd><p>logical, whether to overwrite existing data already added to
-the <a href="elic_cont.html">elic_cont</a> object.</p></dd>
+the <a href="elic_cont.html">elic_cont</a> object. See section rounds for more
+detail.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -123,79 +129,103 @@ the data to the <a href="elic_cont.html">elic_cont</a> object.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The provided object of class <a href="elic_cont.html">elic_cont</a> updated with the data.</p>
+    <p>The provided object of class <a href="elic_cont.html">elic_cont</a> updated
+with the data.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="rounds">Rounds<a class="anchor" aria-label="anchor" href="#rounds"></a></h2>
+    <p><a href="elicitr-package.html">elicitr</a> supports two elicitation rounds,
+following approaches such as the Delphi and IDEA protocols. The idea behind
+the two rounds is that experts first provide individual estimates, then
+review feedback or discuss differences before submitting revised estimates
+in a second round. This gives experts an opportunity to reconsider their
+judgments while retaining both sets of responses for comparison.</p>
+<p>When adding data to the <a href="elic_cont.html">elic_cont</a> object previously
+created with <a href="cont_start.html">cont_start</a>, <a href="elicitr-package.html">elicitr</a> checks
+that the number of responses matches the declared number of experts. When
+adding round 2, it matches expert IDs across rounds and aligns their
+responses. It also flags inconsistencies in expert IDs and can correct a
+single differing ID as a presumed typo under specific conditions. Data must
+be loaded in round 1 before a second elicitation round can be loaded in
+round 2. To replace existing data, the argument <em>overwrite</em> must be set to
+<em>TRUE</em> in cont_add_data.</p>
     </div>
     <div class="section level2">
     <h2 id="data-format">Data format<a class="anchor" aria-label="anchor" href="#data-format"></a></h2>
 
 
 
-<p>Data are expected to have the name of the expert always as first column. The
-only exception is for data coming from <em>Google Sheet</em> which can have an
+<p>Data are expected to have the name of the expert always as first column.
+The only exception is for data coming from <em>Google Sheet</em> which can have an
 additional column with a timestamp. This column is automatically removed
-before the data are added to the <a href="elic_cont.html">elic_cont</a> object (see "Data cleaning").
-After the name there should be one or more blocks which follow the
-specifications below:</p>
-<p><em>One point elicitation</em>:</p><ul><li><p><code>var_best</code>: best estimate for the variable</p></li>
-</ul><p><em>Three points elicitation</em>:</p><ul><li><p><code>var_min</code>: minimum estimate for the variable</p></li>
+before the data are added to the <a href="elic_cont.html">elic_cont</a> object
+(see "Data cleaning"). After the name there should be one or more blocks
+which follow the specifications below:</p>
+<p><em>One point elicitation</em>:</p><ul><li><p><code>var_best</code>: best estimate for the variable</p>
+<p><em>Three points elicitation</em>:</p></li>
+<li><p><code>var_min</code>: minimum estimate for the variable</p></li>
+<li><p><code>var_max</code>: maximum estimate for the variable</p></li>
+<li><p><code>var_best</code>: best estimate for the variable</p>
+<p><em>Four points elicitation</em>:</p></li>
+<li><p><code>var_min</code>: minimum estimate for the variable</p></li>
 <li><p><code>var_max</code>: maximum estimate for the variable</p></li>
 <li><p><code>var_best</code>: best estimate for the variable</p></li>
-</ul><p><em>Four points elicitation</em>:</p><ul><li><p><code>var_min</code>: minimum estimate for the variable</p></li>
-<li><p><code>var_max</code>: maximum estimate for the variable</p></li>
-<li><p><code>var_best</code>: best estimate for the variable</p></li>
-<li><p><code>var_conf</code>: confidence for the estimate</p></li>
-</ul><p>The column with names is unique, the other columns are a block and can be
-repeated for each variable.</p>
-    </div>
+<li><p><code>var_conf</code>: confidence for the estimate</p>
+<p>The column with names is unique, the other columns are a block and can be
+repeated for each variable.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="column-and-variable-names">Column and variable names<a class="anchor" aria-label="anchor" href="#column-and-variable-names"></a></h2>
 
 
 
-<p>Moreover, the name of the columns is not important, <code>cont_add_data()</code> will
-overwrite it according to the following convention:</p>
-<p><em>variable_name</em>_<em>suffix</em></p>
-<p>with <em>suffix</em> being one of <em>min</em>, <em>max</em>, <em>best</em>, or <em>conf</em>. The information
-to build the column names is taken from the metadata available in the
-<a href="elic_cont.html">elic_cont</a> object.</p>
+<p>The name of the columns is not important, as long as they are different.
+<code>cont_add_data()</code> will overwrite them according to the convention
+<em>variable_name</em>_<em>suffix</em> with <em>suffix</em> being one of <em>min</em>, <em>max</em>, <em>best</em>, or
+<em>conf</em>. The information to build the column names is taken from the
+metadata available in the <a href="elic_cont.html">elic_cont</a> object.</p>
 <p><code>var_conf</code>, given as percentage, can be any number in the range (50, 100].
-Any value smaller or equal to 50 would imply that the accuracy of the
-estimates is only due to chance).</p>
+This is because any value smaller or equal to 50 would imply that the
+accuracy of the estimates is only due to chance).</p>
     </div>
     <div class="section level2">
     <h2 id="nas">NAs<a class="anchor" aria-label="anchor" href="#nas"></a></h2>
 
 
 
-<p>It is possible that some experts did not provide estimates for all variables.
-In this case, the missing values should be recorded as <code>NA</code>. However, experts
-should always answer completely or not at all. If estimates are only
-partially given for a  variable (example <em>min</em> and <em>max</em> provided but not
-<em>best</em> for 3p elicitation), an error is raised.</p>
+<p>Experts can decide to not provide estimates for all variables. In this
+case, the missing values should be recorded as <code>NA</code>. However, experts
+should always answer completely to a variable (aka provide values for all
+aspect of the variable (minimum, maximum, best guess and confidence)) or
+not at all. If estimates are only partially given for a  variable (example
+<em>min</em> and <em>max</em> provided but not <em>best</em> for a three-point elicitation), an
+error is raised.</p>
     </div>
     <div class="section level2">
     <h2 id="data-cleaning">Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a></h2>
 
 
 
-<p>When data are added to the <a href="elic_cont.html">elic_cont</a> object, first names are standardised
-by converting capital letters to lower case, and by removing any whitespaces
-and punctuation. Then, data are anonymised by converting names to short sha1
-hashes. In this way, sensible information collected during the elicitation
-process never reaches the <a href="elic_cont.html">elic_cont</a> object. For three and four points
-elicitation processes, the order of the values is checked for each expert. If
-it is not <em>min-max-best</em>, the values are swapped accordingly and a
+<p>When data are added to the <a href="elic_cont.html">elic_cont</a> object, first
+names are standardised by converting capital letters to lower case, and by
+removing any whitespaces and punctuation. Then, data are anonymised by
+converting names to short sha1 hashes. In this way, sensible information
+collected during the elicitation process never reaches the
+<a href="elic_cont.html">elic_cont</a> object. For three and four points
+elicitation processes, the order of the values is checked for each expert.
+If it is not <em>min-max-best</em>, the values are swapped accordingly and a
 informative warn is raised.</p>
 <p>If the data are imported from <em>Google Sheets</em>, <code>cont_add_data()</code> performs
-additional data cleaning operations. This is relevant when data are collected
-with Google Forms because, for example, there could be multiple submission by
-the same expert or a different decimal separator could be used. When data are
-collected with Google Form, a column with the date and time is recorded.
-First, the function checks for multiple submissions and if present, only the
-last submission is retained. Second, the function removes the column with the
-timestamp. Then it checks for consistency of the decimal separator, i.e.
-commas <em>,</em> are replaced with periods <em>.</em>. Finally, all columns but the first
-one (which contains the names) are forced to numeric.</p>
+additional data cleaning operations. This is relevant when data are
+collected with Google Forms because, for example, there could be multiple
+submission by the same expert or a different decimal separator could be
+used. When data are collected with Google Form, a column with the date and
+time is recorded. First, the function checks for multiple submissions and
+if present, only the last submission is retained. Second, the function
+removes the column with the timestamp. Then it checks for consistency of
+the decimal separator, i.e. commas <em>,</em> are replaced with periods <em>.</em>.
+Finally, all columns but the first one (which contains the names) are
+forced to numeric.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -213,9 +243,9 @@ one (which contains the names) are forced to numeric.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create the elic_cont object for an elicitation process that estimates 3</span></span></span>
-<span class="r-in"><span><span class="co"># variables, the first for a one point estimation of a positive integer, the</span></span></span>
-<span class="r-in"><span><span class="co"># second for three points estimation of a negative real, and the last for a</span></span></span>
-<span class="r-in"><span><span class="co"># four point estimation of a probability</span></span></span>
+<span class="r-in"><span><span class="co"># variables, the first for a one point estimation of a positive round number,</span></span></span>
+<span class="r-in"><span><span class="co"># the second for three points estimation of a negative real, and the last for</span></span></span>
+<span class="r-in"><span><span class="co"># a four point estimation of a probability</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="cont_start.html">cont_start</a></span><span class="op">(</span>var_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span>, <span class="st">"var3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                var_types <span class="op">=</span> <span class="st">"ZNp"</span>,</span></span>
 <span class="r-in"><span>                elic_types <span class="op">=</span> <span class="st">"134"</span>,</span></span>

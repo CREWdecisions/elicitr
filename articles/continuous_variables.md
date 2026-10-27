@@ -3,9 +3,6 @@
 ``` r
 
 library(elicitr)
-#> Registered S3 method overwritten by 'car':
-#>   method           from
-#>   na.action.merMod lme4
 ```
 
 ## Datasets
@@ -153,11 +150,12 @@ cont_add_data(my_elicitation,
 #> Error in `cont_add_data()`:
 #> ! Unexpected number of columns:
 #> ✖ The imported dataset has 5 columns but 9 are expected.
-#> ℹ The first column in the data should be the expert name, followed by the
-#>   elicited variables. One-point elicitation variables should each have 1
-#>   column, three-point elicitation variables should each have 2 columns and
-#>   four-point elicitation variables should each have 4 columns. See Data format
-#>   in `elicitr::cont_add_data()`.
+#>   The first column in the data should be the expert name, followed by the
+#>   elicited variables as:
+#> One-point elicitation variables should each have 1 column, three-point
+#> elicitation variables should each have 2 columns and four-point elicitation
+#> variables should each have 4 columns.
+#> ℹ See Data format in `elicitr::cont_add_data()`.
 ```
 
 Or if we try to add data where the variable has an incorrect type:
@@ -170,9 +168,12 @@ cont_add_data(my_elicitation,
               data_source = malformed_data,
               round = 1)
 #> Error in `cont_add_data()`:
-#> ! Invalid data type:
-#> ✖ Variable "var1" contains some non integer numbers.
-#> ℹ Check raw data.
+#> ! Incorrect `var_types`:
+#> ✖ The argument `var_types` of "var1" was set to "Z" in the metadata but
+#>   variable "var1" contains estimates that are not round numbers.
+#> ℹ Check the raw data. If this is a mistake, recreate the metadata with
+#>   `elicitr::cont_start()` (make sure to change the argument `var_types`
+#>   accordingly), and reload the data.
 ```
 
 In this case the first variable is expected to have integer values
@@ -257,7 +258,7 @@ the constrained to the \[0, 1\] interval:
 ``` r
 
 plot(my_elicitation, round = 2, var = "var3")
-#> ✔ Rescaled min and max
+#> ✔ Rescaled min and max based on confidence estimates
 ```
 
 ![Estimates of variable 3 collected with a four points elicitation
@@ -334,7 +335,7 @@ Here we sample 1000 values for each variable:
 ``` r
 
 samp <- cont_sample_data(my_elicitation, round = 2)
-#> ✔ Rescaled min and max for variable "var3".
+#> ✔ Rescaled min and max based on confidence estimates for variable "var3".
 #> ✔ Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 samp
 #> # A tibble: 18,000 × 3

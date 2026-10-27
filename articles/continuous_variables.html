@@ -90,10 +90,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://crewdecisions.github.io/elicitr/">elicitr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'car':</span></span>
-<span><span class="co">#&gt;   method           from</span></span>
-<span><span class="co">#&gt;   na.action.merMod lme4</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://crewdecisions.github.io/elicitr/">elicitr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a>
 </h2>
@@ -229,11 +226,12 @@ to add a data frame with a different number of columns:</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `cont_add_data()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Unexpected number of columns:</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> The imported dataset has <span style="color: #0000BB;">5</span> columns but <span style="color: #0000BB;">9</span> are expected.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The first column in the data should be the expert name, followed by the</span></span>
-<span><span class="co">#&gt;   elicited variables. One-point elicitation variables should each have 1</span></span>
-<span><span class="co">#&gt;   column, three-point elicitation variables should each have 2 columns and</span></span>
-<span><span class="co">#&gt;   four-point elicitation variables should each have 4 columns. See Data format</span></span>
-<span><span class="co">#&gt;   in `elicitr::cont_add_data()`.</span></span></code></pre></div>
+<span><span class="co">#&gt;   The first column in the data should be the expert name, followed by the</span></span>
+<span><span class="co">#&gt;   elicited variables as:</span></span>
+<span><span class="co">#&gt; One-point elicitation variables should each have 1 column, three-point</span></span>
+<span><span class="co">#&gt; elicitation variables should each have 2 columns and four-point elicitation</span></span>
+<span><span class="co">#&gt; variables should each have 4 columns.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> See Data format in `elicitr::cont_add_data()`.</span></span></code></pre></div>
 <p>Or if we try to add data where the variable has an incorrect
 type:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -243,9 +241,12 @@ type:</p>
 <span>              data_source <span class="op">=</span> <span class="va">malformed_data</span>,</span>
 <span>              round <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `cont_add_data()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Invalid data type:</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Variable <span style="color: #0000BB;">"var1"</span> contains some non integer numbers.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check raw data.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Incorrect `var_types`:</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> The argument `var_types` of <span style="color: #0000BB;">"var1"</span> was set to <span style="color: #0000BB;">"Z"</span> in the metadata but</span></span>
+<span><span class="co">#&gt;   variable <span style="color: #0000BB;">"var1"</span> contains estimates that are not round numbers.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Check the raw data. If this is a mistake, recreate the metadata with</span></span>
+<span><span class="co">#&gt;   `elicitr::cont_start()` (make sure to change the argument `var_types`</span></span>
+<span><span class="co">#&gt;   accordingly), and reload the data.</span></span></code></pre></div>
 <p>In this case the first variable is expected to have integer values
 (<code>var_type = Z</code>), but the data contains real numbers.</p>
 </div>
@@ -308,7 +309,7 @@ provided by the expert. If the estimates are probabilities, the rescaled
 values are the constrained to the [0, 1] interval:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span>, var <span class="op">=</span> <span class="st">"var3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max based on confidence estimates</span></span></code></pre></div>
 <p><img src="continuous_variables_files/figure-html/plot-data-var3-1.png" class="r-plt" alt="Estimates of variable 3 collected with a four points elicitation process." width="700"></p>
 <p>Finally, the group mean and 2.5th–97.5th percentile interval of
 expert estimates can be added to the plot:</p>
@@ -361,7 +362,7 @@ methods.</p></li>
 <p>Here we sample 1000 values for each variable:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cont_sample_data.html">cont_sample_data</a></span><span class="op">(</span><span class="va">my_elicitation</span>, round <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max for variable <span style="color: #0000BB;">"var3"</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Rescaled min and max based on confidence estimates for variable <span style="color: #0000BB;">"var3"</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Data for <span style="color: #0000BB;">"var1"</span>, <span style="color: #0000BB;">"var2"</span>, and <span style="color: #0000BB;">"var3"</span> sampled successfully using the <span style="color: #0000BB;">"PERT"</span> method.</span></span>
 <span><span class="va">samp</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18,000 × 3</span></span></span>
