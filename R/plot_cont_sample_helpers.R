@@ -47,8 +47,6 @@ cont_sample_theme <- function(type, group) {
                                                            vjust = 0.5,
                                                            hjust = 1))
     }
-  } else {
-    th <- NULL
   }
 
   th
@@ -56,7 +54,7 @@ cont_sample_theme <- function(type, group) {
 
 #' Check type
 #'
-#' Check the imputed type and return an error or change it if needed.
+#' Check the imputed type and change it if needed.
 #' @param type a character string with the type of plot
 #' @param x the data being plotted
 #' @param var a character string the variable to plot
@@ -65,17 +63,7 @@ cont_sample_theme <- function(type, group) {
 #' @noRd
 #'
 #' @author Maude Vernet
-check_type <- function(type, x, var, group) {
-  if (!type %in% c("density", "violin", "beeswarm")) {
-    info <- "Available types are {.val beeswarm}, {.val violin} and \\
-    {.val density}."
-    fn <- as.list(sys.call(-1))[[1]]
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info,
-                     " " = "See {.fn elicitr::{fn}} for more information."),
-                   call = rlang::caller_env())
-  }
+update_type <- function(type, x, var, group) {
 
   same_vars <- x[x[["var"]] == var, ] |>
     dplyr::group_by(.data[["id"]]) |>
@@ -84,9 +72,9 @@ check_type <- function(type, x, var, group) {
     dplyr::pull("all_same")
   #check if all experts have one value in var (aka is a 1p variable)
   if (!all(is.na(x[["value"]][x[["var"]] == var])) &&
-      all(same_vars) &&
-      type != "violin" &&
-      !group) {
+        all(same_vars) &&
+        type != "violin" &&
+        !group) {
     type <- "violin"
     cli::cli_alert_info("Replacing {.arg type} with {.val {type}} as \\
                         {.val {var}} is a one-point variable.")

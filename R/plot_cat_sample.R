@@ -81,6 +81,8 @@ plot.cat_sample <- function(x,
                             beeswarm_cex = 0.6,
                             beeswarm_corral = "none") {
 
+  check_plot_type(type, elic = "cat")
+
   if (any(option != "all")) {
 
     # Check if option is available
@@ -182,14 +184,6 @@ plot.cat_sample <- function(x,
                                 size = 1,
                                 corral = beeswarm_corral,
                                 na.rm = TRUE)
-  } else {
-
-    info <- "Available types are {.val beeswarm} and {.val violin}."
-    fn <- as.list(sys.call())[[1]]
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info,
-                     " " = "See {.fn elicitr::{fn}} for more information."))
   }
 
   p <- p +

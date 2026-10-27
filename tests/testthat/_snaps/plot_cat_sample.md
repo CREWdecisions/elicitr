@@ -28,7 +28,18 @@
       Error in `plot()`:
       ! Invalid value for argument `type`:
       x Type "boxplot" is not implemented.
-      i Available types are "beeswarm" and "violin".
+      i Available types are "violin" and "beeswarm".
+        See `elicitr::plot.cat_sample()` for more information.
+
+---
+
+    Code
+      plot(samp, type = "density")
+    Condition
+      Error in `plot()`:
+      ! Invalid value for argument `type`:
+      x Type "density" is not implemented.
+      i Available types are "violin" and "beeswarm".
         See `elicitr::plot.cat_sample()` for more information.
 
 ---

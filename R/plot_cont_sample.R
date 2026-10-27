@@ -82,6 +82,8 @@ plot.cont_sample <- function(x,
                              beeswarm_cex = 0.6,
                              beeswarm_corral = "none") {
 
+  check_plot_type(type, elic = "cont")
+
   if (!is.null(expert_names)) {
     x <- cont_rename_experts(x = x,
                              data = x,
@@ -95,7 +97,7 @@ plot.cont_sample <- function(x,
   # Check if var is available
   check_length(var, "var", 1)
   check_var_in_sample(x, var)
-  type <- check_type(type, x, var, group)
+  type <- update_type(type, x, var, group)
 
   x[["missing"]] <- NA
   x[["violin_value"]] <- x[["value"]]

@@ -1014,3 +1014,29 @@ cont_rename_experts <- function(x,
 
   data
 }
+
+#' Check plot type
+#'
+#' Check the imputed type and change it if needed.
+#' @param type a character string with the type of plot
+#' @param elic a character string with the elicitaton class
+#' @noRd
+#'
+#' @author Maude Vernet
+check_plot_type <- function(type, elic) {
+  if (elic == "cont") {
+    allowed_types <- c("violin", "beeswarm", "density")
+  } else if (elic == "cat") {
+    allowed_types <- c("violin", "beeswarm")
+  }
+
+  if (!type %in% allowed_types) {
+    info <- "Available types are {.val {allowed_types}}."
+    fn <- as.list(sys.call(-1))[[1]]
+    cli::cli_abort(c("Invalid value for argument {.arg type}:",
+                     "x" = "Type {.val {type}} is not implemented.",
+                     "i" = info,
+                     " " = "See {.fn elicitr::{fn}} for more information."),
+                   call = rlang::caller_env())
+  }
+}
