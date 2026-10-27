@@ -296,7 +296,7 @@ check_cat_values <- function(data) {
 
   fn <- as.list(sys.call(-1))[[1]]
   if (any(estimates < 0 |
-          estimates > 100)) {
+            estimates > 100)) {
     cli::cli_abort(c("Invalid estimates",
                      "x" = "Estimates must be nonnegative probabilities or \\
                    percentages.",
@@ -305,8 +305,8 @@ check_cat_values <- function(data) {
   }
 
   if (any(!is.finite(confidence) |
-          confidence <= 50 |
-          confidence > 100)) {
+            confidence <= 50 |
+            confidence > 100)) {
     cli::cli_abort(c("Invalid confidence values",
                      "x" = "Confidence must be greater than 50 and at most \\
                      100.",
