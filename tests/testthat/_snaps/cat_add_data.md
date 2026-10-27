@@ -5,7 +5,7 @@
     Condition
       Error in `cat_add_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be a `?elicitr::elic_cat()` object loaded with metadata with `elicitr::cat_start()`.
+      x Argument `x` must be a `?elicitr::elic_cat()` object created with `elicitr::cat_start()`.
         `x` should be of class <elic_cat> and not of class <character>.
       i See `elicitr::cat_add_data()`.
 

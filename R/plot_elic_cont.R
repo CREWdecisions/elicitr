@@ -127,7 +127,9 @@ plot.elic_cont <- function(x,
                            verbose = TRUE) {
 
   # Check arguments
+  check_elic_obj(x, type = "cont", metadata = FALSE)
   check_round(round)
+  check_empty_obj(x, type = "cont", round_topic = round)
   check_var_in_obj(x, var)
 
   if (is.null(theme)) {

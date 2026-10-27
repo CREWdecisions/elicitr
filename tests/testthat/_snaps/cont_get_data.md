@@ -5,9 +5,29 @@
     Condition
       Error in `cont_get_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be a `?elicitr::elic_cont()` object with metadata and data loaded inside.
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
         `x` should be of class <elic_cont> and not of class <character>.
       i See `elicitr::cont_get_data()`.
+
+---
+
+    Code
+      cont_sample_data(x, round = 1)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+      i See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(x, round = 2)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+      i See `elicitr::cont_sample_data()`.
 
 ---
 
@@ -24,8 +44,10 @@
     Code
       cont_add_data(x, data_source = round_1, round = round_1)
     Condition
-      Error:
-      ! object 'x' not found
+      Error in `cont_add_data()`:
+      ! Incorrect value for `round`:
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
+      i See `elicitr::cont_add_data()`.
 
 ---
 

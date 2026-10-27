@@ -1,6 +1,26 @@
 # Errors
 
     Code
+      plot(x, round = 1, var = "var1")
+    Condition
+      Error in `plot()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+      i See `elicitr::plot.elic_cont()`.
+
+---
+
+    Code
+      plot(x, round = 2, var = "var1")
+    Condition
+      Error in `plot()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+      i See `elicitr::plot.elic_cont()`.
+
+---
+
+    Code
       plot(obj, round = 3, var = "var1")
     Condition
       Error in `plot()`:

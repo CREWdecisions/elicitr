@@ -79,7 +79,7 @@
     Condition
       Error in `cont_add_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be a `?elicitr::elic_cont()` object loaded with metadata with `elicitr::cont_start()`.
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()`.
         `x` should be of class <elic_cont> and not of class <character>.
       i See `elicitr::cont_add_data()`.
 

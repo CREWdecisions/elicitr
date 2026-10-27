@@ -5,6 +5,41 @@ test_that("Errors", {
   expect_snapshot(cat_get_data("abc", topic = "topic_1"),
                   error = TRUE)
 
+  # When x is an empty elic_cat object (topic 1)
+  x <- cat_start(topics = c("topic_1",
+                            "topic_2",
+                            "topic_3"),
+                 options = c("option_1",
+                             "option_2",
+                             "option_3",
+                             "option_4"),
+                 categories = c("category_1",
+                                "category_2",
+                                "category_3",
+                                "category_4",
+                                "category_5"),
+                 experts = 6)
+  expect_snapshot(cat_get_data(x,
+                               method = "unweighted",
+                               topic = "topic_1"),
+                  error = TRUE)
+
+  # When x is an empty elic_cat object (topic 2)
+  x <- cat_add_data(x, data_source = topic_1,
+                    topic = "topic_1", verbose = FALSE)
+  expect_snapshot(cat_get_data(x,
+                               method = "unweighted",
+                               topic = "topic_2"),
+                  error = TRUE)
+
+  # When x is an empty elic_cat object (topic 3)
+  x <- cat_add_data(x, data_source = topic_2,
+                    topic = "topic_2", verbose = FALSE)
+  expect_snapshot(cat_get_data(x,
+                               method = "unweighted",
+                               topic = "topic_3"),
+                  error = TRUE)
+
   # When topic is not a character string
   expect_snapshot(cat_get_data(obj, topic = 1),
                   error = TRUE)

@@ -7,6 +7,8 @@
 #' @param x the object to be checked.
 #' @param type character, either _cont_ or _cat_.
 #' @param metadata logical, whether x should be a metadata or a loaded metadata.
+#' @param round_topic the round or topic being investigated.
+
 #'
 #' @return An error if `x` is not and [elic_cont]or an [elic_cat] object.
 #' @noRd
@@ -19,16 +21,19 @@ check_elic_obj <- function(x,
   cl <- paste0("elic_", type)
 
   if (!inherits(x, cl)) {
+   fn <- as.list(sys.call(-1))[[1]]
 
-    fn <- as.list(sys.call(-1))[[1]]
+    fn_start <- paste0(type, "_start")
+    fn_add_data <- paste0(type, "_add_data")
 
     if (metadata) {
-      fn_start <- paste0(type, "_start")
-      error <- "{.help elicitr::{cl}} object loaded with metadata with
+      error <- "{.help elicitr::{cl}} object created with
                 {.fn elicitr::{fn_start}}."
+
     } else {
-      error <- "{.help elicitr::{cl}} object with metadata and data loaded
-                inside."
+      error <- "{.help elicitr::{cl}} object created with
+                {.fn elicitr::{fn_start}} and with data added with \\
+                {.fn elicitr::{fn_add_data}}."
     }
 
     error <- paste0("Argument {.arg x} must be a ", error)
@@ -38,6 +43,42 @@ check_elic_obj <- function(x,
     cli::cli_abort(c("Invalid value for {.arg x}:",
                      "x" = error,
                      " " = error2,
+                     "i" = "See {.fn elicitr::{fn}}."),
+                   call = rlang::caller_env())
+  }
+}
+
+#' Check elicit empty
+#'
+#' Check if `x` is an empty [elic_cont] or an [elic_cat] object.
+#'
+#' @param x the object to be checked.
+#' @param type character, either _cont_ or _cat_.
+#' @param round_topic the round or topic being investigated
+#'
+#' @return An error if `x` is an empty [elic_cont]or an [elic_cat] object.
+#' @noRd
+#'
+#' @author Maude Vernet
+check_empty_obj <- function(x,
+                            type,
+                            round_topic) {
+
+  if (is.null(x[["data"]][[round_topic]])) {
+
+    fn <- as.list(sys.call(-1))[[1]]
+    fn_start <- paste0(type, "_start")
+    fn_add_data <- paste0(type, "_add_data")
+    cl <- paste0("elic_", type)
+
+    error <- "{.help elicitr::{cl}} object created with
+              {.fn elicitr::{fn_start}} and with data added with \\
+              {.fn elicitr::{fn_add_data}}."
+
+    error <- paste0("Argument {.arg x} must be a ", error)
+
+    cli::cli_abort(c("Invalid value for {.arg x}:",
+                     "x" = error,
                      "i" = "See {.fn elicitr::{fn}}."),
                    call = rlang::caller_env())
   }
