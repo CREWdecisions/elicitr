@@ -21,7 +21,7 @@ check_elic_obj <- function(x,
   cl <- paste0("elic_", type)
 
   if (!inherits(x, cl)) {
-   fn <- as.list(sys.call(-1))[[1]]
+    fn <- as.list(sys.call(-1))[[1]]
 
     fn_start <- paste0(type, "_start")
     fn_add_data <- paste0(type, "_add_data")
