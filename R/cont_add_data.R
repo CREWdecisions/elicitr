@@ -1040,17 +1040,17 @@ check_na_blocks <- function(data, experts_idx, var_name) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("{cli::qty(length(na_data_partial))} Expert{?s} \\
-                        {.val {expert_na_partial}} replied to only one part \\
-                        of the variable {.val {var_name}}.")
+      cli::format_inline("{cli::qty(length(na_data_partial))} Expert{?s} \\
+                          {.val {expert_na_partial}} replied to only one part \\
+                          of the variable {.val {var_name}}.")
   } else if (!is.null(na_data_all)) {
     expert_na_all <- experts_idx[na_data_all]
 
     error[["warn"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("{cli::qty(length(na_data_all))} Expert{?s} \\
-                 {.val {expert_na_all}} did not reply to variable \\
-                 {.val {var_name}}.")
+      cli::format_inline("{cli::qty(length(na_data_all))} Expert{?s} \\
+                          {.val {expert_na_all}} did not reply to variable \\
+                          {.val {var_name}}.")
   }
   error
 }
