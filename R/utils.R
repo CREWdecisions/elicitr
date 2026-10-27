@@ -254,7 +254,7 @@ check_columns <- function(x, y, type) {
     cli::cli_abort(c("Unexpected number of columns:",
                      "x" = error,
                      " " = info,
-                     " " = info2,
+                     "y" = info2,
                      "i" = info3),
                    call = rlang::caller_env())
   }
@@ -973,4 +973,3 @@ cont_rename_experts <- function(x,
 
   data
 }
-

@@ -68,7 +68,7 @@
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
         The columns in the data should be:
-        (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
+      (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
       i See Data format in `elicitr::cat_add_data()`.
 
 ---
@@ -262,7 +262,7 @@
       ! Unexpected number of columns:
       x The imported dataset has 4 columns but 5 are expected.
         The columns in the data should be:
-        (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
+      (1) the expert names, (2) the options, (3) the categories, (4) the confidence and (5) the estimates.
       i See Data format in `elicitr::cat_add_data()`.
 
 # Accepts all estimates summing to 100

@@ -524,7 +524,7 @@ omogenise_datasets <- function(x, data) {
                          "x" = error,
                          " " = error2,
                          "i" = info,
-                         " " = info2),
+                         "y" = info2),
                        call = rlang::caller_env())
       }
     }
@@ -697,7 +697,7 @@ check_round_data <- function(data, experts, round) {
 #' @returns An error if the data types are not correct.
 #' @noRd
 #'
-#' @author Sergio Vignali, Maude Vernet
+#' @author Sergio Vignali and Maude Vernet
 check_data_types <- function(x, data) {
 
   var_names <- x[["var_names"]]
@@ -733,51 +733,13 @@ check_data_types <- function(x, data) {
 
     df <- unlist(data[, idx, drop = FALSE])
 
-    error_z <- list(error = FALSE,
-                    message = NA)
-    error_n <- list(error = FALSE,
-                    message = NA)
-    error_zz <- list(error = FALSE,
-                     message = NA)
-    error_s <- list(error = FALSE,
-                    message = NA)
-    error_r <- list(error = FALSE,
-                    message = NA)
-    error_p <- list(error = FALSE,
-                    message = NA)
     error_conf <- list(error = FALSE,
                        message = NA)
 
-    if (var_types[i] == "Z") {
+    error_type_message <- check_type_message(df, var_names[[i]], var_types[[i]])
 
-      error_z <- check_is_integer(df, var_names[i])
-
-    } else if (var_types[i] == "N") {
-
-      error_n <- check_is_positive_integer(df, var_names[i])
-
-    } else if (var_types[i] == "z") {
-
-      error_zz <- check_is_negative_integer(df, var_names[i])
-
-    } else if (var_types[i] == "s") {
-
-      error_s <- check_is_positive_real(df, var_names[i])
-
-    } else if (var_types[i] == "r") {
-
-      error_r <- check_is_negative_real(df, var_names[i])
-
-    } else if (var_types[i] == "p") {
-
-      error_p <- check_is_probability(df, var_names[i])
-
-    }
-
-    for (j in list(error_z, error_n, error_zz, error_s, error_r, error_p)) {
-      if (isTRUE(j[["error"]])) {
-        error_all_vartype <- c(error_all_vartype, j[["message"]])
-      }
+    if (isTRUE(error_type_message[["error"]])) {
+      error_all_vartype <- c(error_all_vartype, error_type_message[["message"]])
     }
 
     if (elic_types[i]  == "4p") {
@@ -821,8 +783,8 @@ check_data_types <- function(x, data) {
     bullets_all_vartype <- stats::setNames(error_all_vartype,
                                            rep("x", length(error_all_vartype)))
     info <- "Check the raw data. If this is a mistake, recreate the \\
-           metadata  with {.fn elicitr::cont_start} (make sure to change \\
-           the argument {.arg var_types} accordingly), and reload the data."
+             metadata  with {.fn elicitr::cont_start} (make sure to change \\
+             the argument {.arg var_types} accordingly), and reload the data."
 
     cli::cli_abort(c("Incorrect {.arg var_types}:",
                      bullets_all_vartype,
@@ -854,7 +816,7 @@ check_data_types <- function(x, data) {
 #' @returns A list with error if `x` contains some non integer numbers.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_integer <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -868,9 +830,9 @@ check_is_integer <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val Z} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not round numbers.")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val Z} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not round numbers.")
   }
   error
 }
@@ -883,7 +845,7 @@ check_is_integer <- function(x, v) {
 #' @returns A list with error if `x` contains some non positive integer numbers.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_positive_integer <- function(x, v) {
 
   error <- list(error = FALSE,
@@ -896,10 +858,10 @@ check_is_positive_integer <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val N} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not positive round \\
-                        numbers or 0.")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val N} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not positive round \\
+                          numbers or 0.")
   }
   error
 }
@@ -912,7 +874,7 @@ check_is_positive_integer <- function(x, v) {
 #' @returns A list with error if `x` contains some non negative integer numbers.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_negative_integer <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -925,10 +887,10 @@ check_is_negative_integer <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val z} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not negative round \\
-                        numbers.")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val z} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not negative round \\
+                          numbers.")
   }
   error
 }
@@ -941,7 +903,7 @@ check_is_negative_integer <- function(x, v) {
 #' @returns A list with error if `x` contains some non positive numbers.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_positive_real <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -954,10 +916,10 @@ check_is_positive_real <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val s} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not positive round \\
-                        numbers or 0.")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val s} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not positive round \\
+                          numbers or 0.")
   }
   error
 }
@@ -970,7 +932,7 @@ check_is_positive_real <- function(x, v) {
 #' @returns A list with error if `x` contains some non negative numbers.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_negative_real <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -983,10 +945,10 @@ check_is_negative_real <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val r} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not not strictly negative \\
-                        numbers.")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val r} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not not strictly \\
+                          negative numbers.")
   }
   error
 }
@@ -999,7 +961,7 @@ check_is_negative_real <- function(x, v) {
 #' @returns A list with error if `x` contains some values not in the range 0, 1.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_is_probability <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -1012,9 +974,9 @@ check_is_probability <- function(x, v) {
 
     error[["error"]] <- TRUE
     error[["message"]] <-
-    cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
-                        to {.val p} in the metadata but variable {.val {v}} \\
-                        contains estimates that are not in the range [0,1].")
+      cli::format_inline("The argument {.arg var_types} of {.val {v}} was set \\
+                          to {.val p} in the metadata but variable {.val {v}} \\
+                          contains estimates that are not in the range [0,1].")
   }
   error
 }
@@ -1027,7 +989,7 @@ check_is_probability <- function(x, v) {
 #' @returns An error if `x` contains some values not in the range 50, 100.
 #' @noRd
 #'
-#' @author Sergio Vignali
+#' @author Sergio Vignali and Maude Vernet
 check_conf <- function(x, v) {
 
   idx <- grepl("_conf[0-9]+$", names(x))
@@ -1057,8 +1019,8 @@ check_conf <- function(x, v) {
 #' @author Maude Vernet
 check_na_blocks <- function(data, experts_idx, var_name) {
 
-  na_data_all <- c()
-  na_data_partial <- c()
+  na_data_all <- NULL
+  na_data_partial <- NULL
 
   for (i in seq_len(nrow(data))) {
     if (anyNA(data[i, ])) {
@@ -1091,4 +1053,47 @@ check_na_blocks <- function(data, experts_idx, var_name) {
                  {.val {var_name}}.")
   }
   error
+}
+
+#' Check if the argument `var_type` and send to the correct checker function
+#'
+#' @param df numeric vector to be checked.
+#' @param var_name character string with the name of the variable to be checked.
+#' @param var_type character string with the name of the variable type.
+#'
+#' @returns A list with error if `df` does not have the expected format.
+#' @noRd
+#'
+#' @author Sergio Vignali and Maude Vernet
+check_type_message <- function(df, var_name, var_type) {
+
+  error_type_message <- list(error = FALSE,
+                             message = NA)
+
+  if (var_type == "Z") {
+
+    error_type_message <- check_is_integer(df, var_name)
+
+  } else if (var_type == "N") {
+
+    error_type_message <- check_is_positive_integer(df, var_name)
+
+  } else if (var_type == "z") {
+
+    error_type_message <- check_is_negative_integer(df, var_name)
+
+  } else if (var_type == "s") {
+
+    error_type_message <- check_is_positive_real(df, var_name)
+
+  } else if (var_type == "r") {
+
+    error_type_message <- check_is_negative_real(df, var_name)
+
+  } else if (var_type == "p") {
+
+    error_type_message <- check_is_probability(df, var_name)
+
+  }
+  error_type_message
 }

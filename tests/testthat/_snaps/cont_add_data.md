@@ -47,7 +47,7 @@
       ! Unexpected number of columns:
       x The imported dataset has 8 columns but 9 are expected.
         The first column in the data should be the expert name, followed by the elicited variables as:
-        One-point elicitation variables should each have 1 column, three-point elicitation variables should each have 2 columns and four-point elicitation variables should each have 4 columns.
+      One-point elicitation variables should each have 1 column, three-point elicitation variables should each have 2 columns and four-point elicitation variables should each have 4 columns.
       i See Data format in `elicitr::cont_add_data()`.
 
 ---
@@ -179,7 +179,7 @@
       x "Round 2" has 4 <id> not present in "Round 1".
         This brings the total number of expert to 8 while `experts` was set to 6 in `elicitr::cont_start()`.
       i Check raw data. Either modify the metadata using `elicitr::cont_start()` with `experts` = 8 and reupload the data for both rounds,
-        or modify the dataset manually and upload it again with `elicitr::cont_add_data()`.
+      or modify the dataset manually and upload it again with `elicitr::cont_add_data()`.
 
 ---
 
