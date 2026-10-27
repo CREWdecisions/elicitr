@@ -736,7 +736,21 @@ check_data_types <- function(x, data) {
     error_conf <- list(error = FALSE,
                        message = NA)
 
-    error_type_message <- check_type_message(df, var_names[[i]], var_types[[i]])
+    error_type_message <- switch(var_types[[i]],
+                                 Z = check_is_integer(df,
+                                                      var_names[[i]]),
+                                 N = check_is_positive_integer(df,
+                                                               var_names[[i]]),
+                                 z = check_is_negative_integer(df,
+                                                               var_names[[i]]),
+                                 s = check_is_positive_real(df,
+                                                            var_names[[i]]),
+                                 r = check_is_negative_real(df,
+                                                            var_names[[i]]),
+                                 p = check_is_probability(df,
+                                                          var_names[[i]]),
+                                 list(error = FALSE,
+                                      message = NA))
 
     if (isTRUE(error_type_message[["error"]])) {
       error_all_vartype <- c(error_all_vartype, error_type_message[["message"]])
@@ -1053,47 +1067,4 @@ check_na_blocks <- function(data, experts_idx, var_name) {
                           {.val {var_name}}.")
   }
   error
-}
-
-#' Check if the argument `var_type` and send to the correct checker function
-#'
-#' @param df numeric vector to be checked.
-#' @param var_name character string with the name of the variable to be checked.
-#' @param var_type character string with the name of the variable type.
-#'
-#' @returns A list with error if `df` does not have the expected format.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-check_type_message <- function(df, var_name, var_type) {
-
-  error_type_message <- list(error = FALSE,
-                             message = NA)
-
-  if (var_type == "Z") {
-
-    error_type_message <- check_is_integer(df, var_name)
-
-  } else if (var_type == "N") {
-
-    error_type_message <- check_is_positive_integer(df, var_name)
-
-  } else if (var_type == "z") {
-
-    error_type_message <- check_is_negative_integer(df, var_name)
-
-  } else if (var_type == "s") {
-
-    error_type_message <- check_is_positive_real(df, var_name)
-
-  } else if (var_type == "r") {
-
-    error_type_message <- check_is_negative_real(df, var_name)
-
-  } else if (var_type == "p") {
-
-    error_type_message <- check_is_probability(df, var_name)
-
-  }
-  error_type_message
 }
