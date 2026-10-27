@@ -200,6 +200,47 @@ test_that("Errors ", {
   expect_snapshot(cont_add_data(x, data_source = y, round = 1),
                   error = TRUE)
 
+  # Combination of issues (var type + NA)
+  z <- cont_start(var_names = c("var1", "var2", "var3"),
+                  var_types = "Npr",
+                  elic_types = "134",
+                  experts = 6,
+                  verbose = FALSE)
+  y <- round_1
+  y[1, 3:5] <- NA
+  y[1, 2] <- NA
+  expect_snapshot(out <- cont_add_data(z, data_source = y, round = 1),
+                  error = TRUE)
+
+  # Combination of issues (conf + NA)
+  z <- cont_start(var_names = c("var1", "var2", "var3"),
+                  var_types = "pRp",
+                  elic_types = "434",
+                  experts = 6,
+                  verbose = FALSE)
+  y <- cbind(round_1[, 1], round_1[, 6:9], round_1[, 3:5], round_1[, 6:9])
+  names(y) <- c(names(y)[1], "var1_min", "var1_max", "var1_best", "var1_conf",
+                names(y)[6:12])
+  y[1, 6:8] <- NA
+  y[1, 2:5] <- NA
+  y[3:4, c(5, 12)] <- 21
+  expect_snapshot(out <- cont_add_data(z, data_source = y, round = 1),
+                  error = TRUE)
+
+  # Combination of issues (NA good + NA bad)
+  z <- cont_start(var_names = c("var1", "var2", "var3"),
+                  var_types = "ZRp",
+                  elic_types = "134",
+                  experts = 6,
+                  verbose = FALSE)
+  y <- round_1
+  y[1, 3:5] <- NA
+  y[1, 2] <- NA
+  y[c(3, 4), 3:4] <- NA
+  y[c(3, 5), 7:9] <- NA
+  expect_snapshot(out <- cont_add_data(z, data_source = y, round = 1),
+                  error = TRUE)
+
 })
 
 test_that("Warnings", {

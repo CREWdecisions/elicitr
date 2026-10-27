@@ -5,6 +5,7 @@
     Condition
       Error in `cont_add_data()`:
       x File 'test.csv' doesn't exist!
+      i See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -22,8 +23,10 @@
       cont_add_data(x, data_source = round_1, round = 2)
     Condition
       Error in `cont_add_data()`:
-      ! Data for "Round 1" are not present:
-      i Data for "Round 2" can be added only after those for "Round 1".
+      ! "Round 1" is empty.
+      x Wrong value provided for `round`.
+        Data can only be loaded in "Round 2" after data was loaded in "Round 1".
+      i See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -32,7 +35,8 @@
     Condition
       Error in `cont_add_data()`:
       ! Data for "Round 1" already present:
-      i Set `overwrite = TRUE` if you want to overwrite them.
+      x Set `overwrite = TRUE` if you want to overwrite them.
+      i See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -42,7 +46,9 @@
       Error in `cont_add_data()`:
       ! Unexpected number of columns:
       x The imported dataset has 8 columns but 9 are expected.
-      i The first column in the data should be the expert name, followed by the elicited variables. One-point elicitation variables should each have 1 column, three-point elicitation variables should each have 2 columns and four-point elicitation variables should each have 4 columns. See Data format in `elicitr::cont_add_data()`.
+        The first column in the data should be the expert name, followed by the elicited variables as:
+      One-point elicitation variables should each have 1 column, three-point elicitation variables should each have 2 columns and four-point elicitation variables should each have 4 columns.
+      i See Data format in `elicitr::cont_add_data()`.
 
 ---
 
@@ -52,7 +58,8 @@
       Error in `cont_add_data()`:
       ! Incorrect number of rows in dataset:
       x The dataset for "Round 1" contains 12 rows but expects estimates from 6 experts.
-      i Check raw data or modify the <elic_cont> object by setting the number of experts to 12 with `obj$experts = 12`.
+      i Check raw data or modify the <elic_cont> object by setting the number of experts to 12 in `elicitr::cont_start()` and load the data again.
+        See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -62,7 +69,8 @@
       Error in `cont_add_data()`:
       ! Incorrect number of rows in dataset:
       x The dataset for "Round 2" contains 12 rows but expects estimates from 6 experts.
-      i Check raw data.
+      i Check raw data or modify the <elic_cont> object by setting the number of experts to 12 in `elicitr::cont_start()` and load the data for "Round 1" and "Round 2" again.
+        See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -71,7 +79,8 @@
     Condition
       Error in `cont_add_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be an object of class <elic_cont> and not of class <character>.
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()`.
+        `x` should be of class <elic_cont> and not of class <character>.
       i See `elicitr::cont_add_data()`.
 
 ---
@@ -81,7 +90,7 @@
     Condition
       Error in `cont_add_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_add_data()`.
 
 ---
@@ -91,7 +100,7 @@
     Condition
       Error in `cont_add_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_add_data()`.
 
 ---
@@ -101,7 +110,7 @@
     Condition
       Error in `cont_add_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_add_data()`.
 
 ---
@@ -110,9 +119,10 @@
       out <- cont_add_data(y, data_source = z, round = 2, verbose = FALSE)
     Condition
       Error in `cont_add_data()`:
-      ! Dataset for "Round 2" has 2 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" are "06d2130" and "3b842bc".
-      i Check raw data to identify the mismatch.
+      ! Automatic match between the dataset in "Round 1" and "Round 2" is not possible:
+      x "Round 2" has 2 <id> not present in "Round 1".
+        The <id> not present in "Round 1" are "06d2130" and "3b842bc".
+      i Check raw data. See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -123,9 +133,10 @@
       ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Error in `cont_add_data()`:
-      ! Dataset for "Round 2" has 1 <id> not present in "Round 1" and 2 entries with NAs. Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" is "06d2130".
-      i Check raw data.
+      ! Automatic match between the dataset in "Round 1" and "Round 2" is not possible:
+      x "Round 2" has 1 <id> not present in "Round 1" and 2 entries with NAs.
+        The <id> not present in "Round 1" is "06d2130".
+      i Check raw data. See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -136,9 +147,10 @@
       ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Error in `cont_add_data()`:
-      ! Dataset for "Round 2" has 2 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" are "06d2130" and "3b842bc".
-      i Check raw data to identify the mismatch.
+      ! Automatic match between the dataset in "Round 1" and "Round 2" is not possible:
+      x "Round 2" has 2 <id> not present in "Round 1".
+        The <id> not present in "Round 1" are "06d2130" and "3b842bc".
+      i Check raw data. See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -149,9 +161,10 @@
       ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Error in `cont_add_data()`:
-      ! Dataset for "Round 2" has 4 <id> not present in "Round 1". Automatic match between the two datasets is not possible:
-      x The <id> not present in "Round 1" are "06d2130", "6c074fa", "7aa9fc1", and "3b842bc".
-      i Check raw data to identify the mismatch.
+      ! Automatic match between the dataset in "Round 1" and "Round 2" is not possible:
+      x "Round 2" has 4 <id> not present in "Round 1".
+        The <id> not present in "Round 1" are "06d2130", "6c074fa", "7aa9fc1", and "3b842bc".
+      i Check raw data. See `elicitr::cont_add_data()` for more information.
 
 ---
 
@@ -163,8 +176,10 @@
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Error in `cont_add_data()`:
       ! Impossible to combine "Round 1" and "Round 2" datasets:
-      x "Round 2" has 4 <id> not present in "Round 1" which has only 2 "NA" rows.
-      i Check raw data and use `elicitr::cont_add_data()` to add the dataset after manual corrections.
+      x "Round 2" has 4 <id> not present in "Round 1".
+        This brings the total number of expert to 8 while `experts` was set to 6 in `elicitr::cont_start()`.
+      i Check raw data. Either modify the metadata using `elicitr::cont_start()` with `experts` = 8 and reupload the data for both rounds,
+      or modify the dataset manually and upload it again with `elicitr::cont_add_data()`.
 
 ---
 
@@ -172,8 +187,8 @@
       out <- cont_add_data(z, data_source = y, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       v Data added to "Round 1" from "data.frame"
 
@@ -184,8 +199,9 @@
     Condition
       Error in `cont_add_data()`:
       ! Invalid raw data:
-      x Variable "var2" contains "NA" values.
-      i Check raw data.
+      x Expert "5ac97e0" replied to only one part of the variable "var2".
+      i Experts cannot report estimates for only part of a variable.
+        Fix raw data. For more information, see `cont_add_data()`.
 
 ---
 
@@ -193,9 +209,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var1" contains some non integer numbers.
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var1" was set to "Z" in the metadata but variable "var1" contains estimates that are not round numbers.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -203,8 +219,8 @@
       out <- cont_add_data(x, data_source = y, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var1".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       v Data added to "Round 1" from "data.frame"
 
@@ -214,9 +230,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var2" contains some non positive integer numbers.
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var2" was set to "N" in the metadata but variable "var2" contains estimates that are not positive round numbers or 0.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -224,8 +240,8 @@
       out <- cont_add_data(x, data_source = y, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       v Data added to "Round 1" from "data.frame"
 
@@ -235,9 +251,9 @@
       cont_add_data(y, data_source = round_1, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var1" contains some non negative integer numbers.
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var1" was set to "z" in the metadata but variable "var1" contains estimates that are not negative round numbers.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -245,9 +261,9 @@
       cont_add_data(y, data_source = z, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains some non positive numbers.
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var3" was set to "s" in the metadata but variable "var3" contains estimates that are not positive round numbers or 0.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -255,8 +271,8 @@
       out <- cont_add_data(y, data_source = z, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       v Data added to "Round 1" from "data.frame"
 
@@ -266,9 +282,9 @@
       cont_add_data(y, data_source = round_1, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains some non negative numbers.
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var3" was set to "r" in the metadata but variable "var3" contains estimates that are not not strictly negative numbers.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -276,8 +292,8 @@
       out <- cont_add_data(y, data_source = z, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Warning:
       ! var2 of <id> "e51202e", "e78cbf4", "9fafbee", "3cc9c29", and "3d32ab9" reordered following the order "min-max-best".
     Message
@@ -289,9 +305,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains some values not in the range [0, 1].
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var3" was set to "p" in the metadata but variable "var3" contains estimates that are not in the range [0,1].
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -299,9 +315,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains some values not in the range [0, 1].
-      i Check raw data.
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var3" was set to "p" in the metadata but variable "var3" contains estimates that are not in the range [0,1].
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
 
 ---
 
@@ -309,8 +325,8 @@
       out <- cont_add_data(x, data_source = y, round = 1)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "5ac97e0" did not reply to variable "var3".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       v Data added to "Round 1" from "data.frame"
 
@@ -320,9 +336,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains confidence estimates not in the range (50, 100].
-      i Check raw data.
+      ! Incorrect confidence values:
+      x The variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check the raw data. For more information, see `cont_add_data()`.
 
 ---
 
@@ -330,9 +346,9 @@
       cont_add_data(x, data_source = y, round = 1)
     Condition
       Error in `cont_add_data()`:
-      ! Invalid data type:
-      x Variable "var3" contains confidence estimates not in the range (50, 100].
-      i Check raw data.
+      ! Incorrect confidence values:
+      x The variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check the raw data. For more information, see `cont_add_data()`.
 
 ---
 
@@ -341,8 +357,9 @@
     Condition
       Error in `cont_add_data()`:
       ! Invalid raw data:
-      x Variable "var3" contains "NA" values.
-      i Check raw data.
+      x Expert "5ac97e0" replied to only one part of the variable "var3".
+      i Experts cannot report estimates for only part of a variable.
+        Fix raw data. For more information, see `cont_add_data()`.
 
 ---
 
@@ -373,6 +390,52 @@
       ! Malformated data.
       x The first column does not contain the expert IDs.
       i See Data format in `elicitr::cont_add_data()`
+
+---
+
+    Code
+      out <- cont_add_data(z, data_source = y, round = 1)
+    Condition
+      Warning:
+      ! Expert "5ac97e0" did not reply to variable "var1".
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Error in `cont_add_data()`:
+      ! Incorrect `var_types`:
+      x The argument `var_types` of "var1" was set to "N" in the metadata but variable "var1" contains estimates that are not positive round numbers or 0.
+      x The argument `var_types` of "var2" was set to "p" in the metadata but variable "var2" contains estimates that are not in the range [0,1].
+      x The argument `var_types` of "var3" was set to "r" in the metadata but variable "var3" contains estimates that are not not strictly negative numbers.
+      i Check the raw data. If this is a mistake, recreate the metadata with `elicitr::cont_start()` (make sure to change the argument `var_types` accordingly), and reload the data.
+
+---
+
+    Code
+      out <- cont_add_data(z, data_source = y, round = 1)
+    Condition
+      Warning:
+      ! Expert "5ac97e0" did not reply to variable "var1".
+      ! Expert "5ac97e0" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Error in `cont_add_data()`:
+      ! Incorrect confidence values:
+      x The variable "var1" contains confidence estimates not in the range (50, 100].
+      x The variable "var3" contains confidence estimates not in the range (50, 100].
+      i Check the raw data. For more information, see `cont_add_data()`.
+
+---
+
+    Code
+      out <- cont_add_data(z, data_source = y, round = 1)
+    Condition
+      Warning:
+      ! Expert "5ac97e0" did not reply to variable "var1".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      Error in `cont_add_data()`:
+      ! Invalid raw data:
+      x Experts "e78cbf4" and "9fafbee" replied to only one part of the variable "var2".
+      x Experts "e78cbf4" and "3cc9c29" replied to only one part of the variable "var3".
+      i Experts cannot report estimates for only part of a variable.
+        Fix raw data. For more information, see `cont_add_data()`.
 
 # Warnings
 
@@ -526,8 +589,8 @@
       out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "Mar'Quasa Banks" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
     Message
       i The dataset in "Round 2" has 1 <id> not present in "Round 1". This <id> has been added to "Round 1" with NA values.
 
@@ -546,8 +609,8 @@
       out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "Mar'Quasa Banks" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Warning:
       ! The dataset for "Round 2" has 5 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
@@ -570,8 +633,8 @@
       out <- cont_add_data(out, z, round = 2, anonymise = FALSE, verbose = FALSE)
     Condition
       Warning:
-      ! Some expert(s) did not report estimates for all variables
-      i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
+      ! Expert "Mar'Quasa Banks" did not reply to variable "var2".
+      i If this is a mistake and you want to change and update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.
       Warning:
       ! The dataset for "Round 2" has 4 rows but expects 6 experts. NAs added to missing <id>.
       i Check raw data and if you want to update the dataset use `elicitr::cont_add_data()` with `overwrite = TRUE`.

@@ -4,6 +4,17 @@ test_that("Errors", {
   # When x is not an elicit object
   expect_snapshot(cont_get_data("abc", round = 1),
                   error = TRUE)
+  # When x is an empty elic_cont object (round 1)
+  x <- cont_start(var_names = c("var1", "var2", "var3"),
+                  var_types = "ZNp",
+                  elic_types = "134",
+                  experts = 6)
+  expect_snapshot(cont_sample_data(x, round = 1),
+                  error = TRUE)
+  # When x is an empty elic_cont object (round 2)
+  x <- cont_add_data(x, data_source = round_1, round = 1)
+  expect_snapshot(cont_sample_data(x, round = 2),
+                  error = TRUE)
   # When round is not 1 or 2
   expect_snapshot(cont_get_data(obj, round = 3),
                   error = TRUE)

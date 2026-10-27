@@ -3,10 +3,11 @@
     Code
       summary(samp, var = "var4")
     Condition
-      Error in `check_var_in_sample()`:
+      Error in `summary()`:
       ! Invalid value for argument `var`:
       x Variable "var4" is not available in the sampled data.
       i Available variables are "var1", "var2", and "var3".
+        See `elicitr::summary.cont_sample()` for more information.
 
 ---
 
@@ -14,9 +15,9 @@
       summary(samp, var = "var1")
     Condition
       Error in `summary()`:
-      ! No estimate provided
-      x the provided data only holds NAs
-      i No data provided in "var1".
+      ! "var1" only hold NAs.
+      x Use `elicitr::cont_get_data()` with `var` = "var1" to see the data in the `?elicitr::elic_cont()` object.
+      i If the resulting data is also only NA, review raw data. Otherwise review the object samp.
 
 ---
 
@@ -24,9 +25,9 @@
       summary(samp, var = c("var2", "var1"))
     Condition
       Error in `summary()`:
-      ! No estimate provided
-      x the provided data only holds NAs
-      i No data provided in "var1" and "var2".
+      ! "var1" and "var2" only holds NAs.
+      x Use `elicitr::cont_get_data()` with `var` = "var1" and "var2" to see the data in the `?elicitr::elic_cont()` object.
+      i If the resulting data is also only NA, review raw data. Otherwise review the object samp.
 
 # Missing variables
 

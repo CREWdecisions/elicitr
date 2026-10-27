@@ -55,11 +55,11 @@ e.g. "pZN".
 
 Valid short codes are:
 \itemize{
-\item \code{Z}: \emph{integers}, when the estimate must be an integer number in the
+\item \code{Z}: \emph{round numbers}, when the estimate must be an round number in the
 interval (-Inf, Inf).
-\item \code{N}: \emph{positive integers}, when the estimate must be an integer number in
+\item \code{N}: \emph{positive round numbers}, when the estimate must be a round number in
 the interval [0, Inf).
-\item \code{z}: \emph{negative integers}, when the estimate must be an integer number in
+\item \code{z}: \emph{negative round numbers}, when the estimate must be a round number in
 the interval (-Inf, 0).
 \item \code{R}: \emph{reals}, when the estimate must be a real number in the interval
 (-Inf, Inf).
@@ -90,9 +90,9 @@ confidence estimates are provided.
 
 \examples{
 # Create the elic_cont object for an elicitation process that estimates 3
-# variables, the first for a one point estimation of a positive integer, the
-# second for three points estimation of a negative real, and the last for a
-# four point estimation of a probability
+# variables, the first for a one point estimation of a positive round number,
+# the second for three points estimation of a negative real, and the last for
+# a four point estimation of a probability
 my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
                         var_types = "Nrp",
                         elic_types = "134",

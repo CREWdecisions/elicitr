@@ -27,10 +27,11 @@
 )
 }
 \arguments{
-\item{x}{an object of class \link{elic_cont}.}
+\item{x}{an object of class \link{elic_cont} created with
+\link{cont_start}.}
 
-\item{round}{integer indicating if the data belongs to the first or second
-elicitation round.}
+\item{round}{integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.}
 
 \item{var}{character string, the variable to be plotted.}
 
@@ -78,7 +79,7 @@ A \code{\link[ggplot2:ggplot]{ggplot}} object.
 \code{plot()} plots elicitation data for a specific round and variable.
 }
 \details{
-If a 1-point elicitation is plotted, the \code{group} argument will show the
+If a one-point elicitation is plotted, the \code{group} argument will show the
 mean and 2.5th–97.5th percentile interval of expert estimates.
 
 The \code{truth} argument is useful when the elicitation process is part of a
@@ -110,6 +111,16 @@ The scaled minimum and maximum values are obtained with:
 
 \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 {confidence}}
+
+For probability variables (\code{var_types = "p"}), confidence scaling may
+extend the estimated minimum and maximum value below zero or above one.
+To keep the interval within the valid probability range, any scaled minimum
+below zero is set to zero, and any scaled maximum above one is set to one.
+A warning is issued when this adjustment is needed.
+
+The best estimate and the original responses stored in the elicitation object
+remain unchanged. The adjusted bounds are used to define the displayed
+intervals when plotting.
 }
 
 \examples{

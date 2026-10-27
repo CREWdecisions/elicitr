@@ -49,7 +49,7 @@ cat_get_data <- function(x,
                          option = "all") {
 
   # Check if the object is of class elic_cat
-  check_elic_obj(x, type = "cat")
+  check_elic_obj(x, type = "cat", metadata = FALSE)
 
   # Check if topic is a character string of length 1
   check_is_character(topic, "topic")
@@ -59,6 +59,9 @@ cat_get_data <- function(x,
   check_value_in_element(x,
                          element = "topic",
                          value = topic)
+
+  # Check if the object is of class elic_cat
+  check_empty_obj(x, type = "cat", round_topic = topic)
 
   if (length(option) == 1 && option == "all") {
     out <- x[["data"]][[topic]]

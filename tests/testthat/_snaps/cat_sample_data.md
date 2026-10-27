@@ -5,8 +5,39 @@
     Condition
       Error in `cat_sample_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be an object of class <elic_cat> and not of class <character>.
+      x Argument `x` must be a `?elicitr::elic_cat()` object created with `elicitr::cat_start()` and with data added with `elicitr::cat_add_data()`.
+        `x` should be of class <elic_cat> and not of class <character>.
       i See `elicitr::cat_sample_data()`.
+
+---
+
+    Code
+      cat_sample_data(x, method = "unweighted", topic = "topic_1")
+    Condition
+      Error in `cat_get_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cat()` object created with `elicitr::cat_start()` and with data added with `elicitr::cat_add_data()`.
+      i See `elicitr::cat_get_data()`.
+
+---
+
+    Code
+      cat_sample_data(x, method = "unweighted", topic = "topic_2")
+    Condition
+      Error in `cat_get_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cat()` object created with `elicitr::cat_start()` and with data added with `elicitr::cat_add_data()`.
+      i See `elicitr::cat_get_data()`.
+
+---
+
+    Code
+      cat_sample_data(x, method = "unweighted", topic = "topic_3")
+    Condition
+      Error in `cat_get_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cat()` object created with `elicitr::cat_start()` and with data added with `elicitr::cat_add_data()`.
+      i See `elicitr::cat_get_data()`.
 
 ---
 
@@ -31,10 +62,12 @@
 ---
 
     Code
-      cat_sample_data(obj, round = 1, var = "var1", n_votes = -1)
+      cat_sample_data(obj, method = "unweighted", topic = "topic_1", n_votes = -1)
     Condition
       Error in `cat_sample_data()`:
-      ! argument "method" is missing, with no default
+      ! Invalid value for `n_votes`:
+      x Argument `n_votes` must be a single positive integer.
+      See `elicitr::cat_sample_data()`.
 
 ---
 

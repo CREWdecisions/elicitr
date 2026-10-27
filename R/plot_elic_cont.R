@@ -24,22 +24,6 @@
 #' theme.
 #' @inheritParams cont_add_data
 #'
-#' @details
-#' If a 1-point elicitation is plotted, the `group` argument will show the
-#' mean and 2.5th–97.5th percentile interval of expert estimates.
-#'
-#' The `truth` argument is useful when the elicitation process is part of a
-#' workshop and is used for demonstration. In this case the true value is known
-#' and can be added to the plot. This argument must be a list with the following
-#' elements: `min`, `max`, `best`, and `conf`. When `var` refers to a
-#' _one point elicitation_ estimate, only the `best` element is required. When
-#' `var` refers to a  _three points elicitation_.estimate, the `min` and `max`
-#' elements are also required. Finally, when `var` refers to a
-#' _four points elicitation_ estimate, the `conf` element is also required. The
-#' `conf` element is used to rescale the `min` and `max` values.
-#'
-#' If a `theme` is provided, the `family` argument is ignored.
-#'
 #' @section scale_conf:
 #'
 #' If the variable plotted is the result of a four points elicitation where
@@ -56,6 +40,32 @@
 #'
 #' \eqn{maximum = best\ guess + (maximum - best\ guess) \frac{scale\_conf}
 #' {confidence}}
+#'
+#' For probability variables (`var_types = "p"`), confidence scaling may
+#' extend the estimated minimum and maximum value below zero or above one.
+#' To keep the interval within the valid probability range, any scaled minimum
+#' below zero is set to zero, and any scaled maximum above one is set to one.
+#' A warning is issued when this adjustment is needed.
+#'
+#' The best estimate and the original responses stored in the elicitation object
+#' remain unchanged. The adjusted bounds are used to define the displayed
+#' intervals when plotting.
+#'
+#' @details
+#' If a one-point elicitation is plotted, the `group` argument will show the
+#' mean and 2.5th–97.5th percentile interval of expert estimates.
+#'
+#' The `truth` argument is useful when the elicitation process is part of a
+#' workshop and is used for demonstration. In this case the true value is known
+#' and can be added to the plot. This argument must be a list with the following
+#' elements: `min`, `max`, `best`, and `conf`. When `var` refers to a
+#' _one point elicitation_ estimate, only the `best` element is required. When
+#' `var` refers to a  _three points elicitation_.estimate, the `min` and `max`
+#' elements are also required. Finally, when `var` refers to a
+#' _four points elicitation_ estimate, the `conf` element is also required. The
+#' `conf` element is used to rescale the `min` and `max` values.
+#'
+#' If a `theme` is provided, the `family` argument is ignored.
 #'
 #' @return A [`ggplot`][`ggplot2::ggplot`] object.
 #' @export
@@ -117,7 +127,9 @@ plot.elic_cont <- function(x,
                            verbose = TRUE) {
 
   # Check arguments
+  check_elic_obj(x, type = "cont", metadata = FALSE)
   check_round(round)
+  check_empty_obj(x, type = "cont", round_topic = round)
   check_var_in_obj(x, var)
 
   if (is.null(theme)) {
@@ -170,13 +182,18 @@ plot.elic_cont <- function(x,
 
       data[["min"]] <- pmax(0, pmin(1, data[["min"]]))
       data[["max"]] <- pmax(0, pmin(1, data[["max"]]))
+      fn <- as.list(sys.call())[[1]]
       warn <- "Some values have been constrained to be between {.val {0}} \\
                  and {.val {1}}."
-      cli::cli_warn(c("!" = warn))
+      cli::cli_warn(c("!" = warn,
+                      " " = "See the {.field scale_conf} section in the \\
+                             help page for {.fn elicitr::{fn}} for more \\
+                             information."))
     }
 
     if (verbose) {
-      cli::cli_alert_success("Rescaled min and max")
+      cli::cli_alert_success("Rescaled min and max based on confidence \\
+                              estimates")
     }
   }
   if (elic_type %in% c("3p", "4p") && group) {
@@ -202,416 +219,4 @@ plot.elic_cont <- function(x,
                                             "group" = group_colour,
                                             "truth" = truth_colour)) +
     theme
-}
-
-# Helpers----
-
-#' Add group data
-#'
-#' Add data for the group mean to the data.frame.
-#'
-#' @param data tibble with the elicitation data.
-#' @param elic_type character string with the elicitation type.
-#'
-#' @return A tibble with the group data added.
-#' @noRd
-#'
-#' @author Sergio Vignali
-add_group_data <- function(data, elic_type) {
-
-  if (elic_type == "1p") {
-    data <- data |>
-      dplyr::add_row("id" = "Group",
-                     "best" = mean(data[["best"]], na.rm = TRUE),
-                     "col" = "group")
-  } else if (elic_type == "3p") {
-    data <- data |>
-      dplyr::add_row("id" = "Group",
-                     "best" = mean(data[["best"]], na.rm = TRUE),
-                     "min" = NA,
-                     "max" = NA,
-                     "col" = "group")
-  } else {
-    data <- data |>
-      dplyr::add_row("id" = "Group",
-                     "best" = mean(data[["best"]], na.rm = TRUE),
-                     "min" = NA,
-                     "max" = NA,
-                     "conf" = 100,
-                     "col" = "group")
-  }
-
-  data
-}
-
-#' Add 2.5th–97.5th percentile interval for 1-point elicitation
-#'
-#' Add summary statistics (mean and 95\% CI) around the group mean value in a
-#' 1-point elicitation plot.
-#' @param data tibble with the elicitation data.
-#' @param elic_type character string with the elicitation type.
-#'
-#' @return A tible with the 2.5th–97.5th percentile interval of estimates.
-#' @noRd
-#' @author Maude Vernet
-
-add_ci <- function(data, elic_type) {
-  data_ci <- data.frame("id" = "Group",
-                        "group95ciPOS" = quantile(data[["best"]], 0.975,
-                                                  na.rm = TRUE),
-                        "group95ciNEG" = quantile(data[["best"]], 0.025,
-                                                  na.rm = TRUE),
-                        "col" = "group",
-                        stringsAsFactors = FALSE)
-
-  data_ci
-}
-
-#' Add truth data
-#'
-#' Add data for the true values to the data.frame.
-#'
-#' @param data tibble with the elicitation data.
-#' @param truth list with the true values.
-#' @param elic_type character string with the elicitation type.
-#'
-#' @return A tibble with the true data added.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-add_truth_data <- function(data, truth, elic_type) {
-
-  if (elic_type == "1p") {
-    data <- dplyr::add_row(data,
-                           "id" = "Truth",
-                           "best" = truth[["best"]],
-                           "col" = "truth")
-  } else if (elic_type == "3p") {
-    data <- dplyr::add_row(data,
-                           "id" = "Truth",
-                           "best" = truth[["best"]],
-                           "min" = truth[["min"]],
-                           "max" = truth[["max"]],
-                           "col" = "truth")
-  } else if (elic_type == "4p") {
-    data <- dplyr::add_row(data,
-                           "id" = "Truth",
-                           "best" = truth[["best"]],
-                           "min" = truth[["min"]],
-                           "max" = truth[["max"]],
-                           "conf" = truth[["conf"]],
-                           "col" = "truth")
-  }
-
-  data
-}
-
-# Checkers----
-
-#' Check variable in object
-#'
-#' Check if the variable is present in the `elic_cont` object and if it is of
-#' length 1.
-#'
-#' @param x an object of class `elic_cont`.
-#' @param var character to check.
-#'
-#' @return An error if the variable is not present in the object or if it is
-#' not of length 1.
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_var_in_obj <- function(x, var) {
-
-  if (length(var) > 1) {
-    error <- "Only one variable can be plotted at a time, you passed \\
-              {.val {length(var)}} variables."
-    cli::cli_abort(c("Incorrect value for {.arg var}:",
-                     "x" = error,
-                     "i" = "See {.fn elicitr::plot.elic_cont}."),
-                   call = rlang::caller_env())
-  }
-
-  if (!var %in% x[["var_names"]]) {
-    error <- "Variable {.val {var}} not found in the {.cls elic_cont} object."
-    cli::cli_abort(c("Invalid value for {.arg var}:",
-                     "x" = error,
-                     "i" = "Available variables are {.val {x$var_names}}."),
-                   call = rlang::caller_env())
-  }
-}
-
-#' Check truth argument
-#'
-#' Checks if the `truth` argument is a list with the correct elements for the
-#' given elicitation type.
-#'
-#' @param x the value to be checked.
-#' @param elic_type character string with the elicitation type.
-#'
-#' @return An error if `truth` is not a list or if it does not have the correct
-#' elements.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-check_truth <- function(x, elic_type, miss_conf) {
-
-  n <- length(x)
-  error <- ""
-
-  if (is.list(x)) {
-
-    info <- "See Details in {.fn elicitr::plot.elic_cont}."
-
-    if (elic_type == "1p") {
-
-      if (n != 1) {
-        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
-                  but it should have only {.val {1}} element named {.val best}."
-      } else if (names(x) != "best") {
-        error <- "The name of the element in {.arg truth} should be \\
-                  {.val best} and not {.val {names(x)}}."
-      }
-
-    } else if (elic_type == "3p") {
-
-      if (n != 3) {
-        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
-                  but should have {.val {3}} elements named {.val min}, \
-                  {.val max} and {.val best}."
-      } else if (!all(c("min", "max", "best") %in% names(x))) {
-        error <- "The name of the elements in {.arg truth} should be \\
-                  {.val min}, {.val max}, and {.val best} and not \\
-                  {.val {names(x)}}."
-      }
-
-    } else if (elic_type == "4p") {
-
-      if (isTRUE(miss_conf)) {
-        n <- n - 1
-      }
-
-      if (!n %in% c(3, 4)) {
-        error <- "Argument {.arg truth} is a list with {.val {n}} elements \\
-                  but should have {.val {3}} or {.val {4}} elements named \
-                  {.val min}, {.val max}, {.val best} and optionally \
-                  {.val conf}."
-      } else if (!all(c("min", "max", "best", "conf") %in% names(x))) {
-        error <- "The name of the elements in {.arg truth} should be \\
-                  {.val min}, {.val max}, {.val best}, and optionally \\
-                  {.val conf} and not {.val {names(x)}}."
-      }
-    }
-  } else {
-    error <- "Argument {.arg truth} is of class {.cls {class(x)}} but it \\
-              should be a named {.cls list}."
-    info <- "See {.fn elicitr::plot.elic_cont}."
-  }
-
-  if (nzchar(error, keepNA = TRUE)) {
-
-    cli::cli_abort(c("Incorrect value for {.arg truth}:",
-                     "x" = error,
-                     "i" = info),
-                   call = rlang::caller_env())
-  }
-}
-
-# Plot theme----
-
-#'Theme
-#'
-#' Custom theme for continuous data.
-#'
-#' @return A [`theme`][`ggplot2::theme`] function.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-cont_theme <- function() {
-  ggplot2::theme(panel.grid.major.x = ggplot2::element_line(colour = "black",
-                                                            linetype = 8,
-                                                            linewidth = 0.1),
-                 panel.grid.major.y = ggplot2::element_blank(),
-                 axis.ticks.length = ggplot2::unit(0.5, units = "mm"),
-                 legend.position = "none")
-}
-
-# Rename experts----
-
-#' Rename experts
-#' Check if the new names vector is of the correct length
-#' Rename experts in elic_cont object
-#' @param x the object to be plotted
-#' @param data tibble with the elicitation data
-#' @param expert_names character vector with the new names for the experts
-#'
-#' @return the object with renamed experts
-#' @noRd
-#'
-#' @author Maude Vernet
-cont_rename_experts <- function(x,
-                                data,
-                                expert_names) {
-
-  n_experts <- length(unique(data[["id"]]))
-
-  if (length(expert_names) != n_experts) {
-    error <- "You provided {.val {length(expert_names)}} expert names but the \\
-              elicitation process has {.val {n_experts}} experts."
-    cli::cli_abort(c("Incorrect length of {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Provide a vector of length {.val {n_experts}}."),
-                   call = rlang::caller_env())
-  }
-
-  if (anyDuplicated(expert_names) > 0) {
-    error <- "Multiple experts have the same name in {.arg expert_names}."
-    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Please provide unique names for each expert."),
-                   call = rlang::caller_env())
-  }
-
-  if (any(expert_names == "Group") || any(expert_names == "Truth")) {
-    error <- "The names {.val Group} and {.val Truth} are reserved and cannot \\
-              be used in {.arg expert_names}."
-    cli::cli_abort(c("Invalid value for {.arg expert_names}:",
-                     "x" = error,
-                     "i" = "Please provide different names for the experts."),
-                   call = rlang::caller_env())
-  }
-
-  if (class(x)[1] == "elic_cont") {
-    expert_names <- as.character(expert_names)
-    data[["id"]] <- expert_names
-  }
-
-  if (class(data)[1] == "cont_sample") {
-    names(expert_names) <- unique(data$id)
-    data$id <- expert_names[data$id]
-    data
-  }
-
-  data
-}
-
-#' Check if rescaling needed and if NA present
-#'
-#' @param data the data to be checked.
-#' @param idx the indices of the experts.
-#'
-#' @returns a logical indicating if rescaling is needed.
-#' @noRd
-#'
-#' @author Maude Vernet
-check_resc_na <- function(data, idx) {
-  if (anyNA(data)) {
-    has_na <- which(rowSums(is.na(data)) > 0)
-    data_na <- data[-has_na, ]
-    idx_na <- seq_len(nrow(data_na))
-    needs_resc <-
-      any(data_na[["min"]][idx_na] < 0) || any(data_na[["max"]][idx_na] > 1)
-
-  } else {
-    needs_resc <- any(data[["min"]][idx] < 0) || any(data[["max"]][idx] > 1)
-  }
-  needs_resc
-}
-
-#' Finish plot with depended variables
-#'
-#' Add group error bars to group value if plotting a 1-point elicitation, add
-#' error bars if plotting a 3 or 4-point, and rescale plot if probability values
-#'
-#' @param p a ggplot object.
-#' @param elic_type character string with the elicitation type.
-#' @param var_type character string with the variable type.
-#' @param line_width numeric string with the width of the line.
-#' @param data_ci table with the 95\% CI around the mean of 1-point elicitations
-#'
-#' @return a ggplot object.
-#' @noRd
-#'
-#' @author Maude Vernet
-plot_addons <- function(p,
-                        elic_type,
-                        var_type,
-                        group,
-                        line_width,
-                        data_ci) {
-  if (elic_type == "1p" && group) {
-    p <- p +
-      ggplot2::geom_errorbar(data = data_ci,
-                             mapping =
-                               ggplot2::aes(y = .data[["id"]],
-                                            xmin = .data[["group95ciNEG"]],
-                                            xmax = .data[["group95ciPOS"]],
-                                            colour = .data[["col"]]),
-                             position = "identity",
-                             width = 0,
-                             linewidth = line_width)
-  }
-
-  if (elic_type %in% c("3p", "4p")) {
-    p <- p +
-      ggplot2::geom_errorbar(mapping = ggplot2::aes(y = .data[["id"]],
-                                                    xmin = .data[["min"]],
-                                                    xmax = .data[["max"]],
-                                                    colour = .data[["col"]]),
-                             position = "identity",
-                             width = 0,
-                             linewidth = line_width)
-  }
-
-  if (var_type == "p") {
-    p <- p +
-      ggplot2::scale_x_continuous(limits = c(0, 1),
-                                  expand = c(0, 0))
-  }
-
-  p
-}
-
-#' Verify if group or truth are called
-#'
-#' Check if group or truth are called and make all necessary checks.
-#'
-#' @param group logical if group should be plotted.
-#' @param ids the names of experts
-#' @param elic_type character string with the elicitation type.
-#' @param data tibble with the elicitation data.
-#' @param truth logical if truth should be plotted.
-#'
-#' @return a list with the object with added group and truth, thenew ids and the
-#' potential CIs.
-#' @noRd
-#'
-#' @author Maude Vernet
-check_grouptruth <- function(group, ids, elic_type, data, truth) {
-  data_ci <- NULL
-
-  if (group) {
-
-    ids <- c(ids, "Group")
-    if (elic_type == "1p") {
-      data_ci <- add_ci(data, elic_type)
-    }
-    data <- add_group_data(data, elic_type)
-  }
-
-  if (!is.null(truth)) {
-
-    ids <- c(ids, "Truth")
-    miss_conf <- FALSE
-    if (elic_type == "4p" && !"conf" %in% names(truth)) {
-      truth$conf <- 100
-      miss_conf <- TRUE
-    }
-
-    check_truth(truth, elic_type, miss_conf)
-    data <- add_truth_data(data, truth, elic_type)
-  }
-  list(data_ci = data_ci,
-       data = data,
-       ids = ids)
 }

@@ -17,14 +17,16 @@ cont_add_data(
 )
 }
 \arguments{
-\item{x}{an object of class \link{elic_cont}.}
+\item{x}{an object of class \link{elic_cont} created with
+\link{cont_start}.}
 
 \item{data_source}{either a \code{\link[base:data.frame]{data.frame}} or
-\code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx} file,
-or anything accepted by the \link[googlesheets4:read_sheet]{read_sheet} function.}
+\code{\link[tibble:tibble]{tibble}}, a string with the path to a \emph{csv} or \emph{xlsx}
+file, or anything accepted by the \link[googlesheets4:read_sheet]{read_sheet}
+function.}
 
-\item{round}{integer indicating if the data belongs to the first or second
-elicitation round.}
+\item{round}{integer (1 or 2) indicating if the data belongs to the first or
+second elicitation round. See section rounds for more detail.}
 
 \item{...}{Unused arguments, included only for future extensions of the
 function.}
@@ -34,11 +36,12 @@ a path to a \emph{csv} file.}
 
 \item{sheet}{integer or character to select the sheet. The sheet can be
 referenced by its position with a number or by its name with a string. Used
-only when \code{data_source} is a path to a \emph{xlsx} file or when data are imported
-from \emph{Google Sheets}.}
+only when \code{data_source} is a path to a \emph{xlsx} file or when data are
+imported from \emph{Google Sheets}.}
 
 \item{overwrite}{logical, whether to overwrite existing data already added to
-the \link{elic_cont} object.}
+the \link{elic_cont} object. See section rounds for more
+detail.}
 
 \item{verbose}{logical, if \code{TRUE} it prints informative messages.}
 
@@ -46,103 +49,121 @@ the \link{elic_cont} object.}
 the data to the \link{elic_cont} object.}
 }
 \value{
-The provided object of class \link{elic_cont} updated with the data.
+The provided object of class \link{elic_cont} updated
+with the data.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-\code{cont_add_data()} adds data to an \link{elic_cont} object from different sources.
+\code{cont_add_data()} adds data to an \link{elic_cont} object from
+different sources.
 }
+\section{Rounds}{
+ \link{elicitr} supports two elicitation rounds,
+following approaches such as the Delphi and IDEA protocols. The idea behind
+the two rounds is that experts first provide individual estimates, then
+review feedback or discuss differences before submitting revised estimates
+in a second round. This gives experts an opportunity to reconsider their
+judgments while retaining both sets of responses for comparison.
+
+When adding data to the \link{elic_cont} object previously
+created with \link{cont_start}, \link{elicitr} checks
+that the number of responses matches the declared number of experts. When
+adding round 2, it matches expert IDs across rounds and aligns their
+responses. It also flags inconsistencies in expert IDs and can correct a
+single differing ID as a presumed typo under specific conditions. Data must
+be loaded in round 1 before a second elicitation round can be loaded in
+round 2. To replace existing data, the argument \emph{overwrite} must be set to
+\emph{TRUE} in \link{cont_add_data}.
+}
+
 \section{Data format}{
 
 
-Data are expected to have the name of the expert always as first column. The
-only exception is for data coming from \emph{Google Sheet} which can have an
+Data are expected to have the name of the expert always as first column.
+The only exception is for data coming from \emph{Google Sheet} which can have an
 additional column with a timestamp. This column is automatically removed
-before the data are added to the \link{elic_cont} object (see "Data cleaning").
-After the name there should be one or more blocks which follow the
-specifications below:
+before the data are added to the \link{elic_cont} object
+(see "Data cleaning"). After the name there should be one or more blocks
+which follow the specifications below:
 
 \emph{One point elicitation}:
 \itemize{
 \item \code{var_best}: best estimate for the variable
-}
 
 \emph{Three points elicitation}:
-\itemize{
 \item \code{var_min}: minimum estimate for the variable
 \item \code{var_max}: maximum estimate for the variable
 \item \code{var_best}: best estimate for the variable
-}
 
 \emph{Four points elicitation}:
-\itemize{
 \item \code{var_min}: minimum estimate for the variable
 \item \code{var_max}: maximum estimate for the variable
 \item \code{var_best}: best estimate for the variable
 \item \code{var_conf}: confidence for the estimate
-}
 
 The column with names is unique, the other columns are a block and can be
 repeated for each variable.
+}
 }
 
 \section{Column and variable names}{
 
 
-Moreover, the name of the columns is not important, \code{cont_add_data()} will
-overwrite it according to the following convention:
-
-\emph{variable_name}_\emph{suffix}
-
-with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or \emph{conf}. The information
-to build the column names is taken from the metadata available in the
-\link{elic_cont} object.
+The name of the columns is not important, as long as they are different.
+\code{cont_add_data()} will overwrite them according to the convention
+\emph{variable_name}_\emph{suffix} with \emph{suffix} being one of \emph{min}, \emph{max}, \emph{best}, or
+\emph{conf}. The information to build the column names is taken from the
+metadata available in the \link{elic_cont} object.
 
 \code{var_conf}, given as percentage, can be any number in the range (50, 100].
-Any value smaller or equal to 50 would imply that the accuracy of the
-estimates is only due to chance).
+This is because any value smaller or equal to 50 would imply that the
+accuracy of the estimates is only due to chance).
 }
 
 \section{NAs}{
 
 
-It is possible that some experts did not provide estimates for all variables.
-In this case, the missing values should be recorded as \code{NA}. However, experts
-should always answer completely or not at all. If estimates are only
-partially given for a  variable (example \emph{min} and \emph{max} provided but not
-\emph{best} for 3p elicitation), an error is raised.
+Experts can decide to not provide estimates for all variables. In this
+case, the missing values should be recorded as \code{NA}. However, experts
+should always answer completely to a variable (aka provide values for all
+aspect of the variable (minimum, maximum, best guess and confidence)) or
+not at all. If estimates are only partially given for a  variable (example
+\emph{min} and \emph{max} provided but not \emph{best} for a three-point elicitation), an
+error is raised.
 }
 
 \section{Data cleaning}{
 
 
-When data are added to the \link{elic_cont} object, first names are standardised
-by converting capital letters to lower case, and by removing any whitespaces
-and punctuation. Then, data are anonymised by converting names to short sha1
-hashes. In this way, sensible information collected during the elicitation
-process never reaches the \link{elic_cont} object. For three and four points
-elicitation processes, the order of the values is checked for each expert. If
-it is not \emph{min-max-best}, the values are swapped accordingly and a
+When data are added to the \link{elic_cont} object, first
+names are standardised by converting capital letters to lower case, and by
+removing any whitespaces and punctuation. Then, data are anonymised by
+converting names to short sha1 hashes. In this way, sensible information
+collected during the elicitation process never reaches the
+\link{elic_cont} object. For three and four points
+elicitation processes, the order of the values is checked for each expert.
+If it is not \emph{min-max-best}, the values are swapped accordingly and a
 informative warn is raised.
 
 If the data are imported from \emph{Google Sheets}, \code{cont_add_data()} performs
-additional data cleaning operations. This is relevant when data are collected
-with Google Forms because, for example, there could be multiple submission by
-the same expert or a different decimal separator could be used. When data are
-collected with Google Form, a column with the date and time is recorded.
-First, the function checks for multiple submissions and if present, only the
-last submission is retained. Second, the function removes the column with the
-timestamp. Then it checks for consistency of the decimal separator, i.e.
-commas \emph{,} are replaced with periods \emph{.}. Finally, all columns but the first
-one (which contains the names) are forced to numeric.
+additional data cleaning operations. This is relevant when data are
+collected with Google Forms because, for example, there could be multiple
+submission by the same expert or a different decimal separator could be
+used. When data are collected with Google Form, a column with the date and
+time is recorded. First, the function checks for multiple submissions and
+if present, only the last submission is retained. Second, the function
+removes the column with the timestamp. Then it checks for consistency of
+the decimal separator, i.e. commas \emph{,} are replaced with periods \emph{.}.
+Finally, all columns but the first one (which contains the names) are
+forced to numeric.
 }
 
 \examples{
 # Create the elic_cont object for an elicitation process that estimates 3
-# variables, the first for a one point estimation of a positive integer, the
-# second for three points estimation of a negative real, and the last for a
-# four point estimation of a probability
+# variables, the first for a one point estimation of a positive round number,
+# the second for three points estimation of a negative real, and the last for
+# a four point estimation of a probability
 x <- cont_start(var_names = c("var1", "var2", "var3"),
                 var_types = "ZNp",
                 elic_types = "134",

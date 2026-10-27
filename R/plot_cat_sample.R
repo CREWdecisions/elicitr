@@ -81,6 +81,8 @@ plot.cat_sample <- function(x,
                             beeswarm_cex = 0.6,
                             beeswarm_corral = "none") {
 
+  check_plot_type(type, elic = "cat")
+
   if (any(option != "all")) {
 
     # Check if option is available
@@ -113,10 +115,12 @@ plot.cat_sample <- function(x,
 
       error <- "The number of colours provided does not match the number \\
                 of categories."
+      fn <- as.list(sys.call())[[1]]
       cli::cli_abort(c("Invalid value for argument {.arg colours}:",
                        "x" = error,
                        "i" = "Please provide a vector with {.val {n_cat}} \\
-                              colours."))
+                              colours.",
+                       " " = "See {.fn elicitr::{fn}} for more information."))
     }
   }
 
@@ -126,10 +130,13 @@ plot.cat_sample <- function(x,
   }
 
   if (all(is.na(x["prob"]))) {
-    info <- "Experts did not provide any estimate."
-    cli::cli_abort(c("All data provided is empty.",
-                     "x" = "Only NA available in the data",
-                     "i" = info))
+    error <- "Use {.fn elicitr::cont_get_data} to see the data in the \\
+                {.help elicitr::elic_cat} object."
+    cli::cli_abort(c("The data in {.val {option}} only holds NAs.",
+                     "x" = error,
+                     "i" = "If the resulting data is also only NA, review \\
+                            raw data. Otherwise review the object parsed in \\
+                            {.arg x}"))
   }
 
   option_na <- x |>
@@ -177,12 +184,6 @@ plot.cat_sample <- function(x,
                                 size = 1,
                                 corral = beeswarm_corral,
                                 na.rm = TRUE)
-  } else {
-
-    info <- "Available types are {.val beeswarm} and {.val violin}."
-    cli::cli_abort(c("Invalid value for argument {.arg type}:",
-                     "x" = "Type {.val {type}} is not implemented.",
-                     "i" = info))
   }
 
   p <- p +
@@ -210,27 +211,4 @@ plot.cat_sample <- function(x,
     theme
 
   p
-}
-
-# Plot theme----
-
-#'Theme
-#'
-#' Custom theme for categorical samples.
-#'
-#' @return A [`theme`][`ggplot2::theme`] function.
-#' @noRd
-#'
-#' @author Sergio Vignali and Maude Vernet
-cat_sample_theme <- function() {
-  ggplot2::theme(axis.text.x = ggplot2::element_blank(),
-                 axis.ticks = ggplot2::element_blank(),
-                 axis.title.x = ggplot2::element_blank(),
-                 panel.grid.major.x = ggplot2::element_blank(),
-                 panel.grid.major.y = ggplot2::element_line(colour = "black",
-                                                            linetype = 8,
-                                                            linewidth = 0.1),
-                 legend.position = "bottom",
-                 legend.key.size = ggplot2::unit(1.5, "line"),
-                 legend.title = ggplot2::element_blank())
 }

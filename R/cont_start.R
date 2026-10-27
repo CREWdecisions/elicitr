@@ -28,13 +28,13 @@
 #'
 #' Valid short codes are:
 #'
-#' * `Z`: _integers_, when the estimate must be an integer number in the
+#' * `Z`: _round numbers_, when the estimate must be an round number in the
 #' interval (-Inf, Inf).
 #'
-#' * `N`: _positive integers_, when the estimate must be an integer number in
+#' * `N`: _positive round numbers_, when the estimate must be a round number in
 #' the interval [0, Inf).
 #'
-#' * `z`: _negative integers_, when the estimate must be an integer number in
+#' * `z`: _negative round numbers_, when the estimate must be a round number in
 #' the interval (-Inf, 0).
 #'
 #' * `R`: _reals_, when the estimate must be a real number in the interval
@@ -78,9 +78,9 @@
 #'
 #' @examples
 #' # Create the elic_cont object for an elicitation process that estimates 3
-#' # variables, the first for a one point estimation of a positive integer, the
-#' # second for three points estimation of a negative real, and the last for a
-#' # four point estimation of a probability
+#' # variables, the first for a one point estimation of a positive round number,
+#' # the second for three points estimation of a negative real, and the last for
+#' # a four point estimation of a probability
 #' my_elicit <- cont_start(var_names = c("var1", "var2", "var3"),
 #'                         var_types = "Nrp",
 #'                         elic_types = "134",
@@ -120,9 +120,8 @@ cont_start <- function(var_names,
 
   if (any(grepl("_conf[0-9]+$", var_names))) {
     varname_conf <- var_names[grepl("_conf[0-9]+$", var_names)]
-    pb <- "conf"
 
-    error <- "Variable names cannot contain the characters {.val {pb}} \\
+    error <- "Variable names cannot contain the characters {.val conf} \\
     followed by a number."
     cli::cli_abort(c("Invalid variable name in {.arg var_names}",
                      x = error,
@@ -165,63 +164,4 @@ cont_start <- function(var_names,
   }
 
   obj
-}
-
-# Checkers----
-
-#' Check arguments compatibility
-#'
-#' Check whether `var_names`, `var_types`, and `elic_types` have compatible
-#' values, accounting that values for `var_types` and `elic_type` can be
-#' recycled when have length 1.
-#'
-#' @param var_names character vector with the name of the estimated variables.
-#' @param var_types character with short codes indicating the variable type.
-#' @param elic_types character with short codes indicating the elicitation type.
-#'
-#' @return An error if `var_names`, `var_types` and `elic_types` have
-#' incompatible values or length.
-#'
-#' @noRd
-#'
-#' @author Sergio Vignali
-check_arg_mism <- function(var_names,
-                           var_types,
-                           elic_types) {
-
-  n_vars <- length(var_names)
-  n_var_types <- length(var_types)
-  n_elic_types <- length(elic_types)
-
-  head_error <- "The number of short codes in"
-  tail_error <- "should be either {.val {1}} or equal to the number of \\
-                 elements in {.arg var_names}."
-  var_error <- ""
-  est_error <- ""
-  raise_error <- TRUE
-
-  if (n_var_types != n_vars) {
-    var_error <- "{.arg var_types}"
-  }
-
-  if (n_elic_types != n_vars) {
-    est_error <- "{.arg elic_types}"
-  }
-
-  if (nzchar(var_error) && nzchar(est_error)) {
-    error <- paste(head_error, var_error, " and", est_error, tail_error)
-  } else if (nzchar(var_error)) {
-    error <- paste(head_error, var_error, tail_error)
-  } else if (nzchar(est_error)) {
-    error <- paste0(head_error, est_error, tail_error)
-  } else {
-    raise_error <- FALSE
-  }
-
-  if (raise_error) {
-    cli::cli_abort(c("Mismatch between function arguments:",
-                     "x" = error,
-                     "i" = "See {.fn elicitr::cont_start}."),
-                   call = rlang::caller_env())
-  }
 }

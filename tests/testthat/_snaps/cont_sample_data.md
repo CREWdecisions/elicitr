@@ -5,7 +5,28 @@
     Condition
       Error in `cont_sample_data()`:
       ! Invalid value for `x`:
-      x Argument `x` must be an object of class <elic_cont> and not of class <character>.
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+        `x` should be of class <elic_cont> and not of class <character>.
+      i See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(x, round = 1)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
+      i See `elicitr::cont_sample_data()`.
+
+---
+
+    Code
+      cont_sample_data(x, round = 2)
+    Condition
+      Error in `cont_sample_data()`:
+      ! Invalid value for `x`:
+      x Argument `x` must be a `?elicitr::elic_cont()` object created with `elicitr::cont_start()` and with data added with `elicitr::cont_add_data()`.
       i See `elicitr::cont_sample_data()`.
 
 ---
@@ -15,7 +36,7 @@
     Condition
       Error in `cont_sample_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_sample_data()`.
 
 ---
@@ -25,7 +46,7 @@
     Condition
       Error in `cont_sample_data()`:
       ! Incorrect value for `round`:
-      x `round` can only be 1 or 2.
+      x Argument `round` can only be equal to 1 (for "Round 1") or to 2 (for "Round 2").
       i See `elicitr::cont_sample_data()`.
 
 ---
@@ -46,7 +67,8 @@
       Error in `cont_sample_data()`:
       ! Invalid value for `var`:
       x Variable "var4" not present in the <elic_cont> object.
-      i Available variables are "var1", "var2", and "var3".
+      i Available `var_names` are "var1", "var2", and "var3".
+        See `elicitr::cont_sample_data()` for more information.
 
 ---
 
@@ -56,7 +78,8 @@
       Error in `cont_sample_data()`:
       ! Invalid value for `var`:
       x Variables "var4" and "var5" not present in the <elic_cont> object.
-      i Available variables are "var1", "var2", and "var3".
+      i Available `var_names` are "var1", "var2", and "var3".
+        See `elicitr::cont_sample_data()` for more information.
 
 ---
 
@@ -85,7 +108,7 @@
     Condition
       Error in `cont_sample_data()`:
       ! Invalid value for argument `weights:`
-      x Weights cannot be "NA".
+      x Weights cannot be "NA". Set weights to default (NULL) to avoid using this argument.
       i See `elicitr::cont_sample_data()` for more information.
 
 ---
@@ -135,6 +158,7 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::cont_sample_data()` for more information.
 
 # Accepts NAs from one expert
 
@@ -143,6 +167,7 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::cont_sample_data()` for more information.
 
 # Accepts NAs from all experts for one variable
 
@@ -168,7 +193,7 @@
     Code
       out <- cont_sample_data(obj, round = 2)
     Message
-      v Rescaled min and max for variable "var3".
+      v Rescaled min and max based on confidence estimates for variable "var3".
       v Data for "var1", "var2", and "var3" sampled successfully using the "PERT" method.
 
 ---
@@ -176,8 +201,8 @@
     Code
       out <- cont_sample_data(obj, round = 2, var = "var3", weights = w)
     Message
-      i Provided weights used instead of confidence estimates
-      v Rescaled min and max for variable "var3".
+      i Weights provided in argument `weights` used instead of confidence estimates to calculate the number of vote attributed to each expert in variable "var3".
+      v Rescaled min and max based on confidence estimates for variable "var3".
       v Data for "var3" sampled successfully using the "PERT" method.
 
 # cont_sample_data ignores completely empty placeholder rows
@@ -187,6 +212,7 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::cont_sample_data()` for more information.
 
 ---
 
@@ -195,4 +221,5 @@
     Condition
       Warning:
       ! Some values have been constrained to be between 0 and 1.
+        See the scale_conf section in the help page for `elicitr::cont_sample_data()` for more information.
 

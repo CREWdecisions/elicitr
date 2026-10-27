@@ -12,6 +12,7 @@ test_that("Errors", {
 
   #When type is not valid
   expect_snapshot(plot(samp, type = "boxplot"), error = TRUE)
+  expect_snapshot(plot(samp, type = "density"), error = TRUE)
 
   #When only NAs are present in the estimates
   position <- obj[["data"]][["topic_1"]][["option"]] == "option_1"
